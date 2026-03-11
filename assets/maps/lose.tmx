@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="128" tileheight="96" infinite="0" nextlayerid="2" nextobjectid="1">
+ <properties>
+  <property name="Draw" type="bool" value="true"/>
+ </properties>
+ <tileset firstgid="1" name="lose-win-screen" tilewidth="128" tileheight="96" tilecount="9" columns="9">
+  <image source="../Screens/lose-win-screen.png" width="1152" height="96"/>
+  <tile id="4">
+   <animation>
+    <frame tileid="4" duration="150"/>
+    <frame tileid="5" duration="150"/>
+    <frame tileid="6" duration="150"/>
+    <frame tileid="7" duration="150"/>
+    <frame tileid="8" duration="150"/>
+   </animation>
+  </tile>
+ </tileset>
+ <layer id="1" name="Map" width="1" height="1">
+  <data>
+   <tile gid="5"/>
+  </data>
+ </layer>
+</map>

@@ -1,0 +1,189 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/level2.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "Todos los archivos (*)",
+    "fileStates": {
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/MapMetadata.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/level2.tmx": {
+            "expandedObjectLayers": [
+                3
+            ],
+            "scale": 2,
+            "selectedLayer": 7,
+            "viewCenter": {
+                "x": 2688.5,
+                "y": 442.25
+            }
+        },
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/level2.tmx#MapMetadata": {
+            "scaleInDock": 1
+        },
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/level2.tmx#tmw_desert_spacing": {
+            "scaleInDock": 1
+        },
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/queralt.tmx": {
+            "expandedObjectLayers": [
+                9,
+                10,
+                17,
+                23,
+                24,
+                15
+            ],
+            "scale": 1,
+            "selectedLayer": 10,
+            "viewCenter": {
+                "x": 960.5,
+                "y": 239.5
+            }
+        },
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/queralt.tmx#MapMetadata": {
+            "scaleInDock": 1
+        },
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/queralt.tmx#Sprite-0001": {
+            "scaleInDock": 1
+        },
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/queralt.tmx#checkpoint-Sheet": {
+            "scaleInDock": 1
+        },
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/queralt.tmx#mapa": {
+            "scaleInDock": 1
+        },
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/queralt.tmx#spikes": {
+            "scaleInDock": 1
+        },
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/queralt.tmx#tmw_desert_spacing": {
+            "scaleInDock": 1
+        },
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/queralt2.tmx": {
+            "expandedObjectLayers": [
+                17,
+                23
+            ],
+            "scale": 0.75,
+            "selectedLayer": 8,
+            "viewCenter": {
+                "x": 950,
+                "y": 239.33333333333337
+            }
+        },
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/queralt2.tmx#MapMetadata": {
+            "scaleInDock": 1
+        },
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/queralt2.tmx#Sprite-0001": {
+            "scaleInDock": 1
+        },
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/queralt2.tmx#checkpoint-Sheet": {
+            "scaleInDock": 1
+        },
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/queralt2.tmx#mapa": {
+            "scaleInDock": 1
+        },
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/queralt2.tmx#spikes": {
+            "scaleInDock": 1
+        },
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/queralt2.tmx#tmw_desert_spacing": {
+            "scaleInDock": 1
+        },
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/tmw_desert_spacing (1).tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/irene/Documents/Racing-Box2D-Project-2/Assets/map/CuteRacing.tmx": {
+            "scale": 0.125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 3844,
+                "y": 2556
+            }
+        },
+        "C:/Users/irene/Documents/Racing-Box2D-Project-2/Assets/map/CuteRacing.tmx#CuteMap": {
+            "scaleInDock": 1
+        },
+        "C:/Users/irene/Documents/Racing-Box2D-Project-2/Assets/map/CuteRacing.tmx#FinalLine": {
+            "scaleInDock": 1
+        },
+        "C:/Users/irene/Documents/Racing-Box2D-Project-2/Assets/map/CuteRacing.tmx#barriers-export": {
+            "scaleInDock": 1
+        },
+        "C:/Users/irene/Documents/Racing-Box2D-Project-2/Assets/map/CuteRacing.tmx#grass-export": {
+            "scaleInDock": 1
+        },
+        "C:/Users/irene/Documents/Racing-Box2D-Project-2/Assets/map/CuteRacing.tmx#semaforo": {
+            "scaleInDock": 1
+        },
+        "C:/Users/irene/Documents/Racing-Box2D-Project-2/Assets/map/Semaforo.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "C:/Users/irene/Documents/Racing-Box2D-Project-2/Assets/map/Semáforo.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 0.33
+        },
+        "C:/Users/irene/Documents/Racing-Box2D-Project-2/Assets/map/wheel_animation_spritesheet.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 23
+        },
+        "FinalBoss.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "coin_anim.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "coin_sprite.tsx": {
+            "scaleInDock": 1
+        },
+        "ghost-export.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 3
+        },
+        "heart_prtection_anim.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "frame.defaultDuration": 165,
+    "last.externalTilesetPath": "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps",
+    "last.imagePath": "C:/Users/irene/Documents/GitHub/PlatformGame/assets/textures",
+    "map.lastUsedFormat": "tmx",
+    "map.width": 100,
+    "openFiles": [
+        "ghost-export.tsx",
+        "C:/Users/irene/Documents/Racing-Box2D-Project-2/Assets/map/CuteRacing.tmx",
+        "C:/Users/irene/Documents/Racing-Box2D-Project-2/Assets/map/Semaforo.tsx",
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/queralt.tmx",
+        "FinalBoss.tsx",
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/level2.tmx",
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/queralt2.tmx"
+    ],
+    "project": "coin_anim.tiled-project",
+    "property.type": "bool",
+    "recentFiles": [
+        "ghost-export.tsx",
+        "C:/Users/irene/Documents/Racing-Box2D-Project-2/Assets/map/CuteRacing.tmx",
+        "C:/Users/irene/Documents/Racing-Box2D-Project-2/Assets/map/Semaforo.tsx",
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/queralt.tmx",
+        "FinalBoss.tsx",
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/queralt2.tmx",
+        "C:/Users/irene/Documents/GitHub/PlatformGame/assets/maps/level2.tmx",
+        "heart_prtection_anim.tsx",
+        "coin_anim.tsx",
+        "C:/Users/irene/Documents/Racing-Box2D-Project-2/Assets/map/wheel_animation_spritesheet.tsx",
+        "C:/Users/irene/Documents/Racing-Box2D-Project-2/Assets/map/Semáforo.tsx"
+    ],
+    "tileset.lastUsedFilter": "Archivos de conjuntos de patrones Tiled (*.tsx *.xml)",
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 50,
+        "width": 32
+    }
+}
