@@ -57,7 +57,7 @@
   <image source="MapMetadata.png" width="67" height="34"/>
  </tileset>
  <tileset firstgid="51" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
-  <image source="../../../../../../Downloads/LV1_test_tileset.png" width="384" height="128"/>
+  <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
  <layer id="1" name="Map" width="64" height="24">
   <properties>
@@ -1603,7 +1603,7 @@
   </data>
  </layer>
  <objectgroup id="7" name="suelo">
-  <object id="10" x="0" y="512.121" width="1151.52" height="103.03"/>
+  <object id="10" x="33.3333" y="512.121" width="1151.52" height="103.03"/>
  </objectgroup>
  <objectgroup id="8" name="Entities">
   <object id="12" name="Player" type="Player" x="351.152" y="301.333">

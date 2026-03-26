@@ -6127,7 +6127,7 @@
 		<properties>
 			<property name="Draw" type="bool" value="false" />
 		</properties>
-		<object id="3" name="Player" type="Player" x="105" y="145" score="0" timer="8.87874031">
+		<object id="3" name="Player" type="Player" x="104" y="145" score="0" timer="15.7465286">
 			<point />
 		</object>
 		<object id="9" name="Enemy " type="Enemy" x="120.667" y="262.833">
