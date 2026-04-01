@@ -185,9 +185,11 @@ bool Physics::PostUpdate()
     bool ret = true;
 
     // Activate or deactivate debug mode
-    if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+    if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) {
         debug = !debug;
-
+        LOG("Debug tool : COLLIDER VISISBILITY");
+    }
+       
     // Debug draw via Box2D 3.x callbacks
     if (debug)
     {

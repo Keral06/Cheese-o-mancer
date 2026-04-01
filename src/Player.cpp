@@ -34,7 +34,6 @@ bool Player::Awake() {
 bool Player::Start() {
 
 	// load
-	
 	movefx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/player_walk.wav");
 	jumpfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/salto.wav");
 	checkpointfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/checkpoint.wav");
@@ -76,16 +75,12 @@ bool Player::Update(float dt)
 	const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	if (!isPaused) {
 		if (animFrame.x == 160 && animFrame.y == 96 && isdead) {
-
-
 			Reset();
-
 		}
 		GetPhysicsValues();
 		Move();
 		Jump();
 		ApplyPhysics();
-		
 	}
 	Draw(dt);
 
@@ -100,8 +95,6 @@ bool Player::Update(float dt)
 				protectionStartTime = currentTime; //reset timer
 				LOG("Protection expired");
 			}
-
-
 		}
 		IsPlayerProtected = IsProtected;
 
@@ -125,17 +118,11 @@ void Player :: UpdateFireballs(float dt) {
 	for (auto it = fireballs.begin(); it != fireballs.end(); ) {
 
 		if ((*it)->toDelete) { //si se tiene que borrar la destruye
-
-
-
-
-
 			it = fireballs.erase(it);
 		}
 		else {
 			(*it)->Update(dt);
 			++it;
-
 		}
 	}
 }
@@ -152,9 +139,7 @@ void Player::CameraRender() {
 
 	}
 
-
 	if (position.getX() < Engine::GetInstance().render->camera.w / 4) {
-
 		Engine::GetInstance().render->camera.x = limitLeft;
 	}
 	else if (position.getX() > mapSize.getX() - Engine::GetInstance().render->camera.w / 4) {
@@ -170,11 +155,8 @@ void Player::CameraRender() {
 	}
 	else if (position.getY() > mapSize.getY() - Engine::GetInstance().render->camera.h / 4) {
 		int x = 9;
-
 		Engine::GetInstance().render->camera.y = limitDown;
-
 	}
-
 	else { Engine::GetInstance().render->camera.y = (int)(-position.getY() + 720 / 2); }
 }
 
@@ -187,7 +169,7 @@ void Player::GetPhysicsValues() {
 void Player::Move() {
 	// Move left/right
 	if (!isdead && Engine::GetInstance().scene->IsGamePaused() == false) {
-		speed = 4.0f + (float)score / 1000;
+		//speed = 4.0f + (float)score / 1000;
 
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !isJumping) {
 			velocity.x = -speed;
@@ -197,7 +179,6 @@ void Player::Move() {
 			else {
 				anims.SetCurrent("move");
 			}
-			
 			isWalking = true;
 			facingLeft = true; 
 		}
@@ -253,11 +234,8 @@ void Player::Move() {
 			else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 				velocity.y = speed;
 				isWalking = true;
-
 			}
-			
 		}
-
 		if (!isWalking && !isJumping) {
 			if (IsProtected) {
 				anims.SetCurrent("idle_protected");
@@ -265,18 +243,13 @@ void Player::Move() {
 			else {
 
 				anims.SetCurrent("idle");
-			}
-			
-			
+			}	
 		}
-
 		if (isJumping || !isCollidedFloor ) {
 			if(IsProtected){
 				anims.SetCurrent("jump_protected");
 			}
 			else { anims.SetCurrent("jump"); }
-			
-
 		}
 	}
 	if (isWalking) {
@@ -285,7 +258,6 @@ void Player::Move() {
 		if (currentTime - lastStepTime > 350) {
 
 			Engine::GetInstance().audio->PlayFx(movefx);
-
 			lastStepTime = currentTime;
 		}
 	}
@@ -300,6 +272,8 @@ void Player::Move() {
 void Player::Jump() {
 	// This function can be used for more complex jump logic if needed
 	bool spacePressed = Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN;
+	//LOG("Space pressed");
+
 	bool canFirstJump = spacePressed && !isJumping && isCollidedFloor && !godMode; // seguido lo que propuso el profesor, añadido canFirstJump y Can second jump para acortar codigo
 	bool canSecondJump = spacePressed && isJumping && !secondJump && !godMode;
 	/*if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping == false && !godMode && (isCollidedFloor)|| Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping && !secondJump && !godMode)) {
@@ -319,6 +293,7 @@ void Player::Jump() {
 		
 	}
 	*/
+	
 	if(spacePressed && canFirstJump){
 		Engine::GetInstance().audio->PlayFx(jumpfx);
 		if (IsProtected) {
@@ -328,7 +303,8 @@ void Player::Jump() {
 			anims.SetCurrent("jump");
 		}
 		isJumping = true;
-		Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);
+ 		Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);
+		LOG("Player jumped action");
 		secondJump = false;
 		firstJump = false;
 	}
