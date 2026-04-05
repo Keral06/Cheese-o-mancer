@@ -46,7 +46,7 @@ bool Player::Start() {
 	anims.SetCurrent("idle");
 
 	//L03: TODO 2: Initialize Player parameters
-	texture = Engine::GetInstance().textures->Load("Assets/Textures/a.png");
+	texture = Engine::GetInstance().textures->Load("Assets/Textures/placeholder_Jester.png");
 
 	// L08 TODO 5: Add physics to the player - initialize physics body
 	texW = 256;

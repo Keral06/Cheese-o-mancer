@@ -799,7 +799,7 @@ void Scene::UpdateLevel2(float dt) {
 
 			auto boss = std::static_pointer_cast<FinalBoss>(entity);
 			if(boss->PlayerClose && !boss->isMusic) {
-				Engine::GetInstance().audio->PlayMusic("assets/audio/music/PREV/boss_music.wav");
+				Engine::GetInstance().audio->PlayMusic("assets/audio/Music/PREV/boss_music.wav");
 				boss->isMusic = true;
 			}
 			if (boss->isdead) {
