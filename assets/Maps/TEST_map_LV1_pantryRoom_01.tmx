@@ -4524,7 +4524,7 @@
   <object id="213" x="4096" y="4352" width="128" height="128"/>
  </objectgroup>
  <objectgroup id="8" name="Entities">
-  <object id="97" name="Player" type="Player" x="8752" y="1440">
+  <object id="97" name="Player" type="Player" x="4443.85" y="2876.85">
    <point/>
   </object>
  </objectgroup>
