@@ -565,7 +565,7 @@ void Scene::LoadLevel1() {
 	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/soundtrack.wav");
 
 	// Load Map
-	Engine::GetInstance().map->Load("Assets/Maps/", "TEST_map_LV1_startRoom_01.tmx"); //(original) "queralt.tmx"
+	Engine::GetInstance().map->Load("Assets/Maps/", "TEST_map_LV1_startRoom_01.tmx");//"TEST_map_LV1_pantryRoom_01.tmx"
 
 	// Load Entities from map
 	Engine::GetInstance().map->LoadEntities(player, enemies);
@@ -761,7 +761,7 @@ void Scene::LoadLevel2() {
 	
 	heartTexture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/heart4.png");
 	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/PREV/", "level2.tmx");
+	Engine::GetInstance().map->Load("Assets/Maps/", "TEST_map_LV1_pantryRoom_01.tmx");
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, enemies);
