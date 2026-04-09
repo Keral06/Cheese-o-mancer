@@ -3,10 +3,7 @@
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
- <tileset firstgid="4" source="../../../../../Downloads/daaaad.tsx"/>
- <objectgroup id="13" name="fons">
-  <object id="291" gid="4" x="3024" y="7323" width="7432" height="4246"/>
- </objectgroup>
+ <objectgroup id="13" name="fons"/>
  <layer id="1" name="Map" width="90" height="63">
   <properties>
    <property name="Draw" type="bool" value="true"/>
