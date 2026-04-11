@@ -24,6 +24,7 @@ class Scene : public Module
 public:
 	int savedLevel = 1;
 	bool isPaused = false;
+	bool storeOn = false;
 	bool showUIDebug = false;
 	Scene();
 
@@ -115,13 +116,23 @@ private:
 	void UpdateFinalWin(float dt);
 	void UnloadFinalWin();
 	void HandleFinalWinUIEvents(UIElement* uiElement);
+
+
+	//Funciones Store
+	void CreateStoreLevel1();
+
+	void SetStore(bool store);
+
+	void HandleStoreUIEvents(UIElement* uiElement);
 private:
 
 	//L03: TODO 3b: Declare a Player attribute
 	std::shared_ptr<Player> player;
 	std::string tilePosDebug = "[0,0]";
 	SDL_Texture* helpTexture = nullptr;
+	SDL_Texture* map1Texture = nullptr;
 	bool showHelp = false;
+	bool showMap = false;
 	SDL_Texture* introTexture = nullptr;
 	SDL_Texture* heartTexture = nullptr;
 	std::vector<std::shared_ptr<Enemy>> enemies;

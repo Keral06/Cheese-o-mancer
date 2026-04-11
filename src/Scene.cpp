@@ -596,6 +596,8 @@ void Scene::LoadLevel1() {
 
 	// Textura de ayuda
 	helpTexture = Engine::GetInstance().textures->Load("Assets/textures/PREV/HELP.png");
+	//textura de mapa
+	map1Texture = Engine::GetInstance().textures->Load("Assets/textures/PREV/HELP.png");
 }
 
 void Scene::UpdateLevel1(float dt) {
@@ -622,6 +624,11 @@ void Scene::UpdateLevel1(float dt) {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
 	{
 		showHelp = !showHelp;
+	}
+	//logica de mapa
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_M) == KEY_DOWN && player->hasMap1)
+	{
+		showMap = !showMap;
 	}
 
 	if (player && !player->isDead()) {
@@ -703,6 +710,10 @@ void  Scene::PostUpdateLevel1() {
 	if (showHelp && helpTexture != nullptr)
 	{
 		Engine::GetInstance().render->DrawTexture(helpTexture, 560, 300, NULL, 0.0f);
+	}
+	if (showMap && map1Texture != nullptr)
+	{
+		Engine::GetInstance().render->DrawTexture(map1Texture, 560, 300, NULL, 0.0f);
 	}
 
 	if (player != nullptr) {
@@ -1091,4 +1102,139 @@ void Scene::UnloadIntro() {
 	LOG("Unloading Intro Screen");
 	Engine::GetInstance().textures->UnLoad(introTexture);
 	introTexture = nullptr;
+}
+
+
+
+
+//ALL STORE THINGS
+
+void Scene::CreateStoreLevel1() {
+	
+	int x = 540;
+	int y = 400;
+
+	// MAP
+	auto btnMAP = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 35, "MAP", { x, y, 200, 50 }, this);
+	btnMAP->visible = false;
+
+	// KEY
+	auto btnKEY = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 36, "KEY", { x, y + 70, 200, 50 }, this);
+	btnKEY->visible = false;
+
+	//LIFE
+	auto btnLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 37, "TEMPORARY LIFE", { x, y +140, 200, 50 }, this);
+	btnLIFE->visible = false;
+
+	//// LLANTERN
+	//auto btnLLANTERN = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 38, "LLANTERN", { x, y + 210, 200, 50 }, this);
+	//btnLLANTERN->visible = false;
+
+	// BUYMAP
+	auto btnBUYMAP = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 39, "BUYMAP", { x+70, y, 200, 50 }, this);
+	btnBUYMAP->visible = false;
+
+	//BUYKEY
+	auto btnBUYKEY = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 40, "BUYKEY", { x + 70, y, 200, 50 }, this);
+	btnBUYKEY->visible = false;
+
+	//BUYLIFE
+	auto btnBUYLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 41, "BUYLIFE", { x + 70, y, 200, 50 }, this);
+	btnBUYLIFE->visible = false;
+
+	////BUYLLANTERN
+	//auto btnBUYLLANTERN = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 42, "BUYLLANTERN", { x + 70, y, 200, 50 }, this);
+	//btnBUYLLANTERN->visible = false;
+
+	
+}
+
+void Scene::SetStore(bool store) {
+	storeOn = store;
+	for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
+		if (element->id >= 35 && element->id <= 38) {
+			element->visible = storeOn;
+		}
+		
+	}
+}
+
+
+void Scene::HandleStoreUIEvents(UIElement* uiElement) {
+	switch (uiElement->id) {
+	case 35:
+		for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
+			if (el->id ==39) el->visible = true;
+			if (el->id > 39 || el->id <= 42) el->visible = false;
+			
+		}
+		//imagen informativa de lo que hace en grande tmbn
+		break;
+	case 36:
+		for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
+			if (el->id == 40) el->visible = true;
+			if (el->id == 39 || el->id >= 41 || el->id<=42) el->visible = false;
+
+		}
+		//imagen informativa de lo que hace en grande tmbn
+		break;
+	case 37:
+		for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
+			if (el->id == 41) el->visible = true;
+			if (el->id == 39 || el->id ==40 || el->id == 42) el->visible = false;
+
+		}
+		//imagen informativa de lo que hace en grande tmbn
+		break;
+	//case 38:
+	//	for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
+	//		if (el->id == 42) el->visible = true;
+	//		if (el->id == 39 || el->id == 40 || el->id == 41) el->visible = false;
+
+	//	}
+	//	//imagen informativa de lo que hace en grande tmbn
+	//	break;
+	case 39:
+		//mira si el jugador tiene dinero
+		if(player->score >= 20) {
+			player->score -=20;
+			for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
+				if (el->id == 39) el->Destroy();
+				if (el->id == 35); //cambiar imagen a comprado
+
+			}
+			//FUNCION DE QUE EL MAPA ESTA DISPONIBLE
+			player->hasMap1 = true;
+		}
+		break;
+	case 40:
+		//mira si el jugador tiene dinero
+		if (player->score >= 50) {
+			player->score -= 50;
+			for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
+				if (el->id == 40) el->Destroy();
+				if (el->id == 36); //cambiar imagen a comprado
+
+			}
+			//FUNCION DE QUE PLAYER TIENE LA LLAVE
+		}
+		
+		break;
+	case 41:
+		//mira si el jugador tiene dinero
+		if (player->score >= 10) {
+			player->score -= 10;
+			for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
+				if (el->id == 41) el->Destroy();
+				if (el->id == 37); //cambiar imagen a comprado
+
+			}
+			//FUNCION DE QUE PLAYER TIENE VIDA TEMPORAL
+		}
+		break;
+	/*case 42:
+		
+		break;*/
+		break;
+	}
 }

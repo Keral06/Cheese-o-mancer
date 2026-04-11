@@ -44,6 +44,7 @@ private:
 
 public:
 	void Player::Setanimation();
+	bool hasMap1 = false;
 	//Declare player parameters
 	float speed = 15.0f;
 	SDL_Texture* texture = NULL;
@@ -85,5 +86,6 @@ public:
 private: 
 	b2Vec2 velocity;
 	AnimationSet anims;
+	
 
 };
