@@ -512,8 +512,8 @@ MapLayer* Map::GetNavigationLayer() {
                         std::shared_ptr<Enemy> enemy = std::dynamic_pointer_cast<Enemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY));
 
                         enemy->position = Vector2D(x, y);
-                        enemy->xInicial = (int)x;
-                        enemy->yInicial = (int)y;
+                        /*enemy->xInicial = (int)x;
+                        enemy->yInicial = (int)y;*/
                         enemy->Start();
                         enemy->mapID = id;
 

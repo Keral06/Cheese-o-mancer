@@ -664,10 +664,10 @@ void Scene::UpdateLevel1(float dt) {
 			if ((*it)->toDelete) { // si se tiene que borrar la destruye
 				it = enemies.erase(it);
 			}
-			else {
+			/*else {
 				(*it)->Reset();
 				++it;
-			}
+			}*/
 		}
 	}
 	

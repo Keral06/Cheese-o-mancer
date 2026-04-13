@@ -22,7 +22,6 @@ public:
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 	void SetPosition(Vector2D pos);
 	Vector2D GetPosition();
-	void Reset();
 
 private:
 	void PerformPathfinding();
@@ -30,30 +29,15 @@ private:
 	void Move();
 	void ApplyPhysics();
 	void Draw(float dt);
-	void Jump();
-
 
 public:
 
 	//Declare enemy parameters
-	float speed = 1.0f;
+	float speed = 4.0f;
 	SDL_Texture* texture = NULL;
 	int texW, texH;
 	PhysBody* pbody;
-	int xInicial;
-	int yInicial;
-	bool isCollidedFloor;
-	bool isCollidedWall;
-	bool isFollowing;
-	bool JumpNeeded;
-	bool toDelete = false;
-	bool debug = false;
-	//fx
-	int enemyfx;
-	int enemyDeathFx;
-	int lastStepTime = 0;
-	bool facingRight = false;
-	bool gamePaused = false;
+
 private:
 	b2Vec2 velocity;
 	AnimationSet anims;

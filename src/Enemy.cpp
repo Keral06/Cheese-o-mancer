@@ -10,11 +10,9 @@
 #include "EntityManager.h"
 #include "Map.h"
 
-
 Enemy::Enemy() : Entity(EntityType::ENEMY)
 {
 	name = "Enemy";
-	pbody = nullptr;
 }
 
 Enemy::~Enemy() {
@@ -28,318 +26,171 @@ bool Enemy::Awake() {
 bool Enemy::Start() {
 
 	// load
-	enemyfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/enemigo_walk.wav");
-	enemyDeathFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/enemy_death.wav");
-	std::unordered_map<int, std::string> aliases = { {0,"idle"}, {3, "move"}};
-	anims.LoadFromTSX("Assets/Textures/PREV/Enemy-Recovered.tsx", aliases);
-	anims.SetCurrent("idle");
+	std::unordered_map<int, std::string> aliases = { {0,"idle"} };
+	/*anims.LoadFromTSX("Assets/Textures/enemy_Spritesheet.tsx", aliases);
+	anims.SetCurrent("idle");*/
 
 	//Initialize Player parameters
-	texture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/Enemy-Recovered.png");
+	texture = Engine::GetInstance().textures->Load("Assets/Textures/placeholder_Jester.png");
+
 	//Add physics to the enemy - initialize physics body
-	texW = 32;
-	texH = 32;
+	texW = 215;
+	texH = 384;
+	pbody = Engine::GetInstance().physics->CreateRectangle(position.getX(), position.getY(), texW, texH, bodyType::DYNAMIC);
 
-	if(pbody == nullptr) {
-	position.setX(xInicial);
-	position.setY(yInicial);
-
-	pbody = Engine::GetInstance().physics->CreateCircle(
-		(int)position.getX() + texW / 2,
-		(int)position.getY() - texH / 2,
-		texW / 2,
-		bodyType::DYNAMIC
-	);
+	//Assign enemy class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
-	pbody->ctype = ColliderType::ENEMY;
 
-
-	
-		
-	}
 	//ssign collider type
+	pbody->ctype = ColliderType::ENEMY;
 
 	// Initialize pathfinding
 	pathfinding = std::make_shared<Pathfinding>();
 	//Get the position of the enemy
 	Vector2D pos = GetPosition();
 	//Convert to tile coordinates
-	Vector2D tilePos = Engine::GetInstance().map->WorldToMap((int)pos.getX(), (int)pos.getY()+1);
+	Vector2D tilePos = Engine::GetInstance().map->WorldToMap((int)pos.getX(), (int)pos.getY() + 1);
 	//Reset pathfinding
 	pathfinding->ResetPath(tilePos);
-	
 
 	return true;
 }
 
 bool Enemy::Update(float dt)
 {
-	if (!Engine::GetInstance().render->IsOnScreenWorldRect(position.getX(), position.getY(), (float)texW, (float)texH, 0))
-		return true;
-	if(toDelete) {
-		return true;
-	}
-	bool isPaused = Engine::GetInstance().scene->isPaused;
-	if(Player::isPlayerProtectedquestion()){
-		
-	}
-	else {
 	PerformPathfinding();
-	
-	}
-	if(!isPaused) {
 	GetPhysicsValues();
 	Move();
 	ApplyPhysics();
-	
-	}
 	Draw(dt);
-	/*pathfinding->DrawPath();*/
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
-		debug = !debug;
-	if (debug) { pathfinding->DrawPath(); }
-	
+
 	return true;
 }
 
-void Enemy::PerformPathfinding()
-{
-	
-		Vector2D playerPos = Engine::GetInstance().scene->GetPlayerPosition();
-		
-		Vector2D enemyPos = GetPosition();
-		
+void Enemy::PerformPathfinding() {
 
-		Vector2D playerTilePos = Engine::GetInstance().map->WorldToMap(playerPos.getX(), playerPos.getY());
-		Vector2D enemyTilePos = Engine::GetInstance().map->WorldToMap(enemyPos.getX()+5, enemyPos.getY()+5);
+	// Pathfinding testing inputs
 
-		pathfinding->ResetPath(enemyTilePos);
+	// Reset pathfinding with R key
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
+		//Get the position of the enemy
+		Vector2D pos = GetPosition();
+		//Convert to tile coordinates
+		Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap((int)pos.getX(), (int)pos.getY() + 1);
+		//Reset pathfinding
+		pathfinding->ResetPath(tilePos);
+	}
 
+	// Propagate BFS with J key
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_J) == KEY_DOWN) {
+		pathfinding->PropagateBFS();
+	}
 
-		float dx = playerPos.getX() - enemyPos.getX();
-		float dy = playerPos.getY() - enemyPos.getY();
-		float dist = sqrt(dx * dx + dy * dy);
+	// Propagate BFS continuously with LShift + J
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_J) == KEY_REPEAT &&
+		Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
+		pathfinding->PropagateBFS();
+	}
 
-		if (dist > 200.0f)
-		{
-			
-			
-			pathfinding->pathTiles.clear();   
-			isFollowing = false;
-			return;
-			
-			
-			
-		}
-		if(dy<-64.0f){
-			pathfinding->pathTiles.clear();
-			isFollowing = false;
-			return;
-		}
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_K) == KEY_DOWN) {
+		pathfinding->PropagateDijkstra();
+	}
 
-		int i = 100;//maximo de 100 iteraciones por frame
-		int aux = 0;
-		while (pathfinding->pathTiles.empty() && aux<i) {
-		
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_K) == KEY_REPEAT &&
+		Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
+		pathfinding->PropagateDijkstra();
+	}
+
+	// L13: TODO 3:	Add the key inputs to propagate the A* algorithm with different heuristics (Manhattan, Euclidean, Squared)
+
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
+		pathfinding->PropagateAStar(MANHATTAN);
+	}
+
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_B) == KEY_REPEAT &&
+		Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
+		pathfinding->PropagateAStar(MANHATTAN);
+	}
+
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_N) == KEY_DOWN) {
+		pathfinding->PropagateAStar(EUCLIDEAN);
+	}
+
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_N) == KEY_REPEAT &&
+		Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
+		pathfinding->PropagateAStar(EUCLIDEAN);
+	}
+
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_M) == KEY_DOWN) {
 		pathfinding->PropagateAStar(SQUARED);
-	aux++;
-		
-		isFollowing = true;
-		 if (pathfinding->frontierAStar.empty()) break;
-		
-		}
-	
-	
-		
-	
-}
+	}
 
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_M) == KEY_REPEAT &&
+		Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
+		pathfinding->PropagateAStar(SQUARED);
+	}
+
+}
 
 void Enemy::GetPhysicsValues() {
+	// Read current velocity
 	velocity = Engine::GetInstance().physics->GetLinearVelocity(pbody);
-
-	
-	velocity.y = Engine::GetInstance().physics->GetLinearVelocity(pbody).y;
+	velocity = { 0, velocity.y };
 }
 
-void Enemy::Move(){
+void Enemy::Move() {
 
-	
-	if (pathfinding->pathTiles.empty()) {
-		anims.SetCurrent("idle");
-		return;
-	}
-	
-
-		
-	Vector2D nextTile = pathfinding->pathTiles.front(); 
-	Vector2D nextWorld = Engine::GetInstance().map->MapToWorld(nextTile.getX(), nextTile.getY()); 
-
-	if (nextWorld.getX() > position.getX()) {
-		velocity.x = speed;
-		facingRight = true;
-	}
-	else if (nextWorld.getX() < position.getX()) {
-		velocity.x = -speed;
-		facingRight = false;
-	}
-	else {
-		velocity.x = 0;
-	}
-
-	
-
-	
-	float threshold = 4.0f;
-	float dx = nextWorld.getX() - position.getX();
-	float dy = nextWorld.getY() - position.getY();
-	float dist = sqrt(dx * dx + dy * dy);
-
-	if (dist < threshold)
-	{
-		pathfinding->pathTiles.pop_front(); //cuando llega ahí lo elimino
-	}
-	
-
-	anims.SetCurrent("move");
-	if (isFollowing) {
-		int currentTime = (int)SDL_GetTicks();
-		if (currentTime - lastStepTime > 350) {
-			Engine::GetInstance().audio->PlayFx(enemyfx);
-			lastStepTime = currentTime;
-		}
-	}
-	else {
-		lastStepTime = 0;
-	}
-	
+	// Move 
 }
-void Enemy::Jump() {
-	
-			Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -1.3f, true);
-	
-}
+
 void Enemy::ApplyPhysics() {
 
+	// Apply velocity via helper
 	Engine::GetInstance().physics->SetLinearVelocity(pbody, velocity);
 }
 
 void Enemy::Draw(float dt) {
 
-	anims.Update(dt);
-	const SDL_Rect& animFrame = anims.GetCurrentFrame();
+	//anims.Update(dt);
+	//const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
+	//// Update render position using your PhysBody helper
 	int x, y;
 	pbody->GetPosition(x, y);
 	position.setX((float)x);
 	position.setY((float)y);
-	SDL_FlipMode flip = facingRight ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
-	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame,1.0f,0.0,INT_MAX,INT_MAX,flip);
+
+	// Draw pathfinding debug
+	pathfinding->DrawPath();
+
+	//Draw the player using the texture and the current animation frame
+	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, 0, 1, 0, 0, 0, SDL_FLIP_NONE);
 }
 
 bool Enemy::CleanUp()
 {
 	LOG("Cleanup enemy");
 	Engine::GetInstance().textures->UnLoad(texture);
-	if(pbody != nullptr) {
-		Engine::GetInstance().physics->DeletePhysBody(pbody);
-		pbody = nullptr;
-	}
 	return true;
 }
-void Enemy::Reset() {
 
-	pbody->SetPosition(xInicial, yInicial);
-	pathfinding->pathTiles.clear();
-	isFollowing = false;
-	isCollidedFloor = false;
-	isCollidedWall = false;
-	Engine::GetInstance().physics->SetLinearVelocity(pbody, { 0, 0 });
-	pathfinding->ResetPath(Engine::GetInstance().map->WorldToMap(xInicial, yInicial));
-
-}
 void Enemy::SetPosition(Vector2D pos) {
-	position = pos;
+	pbody->SetPosition((int)(pos.getX()), (int)(pos.getY()));
 }
 
 Vector2D Enemy::GetPosition() {
 	int x, y;
 	pbody->GetPosition(x, y);
 	// Adjust for center
-	return Vector2D((float)x-texW/2,(float)y-texH/2);
+	return Vector2D((float)x - texW / 2, (float)y - texH / 2);
 }
 
 //Define OnCollision function for the enemy. 
 void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
-	switch (physB->ctype)
-	{
-	case ColliderType::PLATFORM:
-		LOG("Collision PLATFORM");
-		isCollidedFloor = true;
-		break;
 
-	case ColliderType::PARED:
-		LOG("Collision PARED enemigo");
-		isCollidedWall = true;
-		if (isFollowing ) {
-			Jump();
-			LOG("JUMP ENEMY");
-		}
-		break;
-
-	case ColliderType::FIREBALL:
-		LOG("Enemy hit by FIREBALL — dying!");
-		Engine::GetInstance().audio->PlayFx(enemyDeathFx);   
-		if (!toDelete) {
-			Engine::GetInstance().map->killedEnemies.push_back(mapID);
-		}
-		Player::AddPoints(100);
-
-		toDelete = true;
-		if (pbody) {
-			Engine::GetInstance().physics->DeletePhysBody(pbody);
-			pbody = nullptr;
-			LOG("Enemy physics body deleted upon fireball collision.");
-		}
-		break;
-	case ColliderType::DANGER:
-		LOG("Enemy hit by SPIKES — dying!");
-		Engine::GetInstance().audio->PlayFx(enemyDeathFx);
-		if (!toDelete) {
-			Engine::GetInstance().map->killedEnemies.push_back(mapID);
-		}
-
-		toDelete = true;
-		if (pbody) {
-			Engine::GetInstance().physics->DeletePhysBody(pbody);
-			pbody = nullptr;
-			LOG("Enemy physics body deleted upon fireball collision.");
-		}
-		break;
-	case ColliderType::PLAYER:
-		LOG("Collision PLAYER");
-		Reset();
-		break;
-
-	default:
-		break;
-	}
 }
 
 void Enemy::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 {
-	switch (physB->ctype)
-	{
-	case ColliderType::PLATFORM:
-		LOG("End Collision PLATFORM");
-		isCollidedFloor = false;
-		break;
 
-	case ColliderType::PARED:
-		LOG("End Collision PARED");
-		isCollidedWall = false;
-		break;
-	default:
-		break;
-	}
 }

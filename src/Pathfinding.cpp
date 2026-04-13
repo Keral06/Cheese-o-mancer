@@ -8,9 +8,8 @@
 Pathfinding::Pathfinding() {
 
     //Loads texture to draw the path
-    pathTex = Engine::GetInstance().textures.get()->Load("Assets/Maps/MapMetadata.png");
-   tileX = Engine::GetInstance().textures.get()->Load("Assets/Maps/x.png");
-    //esto era lo que hacía que se dibujara el cuadrado rojo ese random
+    pathTex = Engine::GetInstance().textures.get()->Load("Assets/Maps/PREV/MapMetadata.png");
+    tileX = Engine::GetInstance().textures.get()->Load("Assets/Maps/PREV/x.png");
     map = Engine::GetInstance().map.get();
     layerNav = map->GetNavigationLayer();
 
@@ -132,6 +131,7 @@ void Pathfinding::DrawPath() {
         Engine::GetInstance().render.get()->DrawTexture(tileX, pathTileWorld.getX(), pathTileWorld.getY());
     }
 
+    Engine::GetInstance().render.get()->DrawTexture(pathTex, Engine::GetInstance().scene->GetPlayerPosition().getX(), Engine::GetInstance().scene->GetPlayerPosition().getY());
 }
 
 bool Pathfinding::IsWalkable(int x, int y) {
@@ -164,8 +164,8 @@ void Pathfinding::PropagateBFS() {
     bool foundDestination = false;
     if (!frontier.empty()) {
         Vector2D frontierTile = frontier.front();
-        Vector2D playerPos = Engine::GetInstance().scene->GetPlayerPosition();
-        Vector2D playerPosTile = Engine::GetInstance().map->WorldToMap((int)playerPos.getX(), (int)playerPos.getY());
+        Vector2D playerPosTile = Engine::GetInstance().scene->GetPlayerPosition();
+        /*Vector2D playerPosTile = Engine::GetInstance().map->WorldToMap((int)playerPos.getX(), (int)playerPos.getY());*/
 
         if (frontierTile == playerPosTile) {
             foundDestination = true;
@@ -224,8 +224,8 @@ void Pathfinding::PropagateDijkstra() {
     bool foundDestination = false;
     if (frontierDijkstra.size() > 0) {
         Vector2D frontierTile = frontierDijkstra.top().second;
-        Vector2D playerPos = Engine::GetInstance().scene.get()->GetPlayerPosition();
-        Vector2D playerPosTile = Engine::GetInstance().map.get()->WorldToMap((int)playerPos.getX(), (int)playerPos.getY());
+        Vector2D playerPosTile = Engine::GetInstance().scene.get()->GetPlayerPosition();
+       /* Vector2D playerPosTile = Engine::GetInstance().map.get()->WorldToMap((int)playerPos.getX(), (int)playerPos.getY());*/
 
         if (frontierTile == playerPosTile) {
             foundDestination = true;
@@ -278,8 +278,8 @@ void Pathfinding::PropagateAStar(ASTAR_HEURISTICS heuristic) {
 
     // L13: TODO 2: Adapt Dijkstra algorithm for AStar. Consider the different heuristics
 
-    Vector2D playerPos = Engine::GetInstance().scene.get()->GetPlayerPosition();
-    Vector2D playerPosTile = Engine::GetInstance().map.get()->WorldToMap((int)playerPos.getX(), (int)playerPos.getY());
+    Vector2D playerPosTile = Engine::GetInstance().scene.get()->GetPlayerPosition();
+    /*Vector2D playerPosTile = Engine::GetInstance().map.get()->WorldToMap((int)playerPos.getX(), (int)playerPos.getY());*/
 
     bool foundDestination = false;
     if (frontierAStar.size() > 0) {
@@ -368,7 +368,7 @@ int Pathfinding::MovementCost(int x, int y)
     return ret;
 }
 
-std::list<Vector2D>  Pathfinding::ComputePath(int x, int y)
+void Pathfinding::ComputePath(int x, int y)
 {
     // L12: TODO 2: Follow the breadcrumps to goal back to the origin
     // at each step, add the point into "pathTiles" (it will then draw automatically)
@@ -391,7 +391,6 @@ std::list<Vector2D>  Pathfinding::ComputePath(int x, int y)
         // Find the position of the current tile in the visited list
         index = Find(visited, currentTile);
     }
-    return pathTiles;
 }
 
 int Pathfinding::Find(std::list<Vector2D> vector, Vector2D elem)
