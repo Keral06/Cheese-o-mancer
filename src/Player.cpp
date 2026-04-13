@@ -12,6 +12,7 @@
 #include "Map.h"
 #include "Protection.h"
 #include "Scene.h"
+#include "Window.h"
 int Player::score = 0;
 bool Player:: IsPlayerProtected = false;
 Player::Player() : Entity(EntityType::PLAYER)
@@ -130,7 +131,9 @@ void Player::CameraRender() {
 	Vector2D mapSize = Engine::GetInstance().map->GetMapSizeInPixels();
 	float limitLeft = Engine::GetInstance().render->camera.w / 4;
 	float limitRight = mapSize.getX() - Engine::GetInstance().render->camera.w;
-
+	int windowX;
+	int windowY;
+	Engine::GetInstance().window->GetWindowSize(windowX, windowY);
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
 		godMode = !godMode;
 		if (godMode) { b2Body_SetGravityScale(pbody->body, 0); }
@@ -143,7 +146,7 @@ void Player::CameraRender() {
 	else if (position.getX() > mapSize.getX() - Engine::GetInstance().render->camera.w / 4) {
 		Engine::GetInstance().render->camera.x = 3 * Engine::GetInstance().render->camera.w / 4 - mapSize.getX();
 	}
-	else { Engine::GetInstance().render->camera.x = (int)(-position.getX() + 1920 / 2); }
+	else { Engine::GetInstance().render->camera.x = (int)(-position.getX() + windowX*1.5); }
 
 	float limitUp = Engine::GetInstance().render->camera.h / 4;
 	float limitDown = (3 * Engine::GetInstance().render->camera.h / 4) - mapSize.getY();
@@ -155,7 +158,7 @@ void Player::CameraRender() {
 		int x = 9;
 		Engine::GetInstance().render->camera.y = limitDown;
 	}
-	else { Engine::GetInstance().render->camera.y = (int)(-position.getY() + 2000 / 2); }
+	else { Engine::GetInstance().render->camera.y = (int)(-position.getY() + windowY * 1.5); }
 }
 
 void Player::GetPhysicsValues() {
