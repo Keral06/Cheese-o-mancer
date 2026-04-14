@@ -16,18 +16,22 @@ public:
 	virtual ~Enemy();
 	bool Awake();
 	bool Start();
-	bool Update(float dt);
+	virtual bool Update(float dt);
 	bool CleanUp();
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
-	bool CalculateDistance();
+	float CalculateDistance();
 	void SetPosition(Vector2D pos);
 	Vector2D GetPosition();
 
-private:
+	void ResetPathfinding(Vector2D pos);
+
+	virtual void Attack();
+
+protected:
 	void PerformPathfinding();
 	void GetPhysicsValues();
-	void Move();
+	virtual void Move();
 	void ApplyPhysics();
 	void Draw(float dt);
 
@@ -36,12 +40,17 @@ public:
 	//Declare enemy parameters
 	float speed = 4.0f;
 	SDL_Texture* texture = NULL;
-	int texW, texH;
+	int texW = 215;
+	int texH = 384;
 	PhysBody* pbody;
-	float detectionRange = 500.0f;
+	float detectionRange = 400.0f;
 	Vector2D lastPlayerTile = { -1, -1 };
 	int repathTimer = 0;
 	int repathDelay = 100;
+	char* texName = "";
+	bool isboss = false;
+	int attackRange = 0;
+	float distanceToPlayer = 0.0f;
 private:
 	b2Vec2 velocity;
 	AnimationSet anims;

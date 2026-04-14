@@ -1,4 +1,3 @@
-
 #include "Engine.h"
 #include "Render.h"
 #include "Textures.h"
@@ -17,6 +16,7 @@
 #include "Protection.h"
 #include "ExtraLive.h"
 #include "Scene.h"
+#include "Verdugo.h"
 
 Map::Map() : Module(), mapLoaded(false)
 {
@@ -516,6 +516,16 @@ MapLayer* Map::GetNavigationLayer() {
                         enemy->yInicial = (int)y;*/
                         enemy->Start();
                         enemy->mapID = id;
+
+                    }
+                    else if (entityType == "Verdugo") {
+                        std::shared_ptr<Verdugo> verdugo = std::dynamic_pointer_cast<Verdugo>(Engine::GetInstance().entityManager->CreateEntity(EntityType::VERDUGO));
+
+                        verdugo->position = Vector2D(x, y);
+                        /*enemy->xInicial = (int)x;
+                        enemy->yInicial = (int)y;*/
+                        verdugo->Start();
+                        verdugo->mapID = id;
 
                     }
                     else if (entityType == "EnemigoVolador") {

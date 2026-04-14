@@ -1,4 +1,9 @@
-﻿#include "Enemy.h"
+﻿
+// =====================
+// ENEMY BASE IMPLEMENTATION
+// =====================
+
+#include "Enemy.h"
 #include "Engine.h"
 #include "Textures.h"
 #include "Audio.h"
@@ -10,6 +15,10 @@
 #include "EntityManager.h"
 #include "Map.h"
 
+// =====================
+// CONSTRUCTOR / DESTRUCTOR
+// =====================
+
 Enemy::Enemy() : Entity(EntityType::ENEMY)
 {
 	name = "Enemy";
@@ -18,6 +27,10 @@ Enemy::Enemy() : Entity(EntityType::ENEMY)
 Enemy::~Enemy() {
 
 }
+
+// =====================
+// CICLO DE VIDA
+// =====================
 
 bool Enemy::Awake() {
 	return true;
@@ -31,11 +44,9 @@ bool Enemy::Start() {
 	anims.SetCurrent("idle");*/
 
 	//Initialize Player parameters
-	texture = Engine::GetInstance().textures->Load("Assets/Textures/placeholder_Jester.png");
+	texture = Engine::GetInstance().textures->Load(texName);
 
 	//Add physics to the enemy - initialize physics body
-	texW = 215;
-	texH = 384;
 	pbody = Engine::GetInstance().physics->CreateRectangle(position.getX(), position.getY(), texW, texH, bodyType::DYNAMIC);
 
 	//Assign enemy class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
@@ -61,38 +72,25 @@ bool Enemy::Update(float dt)
 	repathTimer++;
 
 	GetPhysicsValues();
-	// Solo actuamos si el jugador está en el rango
-	if (CalculateDistance()) {
+	
+	distanceToPlayer = CalculateDistance();
 
-		Vector2D currentPlayerTile = Engine::GetInstance().scene->GetPlayerPosition();
-
-		if ((currentPlayerTile.getX() != lastPlayerTile.getX() ||
-			currentPlayerTile.getY() != lastPlayerTile.getY()) && repathTimer >= repathDelay) {
-
-			int ex, ey;
-			pbody->GetPosition(ex, ey);
-			Vector2D enemyTilePos = Engine::GetInstance().map->WorldToMap(ex, ey);
-
-			pathfinding->ResetPath(enemyTilePos);
-			
-			repathTimer = 0;
-			lastPlayerTile = currentPlayerTile;
+	if (distanceToPlayer < detectionRange) {
+		if (distanceToPlayer < attackRange) {
+			Attack();
 		}
-
-		pathfinding->PropagateAStar(SQUARED);
-		// 2. Ejecutar el movimiento
-		Move();
-
+		else {
+			PerformPathfinding();
+			Move();
+		}
+		
 	}
 	else {
-		// Si el jugador sale del rango, el enemigo se detiene
-		int ex, ey;
-		pbody->GetPosition(ex, ey);
-		Vector2D enemyTilePos = Engine::GetInstance().map->WorldToMap(ex, ey);
-		pathfinding->ResetPath(enemyTilePos);
+		
+		Vector2D enemyPos = GetPosition();
+		Vector2D enemyTilePos = Engine::GetInstance().map->WorldToMap(enemyPos.getX(), enemyPos.getY());
+		ResetPathfinding(enemyTilePos);
 	}
-
-	
 	
 	ApplyPhysics();
 	Draw(dt);
@@ -102,66 +100,22 @@ bool Enemy::Update(float dt)
 
 void Enemy::PerformPathfinding() {
 
-	// Pathfinding testing inputs
+	Vector2D currentPlayerTile = Engine::GetInstance().scene->GetPlayerPosition();
 
-	// Reset pathfinding with R key
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
-		//Get the position of the enemy
-		Vector2D pos = GetPosition();
-		//Convert to tile coordinates
-		Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap((int)pos.getX(), (int)pos.getY() + 1);
-		//Reset pathfinding
-		pathfinding->ResetPath(tilePos);
+	if ((currentPlayerTile.getX() != lastPlayerTile.getX() ||
+		currentPlayerTile.getY() != lastPlayerTile.getY()) && repathTimer >= repathDelay) {
+
+		int ex, ey;
+		pbody->GetPosition(ex, ey);
+		Vector2D enemyTilePos = Engine::GetInstance().map->WorldToMap(ex, ey);
+
+		pathfinding->ResetPath(enemyTilePos);
+
+		repathTimer = 0;
+		lastPlayerTile = currentPlayerTile;
 	}
 
-	// Propagate BFS with J key
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_J) == KEY_DOWN) {
-		pathfinding->PropagateBFS();
-	}
-
-	// Propagate BFS continuously with LShift + J
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_J) == KEY_REPEAT &&
-		Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
-		pathfinding->PropagateBFS();
-	}
-
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_K) == KEY_DOWN) {
-		pathfinding->PropagateDijkstra();
-	}
-
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_K) == KEY_REPEAT &&
-		Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
-		pathfinding->PropagateDijkstra();
-	}
-
-	// L13: TODO 3:	Add the key inputs to propagate the A* algorithm with different heuristics (Manhattan, Euclidean, Squared)
-
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
-		pathfinding->PropagateAStar(MANHATTAN);
-	}
-
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_B) == KEY_REPEAT &&
-		Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
-		pathfinding->PropagateAStar(MANHATTAN);
-	}
-
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_N) == KEY_DOWN) {
-		pathfinding->PropagateAStar(EUCLIDEAN);
-	}
-
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_N) == KEY_REPEAT &&
-		Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
-		pathfinding->PropagateAStar(EUCLIDEAN);
-	}
-
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_M) == KEY_DOWN) {
-		pathfinding->PropagateAStar(SQUARED);
-	}
-
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_M) == KEY_REPEAT &&
-		Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
-		pathfinding->PropagateAStar(SQUARED);
-	}
+	pathfinding->PropagateAStar(SQUARED);
 
 }
 
@@ -170,6 +124,10 @@ void Enemy::GetPhysicsValues() {
 	velocity = Engine::GetInstance().physics->GetLinearVelocity(pbody);
 	
 }
+
+// =====================
+// MOVIMIENTO Y FISICAS
+// =====================
 
 void Enemy::Move() {
 
@@ -207,6 +165,10 @@ void Enemy::ApplyPhysics() {
 	Engine::GetInstance().physics->SetLinearVelocity(pbody, velocity);
 }
 
+// =====================
+// RENDER Y CAMARA
+// =====================
+
 void Enemy::Draw(float dt) {
 
 	//anims.Update(dt);
@@ -232,6 +194,40 @@ bool Enemy::CleanUp()
 	return true;
 }
 
+// =====================
+// COLISIONES
+// =====================
+
+void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
+
+}
+
+void Enemy::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
+{
+
+}
+
+// =====================
+// UTILIDADES
+// =====================
+
+float Enemy::CalculateDistance() {
+	
+    int ex, ey;
+    pbody->GetPosition(ex, ey); 
+	Vector2D enemyWorld = Engine::GetInstance().map->WorldToMap(ex, ey);
+   
+    Vector2D pTile = Engine::GetInstance().scene->GetPlayerPosition();
+    Vector2D pWorld = Engine::GetInstance().map->WorldToMap((int)pTile.getX(), (int)pTile.getY());
+    
+    float dx = (float)enemyWorld.getX() - pWorld.getX();
+    float dy = (float)enemyWorld.getY() - pWorld.getY();
+   
+    float distance = sqrtf((dx * dx) + (dy * dy));
+
+    return (distance);
+}
+
 void Enemy::SetPosition(Vector2D pos) {
 	pbody->SetPosition((int)(pos.getX()), (int)(pos.getY()));
 }
@@ -243,42 +239,15 @@ Vector2D Enemy::GetPosition() {
 	return Vector2D((float)x - texW / 2, (float)y - texH / 2);
 }
 
-//Define OnCollision function for the enemy. 
-void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
-
+void Enemy::ResetPathfinding(Vector2D pos) {
+	pathfinding->ResetPath(pos);
 }
 
-void Enemy::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
-{
+// =====================
+// ATAQUES
+// =====================
 
-}
+void Enemy::Attack() {
 
-bool Enemy::CalculateDistance() {
-	// 1. Posición del Enemigo (Píxeles)
-    int ex, ey;
-    pbody->GetPosition(ex, ey); 
-	Vector2D enemyWorld = Engine::GetInstance().map->WorldToMap(ex, ey);
-    // 2. Posición del Jugador (Tiles -> Convertir a Píxeles)
-    // ¡OJO! Asegúrate de que GetPlayerPosition() devuelve coordenadas de TILE (ej. 15, 10)
-    Vector2D pTile = Engine::GetInstance().scene->GetPlayerPosition();
-    Vector2D pWorld = Engine::GetInstance().map->WorldToMap((int)pTile.getX(), (int)pTile.getY());
 
-    // 3. LOG DE CONTROL: Mira esto en la consola para ver cuál de los dos falla
-    // printf("DEBUG: Enemigo en (%d, %d) | Jugador en (%f, %f)\n", ex, ey, pWorld.getX(), pWorld.getY());
-
-    // 4. Calcular diferencia
-    float dx = (float)enemyWorld.getX() - pWorld.getX();
-    float dy = (float)enemyWorld.getY() - pWorld.getY();
-
-    // 5. Pitágoras
-    float distance = sqrtf((dx * dx) + (dy * dy));
-
-    // Si el número sigue siendo 900000, es que ex/ey o pWorld.getX() valen algo absurdo
-	printf("Player raw: (%f, %f)\n", pTile.getX(), pTile.getY());
-	printf("Enemy raw: (%d, %d)\n", ex, ey);
-	printf("Enemy world: (%f, %f)\n", enemyWorld.getX(), enemyWorld.getY());
-	printf("Player world: (%f, %f)\n", pWorld.getX(), pWorld.getY());
-
-    float detectionRange = 400.0f;
-    return (distance < detectionRange);
 }
