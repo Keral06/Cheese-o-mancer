@@ -9,11 +9,11 @@
 
 struct SDL_Texture;
 
-class HANDMAN : public NPC
+class Magician : public NPC
 {
 public:
-	HANDMAN(Dialogue dialogueHandman, std::string name, SDL_Texture* texture, const char* tsxPath, Dialogue dialogue, Dialogue hasBought, Dialogue hasNotBought, EntityType entity, Dialogue BeatBoss);
-	virtual ~HANDMAN();
+	Magician(Dialogue dialogueMagicianStart, std::string name, SDL_Texture* texture, const char* tsxPath, Dialogue AfterCheese, Dialogue BeforeCheese, Dialogue BeatBoss, EntityType entity);
+	virtual ~Magician();
 
 	bool Awake();
 	bool Start();
@@ -47,17 +47,12 @@ public:
 	int coinPickupFx;
 	int xInicial;
 	int yInicial;	
-	Dialogue dialogueHANDMAN;
-	Dialogue hasBought;
-	Dialogue hasNotBought;
+	Dialogue dialogueMagicianStart;
+	Dialogue AfterCheese;
+	Dialogue BeforeCheese;
 	Dialogue BeatBoss;
 	bool hasBeenKilled = false;
-	bool wantsBuy = false;
-	bool isStoreOn = true;
 	bool firstTime = true;
-	bool firstTimeBossKill = true;
-
-	int moneyPlayer = 0;
 
 	
 };

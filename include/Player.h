@@ -81,6 +81,11 @@ public:
 	static int score;
 	int lives = 3;
 	bool isDeadDefinitive = false;
+
+	//MARC ESTOS SON LOS BOOLS DE EL PLAYER PARA CONVERSACIONES
+
+	bool hasCheese = false;
+	bool beatBoss = false;
 	
 	/*SDL_Rect& lastFrame;*/
 private: 
