@@ -256,5 +256,5 @@ void Enemy::ResetPathfinding(Vector2D pos) {
 
 void Enemy::Attack() {
 
-
+	anims.SetCurrent("Animation");
 }
