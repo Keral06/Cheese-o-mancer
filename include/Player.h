@@ -86,6 +86,7 @@ public:
 
 	bool hasCheese = false;
 	bool beatBoss = false;
+	bool hasTalkedWithMagician = false; //abrir puerta para poder seguir / desbloquea la vida UI
 	
 	/*SDL_Rect& lastFrame;*/
 private: 

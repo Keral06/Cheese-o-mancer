@@ -7,12 +7,21 @@
 #include "Scene.h"
 #include "Log.h"
 #include "Physics.h"
+
 #include "EntityManager.h"
+
 //El primer dialogo es el ultimo del vector!!
+
+
+Dialogue :: Dialogue(const char	*tsxPath) {
+
+	this->tsxPath = tsxPath;
+
+
+}
+
 Dialogue::Dialogue()
 {
-	
-	
 }
 
 Dialogue::~Dialogue() {
@@ -25,24 +34,46 @@ bool Dialogue::Awake() {
 
 bool Dialogue::Start() {
 
+	std::ifstream fich(tsxPath);
+	std::string helper;
+	char a;
+	fich >> a;
+	while (a != 'ñ') { //this is what ends the txt document
+		while (a != '/n') {
+			
+			helper.push_back(a);
+			fich >> a;
+			
+		
+		
+		
+		}
+		dialogue.push_back(helper);
+		while (!helper.empty()) {
+		
+			helper.pop_back();
+		
+		}
+		fich >> a;
 	
 	
 	
 	
+	}
+	
+	lenght = dialogue.size();
 
 
 	return true;
 }
 void Dialogue::Draw(float dt) {
-	if (hasStarted && lenght > 0) {
-		SDL_Texture* currentTexture = dialogue.back();
-		Engine::GetInstance().render->DrawTexture(currentTexture, xInicial, yInicial);
-	}
+	//hacer que lo escriba en pantalla
 }
 
 bool Dialogue::Update(float dt)
 {
 	if (!hasStarted) return true;
+	
 	Draw(dt);
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 	
@@ -53,17 +84,20 @@ bool Dialogue::Update(float dt)
 	return true;
 }
 void Dialogue::BeginDialogue() {
+	
 	dialogueHelper = dialogue;
-
+	lenghtHelper = lenght;
 	hasStarted = true;
 
 
 
 }
 void Dialogue:: NextDialogue() {
-	if (lenght > 0) {
+	if (lenghtHelper > 0) {
+	
+		printf("%c",dialogueHelper[lenghtHelper]);
 		dialogue.pop_back();
-		lenght--;
+		lenghtHelper--;
 	}
 	else {
 		hasStarted = false;
@@ -78,10 +112,7 @@ bool Dialogue:: HasEnded(bool name){
 
 
 }
-void Dialogue::AddDialogue(SDL_Texture* texture) {
-	dialogue.push_back(texture);
-	lenght++;
-}
+
 
 bool Dialogue::CleanUp()
 {

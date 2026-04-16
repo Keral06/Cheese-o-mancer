@@ -9,7 +9,7 @@
 #include "Physics.h"
 #include "EntityManager.h"
 
-Magician::Magician(Dialogue dialogueMagicianStart, std::string name, SDL_Texture* texture, const char *tsxPath, Dialogue AfterCheese, Dialogue BeforeCheese, Dialogue BeatBoss, EntityType entitytype) : NPC(name, texture, tsxPath, dialogue, entitytype)
+Magician::Magician(Dialogue dialogueMagicianStart, std::string name, SDL_Texture* texture, const char *tsxPath, Dialogue& AfterCheese, Dialogue& BeforeCheese, Dialogue& BeatBoss, EntityType entitytype) : NPC(name, texture, tsxPath, dialogue, entitytype)
 {
 	
 	this->name = name;

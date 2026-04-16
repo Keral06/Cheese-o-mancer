@@ -5,12 +5,17 @@
 #include <box2d/box2d.h>
 #include <SDL3/SDL.h>
 #include "Pathfinding.h"
+#include <stdio.h>
+
+#include <fstream>
 
 struct SDL_Texture;
 
 class Dialogue 
 {
 public:
+	
+	Dialogue(const char* tsxPath);
 	Dialogue();
 	virtual ~Dialogue();
 
@@ -26,24 +31,27 @@ public:
 
 private:
 
-	void GetPhysicsValues();
-	
-	void ApplyPhysics();
 	void Draw(float dt);
 	
 
 
 private:
 	//Vector de texturas
-	std::vector<SDL_Texture*> dialogue;
-	std::vector<SDL_Texture*> dialogueHelper;
+	
+	
+	const char *tsxPath;
+
+	std::vector<std::string> dialogue;
+	std::vector<std::string> dialogueHelper;
+	int lenght = 0;
+	int lenghtHelper = 0;
+	
 
 public:
 	
-	int xInicial;
-	int yInicial;	
-	int lenght = 0;
-	void AddDialogue(SDL_Texture* texture);
+		
+	
+	
 	void BeginDialogue();
 	bool HasEnded(bool name);
 

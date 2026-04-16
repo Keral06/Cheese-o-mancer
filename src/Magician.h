@@ -12,7 +12,7 @@ struct SDL_Texture;
 class Magician : public NPC
 {
 public:
-	Magician(Dialogue dialogueMagicianStart, std::string name, SDL_Texture* texture, const char* tsxPath, Dialogue AfterCheese, Dialogue BeforeCheese, Dialogue BeatBoss, EntityType entity);
+	Magician(Dialogue dialogueMagicianStart, std::string name, SDL_Texture* texture, const char* tsxPath, Dialogue& AfterCheese, Dialogue& BeforeCheese, Dialogue& BeatBoss, EntityType entity);
 	virtual ~Magician();
 
 	bool Awake();

@@ -12,7 +12,7 @@ struct SDL_Texture;
 class NPC : public Entity
 {
 public:
-	NPC(std::string name, SDL_Texture* texture, const char* tsxPath, Dialogue dialogue, EntityType entity);
+	NPC(std::string name, SDL_Texture* texture, const char* tsxPath, Dialogue& dialogue, EntityType entity);
 	NPC();
 	virtual ~NPC();
 

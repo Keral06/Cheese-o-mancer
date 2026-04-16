@@ -9,7 +9,7 @@
 #include "Physics.h"
 #include "EntityManager.h"
 
-HANDMAN::HANDMAN(Dialogue dialogueHandman, std::string name, SDL_Texture* texture, const char *tsxPath, Dialogue dialogue, Dialogue hasBought, Dialogue hasNotBought, EntityType entitytype, Dialogue BeatBoss) : NPC(name, texture, tsxPath, dialogue, entitytype)
+HANDMAN::HANDMAN(Dialogue dialogueHandman, std::string name, SDL_Texture* texture, const char *tsxPath, Dialogue& dialogue, Dialogue& hasBought, Dialogue& hasNotBought, EntityType entitytype, Dialogue& BeatBoss) : NPC(name, texture, tsxPath, dialogue, entitytype)
 {
 	
 	this->name = name;
