@@ -82,6 +82,7 @@ bool Magician::CleanUp()
 	return true;
 }
 void Magician::OnCollision(PhysBody* physA, PhysBody* physB) {
+	Player* py = static_cast<Player*>(physB->listener);
 	switch (physB->ctype)
 	{
 	case ColliderType::PLAYER:
@@ -95,7 +96,6 @@ void Magician::OnCollision(PhysBody* physA, PhysBody* physB) {
 			break;
 		}
 
-		Player* py = static_cast<Player*>(physB->listener);
 		if (py->beatBoss && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 		
 			if (BeatBoss.hasStarted)break;
