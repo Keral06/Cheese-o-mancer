@@ -78,7 +78,19 @@ bool Scene::Update(float dt)
 		break;
 	case SceneID::LEVEL2:
 		UpdateLevel2(dt);
+		ChangeToLvl5();
+		break;
+	case SceneID::LEVEL3:
+		UpdateLevel3(dt);
+		ChangeToLvl4();
+		break;
+	case SceneID::LEVEL4:
+		UpdateLevel4(dt);
 		ChangeToLvl1();
+		break;
+	case SceneID::LEVEL5:
+		UpdateLevel5(dt);
+		ChangeToLvl3();
 		break;
 
 	case SceneID::GAME_OVER:
@@ -294,6 +306,12 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 		break;
 	case SceneID::LEVEL2:
 		break;
+	case SceneID::LEVEL3:
+		break;
+	case SceneID::LEVEL4:
+		break;
+	case SceneID::LEVEL5:
+		break;
 	case SceneID::GAME_OVER: 
 		HandleGameOverUIEvents(uiElement);
 		break;
@@ -349,6 +367,19 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::LEVEL2:
 		LoadLevel2();
 		break;
+
+	case SceneID::LEVEL3:
+		LoadLevel3();
+		break;
+
+	case SceneID::LEVEL4:
+		LoadLevel4();
+		break;
+
+	case SceneID::LEVEL5:
+		LoadLevel5();
+		break;
+
 	case SceneID::GAME_OVER:
 		LoadGameOver();
 		break;
@@ -387,6 +418,19 @@ void Scene::UnloadCurrentScene() {
 	case SceneID::LEVEL2:
 		UnloadLevel2();
 		break;
+
+	case SceneID::LEVEL3:
+		UnloadLevel3();
+		break;
+
+	case SceneID::LEVEL4:
+		UnloadLevel4();
+		break;
+
+	case SceneID::LEVEL5:
+		UnloadLevel5();
+		break;
+
 	case SceneID::GAME_OVER:
 		UnloadGameOver();
 		break;
@@ -568,6 +612,24 @@ void Scene::ChangeToLvl2() {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 	{
 		ChangeScene(SceneID::LEVEL2);
+	}
+}
+void Scene::ChangeToLvl3() {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	{
+		ChangeScene(SceneID::LEVEL3);
+	}
+}
+void Scene::ChangeToLvl4() {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
+	{
+		ChangeScene(SceneID::LEVEL4);
+	}
+}
+void Scene::ChangeToLvl5() {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
+	{
+		ChangeScene(SceneID::LEVEL5);
 	}
 }
 // *********************************************
@@ -787,7 +849,7 @@ void Scene::LoadLevel2() {
 	
 	heartTexture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/heart4.png");
 	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/", "TEST_map_LV1_tortureRoom_02.tmx");
+	Engine::GetInstance().map->Load("Assets/Maps/", "TEST_map_LV1_towerCenter_01.tmx");
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, enemies);
@@ -818,24 +880,6 @@ void Scene::UpdateLevel2(float dt) {
 
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
 		ChangeScene(SceneID::LEVEL2);
-	}
-	auto& allEntities = Engine::GetInstance().entityManager->entities;
-	for (const auto& entity : allEntities) {
-		if (entity->type == EntityType::FINALBOSS) {
-
-			auto boss = std::static_pointer_cast<FinalBoss>(entity);
-			if(boss->PlayerClose && !boss->isMusic) {
-				Engine::GetInstance().audio->PlayMusic("assets/audio/Music/PREV/boss_music.wav");
-				boss->isMusic = true;
-			}
-			if (boss->isdead) {
-				Player::AddPoints(1000);
-				boss->toDelete = true;
-
-				ChangeScene(SceneID::FINAL_WIN);
-				return;
-			}
-		}
 	}
 
 	if (player && !player->isDead()) {
@@ -880,6 +924,269 @@ void Scene::UnloadLevel2() {
 
 }
 
+// *********************************************
+// Level 3 functions
+// *********************************************
+
+void Scene::LoadLevel3() {
+
+	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/level2music.wav");
+
+	isPaused = false;
+	CreatePauseUI();
+
+	heartTexture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/heart4.png");
+	//Call the function to load the map. 
+	Engine::GetInstance().map->Load("Assets/Maps/", "TEST_map_LV1_pantryRoom_01.tmx");
+
+	//Call the function to load entities from the map
+	Engine::GetInstance().map->LoadEntities(player, enemies);
+	if (continueGame == false) {
+
+		levelTimer = 0.0f;
+		Player::score = 0;
+		if (player) {
+			player->lives = 3;
+		}
+
+		Vector2D startPos = Engine::GetInstance().map->GetStartPoint("Checkpoints", "Player");
+
+		if (startPos.getX() != 0 || startPos.getY() != 0) {
+			player->SetPosition(startPos);
+			player->respawnPosition = { PIXEL_TO_METERS(startPos.getX()), PIXEL_TO_METERS(startPos.getY()) };
+		}
+	}
+}
+
+void Scene::UpdateLevel3(float dt) {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
+		SetPause(!isPaused);
+	}
+	if (isPaused) {
+		return;
+	}
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
+		ChangeScene(SceneID::LEVEL2);
+	}
+
+	if (player && !player->isDead()) {
+		levelTimer += dt / 1000.0f;
+	}
+	if (player && player->lives <= 0) {
+		ChangeScene(SceneID::GAME_OVER);
+		return;
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
+		ChangeScene(SceneID::LEVEL1);
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
+	{
+		showHelp = !showHelp;
+	}
+	if (player) {
+		levelTimer += dt / 1000.0f;
+	}
+	for (int i = 0; i < 9; ++i) {
+		if (Engine::GetInstance().input->GetKey((SDL_Scancode)(SDL_SCANCODE_1 + i)) == KEY_DOWN) {
+			if (i < Engine::GetInstance().map->checkpoints.size()) {
+				Vector2D checkpointPos = Engine::GetInstance().map->checkpoints[i]->position;
+				checkpointPos.setY(checkpointPos.getY() - 16);
+				if (player) player->SetPosition(checkpointPos);
+			}
+		}
+	}
+	//if the finalboss PlayerClose= true, bossmusic sounds (same as dead music)
+
+}
+
+void Scene::UnloadLevel3() {
+
+	auto& uiManager = Engine::GetInstance().uiManager;
+	uiManager->CleanUp();
+
+	player.reset();
+
+	Engine::GetInstance().map->CleanUp();
+	Engine::GetInstance().entityManager->CleanUp();
+
+}
+
+// *********************************************
+// Level 4 functions
+// *********************************************
+
+void Scene::LoadLevel4() {
+
+	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/level2music.wav");
+
+	isPaused = false;
+	CreatePauseUI();
+
+	heartTexture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/heart4.png");
+	//Call the function to load the map. 
+	Engine::GetInstance().map->Load("Assets/Maps/", "TEST_map_LV1_tortureRoom_02.tmx");
+
+	//Call the function to load entities from the map
+	Engine::GetInstance().map->LoadEntities(player, enemies);
+	if (continueGame == false) {
+
+		levelTimer = 0.0f;
+		Player::score = 0;
+		if (player) {
+			player->lives = 3;
+		}
+
+		Vector2D startPos = Engine::GetInstance().map->GetStartPoint("Checkpoints", "Player");
+
+		if (startPos.getX() != 0 || startPos.getY() != 0) {
+			player->SetPosition(startPos);
+			player->respawnPosition = { PIXEL_TO_METERS(startPos.getX()), PIXEL_TO_METERS(startPos.getY()) };
+		}
+	}
+}
+
+void Scene::UpdateLevel4(float dt) {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
+		SetPause(!isPaused);
+	}
+	if (isPaused) {
+		return;
+	}
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
+		ChangeScene(SceneID::LEVEL2);
+	}
+
+	if (player && !player->isDead()) {
+		levelTimer += dt / 1000.0f;
+	}
+	if (player && player->lives <= 0) {
+		ChangeScene(SceneID::GAME_OVER);
+		return;
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
+		ChangeScene(SceneID::LEVEL1);
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
+	{
+		showHelp = !showHelp;
+	}
+	if (player) {
+		levelTimer += dt / 1000.0f;
+	}
+	for (int i = 0; i < 9; ++i) {
+		if (Engine::GetInstance().input->GetKey((SDL_Scancode)(SDL_SCANCODE_1 + i)) == KEY_DOWN) {
+			if (i < Engine::GetInstance().map->checkpoints.size()) {
+				Vector2D checkpointPos = Engine::GetInstance().map->checkpoints[i]->position;
+				checkpointPos.setY(checkpointPos.getY() - 16);
+				if (player) player->SetPosition(checkpointPos);
+			}
+		}
+	}
+	//if the finalboss PlayerClose= true, bossmusic sounds (same as dead music)
+
+}
+
+void Scene::UnloadLevel4() {
+
+	auto& uiManager = Engine::GetInstance().uiManager;
+	uiManager->CleanUp();
+
+	player.reset();
+
+	Engine::GetInstance().map->CleanUp();
+	Engine::GetInstance().entityManager->CleanUp();
+
+}
+
+// *********************************************
+// Level 5 functions
+// *********************************************
+
+void Scene::LoadLevel5() {
+
+	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/level2music.wav");
+
+	isPaused = false;
+	CreatePauseUI();
+
+	heartTexture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/heart4.png");
+	//Call the function to load the map. 
+	Engine::GetInstance().map->Load("Assets/Maps/", "TEST_map_LV1_tortureRoom_02.tmx");
+
+	//Call the function to load entities from the map
+	Engine::GetInstance().map->LoadEntities(player, enemies);
+	if (continueGame == false) {
+
+		levelTimer = 0.0f;
+		Player::score = 0;
+		if (player) {
+			player->lives = 3;
+		}
+
+		Vector2D startPos = Engine::GetInstance().map->GetStartPoint("Checkpoints", "Player");
+
+		if (startPos.getX() != 0 || startPos.getY() != 0) {
+			player->SetPosition(startPos);
+			player->respawnPosition = { PIXEL_TO_METERS(startPos.getX()), PIXEL_TO_METERS(startPos.getY()) };
+		}
+	}
+}
+
+void Scene::UpdateLevel5(float dt) {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
+		SetPause(!isPaused);
+	}
+	if (isPaused) {
+		return;
+	}
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
+		ChangeScene(SceneID::LEVEL2);
+	}
+
+	if (player && !player->isDead()) {
+		levelTimer += dt / 1000.0f;
+	}
+	if (player && player->lives <= 0) {
+		ChangeScene(SceneID::GAME_OVER);
+		return;
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
+		ChangeScene(SceneID::LEVEL1);
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
+	{
+		showHelp = !showHelp;
+	}
+	if (player) {
+		levelTimer += dt / 1000.0f;
+	}
+	for (int i = 0; i < 9; ++i) {
+		if (Engine::GetInstance().input->GetKey((SDL_Scancode)(SDL_SCANCODE_1 + i)) == KEY_DOWN) {
+			if (i < Engine::GetInstance().map->checkpoints.size()) {
+				Vector2D checkpointPos = Engine::GetInstance().map->checkpoints[i]->position;
+				checkpointPos.setY(checkpointPos.getY() - 16);
+				if (player) player->SetPosition(checkpointPos);
+			}
+		}
+	}
+	//if the finalboss PlayerClose= true, bossmusic sounds (same as dead music)
+
+}
+
+void Scene::UnloadLevel5() {
+
+	auto& uiManager = Engine::GetInstance().uiManager;
+	uiManager->CleanUp();
+
+	player.reset();
+
+	Engine::GetInstance().map->CleanUp();
+	Engine::GetInstance().entityManager->CleanUp();
+
+}
 // *********************************************
 // GAME OVER functions
 // *********************************************

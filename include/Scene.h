@@ -14,6 +14,9 @@ enum class SceneID
 	MAIN_MENU,
 	LEVEL1,
 	LEVEL2,
+	LEVEL3,
+	LEVEL4,
+	LEVEL5,
 	GAME_OVER,
 	WIN_SCREEN,
 	FINAL_WIN
@@ -78,6 +81,9 @@ private:
 
 	void ChangeToLvl1();
 	void ChangeToLvl2();
+	void ChangeToLvl3();
+	void ChangeToLvl4();
+	void ChangeToLvl5();
 
 	// L17 TODO 3: Define specific function for main menu scene: Load, Unload, Handle UI events
 	void LoadMainMenu();
@@ -95,6 +101,21 @@ private:
 	void LoadLevel2();
 	void UpdateLevel2(float dt);
 	void UnloadLevel2();
+
+	//Lvl3 Functions
+	void LoadLevel3();
+	void UpdateLevel3(float dt);
+	void UnloadLevel3();
+
+	//Lvl4 Functions
+	void LoadLevel4();
+	void UpdateLevel4(float dt);
+	void UnloadLevel4();
+
+	//Lvl5 Functions
+	void LoadLevel5();
+	void UpdateLevel5(float dt);
+	void UnloadLevel5();
 
 	// Funciones para la pantalla de Game Over
 	void LoadGameOver(); 
