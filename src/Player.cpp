@@ -78,7 +78,8 @@ bool Player::Start() {
 	texture5x5 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/5x5/j_5x5.png");
 	//L03: TODO 2: Initialize Player parameters
 	texture = texture2x3;
-
+	currentAnimSet = &anims2x3;
+	currentAnimSet->SetCurrent("run");
 	// L08 TODO 5: Add physics to the player - initialize physics body
 	texW = 215;
 	texH = 384;
@@ -90,18 +91,30 @@ bool Player::Start() {
 	// L08 TODO 7: Assign collider type
 	pbody->ctype = ColliderType::PLAYER;
 
+	attackHitbox = Engine::GetInstance().physics->CreateRectangleSensor(
+		position.getX(),
+		position.getY(),
+		80,   // ancho
+		120,  // alto
+		bodyType::KINEMATIC
+	);
+
+	attackHitbox->listener = this;
+	attackHitbox->ctype = ColliderType::PLAYERATTACK;
+	hitboxActive = false;
+
 	//initialize audio effect
 	pickCoinFxId = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/coin-collision-sound-342335.wav");
 
 	respawnPosition = { PIXEL_TO_METERS(position.getX()), PIXEL_TO_METERS(position.getY()) };
-
+	
 	return true;
 }
 
 bool Player::Update(float dt)
 {
 	bool isPaused = Engine::GetInstance().scene->isPaused;
-	const SDL_Rect& animFrame = currentAnimSet.GetCurrentFrame();
+	const SDL_Rect& animFrame = currentAnimSet->GetCurrentFrame();
 	if (!isPaused) {
 		if (animFrame.x == 160 && animFrame.y == 96 && isdead) {
 			Reset();
@@ -346,6 +359,7 @@ void Player::ApplyPhysics() {
 
 	// Apply velocity via helper
 	Engine::GetInstance().physics->SetLinearVelocity(pbody, velocity);
+	UpdateAttackHitbox();
 }
 
 // =====================
@@ -356,20 +370,31 @@ void Player::Draw(float dt) {
 
 	
 	
-	const SDL_Rect& animFrame = currentAnimSet.GetCurrentFrame();
-	
-	currentAnimSet.Update(dt);
+	currentAnimSet->Update(dt);
+	const SDL_Rect& animFrame = currentAnimSet->GetCurrentFrame();
 
 	int x, y;
 	pbody->GetPosition(x, y);
+
 	position.setX((float)x);
 	position.setY((float)y);
 
-	
-	/*Engine::GetInstance().render->DrawTexture(texture, x - texW/2, y - texH/2, 0, 1, 0, 0, 0, SDL_FLIP_NONE);*/
-	SDL_FlipMode flip = facingLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE; 
+	SDL_FlipMode flip = facingLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
 
-	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame, 1.0f, 0.0, INT_MAX, INT_MAX, flip);
+	int drawX = x - animFrame.w / 2;
+	int drawY = y - animFrame.h / 2; 
+
+	Engine::GetInstance().render->DrawTexture(
+		texture,
+		drawX,
+		drawY,
+		&animFrame,
+		1.0f,
+		0.0,
+		INT_MAX,
+		INT_MAX,
+		flip
+	);
 	
 }
 
@@ -412,184 +437,110 @@ void Player::CameraRender() {
 // COLISIONES
 // =====================
 
-void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
-	switch (physB->ctype)
+void Player::OnCollision(PhysBody* physA, PhysBody* physB)
+{
+	ColliderType other = physB->ctype;
+
+	// =========================
+	// 1. ATAQUE DEL JUGADOR
+	// =========================
+	if (physA->ctype == ColliderType::PLAYERATTACK)
 	{
-	case ColliderType::PLATFORM: {
-		LOG("Collision PLATFORM");
-		//reset the jump flag when touching the ground
+		if (other == ColliderType::ENEMY)
+		{
+			if (!hitboxActive || hasHit) return;
+
+			Enemy* e = static_cast<Enemy*>(physB->listener);
+			if (e)
+			{
+				
+				LOG("Enemy hit by player attack");
+			}
+
+			hasHit = true;
+		}
+
+		return; // importante: no seguir procesando como player normal
+	}
+
+	// =========================
+	// 2. COLISIONES DEL PLAYER (CUERPO PRINCIPAL)
+	// =========================
+	switch (other)
+	{
+	case ColliderType::PLATFORM:
+	{
 		isJumping = false;
 		firstJump = true;
 		isCollidedFloor = true;
-
 		break;
 	}
-	case ColliderType::PARED: {
-		LOG("Collision PARED");
+
+	case ColliderType::PARED:
+	{
 		isCollidedWall = true;
-
 		break;
 	}
-	case ColliderType::COIN: {
-		LOG("Collision ITEM");
+
+	case ColliderType::COIN:
+	{
 		Engine::GetInstance().audio->PlayFx(pickCoinFxId);
 		physB->listener->Destroy();
 		AddPoints(10);
 		break;
 	}
 
-	case ColliderType::SAVE: {
-		LOG("Collision SAVE");
-		if (physB->objectName != "Player") {
+	case ColliderType::SAVE:
+	{
+		if (physB->objectName != "Player")
 			Engine::GetInstance().audio->PlayFx(checkpointfx);
-		}
-		if (pbody != nullptr && !B2_IS_NULL(pbody->body)) {
+
+		if (pbody && !B2_IS_NULL(pbody->body))
 			respawnPosition = b2Body_GetPosition(pbody->body);
-		}
-		break;
-	}
-	case ColliderType::DANGER: {
-
-
-		if (!godMode) {
-			if (lives > 0) {
-				LOG("Collision DEATH");
-				if (!isdead) {
-					Engine::GetInstance().audio->PlayFx(deathfx);
-				}
-				isdead = true;
-				currentAnimSet.SetCurrent("jump");
-				lives--;
-
-			}
-			else {
-				LOG("Collision DEATH AND NO MORE LIVES");
-				lives--;
-				if (!isdead) {
-					Engine::GetInstance().audio->PlayFx(deathfx);
-				}
-				isdead = true;
-				isDeadDefinitive = true;
-
-			}
-
-
-
-		}
-
-
-		break;
-	}case ColliderType::ENEMY: {
-
-
-
-		if (!godMode) {
-			if (!IsProtected) {
-				if (lives > 0) {
-					LOG("Collision DEATH");
-					if (!isdead) {
-						Engine::GetInstance().audio->PlayFx(deathfx);
-					}
-					isdead = true;
-					currentAnimSet.SetCurrent("jump");
-					lives--;
-				}
-				else {
-					LOG("Collision DEATH AND NO MORE LIVES");
-					lives--;
-					if (!isdead) {
-						Engine::GetInstance().audio->PlayFx(deathfx);
-					}
-					isdead = true;
-					isDeadDefinitive = true;
-					currentAnimSet.SetCurrent("jump");
-
-				}
-			}
-
-
-		}
-		else if (IsProtected) {
-
-			LOG("Player protected from ENEMY collision");
-
-		}
 
 		break;
 	}
 
+	case ColliderType::DANGER:
+	case ColliderType::ENEMY:
+	case ColliderType::FIREBALL:
+	case ColliderType::FINALBOSS:
+	{
+		if (godMode) break;
+		if (IsProtected) break;
 
-	case ColliderType::FIREBALL: {
-		if (godMode)break;
-		if (IsPlayerProtected)break;
-		FireBall* fb = static_cast<FireBall*>(physB->listener);
-		if (!fb) break;
-		EntityType owner = fb->CheckOwner();
-		if (owner == EntityType::FINALBOSS) {
-			LOG("Player hit by FIREBALL — dying!");
-			if (lives > 0) {
-				LOG("Collision DEATH");
-				if (!isdead) {
-					Engine::GetInstance().audio->PlayFx(deathfx);
-				}
-				isdead = true;
-				currentAnimSet.SetCurrent("jump");
-				lives--;
-			}
-			else {
-				LOG("Collision DEATH AND NO MORE LIVES");
-				lives--;
-				if (!isdead) {
-					Engine::GetInstance().audio->PlayFx(deathfx);
-				}
-				isdead = true;
-				isDeadDefinitive = true;
-			}
-		}
+		if (!isdead)
+			Engine::GetInstance().audio->PlayFx(deathfx);
 
+		isdead = true;
+		lives--;
 
-		break;
-	}
-	case ColliderType::PROTECTION: {
-		IsProtected = true;
-
-
-		break;
-	}
-	case ColliderType::EXTRALIVE: {
-		lives++;
-
-
-
-		break;
-	}
-	case ColliderType::FINALBOSS: {
-		if (lives > 0) {
-			LOG("Collision DEATH");
-			if (!isdead) {
-				Engine::GetInstance().audio->PlayFx(deathfx);
-			}
-			isdead = true;
-			currentAnimSet.SetCurrent("jump");
-			lives--;
-		}
-		else {
-			LOG("Collision DEATH AND NO MORE LIVES");
-			lives--;
-			if (!isdead) {
-				Engine::GetInstance().audio->PlayFx(deathfx);
-			}
-			isdead = true;
+		if (lives <= 0)
+		{
 			isDeadDefinitive = true;
 		}
 
-
-	}
-	default:
-
+		currentAnimSet->SetCurrent("jump");
 		break;
 	}
-	LOG("Ammount of lives: %d", lives);
+
+	case ColliderType::PROTECTION:
+	{
+		IsProtected = true;
+		break;
+	}
+
+	case ColliderType::EXTRALIVE:
+	{
+		lives++;
+		break;
+	}
+
+	default:
+		break;
+	}
+
+	//LOG("Lives: %d", lives);
 }
 
 void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
@@ -672,7 +623,7 @@ void Player::Reset()
 	float limitUp = Engine::GetInstance().render->camera.h / 4;
 	Engine::GetInstance().render->camera.y = limitUp;
 	IsProtected = false;
-	currentAnimSet.SetCurrent("jump");
+	currentAnimSet->SetCurrent("jump");
 	
 }
 
@@ -707,42 +658,30 @@ void Player::ThrowFireBall(Side side) {
 void Player::ChangeCurrentAnimation() {
 
 	if (state == ATTACKING) return;
-
 	if (state == lastState) return;
 
 	lastState = state;
-	
+
 	switch (state)
 	{
 	case JUMPING:
-		currentAnimSet = anims2x3;
+		currentAnimSet = &anims2x3;
 		texture = texture2x3;
-		currentAnimSet.SetCurrent("jump");
+		currentAnimSet->SetCurrent("jump");
 		break;
-	case FALLING:
-		currentAnimSet = anims2x3;
-		texture = texture2x3;
-		currentAnimSet.SetCurrent("jump");
-		break;
-	case ATTACKING:
-		currentAnimSet = anims3x4;
-		texture = texture3x4;
-		currentAnimSet.SetCurrent("attack1");
-		break;
+
 	case RUNNING:
-		currentAnimSet = anims2x3;
+		currentAnimSet = &anims2x3;
 		texture = texture2x3;
-		currentAnimSet.SetCurrent("run");
+		currentAnimSet->SetCurrent("run");
 		break;
+
 	case ONCHEESE:
-		currentAnimSet = anims2x3;
+		currentAnimSet = &anims2x3;
 		texture = texture2x3;
-		currentAnimSet.SetCurrent("hoponcheese");
+		currentAnimSet->SetCurrent("hoponcheese");
 		break;
-	case IDLE:
-		/*currentAnimSet = anims2x3;
-		currentAnimSet.SetCurrent("jump");*/
-		break;
+
 	default:
 		break;
 	}
@@ -790,8 +729,10 @@ void Player::HandleAttack() {
 	// SI ESTAMOS ATACANDO
 	if (isAttacking)
 	{
-		if (currentAnimSet.HasFinished())
+		if (currentAnimSet->HasFinished())
 		{
+			lastAttackTime = now;
+			hitboxActive = false;
 			if (bufferedAttack)
 			{
 				bufferedAttack = false;
@@ -800,11 +741,12 @@ void Player::HandleAttack() {
 				if (attackCombo > 3) attackCombo = 1;
 
 				StartAttack(attackCombo);
-				lastAttackTime = now;
+				
 			}
 			else
 			{
 				isAttacking = false;
+				state = DEFAULT;
 			}
 		}
 	}
@@ -815,6 +757,7 @@ void Player::HandleAttack() {
 		if (now - lastAttackTime > comboResetTimeMs)
 		{
 			attackCombo = 0;
+			state = DEFAULT;
 			LOG("Combo reset (timeout)");
 		}
 	}
@@ -825,21 +768,45 @@ void Player::StartAttack(int combo)
 	isAttacking = true;
 	state = ATTACKING;
 
-	currentAnimSet = anims3x4;
+	currentAnimSet = &anims3x4;
 	texture = texture3x4;
 
 	switch (combo)
 	{
 	case 1:
-		currentAnimSet.SetCurrent("attack1");
+		currentAnimSet->SetCurrent("attack1");
+		currentAnimSet->Resets();
 		break;
 	case 2:
-		currentAnimSet.SetCurrent("attack2");
+		currentAnimSet->SetCurrent("attack2");
+		currentAnimSet->Resets();
 		break;
 	case 3:
-		currentAnimSet.SetCurrent("attack3");
+		currentAnimSet->SetCurrent("attack3");
+		currentAnimSet->Resets();
 		break;
 	}
 
+
+	hasHit = false;
+	hitboxActive = true;
+	
+
+	LOG("Player attack start combo %d", combo);
 	LOG("Start attack combo %d", combo);
+}
+
+void Player::UpdateAttackHitbox()
+{
+	if (!attackHitbox) return;
+
+	int x, y;
+	pbody->GetPosition(x, y);
+
+	int offsetX = facingLeft ? -offsetAttackHitboxX : offsetAttackHitboxX;
+
+	attackHitbox->SetPosition(
+		x + offsetX,
+		y + offsetAttackHitboxY
+	);
 }

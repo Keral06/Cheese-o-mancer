@@ -12,7 +12,8 @@ enum PlayerState {
 	ATTACKING,
 	RUNNING,
 	ONCHEESE,
-	IDLE
+	IDLE,
+	DEFAULT
 
 };
 
@@ -45,6 +46,8 @@ public:
 	void HandleAttack();
 
 	void StartAttack(int combo);
+
+	void UpdateAttackHitbox();
 
 private:
 
@@ -112,7 +115,7 @@ private:
 	AnimationSet anims3x4;
 	AnimationSet anims4x4;
 	AnimationSet anims5x5;
-	AnimationSet currentAnimSet;
+	AnimationSet* currentAnimSet = nullptr;
 	SDL_Texture* texture2x3 = NULL;
 	SDL_Texture* texture3x3 = NULL;
 	SDL_Texture* texture3x4 = NULL;
@@ -126,4 +129,21 @@ private:
 	bool bufferedAttack = false;
 	Uint32 bufferTime = 200; // ms
 	Uint32 bufferStart = 0;
+
+	PhysBody* attackHitbox = nullptr;
+
+	bool hitboxActive = false;
+	bool hasHit = false;
+	bool playerInHitbox = false;
+
+	int attackDuration = 20;
+	int attackTimer = 0;
+
+	// frames donde golpea (ajústalos)
+	int hitboxStart = 5;
+	int hitboxEnd = 12;
+
+	// offset respecto al player
+	int offsetAttackHitboxX = 160;
+	int offsetAttackHitboxY = -50;
 };

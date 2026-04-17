@@ -176,3 +176,10 @@ bool AnimationSet::HasFinished() const {
 
     return it->second.HasFinishedOnce();
 }
+void AnimationSet::Resets()
+{
+    for (auto& [name, anim] : clips_)
+    {
+        anim.Reset();
+    }
+}
