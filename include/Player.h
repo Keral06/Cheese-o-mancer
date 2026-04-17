@@ -6,7 +6,15 @@
 #include <SDL3/SDL.h>
 #include "FireBall.h"
 
+enum PlayerState {
+	JUMPING,
+	FALLING,
+	ATTACKING,
+	RUNNING,
+	ONCHEESE,
+	IDLE
 
+};
 
 class Player : public Entity
 {
@@ -32,6 +40,7 @@ public:
 	void UpdateFireballs(float dt);
 	static bool isPlayerProtectedquestion();
 	static bool IsPlayerProtected;
+	void Attack();
 
 private:
 
@@ -42,8 +51,11 @@ private:
 	void Draw(float dt);
 	void ThrowFireBall(Side side);
 
+	void ChangeCurrentAnimation();
+
 public:
-	void Player::Setanimation();
+	PlayerState state;
+	PlayerState lastState;
 	bool hasMap1 = false;
 	//Declare player parameters
 	float speed = 15.0f;
@@ -91,7 +103,16 @@ public:
 	/*SDL_Rect& lastFrame;*/
 private: 
 	b2Vec2 velocity;
-	AnimationSet anims;
-	
-
+	AnimationSet anims2x3;
+	AnimationSet anims3x3;
+	AnimationSet anims3x4;
+	AnimationSet anims4x4;
+	AnimationSet anims5x5;
+	AnimationSet currentAnimSet;
+	SDL_Texture* texture2x3 = NULL;
+	SDL_Texture* texture3x3 = NULL;
+	SDL_Texture* texture3x4 = NULL;
+	SDL_Texture* texture4x4 = NULL;
+	SDL_Texture* texture5x5 = NULL;
+	std::string currentAnimName;
 };

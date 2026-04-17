@@ -50,20 +50,34 @@ bool Player::Awake() {
 
 bool Player::Start() {
 
+	state = RUNNING;
+	lastState = RUNNING;
 	// load
 	movefx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/player_walk.wav");
 	jumpfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/salto.wav");
 	checkpointfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/checkpoint.wav");
 	deathfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/player_death.wav");
-	std::unordered_map<int, std::string> aliases = { {15,"idle"},{0,"move"},{6,"jump"},{18,"death"}, {24, "walk_protected"}, {30, "jump_protected"}, {39, "idle_protected"}};
+	std::unordered_map<int, std::string> aliases2x3 = { {0,"run"},{10,"jump"},{20,"hoponcheese"}};
+	std::unordered_map<int, std::string> aliases3x3 = { {0,"run"},{10,"jump"},{20,"hoponcheese"},{18,"death"}, {24, "walk_protected"}, {30, "jump_protected"}, {39, "idle_protected"} };
+	std::unordered_map<int, std::string> aliases3x4 = { {0,"attack1"},{6,"attack2"},{10,"attack3"}};
+	std::unordered_map<int, std::string> aliases4x4 = { {0,"ballroll"}};
+	std::unordered_map<int, std::string> aliases5x5 = { {0,"ballattack"}};
 	float limitUp = Engine::GetInstance().render->camera.h / 4;
 	Engine::GetInstance().render->camera.y = limitUp;
 
-	anims.LoadFromTSX("Assets/Textures/spritesheet_test.tsx", aliases);
-	anims.SetCurrent("jump");
+	anims2x3.LoadFromTSX("assets/Textures/Spritesheets/Jester/2x3/j_sp.tsx", aliases2x3);
+	anims3x3.LoadFromTSX("assets/Textures/Spritesheets/Jester/3x3/j_sp_3x3.tsx", aliases3x3);
+	anims3x4.LoadFromTSX("assets/Textures/Spritesheets/Jester/3x4/j_sp_3x4.tsx", aliases3x4);
+	anims4x4.LoadFromTSX("assets/Textures/Spritesheets/Jester/4x4/j_sp_ballroll5x5.tsx", aliases4x4);
+	anims5x5.LoadFromTSX("assets/Textures/Spritesheets/Jester/5x5/j_sp_5x5.tsx", aliases5x5);
 
+	texture2x3 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/2x3/j_2x3.png");
+	//texture3x3 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/3x3/j_3x3.png");
+	texture3x4 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/3x4/j_3x4.png");
+	texture4x4 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/4x4/j_ballroll.png");
+	texture5x5 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/5x5/j_5x5.png");
 	//L03: TODO 2: Initialize Player parameters
-	texture = Engine::GetInstance().textures->Load("Assets/Textures/spritesheet_test.png");
+	texture = texture2x3;
 
 	// L08 TODO 5: Add physics to the player - initialize physics body
 	texW = 215;
@@ -87,14 +101,16 @@ bool Player::Start() {
 bool Player::Update(float dt)
 {
 	bool isPaused = Engine::GetInstance().scene->isPaused;
-	const SDL_Rect& animFrame = anims.GetCurrentFrame();
+	const SDL_Rect& animFrame = currentAnimSet.GetCurrentFrame();
 	if (!isPaused) {
 		if (animFrame.x == 160 && animFrame.y == 96 && isdead) {
 			Reset();
 		}
 		GetPhysicsValues();
 		Move();
+		Attack();
 		Jump();
+		ChangeCurrentAnimation();
 		ApplyPhysics();
 	}
 	Draw(dt);
@@ -161,10 +177,11 @@ void Player::Move() {
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !isJumping) {
 			velocity.x = -speed;
 			if(IsProtected){
-				anims.SetCurrent("jump");
+				state = RUNNING;
 			}
 			else {
-				anims.SetCurrent("jump");
+				state = RUNNING;
+				
 			}
 			isWalking = true;
 			facingLeft = true; 
@@ -177,10 +194,12 @@ void Player::Move() {
 		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !isJumping) {
 			velocity.x = speed;
 			if (IsProtected) {
-				anims.SetCurrent("jump");
+				state = RUNNING;
+				
 			}
 			else {
-				anims.SetCurrent("jump");
+				state = RUNNING;
+				
 			}
 			isWalking = true;
 			facingLeft = false; 
@@ -197,10 +216,12 @@ void Player::Move() {
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && !isJumping) {
 				velocity.y = -speed;
 				if (IsProtected) {
-					anims.SetCurrent("jump");
+					/*ChangeCurrentAnimationSet(anims3x3,texture3x3);
+					currentAnimSet.SetCurrent("idle");*/
 				}
 				else {
-					anims.SetCurrent("jump");
+					/*ChangeCurrentAnimationSet(anims3x3, texture3x3);
+					currentAnimSet.SetCurrent("idle");*/
 				}
 				isWalking = true;
 			}
@@ -211,10 +232,12 @@ void Player::Move() {
 			else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && !isJumping) {
 				velocity.y = speed;
 				if (IsProtected) {
-					anims.SetCurrent("jump");
+					state = JUMPING;
+					
 				}
 				else {
-					anims.SetCurrent("jump");
+					state = JUMPING;
+					
 				}
 				isWalking = true;
 			}
@@ -224,19 +247,23 @@ void Player::Move() {
 			}
 		}
 		if (!isWalking && !isJumping) {
-			if (IsProtected) {
-				anims.SetCurrent("jump");
+			/*if (IsProtected) {
+				ChangeCurrentAnimationSet(anims3x3, texture3x3);
+				currentAnimSet.SetCurrent("idle");
 			}
 			else {
-
-				anims.SetCurrent("jump");
-			}	
+				ChangeCurrentAnimationSet(anims3x3, texture3x3);
+				currentAnimSet.SetCurrent("idle");
+			}	*/
 		}
 		if (isJumping || !isCollidedFloor ) {
 			if(IsProtected){
-				anims.SetCurrent("jump");
+				state = JUMPING;
+				
 			}
-			else { anims.SetCurrent("jump"); }
+			else {
+				state = JUMPING;
+				 }
 		}
 	}
 	if (isWalking) {
@@ -282,10 +309,12 @@ void Player::Jump() {
 	if(spacePressed && canFirstJump){
 		Engine::GetInstance().audio->PlayFx(jumpfx);
 		if (IsProtected) {
-			anims.SetCurrent("jump");
+			state = JUMPING;
+			
 		}
 		else {
-			anims.SetCurrent("jump");
+			state = JUMPING;
+			
 		}
 		isJumping = true;
  		Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);
@@ -293,17 +322,17 @@ void Player::Jump() {
 		secondJump = false;
 		firstJump = false;
 	}
-	else if(spacePressed && canSecondJump){
+	/*else if(spacePressed && canSecondJump){
 		Engine::GetInstance().audio->PlayFx(jumpfx);
 		if(IsProtected){
-			anims.SetCurrent("jump");
+			currentAnimSet.SetCurrent("jump");
 		}
 		else {
-			anims.SetCurrent("jump");
+			currentAnimSet.SetCurrent("jump");
 		}
 		Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce + 0.1f, true);
 		secondJump = true;
-	}
+	}*/
 	
 }
 
@@ -326,9 +355,9 @@ void Player::Draw(float dt) {
 
 	
 	
-	const SDL_Rect& animFrame = anims.GetCurrentFrame();
+	const SDL_Rect& animFrame = currentAnimSet.GetCurrentFrame();
 	
-	anims.Update(dt);
+	currentAnimSet.Update(dt);
 
 	int x, y;
 	pbody->GetPosition(x, y);
@@ -340,6 +369,7 @@ void Player::Draw(float dt) {
 	SDL_FlipMode flip = facingLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE; 
 
 	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame, 1.0f, 0.0, INT_MAX, INT_MAX, flip);
+	
 }
 
 void Player::CameraRender() {
@@ -427,7 +457,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 					Engine::GetInstance().audio->PlayFx(deathfx);
 				}
 				isdead = true;
-				anims.SetCurrent("jump");
+				currentAnimSet.SetCurrent("jump");
 				lives--;
 
 			}
@@ -460,7 +490,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 						Engine::GetInstance().audio->PlayFx(deathfx);
 					}
 					isdead = true;
-					anims.SetCurrent("jump");
+					currentAnimSet.SetCurrent("jump");
 					lives--;
 				}
 				else {
@@ -471,7 +501,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 					}
 					isdead = true;
 					isDeadDefinitive = true;
-					anims.SetCurrent("jump");
+					currentAnimSet.SetCurrent("jump");
 
 				}
 			}
@@ -502,7 +532,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 					Engine::GetInstance().audio->PlayFx(deathfx);
 				}
 				isdead = true;
-				anims.SetCurrent("jump");
+				currentAnimSet.SetCurrent("jump");
 				lives--;
 			}
 			else {
@@ -539,7 +569,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 				Engine::GetInstance().audio->PlayFx(deathfx);
 			}
 			isdead = true;
-			anims.SetCurrent("jump");
+			currentAnimSet.SetCurrent("jump");
 			lives--;
 		}
 		else {
@@ -641,7 +671,7 @@ void Player::Reset()
 	float limitUp = Engine::GetInstance().render->camera.h / 4;
 	Engine::GetInstance().render->camera.y = limitUp;
 	IsProtected = false;
-	anims.SetCurrent("jump");
+	currentAnimSet.SetCurrent("jump");
 	
 }
 
@@ -671,4 +701,52 @@ void Player::ThrowFireBall(Side side) {
 
 	fireball->Start();
 	fireballs.push_back(fireball);*/
+}
+
+void Player::ChangeCurrentAnimation() {
+
+	if (state == lastState) return;
+
+	lastState = state;
+	
+	switch (state)
+	{
+	case JUMPING:
+		currentAnimSet = anims2x3;
+		texture = texture2x3;
+		currentAnimSet.SetCurrent("jump");
+		break;
+	case FALLING:
+		currentAnimSet = anims2x3;
+		texture = texture2x3;
+		currentAnimSet.SetCurrent("jump");
+		break;
+	case ATTACKING:
+		currentAnimSet = anims3x4;
+		texture = texture3x4;
+		currentAnimSet.SetCurrent("attack1");
+		break;
+	case RUNNING:
+		currentAnimSet = anims2x3;
+		texture = texture2x3;
+		currentAnimSet.SetCurrent("run");
+		break;
+	case ONCHEESE:
+		currentAnimSet = anims2x3;
+		texture = texture2x3;
+		currentAnimSet.SetCurrent("hoponcheese");
+		break;
+	case IDLE:
+		/*currentAnimSet = anims2x3;
+		currentAnimSet.SetCurrent("jump");*/
+		break;
+	default:
+		break;
+	}
+}
+
+void Player::Attack() {
+	if (Engine::GetInstance().input->GetMouseButtonDown(1)) {
+		state = ATTACKING;
+	}
 }
