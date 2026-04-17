@@ -44,6 +44,8 @@ public:
 
 	void HandleAttack();
 
+	void StartAttack(int combo);
+
 private:
 
 	void GetPhysicsValues();

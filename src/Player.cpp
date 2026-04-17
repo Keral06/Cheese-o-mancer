@@ -706,6 +706,8 @@ void Player::ThrowFireBall(Side side) {
 
 void Player::ChangeCurrentAnimation() {
 
+	if (state == ATTACKING) return;
+
 	if (state == lastState) return;
 
 	lastState = state;
@@ -747,74 +749,97 @@ void Player::ChangeCurrentAnimation() {
 }
 
 void Player::Attack() {
-	if (Engine::GetInstance().input->GetMouseButtonDown(1)) {
-		bufferedAttack = true;
-		bufferStart = SDL_GetTicks();
+	static bool wasPressedLastFrame = false;
+
+	bool isPressed = Engine::GetInstance().input->GetMouseButtonDown(1);
+
+	// Detectar flanco (click real)
+	if (isPressed && !wasPressedLastFrame) {
 		attackRequested = true;
-		LOG("Attack requested (mouse click)");
+		LOG("Attack requested (single click)");
 	}
+
+	wasPressedLastFrame = isPressed;
 }
 
 void Player::HandleAttack() {
 
-	const float comboResetTimeMs = 800; // tiempo sin input para resetear combo
+	const float comboResetTimeMs = 100;
 	static Uint32 lastAttackTime = 0;
 
 	Uint32 now = SDL_GetTicks();
 
-	if (attackRequested && !isAttacking) {
-
+	// INPUT DETECTADO
+	if (attackRequested)
+	{
 		attackRequested = false;
 
-		
-		if (now - lastAttackTime > comboResetTimeMs) {
-			attackCombo = 0;
-			LOG("Combo expired by time -> reset");
-		}
-
-	
-		if (attackCombo == 0 || currentAnimSet.HasFinished()) {
-			attackCombo++;
-			if (attackCombo > 3) attackCombo = 1;
-
-			LOG("Combo advanced -> %d", attackCombo);
-		}
-
-		// iniciar ataque
-		isAttacking = true;
-		state = ATTACKING;
-		lastAttackTime = now;
-
-		switch (attackCombo)
+		if (!isAttacking)
 		{
-		case 1:
-			currentAnimSet.SetCurrent("attack1");
-			break;
-		case 2:
-			currentAnimSet.SetCurrent("attack2");
-			break;
-		case 3:
-			currentAnimSet.SetCurrent("attack3");
-			break;
+			attackCombo = 1;
+			StartAttack(attackCombo);
+			lastAttackTime = now;
 		}
-
-		LOG("Start attack -> combo %d", attackCombo);
-		return;
-	}
-
-	if (isAttacking) {
-
-		if (currentAnimSet.HasFinished()) {
-			isAttacking = false;
-			LOG("Attack animation finished");
+		else
+		{
+			// Guardamos el siguiente ataque en buffer
+			bufferedAttack = true;
 		}
 	}
 
-	if (!isAttacking && attackCombo > 0) {
+	// SI ESTAMOS ATACANDO
+	if (isAttacking)
+	{
+		if (currentAnimSet.HasFinished())
+		{
+			if (bufferedAttack)
+			{
+				bufferedAttack = false;
 
-		if (now - lastAttackTime > comboResetTimeMs) {
+				attackCombo++;
+				if (attackCombo > 3) attackCombo = 1;
+
+				StartAttack(attackCombo);
+				lastAttackTime = now;
+			}
+			else
+			{
+				isAttacking = false;
+			}
+		}
+	}
+
+	// RESET DEL COMBO SI PASA MUCHO TIEMPO
+	if (!isAttacking && attackCombo > 0)
+	{
+		if (now - lastAttackTime > comboResetTimeMs)
+		{
 			attackCombo = 0;
 			LOG("Combo reset (timeout)");
 		}
 	}
+}
+
+void Player::StartAttack(int combo)
+{
+	isAttacking = true;
+	state = ATTACKING;
+
+	currentAnimSet = anims3x4;
+	texture = texture3x4;
+
+	switch (combo)
+	{
+	case 1:
+		currentAnimSet.SetCurrent("attack1");
+		break;
+	case 2:
+		currentAnimSet.SetCurrent("attack2");
+		break;
+	case 3:
+		currentAnimSet.SetCurrent("attack3");
+		break;
+	}
+
+	LOG("Start attack combo %d", combo);
 }

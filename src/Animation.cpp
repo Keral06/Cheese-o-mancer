@@ -91,25 +91,47 @@ bool AnimationSet::LoadFromTSX(const char* tsxPath,
     columns_ = tileset.attribute("columns").as_int();
 
     for (pugi::xml_node tile = tileset.child("tile"); tile; tile = tile.next_sibling("tile")) {
+
         int baseId = tile.attribute("id").as_int(-1);
         pugi::xml_node animNode = tile.child("animation");
         if (!animNode) continue;
 
+       
+        bool loop = true; // default
         std::string name;
-        auto it = aliases.find(baseId);
-        if (it != aliases.end()) {
-            name = it->second;
-        }
-        else {
-            name = "tile_" + std::to_string(baseId);
+
+        pugi::xml_node props = tile.child("properties");
+        for (pugi::xml_node prop = props.child("property"); prop; prop = prop.next_sibling("property")) {
+
+            std::string propName = prop.attribute("name").as_string();
+
+            if (propName == "loop") {
+                loop = prop.attribute("value").as_bool(true);
+            }
+            else if (propName == "name") {
+                name = prop.attribute("value").as_string();
+            }
         }
 
+        // fallback si no hay name en TSX
+        if (name.empty()) {
+            auto it = aliases.find(baseId);
+            if (it != aliases.end()) {
+                name = it->second;
+            }
+            else {
+                name = "tile_" + std::to_string(baseId);
+            }
+        }
+
+        
         Animation clip;
-        clip.SetLoop(true);
+        clip.SetLoop(loop);
 
         for (pugi::xml_node f = animNode.child("frame"); f; f = f.next_sibling("frame")) {
             int frameId = f.attribute("tileid").as_int();
             int duration = f.attribute("duration").as_int(100);
+
             SDL_Rect r = TileIdToRect(frameId, columns_, tileW_, tileH_);
             clip.AddFrame(r, duration);
         }
@@ -118,7 +140,6 @@ bool AnimationSet::LoadFromTSX(const char* tsxPath,
         clips_.emplace(name, std::move(clip));
     }
 
-    // pick first as default current
     if (!clips_.empty()) currentName_ = clips_.begin()->first;
 
     return !clips_.empty();
