@@ -18,7 +18,7 @@ bool UIManager::Start()
 	return true;
 }
 
-std::shared_ptr<UIElement> UIManager::CreateUIElement(UIElementType type, int id, const char* text, SDL_Rect bounds, Module* observer, SDL_Rect sliderBounds, SDL_Texture* texture1, SDL_Texture* texture2)
+std::shared_ptr<UIElement> UIManager::CreateUIElement(UIElementType type, int id, const char* text, SDL_Rect bounds, Module* observer, SDL_Rect sliderBounds, SDL_Texture* texture1, SDL_Texture* texture2, SDL_Texture* texture3)
 {
 	std::shared_ptr<UIElement> uiElement = std::make_shared<UIElement>();
 
@@ -36,10 +36,10 @@ std::shared_ptr<UIElement> UIManager::CreateUIElement(UIElementType type, int id
 		break;
 
 	case UIElementType::SLIDER:
-		uiElement = std::make_shared<UISlider>(id, bounds, text);
+		uiElement = std::make_shared<UISlider>(id, bounds, text, texture1, texture2, texture3);
 		break;
 	case UIElementType::CHECKBOX:
-		uiElement = std::make_shared<UICheckBox>(id, bounds, text);
+		uiElement = std::make_shared<UICheckBox>(id, bounds, text, texture1, texture2);
 	}
 		
 	//Set the observer

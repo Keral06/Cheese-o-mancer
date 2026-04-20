@@ -8,7 +8,7 @@ class UICheckBox : public UIElement
 
 public:
 
-	UICheckBox(int id, SDL_Rect bounds, const char* text);
+	UICheckBox(int id, SDL_Rect bounds, const char* text, SDL_Texture* clicked=nullptr, SDL_Texture* notClicked=nullptr);
 	virtual ~UICheckBox();
 
 	// Called each loop iteration
@@ -20,5 +20,7 @@ private:
 	
 	bool canClick = true;
 	bool drawBasic = false;
+	SDL_Texture* clicked=nullptr;
+	SDL_Texture *notClicked=nullptr;
 };
 

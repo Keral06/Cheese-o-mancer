@@ -168,6 +168,10 @@ private:
 	SceneID currentScene = SceneID::MAIN_MENU;
 	SDL_Texture* loseTexture = nullptr;
 	AnimationSet loseAnimSet;
+	bool slidersOn = false;
+	SDL_Texture* Volume = nullptr;
+	SDL_Texture* VolumeEffects = nullptr;
+	SDL_Texture* fullscreen = nullptr;
 
 public:
 	void SetStore(bool store);

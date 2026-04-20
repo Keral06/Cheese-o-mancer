@@ -3,11 +3,12 @@
 #include "Engine.h"
 #include "Audio.h"
 
-UICheckBox::UICheckBox(int id, SDL_Rect bounds, const char* text) : UIElement(UIElementType::CHECKBOX, id)
+UICheckBox::UICheckBox(int id, SDL_Rect bounds, const char* text, SDL_Texture* clicked, SDL_Texture*notClicked) : UIElement(UIElementType::CHECKBOX, id)
 {
 	this->bounds = bounds;
 	this->text = text;
-
+	this->clicked = clicked;
+	this->notClicked = notClicked;
 	drawBasic = false;
 }
 
@@ -57,27 +58,41 @@ bool UICheckBox::Draw()
 	SDL_Color colorSelected = { 200, 200, 200, 255 }; 
 
 	SDL_Color drawColor = colorNormal;
+	SDL_Texture* textureToDraw = nullptr;
+	if(clicked!=nullptr && notClicked != nullptr) {
+		switch (state)
+		{
+		case UIElementState::NORMAL:  textureToDraw=notClicked; break;
 
-	switch (state)
-	{
-	case UIElementState::NORMAL:  drawColor = colorNormal; break;
-	
-	case UIElementState::SELECTED: drawColor = colorSelected; break;
+		case UIElementState::SELECTED: textureToDraw=clicked; break;
+		}
+
+		Engine::GetInstance().render->DrawTextureNoCamera(textureToDraw, bounds.x,bounds.y,bounds.w,bounds.h);
+
 	}
+	else {
+		
+		switch (state)
+		{
+		case UIElementState::NORMAL:  drawColor = colorNormal; break;
 
-	Engine::GetInstance().render->DrawRectangle(bounds, drawColor.r, drawColor.g, drawColor.b, drawColor.a, true, false);
+		case UIElementState::SELECTED: drawColor = colorSelected; break;
+		}
 
-	if (!text.empty())
-	{
-		int textX = bounds.x + 10; 
-		int textY = bounds.y + (bounds.h / 2) - 10; 
+		Engine::GetInstance().render->DrawRectangle(bounds, drawColor.r, drawColor.g, drawColor.b, drawColor.a, true, false);
 
-		Engine::GetInstance().render->DrawText(text.c_str(), textX + 2, textY + 2, 0, 0, { 0, 0, 0, 255 });
+		if (!text.empty())
+		{
+			int textX = bounds.x + 10;
+			int textY = bounds.y + (bounds.h / 2) - 10;
 
-		Engine::GetInstance().render->DrawText(text.c_str(), textX, textY, 0, 0, { 255, 255, 255, 255 });
+			Engine::GetInstance().render->DrawText(text.c_str(), textX + 2, textY + 2, 0, 0, { 0, 0, 0, 255 });
+
+			Engine::GetInstance().render->DrawText(text.c_str(), textX, textY, 0, 0, { 255, 255, 255, 255 });
+		}
+
+		return true;
 	}
-
-	return true;
 }
 bool UICheckBox::CleanUp()
 {

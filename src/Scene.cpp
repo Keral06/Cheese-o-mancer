@@ -66,10 +66,24 @@ bool Scene::Update(float dt)
 		UpdateIntro(dt); 
 		break;
 	case SceneID::MAIN_MENU:
-		UpdateMainMenu(dt);
 		if (introTexture != nullptr) {
 			SDL_Renderer* renderer = Engine::GetInstance().render->renderer;
 			SDL_RenderTexture(renderer, introTexture, NULL, NULL);
+		}
+		UpdateMainMenu(dt);
+		if (slidersOn) {
+			SDL_Rect VolumeRect = { 520,560, 200, 50 };
+			Engine::GetInstance().render->DrawTextureNoCamera(Volume, VolumeRect.x, VolumeRect.y, VolumeRect.w, VolumeRect.h);
+			SDL_Rect Fullscreen = { 600,420, 200, 50 };
+			Engine::GetInstance().render->DrawTextureNoCamera(fullscreen, Fullscreen.x, Fullscreen.y, Fullscreen.w, Fullscreen.h);
+
+			SDL_Rect EffectsRect = { 520,490, 200, 50 };
+			Engine::GetInstance().render->DrawTextureNoCamera(VolumeEffects, EffectsRect.x, EffectsRect.y, EffectsRect.w, EffectsRect.h);
+
+
+
+
+
 		}
 		break;
 	case SceneID::LEVEL1:
@@ -553,11 +567,14 @@ void Scene::LoadMainMenu() {
 
 	
 	////Botón CONTINUE
-	//SDL_Rect continuePos = { 520, 350, 200, 50 };
-	//SDL_Texture buttonContinuePressed;
-	//SDL_Texture buttonContinueNormal;
 	
-	//Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "CONTINUE", continuePos, this);
+	SDL_Rect continuePos = { 520, 350, 200, 50 };
+	SDL_Texture* buttonContinuePressed;
+	SDL_Texture *buttonContinueNormal;
+	buttonContinueNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonContinue1_01.png");
+	buttonContinuePressed = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonContinue2_01.png");
+	
+	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "CONTINUE", continuePos, this, SDL_Rect{0,0,0,0}, buttonContinueNormal, buttonContinuePressed);
 
 	// Botón OPTIONS
 	SDL_Rect optionsBtnRect = { 520, 420, 200, 50 };
@@ -567,29 +584,47 @@ void Scene::LoadMainMenu() {
 	buttonOptionsNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonSettings1_01.png");
 	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "OPTIONS", optionsBtnRect, this, SDL_Rect{0,0,0,0}, buttonOptionsNormal, buttonOptionsPressed);
 
-	// Slider VOLUMEN 
+	// Slider VOLUMEN
+	SDL_Texture* SliderBar;
+	SDL_Texture* thumbPressed;
+	SDL_Texture* thumbNormal;
+	SliderBar = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_SliderBar_01.png");
+	thumbPressed = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_SliderButton_01.png");
+	thumbNormal = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_Checkbox_01.png");
+
 	SDL_Rect sliderRect = { 520,560, 200, 30 };
-	auto slider = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::SLIDER, 2, "VOLUME MUSIC", sliderRect, this);
+	auto slider = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::SLIDER, 2, "VOLUME MUSIC", sliderRect, this, SDL_Rect{ 0,0,0,0 }, SliderBar, thumbNormal, thumbPressed);
 	if (slider) slider->visible = false;  
 	// Slider VOLUMEN EFECTOS
 	SDL_Rect sliderRect2 = { 520,490, 200, 30 };
-	auto slider2 = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::SLIDER, 11, "VOLUME EFFECTS", sliderRect2, this);
+	auto slider2 = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::SLIDER, 11, "VOLUME EFFECTS", sliderRect2, this, SDL_Rect{ 0,0,0,0 }, SliderBar, thumbNormal, thumbPressed);
 	if (slider2) slider2->visible = false;
 
 	//Checkbox de la fullscreen
-
-	SDL_Rect Fullscreen = { 520,420, 200, 30 };
-	auto fullscreen = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::CHECKBOX, 12, "FULL SCREEN", Fullscreen, this);
+	SDL_Texture* buttonPressed;
+	SDL_Texture* buttonNormal;
+	buttonPressed = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_Checkbox2_01.png");
+	buttonNormal = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_Checkbox_01.png");
+	SDL_Rect Fullscreen = { 600,420, 35, 35 };
+	auto fullscreen = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::CHECKBOX, 12, "FULL SCREEN", Fullscreen, this, SDL_Rect{0,0,0,0}, buttonPressed, buttonNormal);
 	if (fullscreen) fullscreen->visible = false;
 
 	// Botón BACK 
+	SDL_Texture* buttonBackPressed;
+	SDL_Texture* buttonBackNormal;
+	buttonBackPressed = Engine::GetInstance().textures->Load("resources/UI/UI_Options/UI_Settings_TextBack2_01.png");
+	buttonBackNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Options/UI_Settings_TextBack1_01.png");
 	SDL_Rect backBtnRect = { 520, 630, 200, 50 };
-	auto backBtn = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, "BACK", backBtnRect, this);
+	auto backBtn = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, "BACK", backBtnRect, this, SDL_Rect{0,0,0,0}, buttonBackNormal,buttonBackPressed);
 	if (backBtn) backBtn->visible = false; 
 
 	//Botón EXIT
+	SDL_Texture* buttonExitPressed;
+	SDL_Texture* buttonExitNormal;
+	buttonExitPressed = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonExit2_01.png");
+	buttonExitNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonExit1_01.png");
 	SDL_Rect exitPosRect = { 520, 560, 200, 50 };
-	auto exitPos = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "EXIT", exitPosRect, this);
+	auto exitPos = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "EXIT", exitPosRect, this, SDL_Rect{0,0,0,0}, buttonExitNormal, buttonExitPressed);
 
 	////Botón CREDITS
 	//SDL_Rect creditsPosRect = { 520, 490, 200, 50 };
@@ -599,16 +634,29 @@ void Scene::LoadMainMenu() {
 	//SDL_Rect backCreditPosRect = { 520, 560, 200, 50 };
 	//auto backCreditsBtn = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, "BACK", backCreditPosRect, this);
 	//if (backCreditsBtn) backCreditsBtn->visible = false;
+	this->Volume = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextVolume_01.png");
+	this->VolumeEffects = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextEffectsVolume_01.png");
+	this->fullscreen = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextFullScreen_01.png");
 }
 
 void Scene::UnloadMainMenu() {
 	// Clean up UI elements related to the main menu
 	Engine::GetInstance().textures->UnLoad(introTexture);
 	introTexture = nullptr;
+	Engine::GetInstance().textures->UnLoad(Volume);
+	Volume = nullptr;
+	Engine::GetInstance().textures->UnLoad(VolumeEffects);
+	VolumeEffects = nullptr;
+	Engine::GetInstance().textures->UnLoad(fullscreen);
+	fullscreen = nullptr;
 	Engine::GetInstance().uiManager->CleanUp();
 }
 
-void Scene::UpdateMainMenu(float dt) {}
+void Scene::UpdateMainMenu(float dt) {
+	
+
+
+}
 
 void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 {
@@ -641,6 +689,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 				element->visible = true;
 			}
 		}
+		slidersOn = true;
 		break;
 
 	case 4: 
@@ -650,6 +699,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 				element->visible = true;
 			}
 		}
+		slidersOn = false;
 		break;
 	case 5:
 		continueGame = true; 
