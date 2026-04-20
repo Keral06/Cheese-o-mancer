@@ -36,7 +36,7 @@ struct Properties
     }
 
     // L09: DONE 7: Method to ask for the value of a custom property
-    Property* GetProperty(const char* name)
+    Property* GetProperty(std::string name)
     {
         for (const auto& property : propertyList) {
             if (property->name == name) {
@@ -197,6 +197,7 @@ public:
     // L19 TODO 2: Calculate Camera limits in Tiles
     Vector2D GetCameraLimitsInTiles(Vector2D camPosTile);
     ObjectGroup::Object* GetObject(std::string layerName, std::string objectName);
+    ObjectGroup::Object* GetObjectByProperty(std::string layerName, std::string propName, std::string value);
     std::vector<int> killedEnemies;
     std::vector<PhysBody*> mapBodies;
 public: 

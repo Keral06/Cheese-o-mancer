@@ -1495,7 +1495,34 @@ void Scene::HandleFinalWinUIEvents(UIElement* uiElement) {
 
 void Scene::LoadMap(std::string map)
 {
+	UnloadLevel1();
+	
+	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/level2music.wav");
+
+	isPaused = false;
+	CreatePauseUI();
+
+	heartTexture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/heart4.png");
+	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/", map);
+
+	//Call the function to load entities from the map
+	Engine::GetInstance().map->LoadEntities(player, enemies);
+	if (continueGame == false) {
+
+		levelTimer = 0.0f;
+		Player::score = 0;
+		if (player) {
+			player->lives = 3;
+		}
+
+		/*Vector2D startPos = Engine::GetInstance().map->GetStartPoint("Checkpoints", "Player");
+
+		if (startPos.getX() != 0 || startPos.getY() != 0) {
+			player->SetPosition(startPos);
+			player->respawnPosition = { PIXEL_TO_METERS(startPos.getX()), PIXEL_TO_METERS(startPos.getY()) };
+		}*/
+	}
 }
 
 // *********************************************

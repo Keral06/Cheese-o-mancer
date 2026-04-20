@@ -407,12 +407,8 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
         p->value = propertieNode.attribute("value").as_bool(); // (!!) I'm assuming that all values are bool !!
         p->valueInt = propertieNode.attribute("value").as_int();
         p->valueFloat = propertieNode.attribute("value").as_float();
-        if (p->valueString.empty()) {
-            p->valueString = "";
-        }
-        else {
-            p->valueString = propertieNode.attribute("value").as_string();
-        }
+        p->valueString = propertieNode.attribute("value").as_string();
+        
         
 
         properties.propertyList.push_back(p);
@@ -477,42 +473,95 @@ MapLayer* Map::GetNavigationLayer() {
         }
 
         enemies.clear();
-        //Iterate the object groups
+
         for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
             //Check if the object group is "Entities"
-            if (objectGroupNode.attribute("name").as_string() == std::string("Entities") || objectGroupNode.attribute("name").as_string() == std::string("FinalBoss") || objectGroupNode.attribute("name").as_string() == std::string("Doors")) {
+            if (objectGroupNode.attribute("name").as_string() == std::string("Doors")) {
 
                 //Iterate the objects
                 for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
-                    
+
                     int id = objectNode.attribute("id").as_int();
 
-                    bool isDead = false;
-                    for (int killedId : killedEnemies) {
-                        if (killedId == id) {
-                            isDead = true;
-                            break;
-                        }
-                    }
-                    // Si está muerto, saltamos al siguiente ciclo y no lo creamos
-                    if (isDead) continue;
+
+
                     //Get the entity type and position
                     std::string entityType = objectNode.attribute("type").as_string();
                     float x = objectNode.attribute("x").as_float();
                     float y = objectNode.attribute("y").as_float();
 
-                    // Create entity based on type
-                    if (entityType == "Player") {
-                        // Create Player entity
-                        if (player == nullptr) {
-                            player = std::dynamic_pointer_cast<Player>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER));
-                            player->position = Vector2D(x, y);
-                            player->Start();
-                            LOG("Player created.");
-                        }
-                        //If the player already exists, just set its position
 
-                         auto obj = Engine::GetInstance().map->GetObject("Doors", Engine::GetInstance().scene->nextSpawnPoint);
+                    if (entityType == "Door")
+                    {
+                        auto door = std::dynamic_pointer_cast<Door>(
+                            Engine::GetInstance().entityManager->CreateEntity(EntityType::DOOR)
+                        );
+
+                        door->position = Vector2D(x, y);
+
+                        Properties tempProperties;
+                        LoadProperties(objectNode, tempProperties);
+
+
+                        auto mapProp = tempProperties.GetProperty("targetMap");
+                        auto spawnProp = tempProperties.GetProperty("targetSpawn");
+                        auto offsetX = tempProperties.GetProperty("offsetX");
+                        auto offsetY = tempProperties.GetProperty("offsetY");
+
+
+                        door->SetDoorData(
+                            mapProp ? mapProp->valueString : "",
+                            spawnProp ? spawnProp->valueString : "",
+                            offsetX ? offsetX->valueInt : 0,
+                            offsetY ? offsetY->valueInt : 0
+                        );
+
+                        door->Start();
+                        //printf("Hice una puerta\n");
+                    }
+                }
+            }
+        }
+            //Iterate the object groups
+        for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
+                //Check if the object group is "Entities"
+                if (objectGroupNode.attribute("name").as_string() == std::string("Entities") || objectGroupNode.attribute("name").as_string() == std::string("FinalBoss") || objectGroupNode.attribute("name").as_string() == std::string("Doors")) {
+
+                    //Iterate the objects
+                    for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
+
+                        int id = objectNode.attribute("id").as_int();
+
+                        bool isDead = false;
+                        for (int killedId : killedEnemies) {
+                            if (killedId == id) {
+                                isDead = true;
+                                break;
+                            }
+                        }
+                        // Si está muerto, saltamos al siguiente ciclo y no lo creamos
+                        if (isDead) continue;
+                        //Get the entity type and position
+                        std::string entityType = objectNode.attribute("type").as_string();
+                        float x = objectNode.attribute("x").as_float();
+                        float y = objectNode.attribute("y").as_float();
+
+                        // Create entity based on type
+                        if (entityType == "Player") {
+                            // Create Player entity
+                            if (player == nullptr) {
+                                player = std::dynamic_pointer_cast<Player>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER));
+                                player->position = Vector2D(x, y);
+                                player->Start();
+                                LOG("Player created.");
+                            }
+                            //If the player already exists, just set its position
+
+                            auto obj = Engine::GetInstance().map->GetObjectByProperty(
+                                "Doors",
+                                "name",
+                                Engine::GetInstance().scene->nextSpawnPoint
+                            );
 
                             Vector2D spawn(0, 0);
 
@@ -528,116 +577,103 @@ MapLayer* Map::GetNavigationLayer() {
                                 spawn.setX(obj->x + offsetX);
                                 spawn.setY(obj->y + offsetY);
                             }
-                       
 
-                        player->SetPosition(spawn);
-                        if (objectNode.attribute("score")) {
-                            Player::score = objectNode.attribute("score").as_int();
-                            LOG("Score cargado desde XML: %d", Player::score);
+
+                            player->SetPosition(spawn);
+                            if (objectNode.attribute("score")) {
+                                Player::score = objectNode.attribute("score").as_int();
+                                LOG("Score cargado desde XML: %d", Player::score);
+                            }
+
+                            if (objectNode.attribute("timer")) {
+                                Engine::GetInstance().scene->levelTimer = objectNode.attribute("timer").as_float();
+                                LOG("Timer cargado desde XML: %f", Engine::GetInstance().scene->levelTimer);
+                            }
+
                         }
+                        else if (entityType == "Enemy") {
+                            std::shared_ptr<Enemy> enemy = std::dynamic_pointer_cast<Enemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY));
 
-                        if (objectNode.attribute("timer")) {
-                            Engine::GetInstance().scene->levelTimer = objectNode.attribute("timer").as_float();
-                            LOG("Timer cargado desde XML: %f", Engine::GetInstance().scene->levelTimer);
+                            enemy->position = Vector2D(x, y);
+                            /*enemy->xInicial = (int)x;
+                            enemy->yInicial = (int)y;*/
+                            enemy->Start();
+                            enemy->mapID = id;
+
                         }
-                        
-                    }
-                    else if (entityType == "Enemy") {
-                        std::shared_ptr<Enemy> enemy = std::dynamic_pointer_cast<Enemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY));
+                        else if (entityType == "Verdugo") {
+                            std::shared_ptr<Verdugo> verdugo = std::dynamic_pointer_cast<Verdugo>(Engine::GetInstance().entityManager->CreateEntity(EntityType::VERDUGO));
 
-                        enemy->position = Vector2D(x, y);
-                        /*enemy->xInicial = (int)x;
-                        enemy->yInicial = (int)y;*/
-                        enemy->Start();
-                        enemy->mapID = id;
+                            verdugo->position = Vector2D(x, y);
+                            /*enemy->xInicial = (int)x;
+                            enemy->yInicial = (int)y;*/
+                            verdugo->Start();
+                            verdugo->mapID = id;
 
-                    }
-                    else if (entityType == "Verdugo") {
-                        std::shared_ptr<Verdugo> verdugo = std::dynamic_pointer_cast<Verdugo>(Engine::GetInstance().entityManager->CreateEntity(EntityType::VERDUGO));
+                        }
+                        else if (entityType == "Rat") {
+                            std::shared_ptr<Rat> rat = std::dynamic_pointer_cast<Rat>(Engine::GetInstance().entityManager->CreateEntity(EntityType::RAT));
 
-                        verdugo->position = Vector2D(x, y);
-                        /*enemy->xInicial = (int)x;
-                        enemy->yInicial = (int)y;*/
-                        verdugo->Start();
-                        verdugo->mapID = id;
+                            rat->position = Vector2D(x, y);
+                            /*enemy->xInicial = (int)x;
+                            enemy->yInicial = (int)y;*/
+                            rat->Start();
+                            rat->mapID = id;
 
-                    }
-                    else if (entityType == "Rat") {
-                        std::shared_ptr<Rat> rat = std::dynamic_pointer_cast<Rat>(Engine::GetInstance().entityManager->CreateEntity(EntityType::RAT));
+                        }
+                        else if (entityType == "Jailer") {
+                            std::shared_ptr<Jailer> jailer = std::dynamic_pointer_cast<Jailer>(Engine::GetInstance().entityManager->CreateEntity(EntityType::JAILER));
 
-                        rat->position = Vector2D(x, y);
-                        /*enemy->xInicial = (int)x;
-                        enemy->yInicial = (int)y;*/
-                        rat->Start();
-                        rat->mapID = id;
+                            jailer->position = Vector2D(x, y);
+                            /*enemy->xInicial = (int)x;
+                            enemy->yInicial = (int)y;*/
+                            jailer->Start();
+                            jailer->mapID = id;
 
-                    }
-                    else if (entityType == "Jailer") {
-                        std::shared_ptr<Jailer> jailer = std::dynamic_pointer_cast<Jailer>(Engine::GetInstance().entityManager->CreateEntity(EntityType::JAILER));
+                        }
+                        else if (entityType == "Handman") {
+                            std::shared_ptr<HANDMAN> Handman = std::dynamic_pointer_cast<HANDMAN>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HANDMAN));
 
-                        jailer->position = Vector2D(x, y);
-                        /*enemy->xInicial = (int)x;
-                        enemy->yInicial = (int)y;*/
-                        jailer->Start();
-                        jailer->mapID = id;
+                            Handman->position = Vector2D(x, y);
+                            /*enemy->xInicial = (int)x;
+                            enemy->yInicial = (int)y;*/
+                            Handman->Start();
+                            Handman->mapID = id;
 
-                    }
-                    else if (entityType == "Handman") {
-                        std::shared_ptr<HANDMAN> Handman = std::dynamic_pointer_cast<HANDMAN>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HANDMAN));
+                        }
+                        else if (entityType == "NPC") {
+                            std::shared_ptr<NPC> Npc = std::dynamic_pointer_cast<NPC>(Engine::GetInstance().entityManager->CreateEntity(EntityType::NPC));
 
-                        Handman->position = Vector2D(x, y);
-                        /*enemy->xInicial = (int)x;
-                        enemy->yInicial = (int)y;*/
-                        Handman->Start();
-                        Handman->mapID = id;
+                            Npc->position = Vector2D(x, y);
+                            /*enemy->xInicial = (int)x;
+                            enemy->yInicial = (int)y;*/
+                            Npc->Start();
+                            Npc->mapID = id;
 
-                    }
-                    else if (entityType == "NPC") {
-                        std::shared_ptr<NPC> Npc = std::dynamic_pointer_cast<NPC>(Engine::GetInstance().entityManager->CreateEntity(EntityType::NPC));
+                        }
+                        else if (entityType == "EnemigoVolador") {
+                            std::shared_ptr<EnemigoVolador> flyer = std::dynamic_pointer_cast<EnemigoVolador>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMYFLYING));
 
-                        Npc->position = Vector2D(x, y);
-                        /*enemy->xInicial = (int)x;
-                        enemy->yInicial = (int)y;*/
-                        Npc->Start();
-                        Npc->mapID = id;
+                            flyer->position = Vector2D(x, y);
+                            flyer->xInicial = (int)x;
+                            flyer->yInicial = (int)y;
+                            flyer->Start();
+                            flyer->mapID = id;
 
-                    }
-                    else if (entityType == "EnemigoVolador") {
-                        std::shared_ptr<EnemigoVolador> flyer = std::dynamic_pointer_cast<EnemigoVolador>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMYFLYING));
-
-                        flyer->position = Vector2D(x, y);
-                        flyer->xInicial = (int)x;
-                        flyer->yInicial = (int)y;
-                        flyer->Start();
-                        flyer->mapID = id;
-                       
-                    }
-                    else if (entityType == "FinalBoss") {
-                        std::shared_ptr<FinalBoss> boss = std::dynamic_pointer_cast<FinalBoss>(Engine::GetInstance().entityManager->CreateEntity(EntityType::FINALBOSS));
-                        boss->position = Vector2D(x, y);
-                        boss->xInicial = (int)x;
-                        boss->yInicial = (int)y;
-                        boss->Start();
-                        boss->mapID = id;
-                    }
-                    else if (entityType == "Door")
-                    {
-                        auto door = std::dynamic_pointer_cast<Door>(
-                            Engine::GetInstance().entityManager->CreateEntity(EntityType::DOOR)
-                        );
-
-                        door->position = Vector2D(x, y);
-                        door->targetMap = objectNode.attribute("targetMap").as_string();
-                        door->targetDoor = objectNode.attribute("targetSpawn").as_string();
-
-                        door->Start();
-                        printf("Hice una puerta\n");
+                        }
+                        else if (entityType == "FinalBoss") {
+                            std::shared_ptr<FinalBoss> boss = std::dynamic_pointer_cast<FinalBoss>(Engine::GetInstance().entityManager->CreateEntity(EntityType::FINALBOSS));
+                            boss->position = Vector2D(x, y);
+                            boss->xInicial = (int)x;
+                            boss->yInicial = (int)y;
+                            boss->Start();
+                            boss->mapID = id;
+                        }
                     }
                 }
             }
         }
-
-    }
+    
 
     //L15 TODO 4: Define a method to save entities to the map XML
     void Map::SaveEntities(std::shared_ptr<Player> player) {
@@ -745,6 +781,28 @@ MapLayer* Map::GetNavigationLayer() {
             if (group->name == layerName) {
                 for (const auto& object : group->objects) {
                     if (object->name == objectName) {
+                        return object;
+                    }
+                }
+            }
+        }
+        return nullptr;
+    }
+    ObjectGroup::Object* Map::GetObjectByProperty(std::string layerName, std::string propName, std::string value)
+    {
+        LOG("Buscando spawn: %s", Engine::GetInstance().scene->nextSpawnPoint.c_str());
+        for (const auto& group : mapData.objectgroups) {
+            if (group->name == layerName) {
+                for (const auto& object : group->objects) {
+
+                    auto prop = object->properties.GetProperty(propName);
+
+                    if (prop) {
+                        LOG("Comparando: [%s] con [%s]", prop->valueString.c_str(), value.c_str());
+                    }
+
+                    if (prop && prop->valueString == value) {
+                        LOG("MATCH!");
                         return object;
                     }
                 }

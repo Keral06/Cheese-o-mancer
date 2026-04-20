@@ -68,7 +68,7 @@ void Door::OnCollision(PhysBody* physA, PhysBody* physB)
     LOG("Door triggered -> loading map: %s", targetMap.c_str());
 
     // Guardamos a qué puerta queremos aparecer
-   /* Engine::GetInstance().scene->nextDoor = targetDoor;*/
+   Engine::GetInstance().scene->nextSpawnPoint = targetDoor;
 
     // Cambiar de mapa
     Engine::GetInstance().scene->LoadMap(targetMap);

@@ -10721,13 +10721,13 @@
     <property name="targetSpawn" value="Door_3_1"/>
    </properties>
   </object>
-  <object id="349" x="256" y="14592" width="512" height="128">
+  <object id="349" name="Door" type="Door" x="256" y="14592" width="512" height="128">
    <properties>
     <property name="name" value="Door_2_1"/>
     <property name="offsetX" type="int" value="0"/>
-    <property name="offsetY" type="int" value="0"/>
+    <property name="offsetY" type="int" value="10"/>
     <property name="targetMap" value="TEST_map_LV1_startRoom_01.tmx"/>
-    <property name="targetSpawn" value=""/>
+    <property name="targetSpawn" value="Door_1_1"/>
    </properties>
   </object>
  </objectgroup>
