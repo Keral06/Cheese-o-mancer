@@ -191,7 +191,46 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 
 	return ret;
 }
+bool Render::DrawTextureNoCamera(SDL_Texture* texture, int x, int y, int w, int h, float speed, double angle, int pivotX, int pivotY, SDL_FlipMode flip) const
+{
+	bool ret = true;
 
+
+	// SDL3 uses float rects for rendering
+	SDL_FRect rect;
+	
+
+	rect.x = x ;
+	rect.y = y;
+
+
+	
+		rect.w = w;
+		rect.h = h;
+	
+
+	const SDL_FRect* src = NULL;
+	SDL_FRect srcRect;
+	
+
+	SDL_FPoint* p = NULL;
+	SDL_FPoint pivot;
+	if (pivotX != INT_MAX && pivotY != INT_MAX)
+	{
+		pivot = { (float)pivotX, (float)pivotY};
+		p = &pivot;
+	}
+
+	// SDL3: returns bool; map to int-style check
+	int rc = SDL_RenderTextureRotated(renderer, texture, src, &rect, angle, p, flip) ? 0 : -1;
+	if (rc != 0)
+	{
+		LOG("Cannot blit to screen. SDL_RenderTextureRotated error: %s", SDL_GetError());
+		ret = false;
+	}
+
+	return ret;
+}
 bool Render::DrawRectangle(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, bool use_camera) const
 {
 	bool ret = true;

@@ -26,6 +26,13 @@ public:
 
 	// Retrieve window scale
 	int GetScale() const;
+	int GetWidth() {
+
+		return width;
+	};
+	int GetHeight() {
+		return height;
+	};
 
 public:
 	// The window we'll be rendering to
