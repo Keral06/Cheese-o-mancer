@@ -74,23 +74,23 @@ bool Scene::Update(float dt)
 		break;
 	case SceneID::LEVEL1:
 		UpdateLevel1(dt);
-		ChangeToLvl2();
+		
 		break;
 	case SceneID::LEVEL2:
 		UpdateLevel2(dt);
-		ChangeToLvl5();
+		
 		break;
 	case SceneID::LEVEL3:
 		UpdateLevel3(dt);
-		ChangeToLvl4();
+		
 		break;
 	case SceneID::LEVEL4:
 		UpdateLevel4(dt);
-		ChangeToLvl1();
+		
 		break;
 	case SceneID::LEVEL5:
 		UpdateLevel5(dt);
-		ChangeToLvl3();
+		
 		break;
 
 	case SceneID::GAME_OVER:
@@ -312,6 +312,27 @@ bool Scene::PostUpdate()
 	default:
 		break;
 	}
+	switch (currentScene)
+	{
+	case SceneID::LEVEL1:
+		ChangeToLvl2();
+		break;
+	case SceneID::LEVEL2:
+		
+		ChangeToLvl5();
+		break;
+	case SceneID::LEVEL3:
+		ChangeToLvl4();
+		break;
+	case SceneID::LEVEL4:
+		ChangeToLvl1();
+		break;
+	case SceneID::LEVEL5:
+		ChangeToLvl3();
+		break;
+	default:
+		break;
+	}
 	if (showUIDebug) {
 		for (const auto& ui : Engine::GetInstance().uiManager->UIElementsList) {
 
@@ -519,20 +540,32 @@ void Scene::UnloadCurrentScene() {
 void Scene::LoadMainMenu() {
 
 	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/soundtrack.wav");
-	introTexture = Engine::GetInstance().textures->Load("Assets/Screens/PREV/IntroScreen.png");
+	introTexture = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_Background_01.png");
 	// Instantiate a UIButton in the Scene
 	
 	//Botón START
 	SDL_Rect btPos = { 520, 280, 200, 50 };
-	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "START", btPos, this);
+	SDL_Texture* buttonStartPressed;
+	SDL_Texture* buttonStartNormal;
+	buttonStartPressed = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonStart2_02.png");
+	buttonStartNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonStart1_02.png");
+	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "START", btPos, this, SDL_Rect{0,0,0,0}, buttonStartNormal, buttonStartPressed);
+
 	
-	//Botón CONTINUE
-	SDL_Rect continuePos = { 520, 350, 200, 50 };
-	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "CONTINUE", continuePos, this);
+	////Botón CONTINUE
+	//SDL_Rect continuePos = { 520, 350, 200, 50 };
+	//SDL_Texture buttonContinuePressed;
+	//SDL_Texture buttonContinueNormal;
+	
+	//Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "CONTINUE", continuePos, this);
 
 	// Botón OPTIONS
 	SDL_Rect optionsBtnRect = { 520, 420, 200, 50 };
-	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "OPTIONS", optionsBtnRect, this);
+	SDL_Texture* buttonOptionsPressed;
+	SDL_Texture* buttonOptionsNormal;
+	buttonOptionsPressed = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonSettings2_01.png");
+	buttonOptionsNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonSettings1_01.png");
+	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "OPTIONS", optionsBtnRect, this, SDL_Rect{0,0,0,0}, buttonOptionsNormal, buttonOptionsPressed);
 
 	// Slider VOLUMEN 
 	SDL_Rect sliderRect = { 520,560, 200, 30 };
@@ -558,14 +591,14 @@ void Scene::LoadMainMenu() {
 	SDL_Rect exitPosRect = { 520, 560, 200, 50 };
 	auto exitPos = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "EXIT", exitPosRect, this);
 
-	//Botón CREDITS
-	SDL_Rect creditsPosRect = { 520, 490, 200, 50 };
-	auto creditsPos = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "CREDITS", creditsPosRect, this);
+	////Botón CREDITS
+	//SDL_Rect creditsPosRect = { 520, 490, 200, 50 };
+	//auto creditsPos = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "CREDITS", creditsPosRect, this);
 
-	//Botón BACK CREDITS
-	SDL_Rect backCreditPosRect = { 520, 560, 200, 50 };
-	auto backCreditsBtn = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, "BACK", backCreditPosRect, this);
-	if (backCreditsBtn) backCreditsBtn->visible = false;
+	////Botón BACK CREDITS
+	//SDL_Rect backCreditPosRect = { 520, 560, 200, 50 };
+	//auto backCreditsBtn = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, "BACK", backCreditPosRect, this);
+	//if (backCreditsBtn) backCreditsBtn->visible = false;
 }
 
 void Scene::UnloadMainMenu() {
@@ -1340,15 +1373,27 @@ void Scene::CreatePauseUI() {
 	int y = 400;
 
 	// RESUME
-	auto btnResume = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 20, "RESUME", { x, y, 200, 50 }, this);
+	SDL_Texture* buttonResumeNormal;
+	SDL_Texture* buttonResumedClicked;
+	buttonResumeNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonContinue1_01.png");
+	buttonResumedClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonContinue2_01.png");
+	auto btnResume = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 20, "RESUME", { x, y, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonResumeNormal, buttonResumedClicked);
 	btnResume->visible = false;
 
 	// OPTIONS
+	SDL_Texture* buttonOptionsNormal;
+	SDL_Texture* buttonOptionsClicked;
+	buttonOptionsNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonOptions1_01.png");
+	buttonOptionsClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonOptions2_01.png");
 	auto btnOptions = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 21, "OPTIONS", { x, y + 70, 200, 50 }, this);
 	btnOptions->visible = false;
 
 	//BACK TO TITLE
-	auto btnTitle = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 22, "TITLE SCREEN", { x, y + 210, 200, 50 }, this);
+	SDL_Texture* buttonTitleNormal;
+	SDL_Texture* buttonTitleClicked;
+	buttonTitleNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonTitle1_01.png");
+	buttonTitleClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonTitle2_01.png");
+	auto btnTitle = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 22, "TITLE SCREEN", { x, y + 210, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonTitleNormal, buttonTitleClicked);
 	btnTitle->visible = false;
 
 	// EXIT
@@ -1472,6 +1517,38 @@ void Scene::HandleFinalWinUIEvents(UIElement* uiElement) {
 	}
 }
 
+void Scene::LoadMap(std::string map)
+{
+	UnloadLevel1();
+	
+	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/level2music.wav");
+
+	isPaused = false;
+	CreatePauseUI();
+
+	heartTexture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/heart4.png");
+	//Call the function to load the map. 
+	Engine::GetInstance().map->Load("Assets/Maps/", map);
+
+	//Call the function to load entities from the map
+	Engine::GetInstance().map->LoadEntities(player, enemies);
+	if (continueGame == false) {
+
+		levelTimer = 0.0f;
+		Player::score = 0;
+		if (player) {
+			player->lives = 3;
+		}
+
+		/*Vector2D startPos = Engine::GetInstance().map->GetStartPoint("Checkpoints", "Player");
+
+		if (startPos.getX() != 0 || startPos.getY() != 0) {
+			player->SetPosition(startPos);
+			player->respawnPosition = { PIXEL_TO_METERS(startPos.getX()), PIXEL_TO_METERS(startPos.getY()) };
+		}*/
+	}
+}
+
 // *********************************************
 // INTRO SCREEN functions
 // *********************************************
@@ -1504,15 +1581,27 @@ void Scene::CreateStoreLevel1() {
 	int y = 400;
 
 	// MAP
-	auto btnMAP = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 35, "MAP", { x, y, 200, 50 }, this);
+	SDL_Texture* MapNormal;
+	SDL_Texture* MapClicked;
+	MapClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_ItemMap1_01.png");
+	MapNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_ItemMap2_01.png");
+	auto btnMAP = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 35, "MAP", { x, y, 200, 50 }, this, SDL_Rect {0,0,0,0}, MapNormal, MapClicked);
 	btnMAP->visible = false;
 
 	// KEY
-	auto btnKEY = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 36, "KEY", { x, y + 70, 200, 50 }, this);
+	SDL_Texture* KeyNormal;
+	SDL_Texture* KeyClicked;
+	KeyNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_ItemKey2_01.png");
+	KeyClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_ItemKey1_01.png");
+	auto btnKEY = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 36, "KEY", { x, y + 70, 200, 50 }, this, SDL_Rect {0,0,0,0}, KeyNormal, KeyClicked);
 	btnKEY->visible = false;
 
 	//LIFE
-	auto btnLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 37, "TEMPORARY LIFE", { x, y +140, 200, 50 }, this);
+	SDL_Texture* LifeNormal;
+	SDL_Texture* LifeClicked;
+	LifeNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_ItemLife2_01.png");
+	LifeClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_ItemLife1_01.png");
+	auto btnLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 37, "TEMPORARY LIFE", { x, y +140, 200, 50 }, this, SDL_Rect {0,0,0,0}, LifeNormal, LifeClicked);
 	btnLIFE->visible = false;
 
 	//// LLANTERN
@@ -1520,15 +1609,20 @@ void Scene::CreateStoreLevel1() {
 	//btnLLANTERN->visible = false;
 
 	// BUYMAP
-	auto btnBUYMAP = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 39, "BUYMAP", { x+70, y, 200, 50 }, this);
+	SDL_Texture* BuyNormal;
+	SDL_Texture* BuyClicked;
+	BuyNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_ButtonBuy1_01.png");
+	BuyClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_ButtonBuy2_01.png");
+	auto btnBUYMAP = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 39, "BUYMAP", { x+70, y, 200, 50 }, this, SDL_Rect{0,0,0,0}, BuyNormal, BuyClicked);
 	btnBUYMAP->visible = false;
 
 	//BUYKEY
-	auto btnBUYKEY = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 40, "BUYKEY", { x + 70, y, 200, 50 }, this);
+	auto btnBUYKEY = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 40, "BUYKEY", { x + 70, y, 200, 50 }, this, SDL_Rect{ 0,0,0,0 }, BuyNormal, BuyClicked);
 	btnBUYKEY->visible = false;
 
 	//BUYLIFE
-	auto btnBUYLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 41, "BUYLIFE", { x + 70, y, 200, 50 }, this);
+	
+	auto btnBUYLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 41, "BUYLIFE", { x + 70, y, 200, 50 }, this, SDL_Rect{ 0,0,0,0 }, BuyNormal, BuyClicked);
 	btnBUYLIFE->visible = false;
 
 	////BUYLLANTERN

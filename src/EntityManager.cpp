@@ -16,7 +16,9 @@
 #include "FinalBoss.h"
 #include "Verdugo.h"
 #include "Rat.h"
+#include "Jailer.h"
 #include "CheeseBall.h"
+#include "Door.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -117,6 +119,9 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 	case EntityType::VERDUGO:
 		entity = std::make_shared<Verdugo>();
 		break;
+	case EntityType::JAILER:
+		entity = std::make_shared<Jailer>();
+		break;
 	case EntityType::RAT:
 		entity = std::make_shared<Rat>();
 		break;
@@ -125,6 +130,9 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::NPC:
 		entity = std::make_shared<NPC>();
+		break;
+	case EntityType::DOOR:
+		entity = std::make_shared<Door>();
 		break;
 	default:
 		break;
@@ -137,8 +145,7 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 
 void EntityManager::DestroyEntity(std::shared_ptr<Entity> entity)
 {
-	entity->CleanUp();
-	entities.remove(entity);
+	entity->toDelete = true;
 }
 
 void EntityManager::AddEntity(std::shared_ptr<Entity> entity)

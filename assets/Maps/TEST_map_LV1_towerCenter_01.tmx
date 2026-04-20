@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="11" nextobjectid="345">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="12" nextobjectid="350">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -10702,6 +10702,35 @@
    <tile/>
   </data>
  </layer>
+ <objectgroup id="11" name="Doors">
+  <object id="346" x="1024" y="6016" width="256" height="1280">
+   <properties>
+    <property name="name" value="Door_2_3"/>
+    <property name="offsetX" type="int" value="0"/>
+    <property name="offsetY" type="int" value="0"/>
+    <property name="targetMap" value="TEST_map_LV1_pantryRoom_01.tmx"/>
+    <property name="targetSpawn" value="Door_3_2"/>
+   </properties>
+  </object>
+  <object id="347" x="1024" y="1280" width="256" height="1024">
+   <properties>
+    <property name="name" value="Door_2_2"/>
+    <property name="offsetX" type="int" value="0"/>
+    <property name="offsetY" type="int" value="0"/>
+    <property name="targetMap" value="TEST_map_LV1_pantryRoom_01.tmx"/>
+    <property name="targetSpawn" value="Door_3_1"/>
+   </properties>
+  </object>
+  <object id="349" name="Door" type="Door" x="256" y="14592" width="512" height="128">
+   <properties>
+    <property name="name" value="Door_2_1"/>
+    <property name="offsetX" type="int" value="0"/>
+    <property name="offsetY" type="int" value="10"/>
+    <property name="targetMap" value="TEST_map_LV1_startRoom_01.tmx"/>
+    <property name="targetSpawn" value="Door_1_1"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup id="7" name="Floor">
   <object id="209" x="1289.94" y="14339.3" width="7158.06" height="121.323"/>
   <object id="210" x="8064" y="12800" width="1408" height="128"/>
@@ -10814,7 +10843,7 @@
   <object id="344" x="256" y="12928" width="1920" height="128"/>
  </objectgroup>
  <objectgroup id="8" name="Entities">
-  <object id="322" name="Player" type="Player" x="968.606" y="14099.9">
+  <object id="322" name="Player" type="Player" x="1020.61" y="14355.9">
    <point/>
   </object>
  </objectgroup>
