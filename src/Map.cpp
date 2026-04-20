@@ -20,6 +20,7 @@
 #include "Rat.h"
 #include "Jailer.h"
 #include "HANDMAN.h"
+#include "Door.h"
 
 Map::Map() : Module(), mapLoaded(false)
 {
@@ -228,8 +229,10 @@ bool Map::Load(std::string path, std::string fileName)//
                 object->y = objectNode.attribute("y").as_int();
                 object->width = objectNode.attribute("width").as_int();
                 object->height = objectNode.attribute("height").as_int();
+                LoadProperties(objectNode, object->properties);
 
                 objectGroup->objects.push_back(object);
+
             }
 
             mapData.objectgroups.push_back(objectGroup);
@@ -398,9 +401,19 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 
     for (pugi::xml_node propertieNode = node.child("properties").child("property"); propertieNode; propertieNode = propertieNode.next_sibling("property"))
     {
+        
         Properties::Property* p = new Properties::Property();
         p->name = propertieNode.attribute("name").as_string();
         p->value = propertieNode.attribute("value").as_bool(); // (!!) I'm assuming that all values are bool !!
+        p->valueInt = propertieNode.attribute("value").as_int();
+        p->valueFloat = propertieNode.attribute("value").as_float();
+        if (p->valueString.empty()) {
+            p->valueString = "";
+        }
+        else {
+            p->valueString = propertieNode.attribute("value").as_string();
+        }
+        
 
         properties.propertyList.push_back(p);
     }
@@ -493,13 +506,34 @@ MapLayer* Map::GetNavigationLayer() {
                         // Create Player entity
                         if (player == nullptr) {
                             player = std::dynamic_pointer_cast<Player>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER));
-                            player->position = Vector2D(x, y);
-                            player->Start();
-                            LOG("Player created.");
                         }
+                        
+                            //auto obj = Engine::GetInstance().map->GetObject("Doors", Engine::GetInstance().scene->nextSpawnPoint);
+
+                            //Vector2D spawn(0, 0);
+
+                            //if (obj != nullptr)
+                            //{
+                            //    int offsetX = 0;
+                            //    int offsetY = 0;
+
+                            //    // si has guardado como atributos XML
+                            //    offsetX = obj->properties.GetProperty("offsetX") ? obj->properties.GetProperty("offsetX")->valueInt : 0;
+                            //    offsetY = obj->properties.GetProperty("offsetY") ? obj->properties.GetProperty("offsetY")->valueInt : 0;
+
+                            //    spawn.setX(obj->x + offsetX);
+                            //    spawn.setY(obj->y + offsetY);
+                            //}
+                        Vector2D spawn(0, 0);
+
+                            player->SetPosition(spawn);
+
+                        
+                            
+                        
                         //If the player already exists, just set its position
                         
-                            player->SetPosition(Vector2D(x, y));
+                            /*player->SetPosition(Vector2D(x, y));
                             if (objectNode.attribute("score")) {
                                 Player::score = objectNode.attribute("score").as_int();
                                 LOG("Score cargado desde XML: %d", Player::score);
@@ -508,7 +542,7 @@ MapLayer* Map::GetNavigationLayer() {
                             if (objectNode.attribute("timer")) {
                                 Engine::GetInstance().scene->levelTimer = objectNode.attribute("timer").as_float();
                                 LOG("Timer cargado desde XML: %f", Engine::GetInstance().scene->levelTimer);
-                            }
+                            }*/
                         
                     }
                     else if (entityType == "Enemy") {
@@ -589,6 +623,18 @@ MapLayer* Map::GetNavigationLayer() {
                         boss->Start();
                         boss->mapID = id;
                     }
+                    /*else if (entityType == "Door")
+                    {
+                        auto door = std::dynamic_pointer_cast<Door>(
+                            Engine::GetInstance().entityManager->CreateEntity(EntityType::DOOR)
+                        );
+
+                        door->position = Vector2D(x, y);
+                        door->targetMap = objectNode.attribute("targetMap").as_string();
+                        door->targetDoor = objectNode.attribute("targetSpawn").as_string();
+
+                        door->Start();
+}*/
                 }
             }
         }
@@ -692,4 +738,18 @@ MapLayer* Map::GetNavigationLayer() {
         if (limits.getY() > mapData.height) limits.setY(mapData.height);
 
         return limits;
+    }
+
+    ObjectGroup::Object* Map::GetObject(std::string layerName, std::string objectName)
+    {
+        for (const auto& group : mapData.objectgroups) {
+            if (group->name == layerName) {
+                for (const auto& object : group->objects) {
+                    if (object->name == objectName) {
+                        return object;
+                    }
+                }
+            }
+        }
+        return nullptr;
     }

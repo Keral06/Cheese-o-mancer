@@ -17,6 +17,10 @@ struct Properties
     {
         std::string name;
         bool value; //We assume that we are going to work only with bool for the moment
+        int valueInt;
+        float valueFloat;
+        std::string valueString;
+       
     };
 
     std::list<Property*> propertyList;
@@ -77,10 +81,10 @@ struct ObjectGroup
         int height;
         int x;
         int y;
-
+        Properties properties;
     };
 
-
+    
     std::vector<Object*> objects;
 
 };
@@ -192,6 +196,7 @@ public:
 
     // L19 TODO 2: Calculate Camera limits in Tiles
     Vector2D GetCameraLimitsInTiles(Vector2D camPosTile);
+    ObjectGroup::Object* GetObject(std::string layerName, std::string objectName);
     std::vector<int> killedEnemies;
     std::vector<PhysBody*> mapBodies;
 public: 

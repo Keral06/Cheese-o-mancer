@@ -21,7 +21,8 @@ enum class EntityType
 	RAT,
 	JAILER,
 	NPC,
-	HANDMAN
+	HANDMAN,
+	DOOR
 	
 };
 

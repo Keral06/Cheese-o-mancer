@@ -197,7 +197,21 @@ void Enemy::Draw(float dt) {
 bool Enemy::CleanUp()
 {
 	LOG("Cleanup enemy");
+
+	if (pbody != nullptr) {
+		pbody->listener = nullptr;
+		Engine::GetInstance().physics->DeletePhysBody(pbody);
+		pbody = nullptr;
+	}
+
+	if (attackHitbox != nullptr) {
+		attackHitbox->listener = nullptr;
+		Engine::GetInstance().physics->DeletePhysBody(attackHitbox);
+		attackHitbox = nullptr;
+	}
+
 	Engine::GetInstance().textures->UnLoad(texture);
+
 	return true;
 }
 

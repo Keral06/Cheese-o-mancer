@@ -74,23 +74,23 @@ bool Scene::Update(float dt)
 		break;
 	case SceneID::LEVEL1:
 		UpdateLevel1(dt);
-		ChangeToLvl2();
+		
 		break;
 	case SceneID::LEVEL2:
 		UpdateLevel2(dt);
-		ChangeToLvl5();
+		
 		break;
 	case SceneID::LEVEL3:
 		UpdateLevel3(dt);
-		ChangeToLvl4();
+		
 		break;
 	case SceneID::LEVEL4:
 		UpdateLevel4(dt);
-		ChangeToLvl1();
+		
 		break;
 	case SceneID::LEVEL5:
 		UpdateLevel5(dt);
-		ChangeToLvl3();
+		
 		break;
 
 	case SceneID::GAME_OVER:
@@ -308,6 +308,27 @@ bool Scene::PostUpdate()
 		}
 
 		Engine::GetInstance().uiManager->PostUpdate();
+		break;
+	default:
+		break;
+	}
+	switch (currentScene)
+	{
+	case SceneID::LEVEL1:
+		ChangeToLvl2();
+		break;
+	case SceneID::LEVEL2:
+		
+		ChangeToLvl5();
+		break;
+	case SceneID::LEVEL3:
+		ChangeToLvl4();
+		break;
+	case SceneID::LEVEL4:
+		ChangeToLvl1();
+		break;
+	case SceneID::LEVEL5:
+		ChangeToLvl3();
 		break;
 	default:
 		break;
@@ -708,7 +729,7 @@ void Scene::LoadLevel1() {
 	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/soundtrack.wav");
 
 	// Load Map
-	Engine::GetInstance().map->Load("Assets/Maps/", "TEST_map_LV1_bossRoom_01.tmx");//"TEST_map_LV1_towerCenter_01.tmx"
+	Engine::GetInstance().map->Load("Assets/Maps/", "TEST_map_LV1_startRoom_01.tmx");//"TEST_map_LV1_towerCenter_01.tmx"
 																					  //"TEST_map_LV1_pantryRoom_01.tmx"
 
 	// Load Entities from map
@@ -1470,6 +1491,11 @@ void Scene::HandleFinalWinUIEvents(UIElement* uiElement) {
 	if (uiElement->id == 13) {
 		ChangeScene(SceneID::MAIN_MENU);
 	}
+}
+
+void Scene::LoadMap(std::string map)
+{
+	Engine::GetInstance().map->Load("Assets/Maps/", map);
 }
 
 // *********************************************

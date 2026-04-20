@@ -72,7 +72,7 @@ public:
 
 	void SaveLevel();
 	void LoadGame();
-
+	void LoadMap(std::string map);
 private:
 	//Introscreen functions
 	void LoadIntro();
@@ -140,7 +140,7 @@ private:
 	void UpdateFinalWin(float dt);
 	void UnloadFinalWin();
 	void HandleFinalWinUIEvents(UIElement* uiElement);
-
+	
 
 	//Funciones Store
 	void CreateStoreLevel1();
@@ -168,6 +168,10 @@ private:
 	SceneID currentScene = SceneID::MAIN_MENU;
 	SDL_Texture* loseTexture = nullptr;
 	AnimationSet loseAnimSet;
-	public:
+
+public:
 	void SetStore(bool store);
+	/*std::string nextMap = "";
+	std::string nextSpawnPoint = "Player";
+	std::string nextDoor = "";*/
 };

@@ -167,6 +167,7 @@ const std::string& AnimationSet::GetCurrentName() const {
 }
 
 bool AnimationSet::Has(const std::string& name) const {
+    printf("Checking animation: %s", name.c_str());
     return clips_.find(name) != clips_.end();
 }
 

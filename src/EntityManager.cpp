@@ -141,8 +141,7 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 
 void EntityManager::DestroyEntity(std::shared_ptr<Entity> entity)
 {
-	entity->CleanUp();
-	entities.remove(entity);
+	entity->toDelete = true;
 }
 
 void EntityManager::AddEntity(std::shared_ptr<Entity> entity)
