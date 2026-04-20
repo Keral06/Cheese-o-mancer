@@ -171,7 +171,7 @@ private:
 
 public:
 	void SetStore(bool store);
-	/*std::string nextMap = "";
-	std::string nextSpawnPoint = "Player";
-	std::string nextDoor = "";*/
+	std::string nextMap = "";
+	std::string nextSpawnPoint = "Door_1_1";
+	std::string nextDoor = "";
 };

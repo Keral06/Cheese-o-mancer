@@ -18,6 +18,7 @@
 #include "Rat.h"
 #include "Jailer.h"
 #include "CheeseBall.h"
+#include "Door.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -129,6 +130,9 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::NPC:
 		entity = std::make_shared<NPC>();
+		break;
+	case EntityType::DOOR:
+		entity = std::make_shared<Door>();
 		break;
 	default:
 		break;
