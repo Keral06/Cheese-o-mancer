@@ -16,7 +16,32 @@
 Dialogue :: Dialogue(const char	*tsxPath) {
 
 	this->tsxPath = tsxPath;
+	std::ifstream fich(tsxPath);
+	std::string helper;
+	char a;
+	fich.get(a);
+	while (a != '+') { //this is what ends the txt document
+		while (a != '\n') {
 
+			helper.push_back(a);
+			fich.get(a);
+			
+
+		}
+		dialogue.push_back(helper);
+		while (!helper.empty()) {
+
+			helper.pop_back();
+
+		}
+		fich.get(a);
+
+
+
+
+	}
+
+	lenght = dialogue.size();
 
 }
 
@@ -34,47 +59,20 @@ bool Dialogue::Awake() {
 
 bool Dialogue::Start() {
 
-	std::ifstream fich(tsxPath);
-	std::string helper;
-	char a;
-	fich >> a;
-	while (a != 'ñ') { //this is what ends the txt document
-		while (a != '/n') {
-			
-			helper.push_back(a);
-			fich >> a;
-			
-		
-		
-		
-		}
-		dialogue.push_back(helper);
-		while (!helper.empty()) {
-		
-			helper.pop_back();
-		
-		}
-		fich >> a;
 	
-	
-	
-	
-	}
-	
-	lenght = dialogue.size();
 
 
 	return true;
 }
 void Dialogue::Draw(float dt) {
-	//hacer que lo escriba en pantalla
+	
 }
 
 bool Dialogue::Update(float dt)
 {
 	if (!hasStarted) return true;
 	
-	Draw(dt);
+	
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 	
 		NextDialogue();
@@ -88,14 +86,18 @@ void Dialogue::BeginDialogue() {
 	dialogueHelper = dialogue;
 	lenghtHelper = lenght;
 	hasStarted = true;
-
+	printf("%s", dialogueHelper[lenghtHelper - 1].c_str());
+	Engine::GetInstance().render->DrawText(dialogueHelper[lenghtHelper - 1].c_str(), 100, 100, 0, 0, { 255,255,255 });
+	dialogue.pop_back();
+	lenghtHelper--;
 
 
 }
 void Dialogue:: NextDialogue() {
 	if (lenghtHelper > 0) {
 	
-		printf("%c",dialogueHelper[lenghtHelper]);
+		printf("%s",dialogueHelper[lenghtHelper-1].c_str());
+		Engine::GetInstance().render->DrawText(dialogueHelper[lenghtHelper - 1].c_str(), 100, 100, 0, 0, { 255,255,255 });
 		dialogue.pop_back();
 		lenghtHelper--;
 	}

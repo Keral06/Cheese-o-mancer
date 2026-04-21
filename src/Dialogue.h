@@ -6,7 +6,7 @@
 #include <SDL3/SDL.h>
 #include "Pathfinding.h"
 #include <stdio.h>
-
+#include <SDL3_ttf/SDL_ttf.h>
 #include <fstream>
 
 struct SDL_Texture;

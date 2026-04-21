@@ -3,7 +3,7 @@
 #include "Module.h"
 #include "Vector2D.h"
 #include "SDL3/SDL.h"
-//#include <SDL3_ttf/SDL_ttf.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 class Render : public Module
 {
@@ -51,5 +51,5 @@ public:
 
 private:
 	bool vsync = false;
-	//TTF_Font* font;
+	TTF_Font* font;
 };
