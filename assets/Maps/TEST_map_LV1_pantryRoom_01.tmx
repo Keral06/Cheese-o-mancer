@@ -4483,7 +4483,7 @@
    <tile gid="3"/>
   </data>
  </layer>
- <layer id="13" name="Assets" width="86" height="52">
+ <layer id="13" name="AssetsBG" width="86" height="52">
   <data>
    <tile/>
    <tile/>
@@ -8658,6 +8658,12 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="214"/>
+   <tile gid="215"/>
+   <tile gid="216"/>
+   <tile gid="214"/>
+   <tile gid="215"/>
+   <tile gid="216"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8675,6 +8681,12 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="214"/>
+   <tile gid="215"/>
+   <tile gid="216"/>
+   <tile gid="214"/>
+   <tile gid="215"/>
+   <tile gid="216"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8732,6 +8744,12 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="244"/>
+   <tile gid="245"/>
+   <tile gid="246"/>
+   <tile gid="244"/>
+   <tile gid="245"/>
+   <tile gid="246"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8749,30 +8767,12 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="244"/>
+   <tile gid="245"/>
+   <tile gid="246"/>
+   <tile gid="244"/>
+   <tile gid="245"/>
+   <tile gid="246"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8959,7 +8959,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="14" name="AssetsMes" width="86" height="52">
+ <layer id="14" name="Assets" width="86" height="52">
   <data>
    <tile/>
    <tile/>
@@ -17727,7 +17727,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="146"/>
+   <tile/>
    <tile gid="144"/>
    <tile gid="145"/>
    <tile gid="146"/>
