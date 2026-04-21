@@ -41,6 +41,10 @@ bool Checkpoint::Start() {
 
 bool Checkpoint::Update(float dt)
 {
+	if (isActivated) {
+		return true;
+	}
+
 	if (currentAnim != nullptr)
 		currentAnim->Update(dt);
 
@@ -57,8 +61,8 @@ void Checkpoint::OnCollision(PhysBody* physA, PhysBody* physB)
 
 	if (physB->ctype == ColliderType::PLAYER && !isActivated) {
 		isActivated = true;
-		currentAnim = &activateAnim;
-		currentAnim->Reset();
+		/*currentAnim = &activateAnim;
+		currentAnim->Reset();*/
 		Engine::GetInstance().audio->PlayFx(fxId);
 	}
 }
