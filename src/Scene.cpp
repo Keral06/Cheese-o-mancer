@@ -1580,8 +1580,8 @@ void Scene::HandleWinScreenUIEvents(UIElement* uiElement) {
 }
 
 void Scene::CreatePauseUI() {
-	auto btnPauseHUD = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 30, "||", { 1200, 20, 50, 50 }, this);
-	btnPauseHUD->visible = true;
+	/*auto btnPauseHUD = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 30, "||", { 1200, 20, 50, 50 }, this);*/
+	/*btnPauseHUD->visible = true;*/
 	int x = 520;
 	int y = 250;
 
@@ -1640,6 +1640,17 @@ void Scene::CreatePauseUI() {
 	buttonBackNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Options/UI_Settings_TextBack1_01.png");
 	auto btnBackOpt = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 25, "BACK", { x, y + 140, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonBackNormal, buttonBackPressed);
 	btnBackOpt->visible = false;
+
+	//fullscreen
+	//Checkbox de la fullscreen
+	SDL_Texture* buttonPressed;
+	SDL_Texture* buttonNormal;
+	buttonPressed = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_Checkbox2_01.png");
+	buttonNormal = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_Checkbox_01.png");
+	SDL_Rect Fullscreen = { x,y-20, 35, 35 };
+	auto fullscreen = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::CHECKBOX, 52, "FULL SCREEN", Fullscreen, this, SDL_Rect{ 0,0,0,0 }, buttonPressed, buttonNormal);
+	if (fullscreen) fullscreen->visible = false;
+
 }
 
 void Scene::SetPause(bool pause) {
@@ -1666,7 +1677,7 @@ void Scene::HandlePauseUIEvents(UIElement* uiElement) {
 	case 21:
 		for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
 			if (el->id >= 20 && el->id <= 23) el->visible = false;
-			if (el->id == 25 || el->id == 26 || el->id == 27) el->visible = true;
+			if (el->id == 25 || el->id == 26 || el->id == 27 || el->id ==52) el->visible = true;
 		}
 		break;
 	case 22: 
@@ -1687,7 +1698,7 @@ void Scene::HandlePauseUIEvents(UIElement* uiElement) {
 	case 25: 
 		for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
 			if (el->id >= 20 && el->id <= 23) el->visible = true;
-			if (el->id >= 25 && el->id <= 28) el->visible = false;
+			if (el->id == 52 || (el->id >= 25 && el->id <= 28)) el->visible = false;
 		}
 		break;
 	case 27:
@@ -1698,6 +1709,14 @@ void Scene::HandlePauseUIEvents(UIElement* uiElement) {
 		break;
 	case 30: 
 		SetPause(true); 
+		break;
+	case 52:
+		if (uiElement->state == UIElementState::SELECTED) {
+			Engine::GetInstance().window->SetFullscreen(true);
+		}
+		else {
+			Engine::GetInstance().window->SetFullscreen(false);
+		}
 		break;
 	}
 }
