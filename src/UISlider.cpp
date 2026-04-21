@@ -4,7 +4,7 @@
 #include "Render.h"
 #include "Audio.h"
 
-UISlider::UISlider(int id, SDL_Rect bounds, const char* text) : UIElement(UIElementType::SLIDER, id)
+UISlider::UISlider(int id, SDL_Rect bounds, const char* text, SDL_Texture* bar, SDL_Texture* thumbNormal, SDL_Texture* thumbPressed) : UIElement(UIElementType::SLIDER, id)
 {
 	this->bounds = bounds;
 	this->text = text;
@@ -13,6 +13,9 @@ UISlider::UISlider(int id, SDL_Rect bounds, const char* text) : UIElement(UIElem
 
 	int thumbWidth = 40;
 	thumb = { bounds.x, bounds.y, thumbWidth, bounds.h };
+	if (bar != nullptr) sliderBarTexture = bar;
+	if (thumbNormal != nullptr) thumbNormalTexture = thumbNormal;
+	if (thumbPressed != nullptr) thumbPressedTexture = thumbPressed;
 
 	SetValue(0.5f);
 }
@@ -67,20 +70,28 @@ bool UISlider::Update(float dt)
 bool UISlider::Draw()
 {
 	if (!visible) return true;
-	SDL_Color barColor = { 100, 100, 100, 255 };
-	SDL_Color thumbColorNormal = { 0, 121, 241, 255 };
-	SDL_Color thumbColorPressed = { 0, 82, 172, 255 };
+	if(thumbNormalTexture != nullptr && thumbPressedTexture != nullptr && sliderBarTexture != nullptr) {
+		SDL_Texture* currentThumbTexture = (state == UIElementState::PRESSED || isDragging) ? thumbPressedTexture : thumbNormalTexture;
+		Engine::GetInstance().render->DrawTextureNoCamera(sliderBarTexture, sliderBar.x, sliderBar.y, sliderBar.w, sliderBar.h);	
+		Engine::GetInstance().render->DrawTextureNoCamera(currentThumbTexture, thumb.x, thumb.y, thumb.w,thumb.h);
+		return true;
+	}else{ SDL_Log("Textures missing! Falling back to rectangles."); }
+	
+		SDL_Color barColor = { 100, 100, 100, 255 };
+		SDL_Color thumbColorNormal = { 0, 121, 241, 255 };
+		SDL_Color thumbColorPressed = { 0, 82, 172, 255 };
 
-	Engine::GetInstance().render->DrawRectangle(sliderBar, barColor.r, barColor.g, barColor.b, barColor.a, true, false);
 
-	SDL_Color currentThumbColor = (state == UIElementState::PRESSED || isDragging) ? thumbColorPressed : thumbColorNormal;
-	Engine::GetInstance().render->DrawRectangle(thumb, currentThumbColor.r, currentThumbColor.g, currentThumbColor.b, currentThumbColor.a, true, false);
+		Engine::GetInstance().render->DrawRectangle(sliderBar, barColor.r, barColor.g, barColor.b, barColor.a, true, false);
 
-	if (!text.empty())
-	{
-		Engine::GetInstance().render->DrawText(text.c_str(), bounds.x, bounds.y - 20, 0, 0, { 255, 255, 255, 255 });
-	}
+		SDL_Color currentThumbColor = (state == UIElementState::PRESSED || isDragging) ? thumbColorPressed : thumbColorNormal;
+		Engine::GetInstance().render->DrawRectangle(thumb, currentThumbColor.r, currentThumbColor.g, currentThumbColor.b, currentThumbColor.a, true, false);
 
+		if (!text.empty())
+		{
+			Engine::GetInstance().render->DrawText(text.c_str(), bounds.x, bounds.y - 20, 0, 0, { 255, 255, 255, 255 });
+		}
+	
 	return true;
 }
 

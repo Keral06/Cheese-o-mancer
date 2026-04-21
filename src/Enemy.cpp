@@ -39,14 +39,14 @@ bool Enemy::Awake() {
 bool Enemy::Start() {
 
 	// load
-	std::unordered_map<int, std::string> aliases = { {0,"idle"} };
+	/*std::unordered_map<int, std::string> aliases = { {0,"idle"} };*/
 	/*anims.LoadFromTSX("Assets/Textures/enemy_Spritesheet.tsx", aliases);
 	anims.SetCurrent("idle");*/
 
 	//Initialize Player parameters
 	texture = Engine::GetInstance().textures->Load(texName);
 
-	anims.LoadFromTSX(spriteSheetName, aliases);
+	/*anims.LoadFromTSX(spriteSheetName, aliases);*/
 	//Add physics to the enemy - initialize physics body
 	pbody = Engine::GetInstance().physics->CreateRectangle(position.getX(), position.getY(), texW, texH, bodyType::DYNAMIC);
 
@@ -197,7 +197,21 @@ void Enemy::Draw(float dt) {
 bool Enemy::CleanUp()
 {
 	LOG("Cleanup enemy");
+
+	if (pbody != nullptr) {
+		pbody->listener = nullptr;
+		Engine::GetInstance().physics->DeletePhysBody(pbody);
+		pbody = nullptr;
+	}
+
+	if (attackHitbox != nullptr) {
+		attackHitbox->listener = nullptr;
+		Engine::GetInstance().physics->DeletePhysBody(attackHitbox);
+		attackHitbox = nullptr;
+	}
+
 	Engine::GetInstance().textures->UnLoad(texture);
+
 	return true;
 }
 

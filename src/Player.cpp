@@ -625,11 +625,21 @@ Vector2D Player::GetPosition() {
 bool Player::CleanUp()
 {
 	LOG("Cleanup player");
-	Engine::GetInstance().textures->UnLoad(texture);
+
 	if (pbody != nullptr) {
+		pbody->listener = nullptr;
 		Engine::GetInstance().physics->DeletePhysBody(pbody);
 		pbody = nullptr;
 	}
+
+	if (attackHitbox != nullptr) {
+		attackHitbox->listener = nullptr;
+		Engine::GetInstance().physics->DeletePhysBody(attackHitbox);
+		attackHitbox = nullptr;
+	}
+
+	Engine::GetInstance().textures->UnLoad(texture);
+
 	return true;
 }
 
@@ -638,10 +648,13 @@ void Player::SetPosition(Vector2D pos)
 	
 	this->position = pos;
 
-	if (pbody != nullptr) {
+	if (pbody != nullptr && !B2_IS_NULL(pbody->body)) {
 		int centerX = (int)pos.getX() + texW / 2;
 		int centerY = (int)pos.getY() + texH / 2;
 		pbody->SetPosition(centerX, centerY);
+	}
+	else {
+		LOG("Warning: pbody is null when setting position");
 	}
 }
 
