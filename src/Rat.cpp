@@ -1,6 +1,9 @@
 ﻿#include "Rat.h"
 #include "Engine.h"
 #include "Log.h"
+#include "Input.h"
+#include "coins.h"
+#include "EntityManager.h"
 
 Rat::Rat() : Enemy()
 {
@@ -18,7 +21,7 @@ bool Rat::Start()
 	attackRange = 5;
     offsetAttackHitboxX = 40;
     offsetAttackHitboxY = -texH/2;
-    texName = "resources/spritesheets/Rata/Sprite_Rat_Fly_01.png";
+    texName = "resources/spritesheets/Rata/sprite_rat_01.png";
     spriteSheetName = "";
     Enemy::Start();
     CreateAttackHitbox(GetPosition().getX(),GetPosition().getY(), 70,200);
@@ -38,6 +41,11 @@ void Rat::Attack()
 
 bool Rat::Update(float dt)
 {
+    //debug para matar ratas con la K
+    if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) {
+        Die();
+        return true;
+    }
     repathTimer++;
 
     GetPhysicsValues();
@@ -141,5 +149,19 @@ void Rat::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
     if (physA == attackHitbox && physB->ctype == ColliderType::PLAYER) {
         playerInHitbox = false;
     }
+}
+
+//Muerte
+void Rat::Die() {
+    auto newCoin = Engine::GetInstance().entityManager->CreateEntity(EntityType::COIN);
+    auto coinEntity = std::static_pointer_cast<Coins>(newCoin);
+
+    if (coinEntity) {
+        const Vector2D& pos = this->GetPosition();
+        coinEntity->xInicial = (int)pos.getX();
+        coinEntity->yInicial = (int)pos.getY();
+        coinEntity->Start();
+    }
+    this->toDelete = true;
 }
 

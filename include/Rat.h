@@ -13,6 +13,7 @@ public:
     void UpdateAttack();
     void OnCollision(PhysBody* physA, PhysBody* physB) override;
     void OnCollisionEnd(PhysBody* physA, PhysBody* physB) override;
+    void Die();
 protected:
     int attackTimer = 0;
     int attackCooldown = 50;

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="175" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="20" nextobjectid="328">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="175" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="20" nextobjectid="329">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
- <tileset firstgid="4" source="tileset_LV1_dungeonBase_02.tsx"/>
+ <tileset firstgid="4" name="tileset_LV1_dungeonBase_02" tilewidth="128" tileheight="128" tilecount="810" columns="30">
+  <image source="tileset_lv1_dungeonbase_02.png" width="3840" height="3537"/>
+ </tileset>
  <objectgroup id="13" name="fons"/>
  <objectgroup id="15" name="Doors">
   <object id="318" name="Door" type="Door" x="11776" y="0" width="512" height="256">
@@ -26,6 +28,9 @@
   </object>
  </objectgroup>
  <layer id="17" name="Background" width="175" height="63">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile gid="283"/>
    <tile gid="284"/>
@@ -22087,6 +22092,9 @@
   </data>
  </layer>
  <layer id="16" name="Other" width="175" height="63">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -33117,6 +33125,9 @@
  </layer>
  <objectgroup id="8" name="Entities">
   <object id="12" name="Player" type="Player" x="14591.1" y="5530.42">
+   <point/>
+  </object>
+  <object id="328" name="Rat" type="Rat" x="13916" y="864">
    <point/>
   </object>
  </objectgroup>

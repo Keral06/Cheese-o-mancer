@@ -52,6 +52,7 @@ bool Scene::Start()
 // Called each loop iteration
 bool Scene::PreUpdate()
 {
+
 	return true;
 }
 
@@ -833,6 +834,11 @@ void Scene::LoadLevel1() {
 }
 
 void Scene::UpdateLevel1(float dt) {
+	//DIbujar mapa
+	Engine::GetInstance().map->DrawLayer("Background");
+	Engine::GetInstance().map->DrawLayer("Map");
+	Engine::GetInstance().map->DrawLayer("Other");
+
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
 		SetPause(!isPaused);
 	}
@@ -936,7 +942,6 @@ void  Scene::PostUpdateLevel1() {
 
 
 	// Dibujar Mapa
-	Engine::GetInstance().map->DrawLayer("Map");
 
 	// Dibujar Ayuda
 	if (showHelp && helpTexture != nullptr)
