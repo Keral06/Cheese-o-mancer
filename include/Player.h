@@ -105,7 +105,7 @@ public:
 	//Score and lives
 
 	static int score;
-	int lives = 3;
+	int lives = 4;
 	bool isDeadDefinitive = false;
 
 	//MARC ESTOS SON LOS BOOLS DE EL PLAYER PARA CONVERSACIONES
@@ -113,6 +113,7 @@ public:
 	bool hasCheese = false;
 	bool beatBoss = false;
 	bool hasTalkedWithMagician = false; //abrir puerta para poder seguir / desbloquea la vida UI
+	bool extralife = false;
 	
 	/*SDL_Rect& lastFrame;*/
 private: 

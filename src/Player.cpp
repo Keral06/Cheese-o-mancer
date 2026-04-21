@@ -550,6 +550,8 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 			Engine::GetInstance().audio->PlayFx(deathfx);
 
 		isdead = true;
+		if (extralife) { extralife = false; return; }
+		
 		lives--;
 
 		if (lives <= 0)

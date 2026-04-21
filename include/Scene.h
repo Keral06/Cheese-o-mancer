@@ -158,6 +158,12 @@ private:
 	bool showMap = false;
 	SDL_Texture* introTexture = nullptr;
 	SDL_Texture* heartTexture = nullptr;
+	SDL_Texture* panelTexture = nullptr;
+	SDL_Texture* heart1Texture = nullptr;
+	SDL_Texture* heart2Texture = nullptr;
+	SDL_Texture* heart3Texture = nullptr;
+	SDL_Texture* heart4Texture = nullptr;
+	SDL_Texture* extraHeartTexture = nullptr;
 	std::vector<std::shared_ptr<Enemy>> enemies;
 
 	std::shared_ptr<UIButton> uiBt;

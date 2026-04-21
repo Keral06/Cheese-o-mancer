@@ -139,6 +139,7 @@ bool Scene::PostUpdate()
 		if ((SDL_GetTicks() / 500) % 2 == 0) { 
 			Engine::GetInstance().render->DrawText("PRESS SPACE TO PLAY", 500, 600, 0, 0, { 255, 255, 255, 255 });
 		}
+	
 		break;
 	case SceneID::MAIN_MENU:
 		if (introTexture != nullptr) {
@@ -152,7 +153,25 @@ bool Scene::PostUpdate()
 			Engine::GetInstance().render->DrawText("CREDITS", 550, 150, 0, 0, { 255, 215, 0, 255 });
 			Engine::GetInstance().render->DrawText("Irene & Queralt", 550, 250, 0, 0, { 255, 255, 255, 255 });
 		}
+		if (slidersOn) {
 
+			
+			
+			SDL_Rect sliderRect = { 520,500, 200, 30 };
+			
+			SDL_Rect sliderRect2 = { 520,450, 200, 30 };
+			
+
+			
+		
+			
+			Engine::GetInstance().render->DrawTextureNoCamera(Volume, 520, 460, 200, 50);
+			Engine::GetInstance().render->DrawTextureNoCamera(fullscreen, 520, 360, 200, 50);
+			Engine::GetInstance().render->DrawTextureNoCamera(VolumeEffects, 520, 420, 200, 50);
+
+
+
+		}
 		Engine::GetInstance().uiManager->PostUpdate();
 		break;
 
@@ -172,19 +191,74 @@ bool Scene::PostUpdate()
 
 		Engine::GetInstance().map->DrawLayer("Map");
 		if (player != nullptr) {
-			if (heartTexture != nullptr) {
+			if (panelTexture != nullptr) {
 				float w, h;
-				SDL_GetTextureSize(heartTexture, &w, &h);
-				int startX = 20;
-				int startY = 20;
-				int padding = 10;
-				for (int i = 0; i < player->lives; i++) {
-					float x = (float)(startX + i * (w + padding));
-					float y = (float)startY;
-					SDL_FRect destRect = { x, y, w, h };
+				SDL_GetTextureSize(panelTexture, &w, &h);
+			
+
+					SDL_FRect destRect = { 10, 20, w, h };
 					SDL_RenderTexture(Engine::GetInstance().render->renderer, heartTexture, NULL, &destRect);
+				
+			}
+			if (player->lives == 4) {
+				if (heart4Texture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(heart4Texture, &w, &h);
+					
+
+					SDL_FRect destRect = { 15, 25, w, h };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart4Texture, NULL, &destRect);
+
 				}
 			}
+			else if (player->lives == 3) {
+				if (heart3Texture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(heart3Texture, &w, &h);
+
+
+					SDL_FRect destRect = { 15, 25, w, h };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart3Texture, NULL, &destRect);
+
+				}
+			
+			}else if(player->lives == 2) {
+			
+				if (heart2Texture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(heart2Texture, &w, &h);
+
+
+					SDL_FRect destRect = { 15, 25, w, h };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart2Texture, NULL, &destRect);
+
+				}
+			}
+			else if (player->lives == 1) {
+			
+				if (heart1Texture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(heart1Texture, &w, &h);
+
+
+					SDL_FRect destRect = { 15, 25, w, h };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart1Texture, NULL, &destRect);
+
+				}
+			}
+			if (player->extralife) {
+
+				if (extraHeartTexture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(extraHeartTexture, &w, &h);
+
+
+					SDL_FRect destRect = { 25, 25, w, h };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, extraHeartTexture, NULL, &destRect);
+				}
+
+			}
+			
 			std::string scoreText = "Score: " + std::to_string(player->score);
 			Engine::GetInstance().render->DrawText(scoreText.c_str(), 1100, 30, 0, 0, { 255, 255, 255, 255 });
 
@@ -596,11 +670,11 @@ void Scene::LoadMainMenu() {
 	thumbPressed = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_SliderButton_01.png");
 	thumbNormal = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_Checkbox_01.png");
 
-	SDL_Rect sliderRect = { 520,470, 200, 30 };
+	SDL_Rect sliderRect = { 520,500, 200, 30 };
 	auto slider = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::SLIDER, 2, "VOLUME MUSIC", sliderRect, this, SDL_Rect{ 0,0,0,0 }, SliderBar, thumbNormal, thumbPressed);
 	if (slider) slider->visible = false;  
 	// Slider VOLUMEN EFECTOS
-	SDL_Rect sliderRect2 = { 520,420, 200, 30 };
+	SDL_Rect sliderRect2 = { 520,450, 200, 30 };
 	auto slider2 = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::SLIDER, 11, "VOLUME EFFECTS", sliderRect2, this, SDL_Rect{ 0,0,0,0 }, SliderBar, thumbNormal, thumbPressed);
 	if (slider2) slider2->visible = false;
 
@@ -627,7 +701,7 @@ void Scene::LoadMainMenu() {
 	SDL_Texture* buttonExitNormal;
 	buttonExitPressed = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonExit2_01.png");
 	buttonExitNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonExit1_01.png");
-	SDL_Rect exitPosRect = { 520, 530, 200, 50 };
+	SDL_Rect exitPosRect = { 520, 560, 200, 50 };
 	auto exitPos = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "EXIT", exitPosRect, this, SDL_Rect{0,0,0,0}, buttonExitNormal, buttonExitPressed);
 
 	////Botón CREDITS
@@ -707,14 +781,14 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 	
 		break;
 	case 5:
-		/*continueGame = true; 
+		continueGame = true; 
 		if (savedLevel == 1) {
 			ChangeScene(SceneID::LEVEL1);
 		}
 		else {
 			ChangeScene(SceneID::LEVEL2);
-		}*/
-		SetStore(true);
+		}
+	
 		break;
 	case 6: 
 		exitGame = true; 
@@ -804,6 +878,12 @@ void Scene::LoadLevel1() {
 	Engine::GetInstance().map->LoadEntities(player, enemies);
 
 	heartTexture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/heart4.png");
+	panelTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_01.png");
+	heart1Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese1_01.png");
+	heart2Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese2_01.png");
+	heart3Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese3_01.png");
+	heart4Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese4_01.png");
+	extraHeartTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_CheeseExtra_01.png");
 	isPaused = false;   
 	CreatePauseUI();
 
@@ -954,28 +1034,77 @@ void  Scene::PostUpdateLevel1() {
 	}
 
 	if (player != nullptr) {
-		if (heartTexture != nullptr) {
-			float w, h;
-			SDL_GetTextureSize(heartTexture, &w, &h);
+		
+			if (panelTexture != nullptr) {
+				float w, h;
+				SDL_GetTextureSize(panelTexture, &w, &h);
 
-			int startX = 20;
-			int startY = 20;
-			int padding = 10; 
 
-			for (int i = 0; i < player->lives; i++) {
-				float x = (float)(startX + i * (w + padding));
-				float y = (float)startY;
-				SDL_FRect destRect = { x, y, w, h };
-				SDL_RenderTexture(Engine::GetInstance().render->renderer, heartTexture, NULL, &destRect);
+				SDL_FRect destRect = { 0, 0, w/2, h/2 };
+				SDL_RenderTexture(Engine::GetInstance().render->renderer, panelTexture, NULL, &destRect);
+
 			}
-		}
-		else {
-			for (int i = 0; i < player->lives; i++) {
-				SDL_Rect r = { 20 + i * 40, 20, 30, 30 };
-				Engine::GetInstance().render->DrawRectangle(r, 255, 0, 0, 255, true, false);
-			}
-		}
+			if (player->lives == 4) {
+				if (heart4Texture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(heart4Texture, &w, &h);
 
+
+					SDL_FRect destRect = { 90, 112, w/3, h/3 };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart4Texture, NULL, &destRect);
+
+				}
+			}
+			else if (player->lives == 3) {
+				if (heart3Texture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(heart3Texture, &w, &h);
+
+
+					SDL_FRect destRect = { 90, 112, w / 3, h / 3 };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart3Texture, NULL, &destRect);
+
+				}
+
+			}
+			else if (player->lives == 2) {
+
+				if (heart2Texture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(heart2Texture, &w, &h);
+
+
+					SDL_FRect destRect = { 90, 112, w / 3, h / 3 };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart2Texture, NULL, &destRect);
+
+				}
+			}
+			else if (player->lives == 1) {
+
+				if (heart1Texture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(heart1Texture, &w, &h);
+
+
+					SDL_FRect destRect = { 90, 112, w / 3, h / 3 };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart1Texture, NULL, &destRect);
+
+				}
+			}
+			if (player->extralife) {
+
+				if (extraHeartTexture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(extraHeartTexture, &w, &h);
+
+
+					SDL_FRect destRect = { 90+30, 112, w / 3, h / 3 };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, extraHeartTexture, NULL, &destRect);
+				}
+
+			}
+
+		
 		std::string scoreText = "Score: " + std::to_string(player->score);
 		Engine::GetInstance().render->DrawText(scoreText.c_str(), 1100, 30, 0, 0, { 255, 255, 255, 255 });
 	}
@@ -1008,6 +1137,12 @@ void Scene::LoadLevel2() {
 	CreatePauseUI();
 	
 	heartTexture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/heart4.png");
+	panelTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_01.png");
+	heart1Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese1_01.png");
+	heart2Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese2_01.png");
+	heart3Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese3_01.png");
+	heart4Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese4_01.png");
+	extraHeartTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_CheeseExtra_01.png");
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/", "TEST_map_LV1_towerCenter_01.tmx");
 
@@ -1096,6 +1231,12 @@ void Scene::LoadLevel3() {
 	CreatePauseUI();
 
 	heartTexture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/heart4.png");
+	panelTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_01.png");
+	heart1Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese1_01.png");
+	heart2Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese2_01.png");
+	heart3Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese3_01.png");
+	heart4Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese4_01.png");
+	extraHeartTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_CheeseExtra_01.png");
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/", "TEST_map_LV1_pantryRoom_01.tmx");
 
@@ -1184,6 +1325,12 @@ void Scene::LoadLevel4() {
 	CreatePauseUI();
 
 	heartTexture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/heart4.png");
+	panelTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_01.png");
+	heart1Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese1_01.png");
+	heart2Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese2_01.png");
+	heart3Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese3_01.png");
+	heart4Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese4_01.png");
+	extraHeartTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_CheeseExtra_01.png");
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/", "TEST_map_LV1_tortureRoom_02.tmx");
 
@@ -1272,6 +1419,12 @@ void Scene::LoadLevel5() {
 	CreatePauseUI();
 
 	heartTexture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/heart4.png");
+	panelTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_01.png");
+	heart1Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese1_01.png");
+	heart2Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese2_01.png");
+	heart3Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese3_01.png");
+	heart4Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese4_01.png");
+	extraHeartTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_CheeseExtra_01.png");
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/", "TEST_map_LV1_tortureRoom_02.tmx");
 
@@ -1429,8 +1582,8 @@ void Scene::HandleWinScreenUIEvents(UIElement* uiElement) {
 void Scene::CreatePauseUI() {
 	auto btnPauseHUD = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 30, "||", { 1200, 20, 50, 50 }, this);
 	btnPauseHUD->visible = true;
-	int x = 540;
-	int y = 400;
+	int x = 520;
+	int y = 250;
 
 	// RESUME
 	SDL_Texture* buttonResumeNormal;
@@ -1445,15 +1598,16 @@ void Scene::CreatePauseUI() {
 	SDL_Texture* buttonOptionsClicked;
 	buttonOptionsNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonOptions1_01.png");
 	buttonOptionsClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonOptions2_01.png");
-	auto btnOptions = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 21, "OPTIONS", { x, y + 70, 200, 50 }, this);
+	auto btnOptions = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 21, "OPTIONS", { x, y + 70, 200, 50 }, this, SDL_Rect{ 0,0,0,0 }, buttonOptionsNormal,buttonOptionsClicked);
 	btnOptions->visible = false;
 
 	//BACK TO TITLE
 	SDL_Texture* buttonTitleNormal;
 	SDL_Texture* buttonTitleClicked;
-	buttonTitleNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonTitle1_01.png");
-	buttonTitleClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonTitle2_01.png");
-	auto btnTitle = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 22, "TITLE SCREEN", { x, y + 210, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonTitleNormal, buttonTitleClicked);
+	
+	buttonTitleNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonQuit1_01.png");
+	buttonTitleClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonQuit2_01.png");
+	auto btnTitle = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 22, "TITLE SCREEN", { x, y + 140, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonTitleNormal, buttonTitleClicked);
 	btnTitle->visible = false;
 
 	// EXIT
@@ -1461,7 +1615,7 @@ void Scene::CreatePauseUI() {
 	SDL_Texture* buttonExitNormal;
 	buttonExitPressed = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonExit2_01.png");
 	buttonExitNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonExit1_01.png");
-	auto btnExit = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 23, "EXIT GAME", { x, y + 140, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonExitNormal, buttonExitPressed);
+	auto btnExit = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 23, "EXIT GAME", { x, y + 210, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonExitNormal, buttonExitPressed);
 	btnExit->visible = false;
 
 	//SLIDER MUSICA
@@ -1602,6 +1756,12 @@ void Scene::LoadMap(std::string map)
 	CreatePauseUI();
 
 	heartTexture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/heart4.png");
+	panelTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_01.png");
+	heart1Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese1_01.png");
+	heart2Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese2_01.png");
+	heart3Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese3_01.png");
+	heart4Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese4_01.png");
+	extraHeartTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_CheeseExtra_01.png");
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/", map);
 
@@ -1742,6 +1902,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 			if (el->id == 39 || el->id ==40 || el->id == 42) el->visible = false;
 
 		}
+	
 		//imagen informativa de lo que hace en grande tmbn
 		break;
 	//case 38:
@@ -1794,10 +1955,11 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				if (el->id == 37){
 					SDL_Texture* BeenBought = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_SoldOut_01.png");
 					el->SetTexture(BeenBought);
+
 				}
 
 			}
-			//FUNCION DE QUE PLAYER TIENE VIDA TEMPORAL
+			player->extralife = true;
 		}
 		break;
 	/*case 42:
