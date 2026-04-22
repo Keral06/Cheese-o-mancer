@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="20" nextobjectid="272">
+<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="20" nextobjectid="272">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -10887,8 +10887,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="10"/>
+   <tile gid="11"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10973,8 +10973,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="40"/>
+   <tile gid="41"/>
    <tile/>
    <tile/>
    <tile/>
@@ -11059,8 +11059,8 @@
    <tile/>
    <tile gid="72"/>
    <tile gid="73"/>
-   <tile/>
-   <tile/>
+   <tile gid="70"/>
+   <tile gid="71"/>
    <tile/>
    <tile/>
    <tile gid="72"/>
@@ -11145,8 +11145,8 @@
    <tile/>
    <tile gid="102"/>
    <tile gid="103"/>
-   <tile/>
-   <tile/>
+   <tile gid="100"/>
+   <tile gid="101"/>
    <tile/>
    <tile/>
    <tile gid="102"/>

@@ -19,9 +19,9 @@ Magician::Magician() : NPC(EntityType::MAGICIAN)
 		dialogueMagicianStart=dialogue;
 	pbody = nullptr;
 	Dialogue hasCheese("resources/Dialogues/Magician/Magician_Dialogues_AfterCheeseWheel.txt", "resources/Dialogues/Magician/Magician_Names_AfterCheeseWheel.txt");
-	this->AfterCheese = AfterCheese;
-	Dialogue BeforeCheeese("resources/Dialogues/Magician/Magician_Dialogues_BeforeCheese.txt", "resources/Dialogues/Magician/Magician_Names_BeforeCheese.txt");
-	this->BeforeCheese = BeforeCheese;
+	this->AfterCheese = hasCheese;
+	Dialogue BeforeCheeesee("resources/Dialogues/Magician/Magician_Dialogues_BeforeCheese.txt", "resources/Dialogues/Magician/Magician_Names_BeforeCheese.txt");
+	this->BeforeCheese = BeforeCheeesee;
 	Dialogue Beated("resources/Dialogues/Magician/Magician_Dialogues_AfterDefeatingBoss.txt", "resources/Dialogues/Magician/Magician_Names_AfterDefeatingBoss.txt");
 	BeatBoss = Beated;
 	
@@ -84,7 +84,7 @@ bool Magician::Update(float dt)
 	Draw(dt);
 
 	if(isGettingTouched){
-		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - 16, (int)position.getY() - texH / 2 - 32);
+		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() -texW/2, (int)position.getY() + texH / 2 );
 		
 		if (firstTime == true && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
@@ -126,16 +126,23 @@ bool Magician::Update(float dt)
 			return true;
 		}
 		if (BeatBoss.hasStarted && !BeatBoss.hasEnded) {
-			dialogueMagicianStart.Draw(dt);
+			BeatBoss.Draw(dt);
 			return true;
 
 		}
 		if (py->hasCheese == false && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 			if (BeforeCheese.hasStarted) {
+				
 
 				BeforeCheese.NextDialogue();
 				BeforeCheese.Draw(dt);
+				if (BeforeCheese.GetCurrentDialogue() == "There! You did so well!") {
+
+
+					py->hasTalkedMagician = true;
+					py->lives = 4;
+				}
 				return true;
 			}
 			BeforeCheese.BeginDialogue();
@@ -147,7 +154,7 @@ bool Magician::Update(float dt)
 
 
 		}if (BeforeCheese.hasStarted && !BeforeCheese.hasEnded) {
-			dialogueMagicianStart.Draw(dt);
+			BeforeCheese.Draw(dt);
 			return true;
 
 		}
@@ -169,7 +176,7 @@ bool Magician::Update(float dt)
 
 
 		}if (AfterCheese.hasStarted && !AfterCheese.hasEnded) {
-			dialogueMagicianStart.Draw(dt);
+			AfterCheese.Draw(dt);
 			return true;
 
 		}
@@ -227,6 +234,7 @@ void Magician::OnCollision(PhysBody* physA, PhysBody* physB) {
 }
 void Magician:: OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 	isGettingTouched = false;
-
+	//if player moves away from magician, reset dialogue
+	
 
 }

@@ -62,6 +62,7 @@ bool Scene::Update(float dt)
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
 		showUIDebug = !showUIDebug; 
 	}
+
 	switch (currentScene)
 	{
 	case SceneID::INTRO_SCREEN:
@@ -120,7 +121,9 @@ bool Scene::Update(float dt)
 		UpdateFinalWin(dt);
 		break;
 	}
-
+	if (isPaused) {
+		UpdatePauseMenu();
+	}
 
 	return true;
 }
@@ -129,6 +132,9 @@ bool Scene::Update(float dt)
 bool Scene::PostUpdate()
 {
 	bool ret = true;
+	if (isPaused) {
+		UpdatePauseMenu();
+	}
 
 	switch (currentScene)
 	{
@@ -178,9 +184,20 @@ bool Scene::PostUpdate()
 			float w, h;
 			SDL_GetTextureSize(storeBag, &w, &h);
 			Engine::GetInstance().render->DrawTextureNoCamera(storeBag, 80, -100, w/1.5, h/1.5);
-			SDL_GetTextureSize(storePaper, &w, &h);
-			Engine::GetInstance().render->DrawTextureNoCamera(storePaper, 550, 0, w / 1.5, h / 1.5);
-
+			if (selectedStoreItem == 1) {
+				SDL_GetTextureSize(storePaperMap, &w, &h);
+				Engine::GetInstance().render->DrawTextureNoCamera(storePaperMap, 550, 0, w / 1.5, h / 1.5);
+			}
+			else if (selectedStoreItem == 2) {
+				SDL_GetTextureSize(storePaperKey, &w, &h);
+				Engine::GetInstance().render->DrawTextureNoCamera(storePaperKey, 550, 0, w / 1.5, h / 1.5);
+			}
+			else if (selectedStoreItem == 3) {
+			
+				SDL_GetTextureSize(storePaperLife, &w, &h);
+				Engine::GetInstance().render->DrawTextureNoCamera(storePaperLife, 550, 0, w / 1.5, h / 1.5);
+			}
+			
 			
 
 		}
@@ -292,14 +309,24 @@ bool Scene::PostUpdate()
 		if (storeOn) {
 			float w, h;
 			SDL_GetTextureSize(storeBag, &w, &h);
-			Engine::GetInstance().render->DrawTextureNoCamera(storeBag, 100, 0, w, h);
-			SDL_GetTextureSize(storePaper, &w, &h);
-			Engine::GetInstance().render->DrawTextureNoCamera(storePaper, 100, 0, w, h);
-			
-		
-		
+			Engine::GetInstance().render->DrawTextureNoCamera(storeBag, 80, -100, w / 1.5, h / 1.5);
+			if (selectedStoreItem == 1) {
+				SDL_GetTextureSize(storePaperMap, &w, &h);
+				Engine::GetInstance().render->DrawTextureNoCamera(storePaperMap, 550, 0, w / 1.5, h / 1.5);
+			}
+			else if (selectedStoreItem == 2) {
+				SDL_GetTextureSize(storePaperKey, &w, &h);
+				Engine::GetInstance().render->DrawTextureNoCamera(storePaperKey, 550, 0, w / 1.5, h / 1.5);
+			}
+			else if (selectedStoreItem == 3) {
+
+				SDL_GetTextureSize(storePaperLife, &w, &h);
+				Engine::GetInstance().render->DrawTextureNoCamera(storePaperLife, 550, 0, w / 1.5, h / 1.5);
+			}
+
+
+
 		}
-		
 		break;
 
 	case SceneID::LEVEL3:
@@ -662,7 +689,7 @@ void Scene::LoadGame()
 }
 bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 {
-	if (uiElement->id >= 20 && uiElement->id <= 30) { 
+	if ((uiElement->id >= 20 && uiElement->id <= 30)|| uiElement->id ==52) {
 		HandlePauseUIEvents(uiElement);
 		return true;
 	}
@@ -909,9 +936,9 @@ void Scene::LoadMainMenu() {
 	//SDL_Rect backCreditPosRect = { 520, 560, 200, 50 };
 	//auto backCreditsBtn = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, "BACK", backCreditPosRect, this);
 	//if (backCreditsBtn) backCreditsBtn->visible = false;
-	this->Volume = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextVolume_01.png");
-	this->VolumeEffects = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextEffectsVolume_01.png");
-	this->fullscreen = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextFullScreen_01.png");
+	this->Volume = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextVolume2_.png");
+	this->VolumeEffects = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextEffectsVolume2_01.png");
+	this->fullscreen = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextFullScreen2_01.png");
 }
 
 void Scene::UnloadMainMenu() {
@@ -985,7 +1012,9 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		else {
 			ChangeScene(SceneID::LEVEL2);
 		}*/
-		SetStore(true);
+		if (storeOn == false)SetStore(true);
+		else
+		SetStore(false);
 	
 		break;
 	case 6: 
@@ -1106,9 +1135,9 @@ void Scene::LoadLevel1() {
 	item->Start();
 
 	// Textura de ayuda
-	helpTexture = Engine::GetInstance().textures->Load("Assets/textures/PREV/HELP.png");
+	helpTexture = Engine::GetInstance().textures->Load("resources/UI/UI_Tutorial/UI_TutorialControls_.png");
 	//textura de mapa
-	map1Texture = Engine::GetInstance().textures->Load("Assets/textures/PREV/HELP.png");
+	map1Texture = Engine::GetInstance().textures->Load("resources/UI/UI_MapLVL1_01.png");
 }
 
 void Scene::UpdateLevel1(float dt) {
@@ -1797,7 +1826,7 @@ void Scene::CreatePauseUI() {
 	SDL_Texture* buttonResumedClicked;
 	buttonResumeNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonContinue1_01.png");
 	buttonResumedClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonContinue2_01.png");
-	auto btnResume = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 20, "RESUME", { x, y - 100, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonResumeNormal, buttonResumedClicked);
+	auto btnResume = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 20, "RESUME", { x, y - 50, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonResumeNormal, buttonResumedClicked);
 	btnResume->visible = false;
 
 	// OPTIONS
@@ -1805,7 +1834,7 @@ void Scene::CreatePauseUI() {
 	SDL_Texture* buttonOptionsClicked;
 	buttonOptionsNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonOptions1_01.png");
 	buttonOptionsClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonOptions2_01.png");
-	auto btnOptions = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 21, "OPTIONS", { x, y, 200, 50 }, this, SDL_Rect{ 0,0,0,0 }, buttonOptionsNormal,buttonOptionsClicked);
+	auto btnOptions = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 21, "OPTIONS", { x, y+20, 200, 50 }, this, SDL_Rect{ 0,0,0,0 }, buttonOptionsNormal,buttonOptionsClicked);
 	btnOptions->visible = false;
 
 	//BACK TO TITLE
@@ -1820,8 +1849,8 @@ void Scene::CreatePauseUI() {
 	// EXIT
 	SDL_Texture* buttonExitPressed;
 	SDL_Texture* buttonExitNormal;
-	buttonExitPressed = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonExit2_01.png");
-	buttonExitNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonExit1_01.png");
+	buttonExitPressed = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextExit2_01.png");
+	buttonExitNormal = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextExit1_01.png");
 	auto btnExit = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 23, "EXIT GAME", { x, y + 200, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonExitNormal, buttonExitPressed);
 	btnExit->visible = false;
 
@@ -1833,11 +1862,11 @@ void Scene::CreatePauseUI() {
 	thumbPressed = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_SliderButton_01.png");
 	thumbNormal = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_Checkbox_01.png");
 
-	auto sliderMusic = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::SLIDER, 26, "MUSIC", { x, y, 200, 30 }, this, SDL_Rect{0,0,0,0}, SliderBar, thumbNormal, thumbPressed);
+	auto sliderMusic = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::SLIDER, 26, "MUSIC", { x, y+15, 200, 30 }, this, SDL_Rect{0,0,0,0}, SliderBar, thumbNormal, thumbPressed);
 	sliderMusic->visible = false;
 
 	//SLIDER FX
-	auto sliderFX = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::SLIDER, 27, "FX", { x, y + 50, 200, 30 }, this, SDL_Rect{0,0,0,0}, SliderBar, thumbNormal, thumbPressed);
+	auto sliderFX = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::SLIDER, 27, "FX", { x, y + 75, 200, 30 }, this, SDL_Rect{0,0,0,0}, SliderBar, thumbNormal, thumbPressed);
 	sliderFX->visible = false;
 
 	//BACK FROM OPTIONS
@@ -1854,11 +1883,14 @@ void Scene::CreatePauseUI() {
 	SDL_Texture* buttonNormal;
 	buttonPressed = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_Checkbox2_01.png");
 	buttonNormal = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_Checkbox_01.png");
-	SDL_Rect Fullscreen = { x,y-20, 35, 35 };
+	SDL_Rect Fullscreen = { x+90,y-50, 35, 35 };
 	auto fullscreen = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::CHECKBOX, 52, "FULL SCREEN", Fullscreen, this, SDL_Rect{ 0,0,0,0 }, buttonPressed, buttonNormal);
 	if (fullscreen) fullscreen->visible = false;
-
+	this->Volume = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextVolume1.png");
+	this->VolumeEffects = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextEffectsVolume_01.png");
+	this->fullscreen = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextFullScreen_01.png");
 }
+
 
 void Scene::SetPause(bool pause) {
 	isPaused = pause;
@@ -1888,6 +1920,7 @@ void Scene::HandlePauseUIEvents(UIElement* uiElement) {
 		for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
 			if (el->id >= 20 && el->id <= 23) el->visible = false;
 			if (el->id == 25 || el->id == 26 || el->id == 27 || el->id ==52) el->visible = true;
+			slidersOn = true;
 		}
 		break;
 	case 22: 
@@ -1930,7 +1963,22 @@ void Scene::HandlePauseUIEvents(UIElement* uiElement) {
 		break;
 	}
 }
+void Scene::UpdatePauseMenu() {
+	if (slidersOn) {
+		SDL_Rect VolumeRect = { 520,220, 200, 50 };
+		Engine::GetInstance().render->DrawTextureNoCamera(Volume, VolumeRect.x, VolumeRect.y, VolumeRect.w, VolumeRect.h);
+		SDL_Rect Fullscreen = { 520,175, 200, 50 };
+		Engine::GetInstance().render->DrawTextureNoCamera(fullscreen, Fullscreen.x, Fullscreen.y, Fullscreen.w, Fullscreen.h);
 
+		SDL_Rect EffectsRect = { 520,280, 200, 50 };
+		Engine::GetInstance().render->DrawTextureNoCamera(VolumeEffects, EffectsRect.x, EffectsRect.y, EffectsRect.w, EffectsRect.h);
+
+
+
+
+
+	}
+}
 void Scene::SaveLevel()
 {
 	std::ofstream file("Assets/savegame.txt");
@@ -2095,7 +2143,9 @@ void Scene::CreateStoreLevel1() {
 
 	//texturas decoracion
 	storeBag = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_Bag_02.png");
-	storePaper = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_Paper_01.png");
+	storePaperMap = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_Paper_Map_.png");
+	storePaperLife = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_Paper_Life.png");
+	storePaperKey = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_Paper_Key_.png");
 }
 
 void Scene::SetStore(bool store) {
@@ -2117,7 +2167,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 			if (el->id > 39 && el->id <= 42) el->visible = false;
 			
 		}
-		//imagen informativa de lo que hace en grande tmbn
+		selectedStoreItem = 1;
 		break;
 	case 36:
 		for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
@@ -2125,7 +2175,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 			if (el->id == 39 || el->id >= 41 && el->id<=42) el->visible = false;
 
 		}
-		//imagen informativa de lo que hace en grande tmbn
+		selectedStoreItem = 2;
 		break;
 	case 37:
 		for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
@@ -2134,7 +2184,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 
 		}
 	
-		//imagen informativa de lo que hace en grande tmbn
+		selectedStoreItem = 3;
 		break;
 	//case 38:
 	//	for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {

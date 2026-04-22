@@ -41,6 +41,7 @@ private:
 	
 	
 	const char *tsxPath;
+	const char* nameOf;
 
 	std::vector<std::string> dialogue;
 	std::vector<std::string> dialogueHelper;
