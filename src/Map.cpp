@@ -22,6 +22,7 @@
 #include "HANDMAN.h"
 #include "Magician.h"
 #include "Door.h"
+#include "cheeseballInteractuable.h"
 
 Map::Map() : Module(), mapLoaded(false)
 {
@@ -679,6 +680,14 @@ MapLayer* Map::GetNavigationLayer() {
                             magician->yInicial = (int)y;
                             magician->Start();
                             magician->mapID = id;
+                        }
+                        else if (entityType == "cheeseballInteract") {
+                            std::shared_ptr<CheeseBallInteract> cheeseBallInteract = std::dynamic_pointer_cast<CheeseBallInteract>(Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEESEBALLINTERACT));
+                            cheeseBallInteract->position = Vector2D(x, y);
+                            cheeseBallInteract->xInicial = (int)x;
+                            cheeseBallInteract->yInicial = (int)y;
+                            cheeseBallInteract->Start();
+                            cheeseBallInteract->mapID = id;
                         }
                     }
                 }

@@ -179,6 +179,9 @@ private:
 	SDL_Texture* VolumeEffects = nullptr;
 	SDL_Texture* fullscreen = nullptr;
 
+	SDL_Texture* storeBag = nullptr;
+	SDL_Texture* storePaper = nullptr;
+
 public:
 	void SetStore(bool store);
 	std::string nextMap = "";

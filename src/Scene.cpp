@@ -173,6 +173,17 @@ bool Scene::PostUpdate()
 
 		}
 		Engine::GetInstance().uiManager->PostUpdate();
+		//STORE IS IN LEVEL 2
+		if (storeOn) {
+			float w, h;
+			SDL_GetTextureSize(storeBag, &w, &h);
+			Engine::GetInstance().render->DrawTextureNoCamera(storeBag, 80, -100, w/1.5, h/1.5);
+			SDL_GetTextureSize(storePaper, &w, &h);
+			Engine::GetInstance().render->DrawTextureNoCamera(storePaper, 550, 0, w / 1.5, h / 1.5);
+
+			
+
+		}
 		break;
 
 	case SceneID::LEVEL1:
@@ -276,6 +287,19 @@ bool Scene::PostUpdate()
 		{
 			Engine::GetInstance().render->DrawTexture(helpTexture, 560, 300, NULL, 0.0f);
 		}
+
+		//STORE IS IN LEVEL 2
+		if (storeOn) {
+			float w, h;
+			SDL_GetTextureSize(storeBag, &w, &h);
+			Engine::GetInstance().render->DrawTextureNoCamera(storeBag, 100, 0, w, h);
+			SDL_GetTextureSize(storePaper, &w, &h);
+			Engine::GetInstance().render->DrawTextureNoCamera(storePaper, 100, 0, w, h);
+			
+		
+		
+		}
+		
 		break;
 
 	case SceneID::LEVEL3:
@@ -474,6 +498,10 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 		HandlePauseUIEvents(uiElement);
 		return true;
 	}
+	if(uiElement->id>=35 && uiElement->id <= 42) {
+		HandleStoreUIEvents(uiElement);
+		return true;
+	}
 	switch (currentScene)
 	{
 	case SceneID::INTRO_SCREEN:
@@ -538,6 +566,7 @@ void Scene::LoadScene(SceneID newScene)
 		break;
 	case SceneID::MAIN_MENU:
 		LoadMainMenu();
+		CreateStoreLevel1();
 		break;
 
 	case SceneID::LEVEL1:
@@ -781,13 +810,14 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 	
 		break;
 	case 5:
-		continueGame = true; 
+		/*continueGame = true; 
 		if (savedLevel == 1) {
 			ChangeScene(SceneID::LEVEL1);
 		}
 		else {
 			ChangeScene(SceneID::LEVEL2);
-		}
+		}*/
+		SetStore(true);
 	
 		break;
 	case 6: 
@@ -1163,6 +1193,7 @@ void Scene::LoadLevel2() {
 			player->respawnPosition = { PIXEL_TO_METERS(startPos.getX()), PIXEL_TO_METERS(startPos.getY()) };
 		}
 	}
+	CreateStoreLevel1();
 }
 
 void Scene::UpdateLevel2(float dt) {
@@ -1876,23 +1907,25 @@ void Scene::CreateStoreLevel1() {
 	SDL_Texture* BuyClicked;
 	BuyNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_ButtonBuy1_01.png");
 	BuyClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_ButtonBuy2_01.png");
-	auto btnBUYMAP = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 39, "BUYMAP", { 700, y+300, 200, 100 }, this, SDL_Rect{0,0,0,0}, BuyNormal, BuyClicked);
+	auto btnBUYMAP = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 39, "BUYMAP", { 750, y+ 280, 300, 150 }, this, SDL_Rect{0,0,0,0}, BuyNormal, BuyClicked);
 	btnBUYMAP->visible = false;
 
 	//BUYKEY
-	auto btnBUYKEY = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 40, "BUYKEY", { 700, y+300, 200, 100 }, this, SDL_Rect{ 0,0,0,0 }, BuyNormal, BuyClicked);
+	auto btnBUYKEY = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 40, "BUYKEY", { 750, y+ 280, 300, 150 }, this, SDL_Rect{ 0,0,0,0 }, BuyNormal, BuyClicked);
 	btnBUYKEY->visible = false;
 
 	//BUYLIFE
 	
-	auto btnBUYLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 41, "BUYLIFE", { 700, y+300, 200, 100 }, this, SDL_Rect{ 0,0,0,0 }, BuyNormal, BuyClicked);
+	auto btnBUYLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 41, "BUYLIFE", { 750, y+280, 300, 150 }, this, SDL_Rect{ 0,0,0,0 }, BuyNormal, BuyClicked);
 	btnBUYLIFE->visible = false;
 
 	////BUYLLANTERN
 	//auto btnBUYLLANTERN = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 42, "BUYLLANTERN", { x + 70, y, 200, 50 }, this);
 	//btnBUYLLANTERN->visible = false;
 
-	
+	//texturas decoracion
+	storeBag = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_Bag_02.png");
+	storePaper = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_Paper_01.png");
 }
 
 void Scene::SetStore(bool store) {

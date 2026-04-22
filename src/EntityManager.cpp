@@ -20,7 +20,7 @@
 #include "CheeseBall.h"
 #include "Door.h"
 #include "Magician.h"
-
+#include "cheeseballInteractuable.h"
 EntityManager::EntityManager() : Module()
 {
 	name = "entitymanager";
@@ -137,6 +137,9 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::MAGICIAN:
 		entity = std::make_shared<Magician>();
+		break;
+	case EntityType::CHEESEBALLINTERACT:
+		entity = std::make_shared<CheeseBallInteract>();
 		break;
 	default:
 		break;

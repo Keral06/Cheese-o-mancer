@@ -13,7 +13,7 @@
 //El primer dialogo es el ultimo del vector!!
 
 
-Dialogue :: Dialogue(const char	*tsxPath) {
+Dialogue :: Dialogue(const char	*tsxPath, const char* name) {
 
 	this->tsxPath = tsxPath;
 	std::ifstream fich(tsxPath);
@@ -29,24 +29,7 @@ Dialogue :: Dialogue(const char	*tsxPath) {
 			
 
 		}
-		if (helper.size() > 70) {
 		
-			int i =65;
-			bool hasFound = false;
-			while (!hasFound)
-			{
-				if (helper[i] == ' ') {
-				
-					helper[i] = '\n';
-					hasFound = true;
-				
-				}
-				i++;
-			}
-
-		
-		
-		}
 		dialogue.push_back(helper);
 		while (!helper.empty()) {
 
@@ -57,6 +40,32 @@ Dialogue :: Dialogue(const char	*tsxPath) {
 
 
 		
+
+	}
+	
+	std::ifstream ficht(name);
+	std::string helpery;
+	char b;
+	hasStarted = false;
+	ficht.get(b);
+	while (b != '+') { //this is what ends the txt document
+		while (b != '\n') {
+			helpery.push_back(b);
+			ficht.get(b);
+
+
+		}
+
+		this->name.push_back(helpery);
+		while (!helpery.empty()) {
+
+			helpery.pop_back();
+
+		}
+		ficht.get(b);
+
+
+
 
 	}
 
@@ -90,6 +99,7 @@ void Dialogue::Draw(float dt) {
 		
 	Engine::GetInstance().render->DrawTextureNoCamera(textureDialogue,250, 420, w / 1.5, h / 1.5);
 	Engine::GetInstance().render->DrawText(dialogueHelper[lenghtHelper ].c_str(), 310, 580, 0, 0, { 0,0,0 });
+	Engine::GetInstance().render->DrawText(nameHelper[lenghtHelper].c_str(), 312, 520, 0, 0, { 0,0,0 });
 }
 
 bool Dialogue::Update(float dt)
@@ -106,6 +116,7 @@ bool Dialogue::Update(float dt)
 void Dialogue::BeginDialogue() {
 	
 	dialogueHelper = dialogue;
+	nameHelper = name;
 	lenghtHelper = 0;
 	hasStarted = true;
 	printf("%s", dialogueHelper[lenghtHelper].c_str());
@@ -122,7 +133,7 @@ void Dialogue:: NextDialogue() {
 		lenghtHelper++;
 	
 		printf("%s",dialogueHelper[lenghtHelper].c_str());
-		
+		printf("%s",nameHelper[lenghtHelper].c_str());
 	}
 	else {
 		hasStarted = false;

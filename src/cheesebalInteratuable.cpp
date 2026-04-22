@@ -84,7 +84,7 @@ bool HANDMAN::Update(float dt)
 {
 	if (!active) return true;
 
-	Draw(dt);
+	anims.Update(dt);
 	if (isGettingTouched) {
 		
 		if (firstTime == true && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
@@ -215,20 +215,7 @@ bool HANDMAN::Update(float dt)
 
 	return true;
 }
-void HANDMAN::Draw(float dt) {
 
-	anims.Update(dt);
-	const SDL_Rect& animFrame = anims.GetCurrentFrame();
-
-	int x, y;
-	pbody->GetPosition(x, y);
-	position.setX((float)x);
-	position.setY((float)y);
-
-
-	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
-
-}
 bool HANDMAN::CleanUp()
 {
 	LOG("Unloading Coin");

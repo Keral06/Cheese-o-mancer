@@ -15,14 +15,14 @@ Magician::Magician() : NPC(EntityType::MAGICIAN)
 	this->name = name;
 	
 	this->tsxPath = tsxPath;
-	Dialogue dialogue("resources/Dialogues/Magician/Magician_Dialogues_IntroTutorial.txt");
+	Dialogue dialogue("resources/Dialogues/Magician/Magician_Dialogues_IntroTutorial.txt", "resources/Dialogues/Magician/Magician_Names_IntroTutorial.txt");
 		dialogueMagicianStart=dialogue;
 	pbody = nullptr;
-	Dialogue hasCheese("resources/Dialogues/Magician/Magician_Dialogues_AfterCheeseWheel.txt");
+	Dialogue hasCheese("resources/Dialogues/Magician/Magician_Dialogues_AfterCheeseWheel.txt", "resources/Dialogues/Magician/Magician_Names_AfterCheeseWheel.txt");
 	this->AfterCheese = AfterCheese;
-	Dialogue BeforeCheeese("resources/Dialogues/Magician/Magician_Dialogues_BeforeCheese.txt");
+	Dialogue BeforeCheeese("resources/Dialogues/Magician/Magician_Dialogues_BeforeCheese.txt", "resources/Dialogues/Magician/Magician_Names_BeforeCheese.txt");
 	this->BeforeCheese = BeforeCheese;
-	Dialogue Beated("resources/Dialogues/Magician/Magician_Dialogues_AfterDefeatingBoss.txt");
+	Dialogue Beated("resources/Dialogues/Magician/Magician_Dialogues_AfterDefeatingBoss.txt", "resources/Dialogues/Magician/Magician_Names_AfterDefeatingBoss.txt");
 	BeatBoss = Beated;
 	
 }

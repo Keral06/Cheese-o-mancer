@@ -41,7 +41,8 @@ enum class ColliderType {
     EXTRALIVE,
     FINALBOSS,
     MAGICIAN,
-    HANDMAN
+    HANDMAN,
+	CHEESEBALLINTERACT
     // ..
 };
 
