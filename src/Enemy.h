@@ -62,6 +62,7 @@ public:
 	int offsetAttackHitboxY = 0;
 	bool direction = false;
 	int health = 100;
+	bool facingLeft = true;
 protected:
 	b2Vec2 velocity;
 	AnimationSet anims;

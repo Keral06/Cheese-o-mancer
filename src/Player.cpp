@@ -241,9 +241,9 @@ void Player::GetPhysicsValues() {
 }
 
 void Player::Move() {
-	if (isdead || Engine::GetInstance().scene->IsGamePaused())
-		return;
-
+	/*if (isdead || Engine::GetInstance().scene->IsGamePaused())
+		return;*/
+	if (isAttacking) return;
 	isWalking = false;
 
 	// =====================
@@ -789,7 +789,7 @@ void Player::Attack() {
 
 void Player::HandleAttack() {
 
-	const float comboResetTimeMs = 100;
+	const float comboResetTimeMs = 400;
 	static Uint32 lastAttackTime = 0;
 
 	Uint32 now = SDL_GetTicks();
