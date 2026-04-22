@@ -145,7 +145,7 @@ private:
 	//Funciones Store
 	void CreateStoreLevel1();
 
-
+	void UpdatePauseMenu(float dt);
 	void HandleStoreUIEvents(UIElement* uiElement);
 private:
 
@@ -164,6 +164,7 @@ private:
 	SDL_Texture* heart3Texture = nullptr;
 	SDL_Texture* heart4Texture = nullptr;
 	SDL_Texture* extraHeartTexture = nullptr;
+
 	std::vector<std::shared_ptr<Enemy>> enemies;
 
 	std::shared_ptr<UIButton> uiBt;
@@ -178,9 +179,13 @@ private:
 	SDL_Texture* Volume = nullptr;
 	SDL_Texture* VolumeEffects = nullptr;
 	SDL_Texture* fullscreen = nullptr;
-
+	
 	SDL_Texture* storeBag = nullptr;
-	SDL_Texture* storePaper = nullptr;
+	SDL_Texture* storePaperMap = nullptr;
+	SDL_Texture* storePaperLife = nullptr;
+	SDL_Texture* storePaperKey = nullptr;
+	int selectedStoreItem = 0;
+
 
 public:
 	void SetStore(bool store);

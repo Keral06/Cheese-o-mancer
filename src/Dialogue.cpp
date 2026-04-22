@@ -16,6 +16,7 @@
 Dialogue :: Dialogue(const char	*tsxPath, const char* name) {
 
 	this->tsxPath = tsxPath;
+	nameOf = name;
 	std::ifstream fich(tsxPath);
 	std::string helper;
 	char a;
@@ -43,7 +44,7 @@ Dialogue :: Dialogue(const char	*tsxPath, const char* name) {
 
 	}
 	
-	std::ifstream ficht(name);
+	std::ifstream ficht(nameOf);
 	std::string helpery;
 	char b;
 	hasStarted = false;
