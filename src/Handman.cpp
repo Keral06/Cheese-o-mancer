@@ -43,15 +43,15 @@ bool HANDMAN::Awake() {
 bool HANDMAN::Start() {
 
 
-	std::unordered_map<int, std::string> aliases = { {0, "idle"}, { 19, "talking"} };
+	std::unordered_map<int, std::string> aliases = { {0, "idle"}, { 36, "selling"}, {36+35, "talking"}};
 	anims.LoadFromTSX("resources/spritesheets/Hangman/sprite_hangedman_01.tsx", aliases);
 	/*coinPickupFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/coin-collision-sound-342335.wav");*/
 	anims.SetCurrent("idle");
 
-	texture = Engine::GetInstance().textures->Load("resources/spritesheets/Wizard/sprite_mage_01.png");
+	texture = Engine::GetInstance().textures->Load("resources/spritesheets/Wizard/sprite_hangedman_01.png");
 
 	//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
-	texW = 640;
+	texW = 256;
 	texH = 640;
 
 
