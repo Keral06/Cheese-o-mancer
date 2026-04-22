@@ -49,6 +49,7 @@ bool HANDMAN::Start() {
 	anims.SetCurrent("idle");
 
 	texture = Engine::GetInstance().textures->Load("resources/spritesheets/Wizard/sprite_hangedman_01.png");
+	InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
 	//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 	texW = 256;
@@ -205,7 +206,7 @@ bool HANDMAN::Update(float dt)
 
 		 }
 
-
+		 Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - 16, (int)position.getY() - texH / 2 - 32);
 
 
 	}

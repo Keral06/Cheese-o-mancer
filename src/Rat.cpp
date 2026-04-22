@@ -36,7 +36,7 @@ void Rat::Attack()
 	isAttacking = true;
 	attackTimer = attackDuration;
 
-	LOG("Verdugo empieza ataque");
+	/*LOG("Verdugo empieza ataque");*/
 }
 
 bool Rat::Update(float dt)
@@ -97,19 +97,19 @@ void Rat::UpdateAttack()
         if (!hitboxActive) {
             hitboxActive = true;
             hasHit = false; 
-            LOG("Hitbox ACTIVADA");
+           /* LOG("Hitbox ACTIVADA");*/
         }
     }
     else {
         if (hitboxActive) {
             hitboxActive = false;
-            LOG("Hitbox DESACTIVADA");
+           /* LOG("Hitbox DESACTIVADA");*/
         }
     }
 
     
     if (hitboxActive && playerInHitbox && !hasHit) {
-        LOG("AAUAUCHHH");
+        /*LOG("AAUAUCHHH");*/
 
       
 
@@ -122,7 +122,7 @@ void Rat::UpdateAttack()
         hitboxActive = false;
         attackTimer = attackCooldown;
 
-        LOG("Ataque terminado");
+        /*LOG("Ataque terminado");*/
     }
 }
 

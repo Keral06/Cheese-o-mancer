@@ -465,12 +465,12 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 	{
 		if (other == ColliderType::ENEMY)
 		{
-			if (!hitboxActive || hasHit) return;
+			/*if (!hitboxActive || hasHit) return;*/
 
 			Enemy* e = static_cast<Enemy*>(physB->listener);
 			if (e)
 			{
-				e->DecreaseHealth(20);
+				e->DecreaseHealth(34);
 				LOG("Enemy hit by player attack");
 			}
 
