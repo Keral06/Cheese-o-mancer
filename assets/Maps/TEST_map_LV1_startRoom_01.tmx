@@ -31,9 +31,9 @@
   </object>
  </objectgroup>
  <objectgroup id="24" name="Background_B" parallaxx="1.1">
-  <object id="333" gid="1624" x="-1166.85" y="6250.06" width="13064" height="6204"/>
-  <object id="334" gid="1624" x="11890.5" y="6250.06" width="13064" height="6204"/>
-  <object id="336" gid="1624" x="9689.15" y="12378.1" width="13064" height="6204"/>
+  <object id="333" gid="1624" x="-1154.85" y="6190.06" width="13064" height="6204"/>
+  <object id="334" gid="1624" x="11902.5" y="6190.06" width="13064" height="6204"/>
+  <object id="336" gid="1624" x="11037.2" y="12318.1" width="13064" height="6204"/>
  </objectgroup>
  <objectgroup id="25" name="Background_F" parallaxx="0.95">
   <object id="337" gid="1625" x="14244" y="4462" width="7536" height="3348"/>
