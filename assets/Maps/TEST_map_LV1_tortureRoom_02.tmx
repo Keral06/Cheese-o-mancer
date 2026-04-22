@@ -12,9 +12,6 @@
  <tileset firstgid="1624" name="tileset_LV1_dungeonBase_02" tilewidth="128" tileheight="128" tilecount="810" columns="30">
   <image source="tileset_lv1_dungeonbase_03.png" width="3840" height="3537"/>
  </tileset>
- <tileset firstgid="2434" name="tileset_lv1_torture_02" tilewidth="128" tileheight="128" tilecount="810" columns="30">
-  <image source="tileset_lv1_torture_02.png" width="3840" height="3537"/>
- </tileset>
  <layer id="15" name="Background" width="107" height="104">
   <data>
    <tile gid="241"/>
