@@ -521,6 +521,10 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 		if (pbody && !B2_IS_NULL(pbody->body))
 			respawnPosition = b2Body_GetPosition(pbody->body);
 
+		hasHealed = false;
+
+		LOG("Checkpoint rached.");
+
 		break;
 	}
 
@@ -557,8 +561,12 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 
 	case ColliderType::EXTRALIVE:
 	{
-		if (lives < 4) {
-			lives++;
+		if (hasHealed = false) {
+			if (lives < 4) {
+				lives++;
+				LOG("Player healed.");
+			}
+			hasHealed = true;
 		}
 		break;
 	}
