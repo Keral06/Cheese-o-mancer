@@ -875,7 +875,7 @@ void Player::UpdateAttackHitbox()
 
 void Player::SpawnCheeseBall()
 {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_C) == KEY_DOWN && !isMounted)
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_C) == KEY_DOWN && !isMounted && hasCheese)
 	{
 
 			auto entity = Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEESEBALL);

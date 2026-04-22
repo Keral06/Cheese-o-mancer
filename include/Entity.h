@@ -23,7 +23,8 @@ enum class EntityType
 	NPC,
 	HANDMAN,
 	DOOR,
-	MAGICIAN
+	MAGICIAN,
+	CHEESEBALLINTERACT
 	
 };
 

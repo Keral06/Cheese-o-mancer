@@ -15,7 +15,7 @@ class Dialogue
 {
 public:
 	
-	Dialogue(const char* tsxPath);
+	Dialogue(const char* tsxPath,  const char* name = nullptr);
 	Dialogue();
 	virtual ~Dialogue();
 
@@ -44,6 +44,8 @@ private:
 
 	std::vector<std::string> dialogue;
 	std::vector<std::string> dialogueHelper;
+	std::vector<std::string> name;
+	std::vector<std::string> nameHelper;
 	int lenght = 0;
 	int lenghtHelper = 0;
 	
