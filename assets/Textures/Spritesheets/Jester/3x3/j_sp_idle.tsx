@@ -3,7 +3,7 @@
  <image source="sprite_jester_idles_02.png" width="6528" height="768"/>
  <tile id="0">
   <properties>
-   <property name="loop" type="bool" value="false"/>
+   <property name="loop" type="bool" value="true"/>
    <property name="name" value="idle"/>
   </properties>
   <animation>
@@ -26,7 +26,7 @@
  </tile>
  <tile id="17">
   <properties>
-   <property name="loop" type="bool" value="false"/>
+   <property name="loop" type="bool" value="true"/>
    <property name="name" value="idleOnCheese"/>
   </properties>
   <animation>
