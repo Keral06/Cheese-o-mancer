@@ -44,6 +44,7 @@ private:
 	const char* tsxPath;
 
 public:
+	SDL_Texture* InteractTexture = nullptr;
 	int coinFx;
 	int coinPickupFx;
 	int xInicial;

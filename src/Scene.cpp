@@ -201,7 +201,7 @@ bool Scene::PostUpdate()
 		}
 
 		Engine::GetInstance().map->DrawLayer("Map");
-		if (player != nullptr) {
+		if (player != nullptr && player->hasTalkedMagician) {
 			if (panelTexture != nullptr) {
 				float w, h;
 				SDL_GetTextureSize(panelTexture, &w, &h);
@@ -304,20 +304,76 @@ bool Scene::PostUpdate()
 
 	case SceneID::LEVEL3:
 		Engine::GetInstance().map->DrawLayer("Map");
-		if (player != nullptr) {
-			if (heartTexture != nullptr) {
+		if (player != nullptr && player->hasTalkedMagician) {
+			if (panelTexture != nullptr) {
 				float w, h;
-				SDL_GetTextureSize(heartTexture, &w, &h);
-				int startX = 20;
-				int startY = 20;
-				int padding = 10;
-				for (int i = 0; i < player->lives; i++) {
-					float x = (float)(startX + i * (w + padding));
-					float y = (float)startY;
-					SDL_FRect destRect = { x, y, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heartTexture, NULL, &destRect);
+				SDL_GetTextureSize(panelTexture, &w, &h);
+
+
+				SDL_FRect destRect = { 10, 20, w, h };
+				SDL_RenderTexture(Engine::GetInstance().render->renderer, heartTexture, NULL, &destRect);
+
+			}
+			if (player->lives == 4) {
+				if (heart4Texture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(heart4Texture, &w, &h);
+
+
+					SDL_FRect destRect = { 15, 25, w, h };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart4Texture, NULL, &destRect);
+
 				}
 			}
+			else if (player->lives == 3) {
+				if (heart3Texture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(heart3Texture, &w, &h);
+
+
+					SDL_FRect destRect = { 15, 25, w, h };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart3Texture, NULL, &destRect);
+
+				}
+
+			}
+			else if (player->lives == 2) {
+
+				if (heart2Texture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(heart2Texture, &w, &h);
+
+
+					SDL_FRect destRect = { 15, 25, w, h };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart2Texture, NULL, &destRect);
+
+				}
+			}
+			else if (player->lives == 1) {
+
+				if (heart1Texture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(heart1Texture, &w, &h);
+
+
+					SDL_FRect destRect = { 15, 25, w, h };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart1Texture, NULL, &destRect);
+
+				}
+			}
+			if (player->extralife) {
+
+				if (extraHeartTexture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(extraHeartTexture, &w, &h);
+
+
+					SDL_FRect destRect = { 25, 25, w, h };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, extraHeartTexture, NULL, &destRect);
+				}
+
+			}
+
 			std::string scoreText = "Score: " + std::to_string(player->score);
 			Engine::GetInstance().render->DrawText(scoreText.c_str(), 1100, 30, 0, 0, { 255, 255, 255, 255 });
 
@@ -326,20 +382,76 @@ bool Scene::PostUpdate()
 		}
 	case SceneID::LEVEL4:
 		Engine::GetInstance().map->DrawLayer("Map");
-		if (player != nullptr) {
-			if (heartTexture != nullptr) {
+		if (player != nullptr && player->hasTalkedMagician) {
+			if (panelTexture != nullptr) {
 				float w, h;
-				SDL_GetTextureSize(heartTexture, &w, &h);
-				int startX = 20;
-				int startY = 20;
-				int padding = 10;
-				for (int i = 0; i < player->lives; i++) {
-					float x = (float)(startX + i * (w + padding));
-					float y = (float)startY;
-					SDL_FRect destRect = { x, y, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heartTexture, NULL, &destRect);
+				SDL_GetTextureSize(panelTexture, &w, &h);
+
+
+				SDL_FRect destRect = { 10, 20, w, h };
+				SDL_RenderTexture(Engine::GetInstance().render->renderer, heartTexture, NULL, &destRect);
+
+			}
+			if (player->lives == 4) {
+				if (heart4Texture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(heart4Texture, &w, &h);
+
+
+					SDL_FRect destRect = { 15, 25, w, h };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart4Texture, NULL, &destRect);
+
 				}
 			}
+			else if (player->lives == 3) {
+				if (heart3Texture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(heart3Texture, &w, &h);
+
+
+					SDL_FRect destRect = { 15, 25, w, h };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart3Texture, NULL, &destRect);
+
+				}
+
+			}
+			else if (player->lives == 2) {
+
+				if (heart2Texture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(heart2Texture, &w, &h);
+
+
+					SDL_FRect destRect = { 15, 25, w, h };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart2Texture, NULL, &destRect);
+
+				}
+			}
+			else if (player->lives == 1) {
+
+				if (heart1Texture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(heart1Texture, &w, &h);
+
+
+					SDL_FRect destRect = { 15, 25, w, h };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart1Texture, NULL, &destRect);
+
+				}
+			}
+			if (player->extralife) {
+
+				if (extraHeartTexture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(extraHeartTexture, &w, &h);
+
+
+					SDL_FRect destRect = { 25, 25, w, h };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, extraHeartTexture, NULL, &destRect);
+				}
+
+			}
+
 			std::string scoreText = "Score: " + std::to_string(player->score);
 			Engine::GetInstance().render->DrawText(scoreText.c_str(), 1100, 30, 0, 0, { 255, 255, 255, 255 });
 
@@ -348,20 +460,76 @@ bool Scene::PostUpdate()
 		}
 	case SceneID::LEVEL5:
 		Engine::GetInstance().map->DrawLayer("Map");
-		if (player != nullptr) {
-			if (heartTexture != nullptr) {
+		if (player != nullptr && player->hasTalkedMagician) {
+			if (panelTexture != nullptr) {
 				float w, h;
-				SDL_GetTextureSize(heartTexture, &w, &h);
-				int startX = 20;
-				int startY = 20;
-				int padding = 10;
-				for (int i = 0; i < player->lives; i++) {
-					float x = (float)(startX + i * (w + padding));
-					float y = (float)startY;
-					SDL_FRect destRect = { x, y, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heartTexture, NULL, &destRect);
+				SDL_GetTextureSize(panelTexture, &w, &h);
+
+
+				SDL_FRect destRect = { 10, 20, w, h };
+				SDL_RenderTexture(Engine::GetInstance().render->renderer, heartTexture, NULL, &destRect);
+
+			}
+			if (player->lives == 4) {
+				if (heart4Texture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(heart4Texture, &w, &h);
+
+
+					SDL_FRect destRect = { 15, 25, w, h };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart4Texture, NULL, &destRect);
+
 				}
 			}
+			else if (player->lives == 3) {
+				if (heart3Texture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(heart3Texture, &w, &h);
+
+
+					SDL_FRect destRect = { 15, 25, w, h };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart3Texture, NULL, &destRect);
+
+				}
+
+			}
+			else if (player->lives == 2) {
+
+				if (heart2Texture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(heart2Texture, &w, &h);
+
+
+					SDL_FRect destRect = { 15, 25, w, h };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart2Texture, NULL, &destRect);
+
+				}
+			}
+			else if (player->lives == 1) {
+
+				if (heart1Texture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(heart1Texture, &w, &h);
+
+
+					SDL_FRect destRect = { 15, 25, w, h };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart1Texture, NULL, &destRect);
+
+				}
+			}
+			if (player->extralife) {
+
+				if (extraHeartTexture != nullptr) {
+					float w, h;
+					SDL_GetTextureSize(extraHeartTexture, &w, &h);
+
+
+					SDL_FRect destRect = { 25, 25, w, h };
+					SDL_RenderTexture(Engine::GetInstance().render->renderer, extraHeartTexture, NULL, &destRect);
+				}
+
+			}
+
 			std::string scoreText = "Score: " + std::to_string(player->score);
 			Engine::GetInstance().render->DrawText(scoreText.c_str(), 1100, 30, 0, 0, { 255, 255, 255, 255 });
 
@@ -1037,6 +1205,8 @@ void Scene::UnloadLevel1() {
 	Engine::GetInstance().map->CleanUp();
 	Engine::GetInstance().entityManager->CleanUp();
 
+	//tendria que hacer unload de las texturas del panel y corazones...
+
 }
 
 void  Scene::PostUpdateLevel1() {
@@ -1063,7 +1233,7 @@ void  Scene::PostUpdateLevel1() {
 		Engine::GetInstance().render->DrawTexture(map1Texture, 560, 300, NULL, 0.0f);
 	}
 
-	if (player != nullptr) {
+	if (player != nullptr && player->hasTalkedMagician) {
 		
 			if (panelTexture != nullptr) {
 				float w, h;
@@ -1913,7 +2083,7 @@ void Scene::CreateStoreLevel1() {
 	//BUYKEY
 	auto btnBUYKEY = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 40, "BUYKEY", { 750, y+ 280, 300, 150 }, this, SDL_Rect{ 0,0,0,0 }, BuyNormal, BuyClicked);
 	btnBUYKEY->visible = false;
-
+	
 	//BUYLIFE
 	
 	auto btnBUYLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 41, "BUYLIFE", { 750, y+280, 300, 150 }, this, SDL_Rect{ 0,0,0,0 }, BuyNormal, BuyClicked);

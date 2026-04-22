@@ -47,6 +47,7 @@ bool Magician::Start() {
 	anims.SetCurrent("idle");
 
 	texture = Engine::GetInstance().textures->Load("resources/spritesheets/Wizard/sprite_mage_01.png");
+	InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
 	//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 640;
@@ -83,7 +84,7 @@ bool Magician::Update(float dt)
 	Draw(dt);
 
 	if(isGettingTouched){
-		
+		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - 16, (int)position.getY() - texH / 2 - 32);
 		
 		if (firstTime == true && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 

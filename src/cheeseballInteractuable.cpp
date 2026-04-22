@@ -33,6 +33,7 @@ bool CheeseBallInteract::Start() {
 	texW = 256;
 	texH = 128;
 	CheeseBallTexture = Engine::GetInstance().textures->Load("resources/spritesheets/Jester/Cheese_flat_asset.png");
+	InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 	if (pbody == nullptr) {
 		position.setX(xInicial);
@@ -104,6 +105,7 @@ bool CheeseBallInteract::CleanUp()
 		Engine::GetInstance().physics->DeletePhysBody(pbody);
 		pbody = nullptr;
 	}
+	active = false;
 	return true;
 }
 void CheeseBallInteract::OnCollision(PhysBody* physA, PhysBody* physB) {
