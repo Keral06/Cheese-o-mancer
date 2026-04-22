@@ -302,7 +302,9 @@ bool Scene::PostUpdate()
 		Engine::GetInstance().uiManager->PostUpdate();
 		if (showHelp && helpTexture != nullptr)
 		{
-			Engine::GetInstance().render->DrawTexture(helpTexture, 560, 300, NULL, 0.0f);
+			float w, h;
+			SDL_GetTextureSize(helpTexture, &w, &h);
+			Engine::GetInstance().render->DrawTextureNoCamera(helpTexture, 600, 300, w*2, h*2);
 		}
 
 		//STORE IS IN LEVEL 2

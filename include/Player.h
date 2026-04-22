@@ -110,6 +110,7 @@ public:
 	int lives = 1; 
 	bool hasTalkedMagician = false;
 	bool isDeadDefinitive = false;
+	bool hasHealed = false;
 
 	//MARC ESTOS SON LOS BOOLS DE EL PLAYER PARA CONVERSACIONES
 

@@ -154,7 +154,7 @@ private:
 	std::string tilePosDebug = "[0,0]";
 	SDL_Texture* helpTexture = nullptr;
 	SDL_Texture* map1Texture = nullptr;
-	bool showHelp = false;
+	bool showHelp = true;
 	bool showMap = false;
 	SDL_Texture* introTexture = nullptr;
 	SDL_Texture* heartTexture = nullptr;
