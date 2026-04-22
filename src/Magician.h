@@ -12,7 +12,7 @@ struct SDL_Texture;
 class Magician : public NPC
 {
 public:
-	Magician(Dialogue dialogueMagicianStart, std::string name, SDL_Texture* texture, const char* tsxPath, Dialogue& AfterCheese, Dialogue& BeforeCheese, Dialogue& BeatBoss, EntityType entity);
+	Magician();
 	virtual ~Magician();
 
 	bool Awake();
@@ -20,6 +20,7 @@ public:
 	bool Update(float dt);
 	bool CleanUp();
 	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
 
 public:
@@ -53,6 +54,10 @@ public:
 	Dialogue BeatBoss;
 	bool hasBeenKilled = false;
 	bool firstTime = true;
-
+	bool isGettingTouched = false;
+	Player* py;
+	bool isTalking = false;
+	
+	SDL_Texture* textureDialogue;
 	
 };

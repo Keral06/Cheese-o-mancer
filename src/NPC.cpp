@@ -9,7 +9,7 @@
 #include "Physics.h"
 #include "EntityManager.h"
 
-NPC::NPC(std::string name, SDL_Texture* texture, const char *tsxPath, Dialogue& dialogue, EntityType entityType) : Entity(entityType)
+NPC::NPC(EntityType entityType) : Entity(entityType)
 {
 	
 	this->name = name;

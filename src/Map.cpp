@@ -20,6 +20,7 @@
 #include "Rat.h"
 #include "Jailer.h"
 #include "HANDMAN.h"
+#include "Magician.h"
 #include "Door.h"
 
 Map::Map() : Module(), mapLoaded(false)
@@ -670,6 +671,14 @@ MapLayer* Map::GetNavigationLayer() {
                             boss->yInicial = (int)y;
                             boss->Start();
                             boss->mapID = id;
+                        }
+                        else if (entityType == "Magician") {
+                            std::shared_ptr<Magician> magician = std::dynamic_pointer_cast<Magician>(Engine::GetInstance().entityManager->CreateEntity(EntityType::MAGICIAN));
+                            magician->position = Vector2D(x, y);
+                            magician->xInicial = (int)x;
+                            magician->yInicial = (int)y;
+                            magician->Start();
+                            magician->mapID = id;
                         }
                     }
                 }

@@ -39,7 +39,9 @@ enum class ColliderType {
     FIREBALL,
     ENEMY_ATTACK,
     EXTRALIVE,
-    FINALBOSS
+    FINALBOSS,
+    MAGICIAN,
+    HANDMAN
     // ..
 };
 

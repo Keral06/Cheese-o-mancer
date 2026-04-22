@@ -19,6 +19,7 @@ Dialogue :: Dialogue(const char	*tsxPath) {
 	std::ifstream fich(tsxPath);
 	std::string helper;
 	char a;
+	hasStarted = false;
 	fich.get(a);
 	while (a != '+') { //this is what ends the txt document
 		while (a != '\n') {
@@ -42,7 +43,7 @@ Dialogue :: Dialogue(const char	*tsxPath) {
 	}
 
 	lenght = dialogue.size();
-
+	textureDialogue = Engine::GetInstance().textures->Load("resources/UI/UI_Dialogue/UI_Dialogue_Base_01.png");
 }
 
 Dialogue::Dialogue()
@@ -65,41 +66,45 @@ bool Dialogue::Start() {
 	return true;
 }
 void Dialogue::Draw(float dt) {
-	
+	float w, h;
+	SDL_GetTextureSize(textureDialogue, &w, &h);
+	Engine::GetInstance().render->DrawText(dialogueHelper[lenghtHelper ].c_str(), 100, 100, 0, 0, { 255,255,255 });
+
+		
+	Engine::GetInstance().render->DrawTextureNoCamera(textureDialogue,250, 420, w / 1.5, h / 1.5);
 }
 
 bool Dialogue::Update(float dt)
 {
 	if (!hasStarted) return true;
+	if (hasEnded) { CleanUp(); }
 	
 	
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 	
-		NextDialogue();
-	
-	}
+	Draw(dt);
 	
 	return true;
 }
 void Dialogue::BeginDialogue() {
 	
 	dialogueHelper = dialogue;
-	lenghtHelper = lenght;
+	lenghtHelper = 0;
 	hasStarted = true;
-	printf("%s", dialogueHelper[lenghtHelper - 1].c_str());
-	Engine::GetInstance().render->DrawText(dialogueHelper[lenghtHelper - 1].c_str(), 100, 100, 0, 0, { 255,255,255 });
-	dialogue.pop_back();
-	lenghtHelper--;
+	printf("%s", dialogueHelper[lenghtHelper].c_str());
+	
+	
+	
 
 
 }
+
 void Dialogue:: NextDialogue() {
-	if (lenghtHelper > 0) {
+	if (lenghtHelper < lenght-1) {
 	
-		printf("%s",dialogueHelper[lenghtHelper-1].c_str());
-		Engine::GetInstance().render->DrawText(dialogueHelper[lenghtHelper - 1].c_str(), 100, 100, 0, 0, { 255,255,255 });
-		dialogue.pop_back();
-		lenghtHelper--;
+		lenghtHelper++;
+	
+		printf("%s",dialogueHelper[lenghtHelper].c_str());
+		
 	}
 	else {
 		hasStarted = false;
@@ -123,6 +128,17 @@ bool Dialogue::CleanUp()
 		dialogue.clear();
 
 	
+	return true;
+}
+
+bool Dialogue::PostUpdate() {
+	if (hasStarted) {
+	
+		Engine::GetInstance().render->DrawText(dialogueHelper[lenghtHelper - 1].c_str(), 100, 100, 0, 0, { 255,255,255 });
+		
+		Engine::GetInstance().render->DrawTextureNoCamera(textureDialogue, 100, 100, 1, 1);
+	}
+
 	return true;
 }
 

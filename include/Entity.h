@@ -22,7 +22,8 @@ enum class EntityType
 	JAILER,
 	NPC,
 	HANDMAN,
-	DOOR
+	DOOR,
+	MAGICIAN
 	
 };
 

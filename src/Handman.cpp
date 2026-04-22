@@ -9,24 +9,25 @@
 #include "Physics.h"
 #include "EntityManager.h"
 
-HANDMAN::HANDMAN(Dialogue dialogueHandman, std::string name, SDL_Texture* texture, const char *tsxPath, Dialogue& dialogue, Dialogue& hasBought, Dialogue& hasNotBought, EntityType entitytype, Dialogue& BeatBoss) : NPC(name, texture, tsxPath, dialogue, entitytype)
+HANDMAN::HANDMAN() : NPC(EntityType::HANDMAN)
 {
 	
 	this->name = name;
 	this->texture = texture;
 	this->tsxPath = tsxPath;
-	this->dialogue = dialogue; //dialogo al descubrirlo por primera vez
+	Dialogue firstStime("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_FirstMeeting.txt");
+	this->dialogue = firstStime; //dialogo al descubrirlo por primera vez
 	pbody = nullptr;
+	Dialogue dialogueHandman("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_SalesPitch_BeforeBoss.txt");
 	dialogueHANDMAN = dialogueHandman; //dialogo despues de beat el boss
-	this->hasBought = hasBought; //dialogo salir habiendo comprado
-	this->hasNotBought = hasNotBought; //dialogo salir sin haber comprado
-	this->BeatBoss = BeatBoss;
+	Dialogue hasbeensold("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_Buying.txt");
+	this->hasBought = hasbeensold; //dialogo salir habiendo comprado
+	Dialogue notbought("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_NoMoney.txt");
+	this->hasNotBought = notbought; //dialogo salir sin haber comprado
+	Dialogue hasBeatBoss("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_SalesPitch_AfterBoss.txt");
+	this->BeatBoss = hasBeatBoss;
 }
 
-HANDMAN::HANDMAN() : NPC("", nullptr, "", Dialogue(), EntityType::UNKNOWN)
-{
-	pbody = nullptr;
-}
 
 HANDMAN::~HANDMAN() {
 	if (pbody != nullptr) {
@@ -42,25 +43,39 @@ bool HANDMAN::Awake() {
 bool HANDMAN::Start() {
 
 
-	std::unordered_map<int, std::string> aliases = { {0, "idle"} };
-	anims.LoadFromTSX(tsxPath, aliases);
+	std::unordered_map<int, std::string> aliases = { {0, "idle"}, { 19, "talking"} };
+	anims.LoadFromTSX("resources/spritesheets/Hangman/sprite_hangedman_01.tsx", aliases);
 	/*coinPickupFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/coin-collision-sound-342335.wav");*/
 	anims.SetCurrent("idle");
 
-	texture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/coin_sprite.png");
+	texture = Engine::GetInstance().textures->Load("resources/spritesheets/Wizard/sprite_mage_01.png");
 
 	//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
-		texW = 32;
-		texH = 32;
-	
+	texW = 640;
+	texH = 640;
+
+
+	if (pbody == nullptr) {
+		position.setX(xInicial);
+		position.setY(yInicial);
 		pbody = Engine::GetInstance().physics->CreateRectangleSensor(
-			(int)position.getX() + 16,
-			(int)position.getY() + 16,
-			32, 32,
-			bodyType::STATIC
+			(int)position.getX(),
+			(int)position.getY(),
+			texW / 2,
+			texH / 2,
+			bodyType::DYNAMIC
 		);
-	
-	
+		b2Body_SetGravityScale(pbody->body, 0.0f);
+
+		pbody->listener = this;
+		pbody->ctype = ColliderType::MAGICIAN;
+
+
+
+
+	}
+
+
 
 	return true;
 }
@@ -70,6 +85,131 @@ bool HANDMAN::Update(float dt)
 	if (!active) return true;
 
 	anims.Update(dt);
+	if (isGettingTouched) {
+		
+		if (firstTime == true && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+			if (dialogue.hasEnded) {
+				firstTime = false;
+				return true;
+
+			}
+			if (dialogue.hasStarted) {
+
+				dialogue.NextDialogue();
+				dialogue.Draw(dt);
+				return true;
+			}
+			dialogue.BeginDialogue();
+			dialogue.Draw(dt);
+
+
+			return true;
+			
+		}
+		if (dialogue.hasStarted && !dialogue.hasEnded) {
+			dialogue.Draw(dt);
+			return true;
+
+		}
+		//parlarli i no has beat el boss encara
+		if (py->beatBoss == false && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+			
+			if (dialogueHANDMAN.hasStarted) {
+
+				dialogueHANDMAN.NextDialogue();
+				dialogueHANDMAN.Draw(dt);
+				return true;
+			}
+			dialogueHANDMAN.BeginDialogue();
+			dialogueHANDMAN.Draw(dt);
+
+
+			return true;
+		}
+		if (dialogueHANDMAN.hasStarted && !dialogueHANDMAN.hasEnded) {
+			dialogueHANDMAN.Draw(dt);
+			return true;
+
+		}
+		//parlarli i has beat el boss primer cop
+		if (py->beatBoss && firstTimeBossKill && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+			if (BeatBoss.hasStarted) {
+
+				BeatBoss.NextDialogue();
+				BeatBoss.Draw(dt);
+				return true;
+			}
+			BeatBoss.BeginDialogue();
+			BeatBoss.Draw(dt);
+
+
+			return true;
+			
+		}
+		if (BeatBoss.hasStarted && !BeatBoss.hasEnded) {
+			BeatBoss.Draw(dt);
+			return true;
+
+		}
+		//parlarli (obre store)
+		 if (py->beatBoss && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+			isStoreOn = !isStoreOn;
+			if (isStoreOn == true)moneyPlayer = py->score;
+			Engine::GetInstance().scene->SetStore(isStoreOn);
+			if (isStoreOn == false) {
+				if (moneyPlayer == py->score) { //no ha comprat
+					
+
+					if (hasNotBought.hasStarted) {
+
+						hasNotBought.NextDialogue();
+						hasNotBought.Draw(dt);
+						return true;
+					}
+					hasNotBought.BeginDialogue();
+					hasNotBought.Draw(dt);
+
+
+					return true;
+				}
+				else {//h comprat
+					
+
+					if (hasBought.hasStarted) {
+
+						hasBought.NextDialogue();
+						hasBought.Draw(dt);
+						return true;
+					}
+					hasBought.BeginDialogue();
+					hasBought.Draw(dt);
+
+
+					return true;
+				}
+
+			}
+
+
+
+
+		}
+		 if (hasNotBought.hasStarted && !hasNotBought.hasEnded) {
+			 hasNotBought.Draw(dt);
+			 return true;
+
+		 }
+		 if (hasBought.hasStarted && !hasBought.hasEnded) {
+			 hasBought.Draw(dt);
+			 return true;
+
+		 }
+
+
+
+
+	}
+
 
 
 
@@ -87,59 +227,21 @@ bool HANDMAN::CleanUp()
 	return true;
 }
 void HANDMAN::OnCollision(PhysBody* physA, PhysBody* physB) {
+	Player* pp = static_cast<Player*>(physB->listener);
+	py = pp;
 	switch (physB->ctype)
 	{
 	case ColliderType::PLAYER:
-		
-		Engine::GetInstance().audio->PlayFx(coinPickupFx); //audio queue
-		Player* py = static_cast<Player*>(physB->listener);
-		if (firstTime == true && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-
-			if (dialogue.hasStarted)break;
-			dialogue.BeginDialogue();
-			firstTime = false;
-			break; //primer cop que el player li parla
-		}
-		//parlarli i no has beat el boss encara
-		if (py->beatBoss == false && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-			if (dialogueHANDMAN.hasStarted)break;
-			dialogueHANDMAN.BeginDialogue();
-		}
-		//parlarli i has beat el boss primer cop
-		if (py->beatBoss && firstTimeBossKill && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-			if (BeatBoss.hasStarted)break;
-			BeatBoss.BeginDialogue();
-			firstTimeBossKill = false;
-			break; 
-		}
-		//parlarli (obre store)
-		else if(py->beatBoss && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN){
-			isStoreOn=!isStoreOn;
-			if (isStoreOn == true)moneyPlayer = py->score;	
-			Engine::GetInstance().scene->SetStore(isStoreOn);
-			if (isStoreOn == false) {
-				if (moneyPlayer == py->score) { //no ha comprat
-					if (hasNotBought.hasStarted)break;
-					hasNotBought.BeginDialogue();
-				}
-				else {//h comprat
-					if (hasBought.hasStarted)break;
-					hasBought.BeginDialogue();
-				}
-			
-			}
-		
-		
-		
-		
-		}
-		
-		
-		
-		
-		break;
-
-	
+		isGettingTouched = true;
 		break;
 	}
+
+
+
 }
+void HANDMAN::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+	isGettingTouched = false;
+
+
+}
+

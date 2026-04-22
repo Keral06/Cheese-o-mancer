@@ -26,12 +26,13 @@ public:
 
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void NextDialogue();
+	bool PostUpdate();
+	
 
-
+	void Draw(float dt);
 
 private:
 
-	void Draw(float dt);
 	
 
 
@@ -51,7 +52,7 @@ public:
 	
 		
 	
-	
+	SDL_Texture* textureDialogue;
 	void BeginDialogue();
 	bool HasEnded(bool name);
 

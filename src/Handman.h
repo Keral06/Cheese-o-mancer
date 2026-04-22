@@ -12,8 +12,8 @@ struct SDL_Texture;
 class HANDMAN : public NPC
 {
 public:
-	HANDMAN(Dialogue dialogueHandman, std::string name, SDL_Texture* texture, const char* tsxPath, Dialogue& dialogue, Dialogue& hasBought, Dialogue& hasNotBought, EntityType entity, Dialogue& BeatBoss);
 	HANDMAN();
+	
 	virtual ~HANDMAN();
 
 	bool Awake();
@@ -21,6 +21,7 @@ public:
 	bool Update(float dt);
 	bool CleanUp();
 	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
 
 public:
@@ -57,7 +58,8 @@ public:
 	bool isStoreOn = true;
 	bool firstTime = true;
 	bool firstTimeBossKill = true;
-
+	bool isGettingTouched = false;
+	Player* py;
 	int moneyPlayer = 0;
 
 	
