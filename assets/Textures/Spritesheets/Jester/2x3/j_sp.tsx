@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.10" tiledversion="1.11.2" name="j_sp" tilewidth="256" tileheight="384" tilecount="42" columns="14">
- <image source="../../../../../../../../Downloads/j_2x3.png" width="3584" height="1152"/>
+ <image source="j_2x3.png" width="3584" height="1152"/>
  <tile id="2">
   <properties>
-   <property name="loop" type="bool" value="false"/>
+   <property name="loop" type="bool" value="true"/>
    <property name="name" value="run"/>
   </properties>
   <animation>
