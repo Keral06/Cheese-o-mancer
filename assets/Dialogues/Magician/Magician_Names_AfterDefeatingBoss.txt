@@ -2,4 +2,4 @@ Magician:
 Fool: 
 Magician: 
 Magician: 
-@
++
