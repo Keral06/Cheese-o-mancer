@@ -29,6 +29,24 @@ Dialogue :: Dialogue(const char	*tsxPath) {
 			
 
 		}
+		if (helper.size() > 70) {
+		
+			int i =65;
+			bool hasFound = false;
+			while (!hasFound)
+			{
+				if (helper[i] == ' ') {
+				
+					helper[i] = '\n';
+					hasFound = true;
+				
+				}
+				i++;
+			}
+
+		
+		
+		}
 		dialogue.push_back(helper);
 		while (!helper.empty()) {
 
@@ -38,7 +56,7 @@ Dialogue :: Dialogue(const char	*tsxPath) {
 		fich.get(a);
 
 
-
+		
 
 	}
 
@@ -68,10 +86,10 @@ bool Dialogue::Start() {
 void Dialogue::Draw(float dt) {
 	float w, h;
 	SDL_GetTextureSize(textureDialogue, &w, &h);
-	Engine::GetInstance().render->DrawText(dialogueHelper[lenghtHelper ].c_str(), 100, 100, 0, 0, { 255,255,255 });
 
 		
 	Engine::GetInstance().render->DrawTextureNoCamera(textureDialogue,250, 420, w / 1.5, h / 1.5);
+	Engine::GetInstance().render->DrawText(dialogueHelper[lenghtHelper ].c_str(), 310, 580, 0, 0, { 0,0,0 });
 }
 
 bool Dialogue::Update(float dt)
