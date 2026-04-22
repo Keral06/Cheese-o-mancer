@@ -30,9 +30,6 @@ public:
 	int xInicial = 0;
 	int yInicial = 0;
 
-	
-
-
 private:
 
 	SDL_Texture* texture;

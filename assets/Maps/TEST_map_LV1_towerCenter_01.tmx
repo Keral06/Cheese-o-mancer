@@ -3,7 +3,9 @@
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
- <tileset firstgid="4" source="tileset_LV1_dungeonBase_02.tsx"/>
+ <tileset firstgid="4" name="tileset_LV1_dungeonBase_02" tilewidth="128" tileheight="128" tilecount="810" columns="30">
+  <image source="tileset_lv1_dungeonbase_02.png" width="3840" height="3537"/>
+ </tileset>
  <layer id="16" name="Background" width="93" height="115">
   <data>
    <tile gid="314"/>
@@ -21402,7 +21404,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="14" name="Windows" width="93" height="115">
+ <layer id="14" name="AssetsBG" width="93" height="115">
   <data>
    <tile/>
    <tile/>
@@ -42805,7 +42807,7 @@
    <point/>
   </object>
  </objectgroup>
- <layer id="13" name="Cages" width="93" height="115">
+ <layer id="13" name="Assets" width="93" height="115">
   <data>
    <tile/>
    <tile/>
@@ -53526,8 +53528,8 @@
   <object id="349" name="Door" type="Door" x="256" y="14592" width="512" height="128">
    <properties>
     <property name="name" value="Door_2_1"/>
-    <property name="offsetX" type="int" value="0"/>
-    <property name="offsetY" type="int" value="10"/>
+    <property name="offsetX" type="int" value="500"/>
+    <property name="offsetY" type="int" value="-500"/>
     <property name="targetMap" value="TEST_map_LV1_startRoom_01.tmx"/>
     <property name="targetSpawn" value="Door_1_1"/>
    </properties>

@@ -54,7 +54,8 @@ bool Map::Update(float dt)
         // L07 TODO 5: Prepare the loop to draw all tiles in a layer + DrawTexture()
         // iterate all tiles in a layer
         for (const auto& mapLayer : mapData.layers) {
-            if (mapLayer->name == "Map"|| mapLayer->name == "Other"||mapLayer->name == "Background") {
+            if (mapLayer->name == "Map"|| mapLayer->name == "Assets"||mapLayer->name == "Background"|| mapLayer->name == "AssetsBG"||
+                mapLayer->name == "Tower") {
                 continue;
             }
             //L09 TODO 7: Check if the property Draw exist get the value, if it's true draw the lawyer
