@@ -21,7 +21,7 @@ bool Rat::Start()
 	attackRange = 5;
     offsetAttackHitboxX = 40;
     offsetAttackHitboxY = -texH/2;
-    texName = "resources/spritesheets/Rata/sprite_rat_01.png";
+    texName = "resources/spritesheets/Rata/Singles/Sprite_Rat_Fly_01.png";
     spriteSheetName = "";
     Enemy::Start();
     CreateAttackHitbox(GetPosition().getX(),GetPosition().getY(), 70,200);

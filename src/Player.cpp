@@ -148,38 +148,6 @@ bool Player::Update(float dt)
 		if (state == ONCHEESE && currentAnimSet->HasFinished())
 		{
 			state = IDLE_ON_CHEESE;
-
-
-			if (cheeseBallRequested)
-			{
-				cheeseBallRequested = false;
-
-				auto entity = Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEESEBALL);
-				auto cb = std::dynamic_pointer_cast<CheeseBall>(entity);
-
-				if (!cb)
-				{
-					LOG("Error: CheeseBall cast failed");
-					return true;
-				}
-
-				int px, py;
-				pbody->GetPosition(px, py);
-
-				Vector2D spawnPos(px, py + texH / 2 + cb->radius - 200);
-				cb->SetPosition(spawnPos);
-				cb->Start();
-
-				int bx, by;
-				cb->pbody->GetPosition(bx, by);
-				SetPosition(Vector2D(bx, by - cb->radius - texH / 2));
-
-				mountedBall = cb;
-				isMounted = true;
-				
-
-				Engine::GetInstance().physics->SetLinearVelocity(pbody, { 0,0 });
-			}
 		}
 		ChangeCurrentAnimation();
 		ApplyPhysics();
@@ -472,7 +440,7 @@ void Player::CameraRender() {
 	float limitUp = Engine::GetInstance().render->camera.h / 4;
 	float limitDown = (3 * Engine::GetInstance().render->camera.h / 4) - mapSize.getY();
 
-	if (py < Engine::GetInstance().render->camera.h / 4) {
+	if (py - texH * 4 < Engine::GetInstance().render->camera.h / 4) {
 		Engine::GetInstance().render->camera.y = limitUp;
 	}
 	else if (py > mapSize.getY() - Engine::GetInstance().render->camera.h / 4) {
@@ -907,12 +875,33 @@ void Player::SpawnCheeseBall()
 {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_C) == KEY_DOWN && !isMounted)
 	{
-		cheeseBallRequested = true;
-		state = ONCHEESE;
 
-		currentAnimSet->SetCurrent("hoponcheese");
-		currentAnimSet->Resets();
-		LOG("CheeseBall requested");
+			auto entity = Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEESEBALL);
+			auto cb = std::dynamic_pointer_cast<CheeseBall>(entity);
+
+			if (!cb)
+			{
+				LOG("Error: CheeseBall cast failed");
+				return;
+			}
+
+			int px, py;
+			pbody->GetPosition(px, py);
+
+			Vector2D spawnPos(px, py + texH / 2 + cb->radius - 200);
+			cb->SetPosition(spawnPos);
+			cb->Start();
+
+			int bx, by;
+			cb->pbody->GetPosition(bx, by);
+			SetPosition(Vector2D(bx, by - cb->radius - texH / 2));
+
+			mountedBall = cb;
+			isMounted = true;
+			state = ONCHEESE;
+
+			Engine::GetInstance().physics->SetLinearVelocity(pbody, { 0,0 });
+		
 	}
 }
 

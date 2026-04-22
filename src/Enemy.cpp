@@ -289,20 +289,6 @@ void Enemy::DecreaseHealth(int amount) {
 	LOG("He recibido 20 de daño");
 	printf("Mi vida es: %d\n", health);
 
-	// --- KNOCKBACK CON IMPULSO ---
-	float impulseX = 0.0f;
-	float impulseY = -10.0f; // pequeño salto opcional
-
-	float knockbackForce = 50.0f;
-
-	if (facingLeft) {
-		impulseX = knockbackForce;   // empuja a la derecha
-	}
-	else {
-		impulseX = -knockbackForce;  // empuja a la izquierda
-	}
-
-	Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, impulseX, impulseY);
 
 	if (health <= 0) {
 		Die();
