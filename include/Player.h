@@ -14,6 +14,8 @@ enum PlayerState {
 	RUNNING,
 	ONCHEESE,
 	IDLE,
+	IDLE_ON_CHEESE,
+	RUNNING_ON_CHEESE,
 	DEFAULT
 
 };
@@ -156,6 +158,8 @@ private:
 	int offsetAttackHitboxY = -50;
 
 	std::shared_ptr<CheeseBall> mountedBall = nullptr;
+	bool cheeseBallRequested = false;
 	bool isMounted = false;
 	int spawnOffset = 30;
+	bool movingBall = false;
 };

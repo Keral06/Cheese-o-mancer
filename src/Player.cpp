@@ -59,21 +59,21 @@ bool Player::Start() {
 	checkpointfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/checkpoint.wav");
 	deathfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/player_death.wav");
 	std::unordered_map<int, std::string> aliases2x3 = { {2,"run"},{16,"jump"},{28,"hoponcheese"}};
-	std::unordered_map<int, std::string> aliases3x3 = { {0,"run"},{10,"jump"},{20,"hoponcheese"},{18,"death"}, {24, "walk_protected"}, {30, "jump_protected"}, {39, "idle_protected"} };
-	std::unordered_map<int, std::string> aliases3x4 = { {0,"attack1"},{6,"attack2"},{10,"attack3"}};
+	std::unordered_map<int, std::string> aliases3x3 = { {0,"idle"},{17,"idleOnCheese"}};
+	std::unordered_map<int, std::string> aliases3x4 = { {0,"attack2"},{6,"attack3"},{16,"attack1"}};
 	std::unordered_map<int, std::string> aliases4x4 = { {0,"ballroll"}};
 	std::unordered_map<int, std::string> aliases5x5 = { {0,"ballattack"}};
 	float limitUp = Engine::GetInstance().render->camera.h / 4;
 	Engine::GetInstance().render->camera.y = limitUp;
 
 	anims2x3.LoadFromTSX("assets/Textures/Spritesheets/Jester/2x3/j_sp.tsx", aliases2x3);
-	anims3x3.LoadFromTSX("assets/Textures/Spritesheets/Jester/3x3/j_sp_3x3.tsx", aliases3x3);
+	anims3x3.LoadFromTSX("assets/Textures/Spritesheets/Jester/3x3/j_sp_idle.tsx", aliases3x3);
 	anims3x4.LoadFromTSX("assets/Textures/Spritesheets/Jester/3x4/j_sp_3x4.tsx", aliases3x4);
-	anims4x4.LoadFromTSX("assets/Textures/Spritesheets/Jester/4x4/j_sp_ballroll5x5.tsx", aliases4x4);
+	anims4x4.LoadFromTSX("assets/Textures/Spritesheets/Jester/4x4/j_sp_ballroll.tsx", aliases4x4);
 	anims5x5.LoadFromTSX("assets/Textures/Spritesheets/Jester/5x5/j_sp_5x5.tsx", aliases5x5);
 
 	texture2x3 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/2x3/j_2x3.png");
-	//texture3x3 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/3x3/j_3x3.png");
+	texture3x3 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/3x3/sprite_jester_idles_02.png");
 	texture3x4 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/3x4/j_3x4.png");
 	texture4x4 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/4x4/j_ballroll.png");
 	texture5x5 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/5x5/j_5x5.png");
@@ -145,6 +145,42 @@ bool Player::Update(float dt)
 		Attack();
 		HandleAttack();
 		SpawnCheeseBall();
+		if (state == ONCHEESE && currentAnimSet->HasFinished())
+		{
+			state = IDLE_ON_CHEESE;
+
+
+			if (cheeseBallRequested)
+			{
+				cheeseBallRequested = false;
+
+				auto entity = Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEESEBALL);
+				auto cb = std::dynamic_pointer_cast<CheeseBall>(entity);
+
+				if (!cb)
+				{
+					LOG("Error: CheeseBall cast failed");
+					return true;
+				}
+
+				int px, py;
+				pbody->GetPosition(px, py);
+
+				Vector2D spawnPos(px, py + texH / 2 + cb->radius - 200);
+				cb->SetPosition(spawnPos);
+				cb->Start();
+
+				int bx, by;
+				cb->pbody->GetPosition(bx, by);
+				SetPosition(Vector2D(bx, by - cb->radius - texH / 2));
+
+				mountedBall = cb;
+				isMounted = true;
+				
+
+				Engine::GetInstance().physics->SetLinearVelocity(pbody, { 0,0 });
+			}
+		}
 		ChangeCurrentAnimation();
 		ApplyPhysics();
 	}
@@ -205,112 +241,94 @@ void Player::GetPhysicsValues() {
 }
 
 void Player::Move() {
-	// Move left/right
-	if (!isdead && Engine::GetInstance().scene->IsGamePaused() == false) {
-		//speed = 4.0f + (float)score / 1000;
+	if (isdead || Engine::GetInstance().scene->IsGamePaused())
+		return;
 
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !isJumping) {
-			velocity.x = -speed;
-			if(IsProtected){
-				state = RUNNING;
-			}
-			else {
-				state = RUNNING;
-				
-			}
-			isWalking = true;
-			facingLeft = true; 
-		}
-		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-			velocity.x = -speed;
-			isWalking = true;
-			facingLeft = true; 
-		}
-		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !isJumping) {
-			velocity.x = speed;
-			if (IsProtected) {
-				state = RUNNING;
-				
-			}
-			else {
-				state = RUNNING;
-				
-			}
-			isWalking = true;
-			facingLeft = false; 
-		}
-		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-			velocity.x = speed;
-			isWalking = true;
-			facingLeft = false; 
+	isWalking = false;
 
-		}
-		else { isWalking = false; }
-		if (godMode) {
+	// =====================
+	// INPUT HORIZONTAL
+	// =====================
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	{
+		velocity.x = -speed;
+		isWalking = true;
+		facingLeft = true;
+	}
+	else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
+		velocity.x = speed;
+		isWalking = true;
+		facingLeft = false;
+	}
+	else
+	{
+		velocity.x = 0;
+	}
 
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && !isJumping) {
-				velocity.y = -speed;
-				if (IsProtected) {
-					/*ChangeCurrentAnimationSet(anims3x3,texture3x3);
-					currentAnimSet.SetCurrent("idle");*/
-				}
-				else {
-					/*ChangeCurrentAnimationSet(anims3x3, texture3x3);
-					currentAnimSet.SetCurrent("idle");*/
-				}
-				isWalking = true;
-			}
-			else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-				velocity.y = -speed;
-				isWalking = true;
-			}
-			else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && !isJumping) {
-				velocity.y = speed;
-				if (IsProtected) {
-					state = JUMPING;
-					
-				}
-				else {
-					state = JUMPING;
-					
-				}
-				isWalking = true;
-			}
-			else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-				velocity.y = speed;
-				isWalking = true;
-			}
+	// =====================
+	// GOD MODE (VERTICAL)
+	// =====================
+	if (godMode)
+	{
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+		{
+			velocity.y = -speed;
+			isWalking = true;
 		}
-		if (!isWalking && !isJumping) {
-			/*if (IsProtected) {
-				ChangeCurrentAnimationSet(anims3x3, texture3x3);
-				currentAnimSet.SetCurrent("idle");
-			}
-			else {
-				ChangeCurrentAnimationSet(anims3x3, texture3x3);
-				currentAnimSet.SetCurrent("idle");
-			}	*/
+		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		{
+			velocity.y = speed;
+			isWalking = true;
 		}
-		if (isJumping || !isCollidedFloor ) {
-			if(IsProtected){
-				state = JUMPING;
-				
-			}
-			else {
-				state = JUMPING;
-				 }
+		else
+		{
+			velocity.y = 0;
 		}
 	}
-	if (isWalking) {
 
+	// =====================
+	// STATE MACHINE
+	// =====================
+	if (state == ONCHEESE) {
+		return;
+	}
+	// PRIORIDAD 1: aire
+	if (isJumping || !isCollidedFloor)
+	{
+		state = JUMPING;
+	}
+	else
+	{
+		// SOBRE QUESO
+		if (isMounted)
+		{
+			return; // aquí sí puedes cortar si quieres
+		}
+		// SUELO NORMAL
+		else
+		{
+			if (isWalking)
+				state = RUNNING;
+			else
+				state = IDLE;
+		}
+	}
+
+	// =====================
+	// SONIDO PASOS
+	// =====================
+	if (isWalking)
+	{
 		int currentTime = (int)SDL_GetTicks();
-		if (currentTime - lastStepTime > 350) {
-
+		if (currentTime - lastStepTime > 350)
+		{
 			Engine::GetInstance().audio->PlayFx(movefx);
 			lastStepTime = currentTime;
 		}
 	}
-	if (!isWalking) {
+	else
+	{
 		lastStepTime = 0;
 	}
 
@@ -730,7 +748,22 @@ void Player::ChangeCurrentAnimation() {
 		texture = texture2x3;
 		currentAnimSet->SetCurrent("hoponcheese");
 		break;
+	case IDLE:
+		currentAnimSet = &anims3x3;
+		texture = texture3x3;
+		currentAnimSet->SetCurrent("idle");
+		break;
 
+	case IDLE_ON_CHEESE:
+		currentAnimSet = &anims3x3;
+		texture = texture3x3;
+		currentAnimSet->SetCurrent("idleOnCheese");
+		break;
+	case RUNNING_ON_CHEESE:
+		currentAnimSet = &anims4x4;  
+		texture = texture4x4;
+		currentAnimSet->SetCurrent("ballroll");
+		break;
 	default:
 		break;
 	}
@@ -872,39 +905,14 @@ void Player::UpdateAttackHitbox()
 
 void Player::SpawnCheeseBall()
 {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_C) == KEY_DOWN && !isMounted) {
-
-		auto entity =
-			Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEESEBALL);
-
-		auto cb = std::dynamic_pointer_cast<CheeseBall>(entity);
-
-		if (!cb) {
-			LOG("Error: CheeseBall cast failed");
-			return;
-		}
-
-		Vector2D spawnPos;
-		int px, py;
-		pbody->GetPosition(px, py);
-
-		spawnPos.setX(px);
-		spawnPos.setY(py + texH / 2 + cb->radius - 200);
-
-		cb->SetPosition(spawnPos);
-		cb->Start();
-
-		// colocar player encima
-		int bx, by;
-		cb->pbody->GetPosition(bx, by);
-		SetPosition(Vector2D(bx, by - cb->radius - texH/2));
-
-		mountedBall = cb;
-		isMounted = true;
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_C) == KEY_DOWN && !isMounted)
+	{
+		cheeseBallRequested = true;
 		state = ONCHEESE;
 
-		Engine::GetInstance().physics->SetLinearVelocity(pbody, { 0,0 });
-		//pbody->body->SetEnabled(false);
+		currentAnimSet->SetCurrent("hoponcheese");
+		currentAnimSet->Resets();
+		LOG("CheeseBall requested");
 	}
 }
 
@@ -913,12 +921,24 @@ void Player::HandleMountedMovement()
 	float speed = 10.0f;
 
 	b2Vec2 vel = b2Body_GetLinearVelocity(mountedBall->pbody->body);
-
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	movingBall = false;
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT){
 		vel.x = -speed;
-
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		movingBall = true;
+		
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		vel.x = speed;
+		movingBall = true;
+		
+	}
+	if (state == ONCHEESE) {
+		return;
+	}
+	if (movingBall)
+		state = RUNNING_ON_CHEESE;
+	else
+		state = IDLE_ON_CHEESE;
 
 	mountedBall->SetVelocityy(vel);
 
