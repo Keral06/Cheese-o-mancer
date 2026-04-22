@@ -72,11 +72,20 @@ bool Enemy::Update(float dt)
 {
 	repathTimer++;
 
-	GetPhysicsValues();
-	
+	if (isKnockback) {
+		GetPhysicsValues();
+	}
 	distanceToPlayer = CalculateDistance();
 
 	if (distanceToPlayer < detectionRange) {
+
+		if (isKnockback) {
+			knockbackTimer--;
+
+			if (knockbackTimer <= 0) {
+				isKnockback = false;
+			}
+		}
 		if (distanceToPlayer < attackRange) {
 			Attack();
 		}
@@ -131,7 +140,7 @@ void Enemy::GetPhysicsValues() {
 // =====================
 
 void Enemy::Move() {
-
+	if (isKnockback) return;
 	// Si no hay camino o ya llegamos, detenemos el movimiento horizontal
 	if (pathfinding->pathTiles.empty()) {
 
@@ -188,7 +197,7 @@ void Enemy::Draw(float dt) {
 	position.setY((float)y);
 
 	// Draw pathfinding debug
-	/*pathfinding->DrawPath();*/
+	//pathfinding->DrawPath();
 
 	SDL_Rect sect = {0,0,texW,texH};
 	//Draw the player using the texture and the current animation frame
@@ -286,9 +295,29 @@ void Enemy::Attack() {
 
 void Enemy::DecreaseHealth(int amount) {
 	health -= amount;
-	LOG("He recibido 20 de daño");
-	printf("Mi vida es: %d\n", health);
+	isKnockback = true;
+	knockbackTimer = knockbackDuration;
+	// Aplicar knockback
+	if (pbody != nullptr) {
+		Vector2D knockbackDir = {0,0};
 
+		// Si se está moviendo, usamos su dirección
+		if (velocity.x != 0) {
+			knockbackDir.setX((velocity.x > 0) ? 1.0f : -1.0f);
+		}
+		else {
+			// Si está quieto, empuja según hacia dónde mira
+			knockbackDir.setX(facingLeft ? 1.0f : -1.0f);
+		}
+
+		knockbackDir.setY(-0.5f); // pequeño empujón hacia arriba (opcional)
+
+		// Aplicar velocidad directamente (simple)
+		velocity.x = knockbackDir.getX() * knockbackForce;
+		velocity.y = knockbackDir.getY() * knockbackForce;
+
+		Engine::GetInstance().physics->SetLinearVelocity(pbody, velocity);
+	}
 
 	if (health <= 0) {
 		Die();

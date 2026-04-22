@@ -49,7 +49,7 @@ public:
 	int texW = 215;
 	int texH = 384;
 	PhysBody* pbody;
-	float detectionRange = 400.0f;
+	float detectionRange = 20.0f;
 	Vector2D lastPlayerTile = { -1, -1 };
 	int repathTimer = 0;
 	int repathDelay = 100;
@@ -63,7 +63,10 @@ public:
 	bool direction = false;
 	int health = 100;
 	bool facingLeft = true;
-
+	bool isKnockback = false;
+	float knockbackForce = 20.0f;
+	int knockbackTimer = 0;
+	int knockbackDuration = 150;
 protected:
 	b2Vec2 velocity;
 	AnimationSet anims;
