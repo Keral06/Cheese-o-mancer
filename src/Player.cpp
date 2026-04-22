@@ -557,7 +557,9 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 
 	case ColliderType::EXTRALIVE:
 	{
-		lives++;
+		if (lives < 4) {
+			lives++;
+		}
 		break;
 	}
 

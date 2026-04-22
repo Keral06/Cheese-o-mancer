@@ -1818,7 +1818,7 @@ void Scene::LoadMap(std::string map)
 
 void Scene::LoadIntro() {
 	LOG("Loading Intro Screen");
-	introTexture = Engine::GetInstance().textures->Load("Assets/Screens/PREV/logo.png");
+	introTexture = Engine::GetInstance().textures->Load("Assets/Screens/logo_white.png");
 }
 
 void Scene::UpdateIntro(float dt) {
