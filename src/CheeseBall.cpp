@@ -23,7 +23,7 @@ bool CheeseBall::Awake()
 
 bool CheeseBall::Start()
 {
-    texture = Engine::GetInstance().textures->Load("assets/textures/cheeseball.png");
+    texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/Cheese_wheel/Cheese_wheel.png");
 
     pbody = Engine::GetInstance().physics->CreateCircle(position.getX(), position.getY(), radius, bodyType::DYNAMIC);
 
@@ -44,12 +44,19 @@ bool CheeseBall::Update(float dt)
 
     position.setX((float)x);
     position.setY((float)y);
+    float angle = pbody->GetRotation();
+    float angleDeg = angle * 180.0f / 3.14f;
 
     Engine::GetInstance().render->DrawTexture(
         texture,
         x - radius,
         y - radius,
-        nullptr
+        nullptr,
+        1.0f,
+        angle,  
+        INT_MAX,
+        INT_MAX,
+        SDL_FLIP_NONE
     );
 
     return true;

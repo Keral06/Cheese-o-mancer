@@ -31,6 +31,9 @@ public:
 
 	virtual void Attack();
 
+	void DecreaseHealth(int amount);
+	void Die();
+
 protected:
 	void PerformPathfinding();
 	void GetPhysicsValues();
@@ -58,6 +61,7 @@ public:
 	int offsetAttackHitboxX = 0;
 	int offsetAttackHitboxY = 0;
 	bool direction = false;
+	int health = 100;
 protected:
 	b2Vec2 velocity;
 	AnimationSet anims;

@@ -183,7 +183,7 @@ void Enemy::Draw(float dt) {
 	position.setY((float)y);
 
 	// Draw pathfinding debug
-	pathfinding->DrawPath();
+	/*pathfinding->DrawPath();*/
 
 	SDL_Rect sect = {0,0,texW,texH};
 	//Draw the player using the texture and the current animation frame
@@ -277,4 +277,17 @@ void Enemy::ResetPathfinding(Vector2D pos) {
 void Enemy::Attack() {
 
 	anims.SetCurrent("Animation");
+}
+
+void Enemy::DecreaseHealth(int amount) {
+	health -= amount;
+	LOG("He recibido 20 de daño");
+	printf("Mi vida es: %d\n", health);
+	if (health <= 0) {
+		Die();
+	}
+}
+void Enemy::Die() {
+	
+	toDelete = true;
 }

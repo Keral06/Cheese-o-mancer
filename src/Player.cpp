@@ -58,7 +58,7 @@ bool Player::Start() {
 	jumpfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/salto.wav");
 	checkpointfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/checkpoint.wav");
 	deathfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/player_death.wav");
-	std::unordered_map<int, std::string> aliases2x3 = { {0,"run"},{10,"jump"},{20,"hoponcheese"}};
+	std::unordered_map<int, std::string> aliases2x3 = { {2,"run"},{16,"jump"},{28,"hoponcheese"}};
 	std::unordered_map<int, std::string> aliases3x3 = { {0,"run"},{10,"jump"},{20,"hoponcheese"},{18,"death"}, {24, "walk_protected"}, {30, "jump_protected"}, {39, "idle_protected"} };
 	std::unordered_map<int, std::string> aliases3x4 = { {0,"attack1"},{6,"attack2"},{10,"attack3"}};
 	std::unordered_map<int, std::string> aliases4x4 = { {0,"ballroll"}};
@@ -484,7 +484,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 			Enemy* e = static_cast<Enemy*>(physB->listener);
 			if (e)
 			{
-				
+				e->DecreaseHealth(20);
 				LOG("Enemy hit by player attack");
 			}
 
@@ -765,6 +765,7 @@ void Player::HandleAttack() {
 	if (attackRequested)
 	{
 		attackRequested = false;
+		hasHit = false;
 
 		if (!isAttacking)
 		{
@@ -810,6 +811,7 @@ void Player::HandleAttack() {
 		if (now - lastAttackTime > comboResetTimeMs)
 		{
 			attackCombo = 0;
+			hasHit = false;
 			state = DEFAULT;
 			LOG("Combo reset (timeout)");
 		}
