@@ -3,11 +3,17 @@ Noble 1:
 Fool: 
 Noble 2: 
 Noble 1: 
+Noble 1: 
 Fool: 
 Noble 2: 
+Noble 2:
 Noble 1: 
 Fool: 
 Noble 2: 
 Noble 1: 
-Noble 2Fool: 
+Noble 1:
+Noble 2: 
+Noble 2: 
+Fool: 
+Fool: 
 @

@@ -1,6 +1,8 @@
 Magician: 
 Fool: 
 Magician: 
+Magician: 
 Fool: 
+Magician: 
 Magician: 
 @
