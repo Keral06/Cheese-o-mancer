@@ -62,6 +62,7 @@ bool Render::Awake()
 		camera.y = 0;
 		
 	}
+
 	/*if (!TTF_Init())
 	{
 		LOG("TTF_Init failed: %s", SDL_GetError());
@@ -294,7 +295,7 @@ bool Render::DrawText(const char* text, int x, int y, int w, int h, SDL_Color co
 	//// Optional but often needed when using alpha/text
 	//SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
 
-	//// If w/h are 0, use the text’s natural size
+	//// If w/h are 0, use the textï¿½s natural size
 	//float fw = (w > 0) ? (float)w : (float)surface->w;
 	//float fh = (h > 0) ? (float)h : (float)surface->h;
 

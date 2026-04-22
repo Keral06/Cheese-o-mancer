@@ -1596,7 +1596,7 @@ void Scene::CreatePauseUI() {
 	SDL_Texture* buttonResumedClicked;
 	buttonResumeNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonContinue1_01.png");
 	buttonResumedClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonContinue2_01.png");
-	auto btnResume = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 20, "RESUME", { x, y, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonResumeNormal, buttonResumedClicked);
+	auto btnResume = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 20, "RESUME", { x, y - 100, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonResumeNormal, buttonResumedClicked);
 	btnResume->visible = false;
 
 	// OPTIONS
@@ -1604,7 +1604,7 @@ void Scene::CreatePauseUI() {
 	SDL_Texture* buttonOptionsClicked;
 	buttonOptionsNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonOptions1_01.png");
 	buttonOptionsClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonOptions2_01.png");
-	auto btnOptions = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 21, "OPTIONS", { x, y + 70, 200, 50 }, this, SDL_Rect{ 0,0,0,0 }, buttonOptionsNormal,buttonOptionsClicked);
+	auto btnOptions = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 21, "OPTIONS", { x, y, 200, 50 }, this, SDL_Rect{ 0,0,0,0 }, buttonOptionsNormal,buttonOptionsClicked);
 	btnOptions->visible = false;
 
 	//BACK TO TITLE
@@ -1613,7 +1613,7 @@ void Scene::CreatePauseUI() {
 	
 	buttonTitleNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonQuit1_01.png");
 	buttonTitleClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonQuit2_01.png");
-	auto btnTitle = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 22, "TITLE SCREEN", { x, y + 140, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonTitleNormal, buttonTitleClicked);
+	auto btnTitle = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 22, "TITLE SCREEN", { x, y + 100, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonTitleNormal, buttonTitleClicked);
 	btnTitle->visible = false;
 
 	// EXIT
@@ -1621,7 +1621,7 @@ void Scene::CreatePauseUI() {
 	SDL_Texture* buttonExitNormal;
 	buttonExitPressed = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonExit2_01.png");
 	buttonExitNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonExit1_01.png");
-	auto btnExit = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 23, "EXIT GAME", { x, y + 210, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonExitNormal, buttonExitPressed);
+	auto btnExit = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 23, "EXIT GAME", { x, y + 200, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonExitNormal, buttonExitPressed);
 	btnExit->visible = false;
 
 	//SLIDER MUSICA
@@ -1662,13 +1662,16 @@ void Scene::CreatePauseUI() {
 void Scene::SetPause(bool pause) {
 	isPaused = pause;
 	for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
-		if (element->id >= 20 && element->id <= 23) {
+		if (element->id >= 20 && element->id <= 23 || element->id == 52) {
 			element->visible = isPaused;
 		}
-		if (element->id == 30) {
+		if (element->id == 30 || element->id == 52) {
 			element->visible = !isPaused;
 		}
 		if (element->id >= 25 && element->id <= 29) {
+			element->visible = false;
+		}
+		if (element->id == 52){
 			element->visible = false;
 		}
 	}
@@ -1687,7 +1690,7 @@ void Scene::HandlePauseUIEvents(UIElement* uiElement) {
 		}
 		break;
 	case 22: 
-		SetPause(false); 
+		SetPause(false);
 		ChangeScene(SceneID::MAIN_MENU);
 		break;
 	case 23: 

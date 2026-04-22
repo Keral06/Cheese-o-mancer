@@ -51,5 +51,6 @@ public:
 
 private:
 	bool vsync = false;
-	/*TTF_Font* font;*/
+	//TTF_Font* font;
+
 };
