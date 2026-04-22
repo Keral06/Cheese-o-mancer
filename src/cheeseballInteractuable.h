@@ -1,4 +1,3 @@
-#pragma once
 
 #include "NPC.h"
 #include "Animation.h"
@@ -13,7 +12,7 @@ class CheeseBallInteract : public NPC
 {
 public:
 	CheeseBallInteract();
-	
+
 	~CheeseBallInteract();
 
 	bool Awake();
@@ -30,11 +29,11 @@ public:
 private:
 
 	void GetPhysicsValues();
-	
+
 	void ApplyPhysics();
 	void Draw(float dt);
 	void Jump();
-	
+
 
 
 private:
@@ -45,13 +44,13 @@ private:
 	const char* tsxPath;
 
 public:
-	SDL_Texture* CheeseBallTexture=nullptr;
-	SDL_Texture* InteractTexture=nullptr;
+	SDL_Texture* CheeseBallTexture = nullptr;
+	SDL_Texture* InteractTexture = nullptr;
 	int xInicial;
-	int yInicial;	
+	int yInicial;
 
 	Player* py;
 	int moneyPlayer = 0;
 	bool isGettingTouched = false;
-	
+
 };

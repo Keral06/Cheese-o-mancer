@@ -107,7 +107,7 @@ public:
 	//Score and lives
 
 	static int score;
-	int lives = 4;
+	int lives = 0; //0 until he meets magician
 	bool isDeadDefinitive = false;
 
 	//MARC ESTOS SON LOS BOOLS DE EL PLAYER PARA CONVERSACIONES

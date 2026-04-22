@@ -52,7 +52,7 @@ private:
 
 public:
 	
-		
+	std::string GetCurrentDialogue();
 	
 	SDL_Texture* textureDialogue;
 	void BeginDialogue();

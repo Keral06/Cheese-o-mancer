@@ -141,6 +141,9 @@ void Dialogue:: NextDialogue() {
 	}
 	HasEnded(hasStarted);
 }
+std::string Dialogue::GetCurrentDialogue() {
+	return dialogueHelper[lenghtHelper];
+}
 bool Dialogue:: HasEnded(bool name){
 
 	hasEnded = !name;
