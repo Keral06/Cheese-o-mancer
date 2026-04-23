@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="20" nextobjectid="272">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="20" nextobjectid="276">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
  <tileset firstgid="4" name="tileset_LV1_pantryRoom" tilewidth="128" tileheight="128" tilecount="810" columns="30">
   <image source="tileset_lv1_Pantry_04.png" width="3840" height="3537"/>
  </tileset>
- <tileset firstgid="814" source="tileset_LV1_dungeonBase_02.tsx"/>
  <layer id="16" name="Background" width="86" height="52">
   <data>
    <tile/>
@@ -12407,8 +12406,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="167"/>
-   <tile gid="168"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -12493,8 +12492,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="197"/>
-   <tile gid="198"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -12579,8 +12578,8 @@
    <tile/>
    <tile/>
    <tile gid="107"/>
-   <tile gid="227"/>
-   <tile gid="228"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -13912,47 +13911,47 @@
    <tile/>
    <tile gid="232"/>
    <tile gid="233"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
-   <tile gid="940"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -18004,18 +18003,16 @@
   <object id="97" name="Player" type="Player" x="9888.64" y="1523.58">
    <point/>
   </object>
- </objectgroup>
- <objectgroup id="15" name="Interactables">
-  <object id="237" name="Strong breakable wall" x="2444" y="2948">
+  <object id="272" name="Strong breakable wall" x="2388" y="2868">
    <point/>
   </object>
-  <object id="240" name="Notice from the Royal Halls" x="7448" y="5400">
+  <object id="273" name="Notice from the Royal Halls" x="7088" y="5376">
    <point/>
   </object>
-  <object id="241" name="Key" x="2056" y="5080">
+  <object id="274" name="Key" x="1616" y="4920">
    <point/>
   </object>
-  <object id="243" name="Finding cheese wheel" x="4120" y="3080">
+  <object id="275" name="Finding cheese wheel" x="4064" y="3000">
    <point/>
   </object>
  </objectgroup>
