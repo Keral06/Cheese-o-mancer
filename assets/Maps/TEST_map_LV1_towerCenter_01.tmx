@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="18" nextobjectid="363">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="19" nextobjectid="366">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -53547,6 +53547,11 @@
    </properties>
   </object>
  </objectgroup>
+ <objectgroup id="18" name="Checkpoint">
+  <object id="363" name="Flag" type="Flag" x="10757.6" y="4684.85">
+   <point/>
+  </object>
+ </objectgroup>
  <objectgroup id="7" name="Floor">
   <object id="209" x="1289.94" y="14339.3" width="7158.06" height="121.323"/>
   <object id="210" x="8064" y="12800" width="1408" height="128"/>
@@ -53666,5 +53671,6 @@
   <object id="362" name="THE Silksong" x="1616" y="3656">
    <point/>
   </object>
+  <object id="365" name="Live" type="Live" x="4608" y="10496" width="256" height="384"/>
  </objectgroup>
 </map>
