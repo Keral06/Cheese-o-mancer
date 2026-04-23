@@ -55,7 +55,7 @@ bool Player::Start() {
 	lastState = RUNNING;
 	// load
 	movefx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/player_walk.wav");
-	jumpfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/salto.wav");
+	//jumpfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/salto.wav");
 	checkpointfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/checkpoint.wav");
 	deathfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/player_death.wav");
 	std::unordered_map<int, std::string> aliases2x3 = { {2,"run"},{16,"jump"},{28,"hoponcheese"}};
@@ -328,7 +328,7 @@ void Player::Jump() {
 	*/
 	
 	if(spacePressed && canFirstJump){
-		Engine::GetInstance().audio->PlayFx(jumpfx);
+		//Engine::GetInstance().audio->PlayFx(jumpfx);
 		if (IsProtected) {
 			state = JUMPING;
 			

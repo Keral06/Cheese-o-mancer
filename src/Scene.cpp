@@ -860,7 +860,7 @@ void Scene::UnloadCurrentScene() {
 
 void Scene::LoadMainMenu() {
 
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/soundtrack.wav");
+	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/MAIN_menu.wav");
 	introTexture = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_Background_01.png");
 	// Instantiate a UIButton in the Scene
 	
@@ -1100,7 +1100,7 @@ void Scene::ChangeToLvl5() {
 
 void Scene::LoadLevel1() {
 
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/soundtrack.wav");
+	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/DOWNTIME_ratmosphere.wav");
 
 	// Load Map
 	Engine::GetInstance().map->Load("Assets/Maps/", "TEST_map_LV1_startRoom_01.tmx");//"TEST_map_LV1_towerCenter_01.tmx"
@@ -1370,7 +1370,7 @@ void  Scene::PostUpdateLevel1() {
 
 void Scene::LoadLevel2() {
 
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/level2music.wav");
+	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/DOWNTIME_ratmosphere.wav");
 
 	isPaused = false;   
 	CreatePauseUI();
@@ -1471,7 +1471,7 @@ void Scene::UnloadLevel2() {
 
 void Scene::LoadLevel3() {
 
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/level2music.wav");
+	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/DOWNTIME_ratmosphere.wav");
 
 	isPaused = false;
 	CreatePauseUI();

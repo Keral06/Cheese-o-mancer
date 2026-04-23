@@ -14,6 +14,108 @@
  <tileset firstgid="817" name="Jails" tilewidth="3000" tileheight="1500" tilecount="1" columns="1">
   <image source="Dungeon Parallax_Jails.png" width="3000" height="1500"/>
  </tileset>
+ <tileset firstgid="818" name="spritesheet_ratEnemy_02" tilewidth="256" tileheight="256" tilecount="60" columns="10">
+  <image source="../Textures/Spritesheets/Rata/sprite_rat_02.png" width="2560" height="1536"/>
+  <tile id="0">
+   <animation>
+    <frame tileid="0" duration="100"/>
+    <frame tileid="1" duration="100"/>
+    <frame tileid="2" duration="100"/>
+    <frame tileid="3" duration="100"/>
+    <frame tileid="4" duration="100"/>
+    <frame tileid="5" duration="100"/>
+    <frame tileid="6" duration="100"/>
+    <frame tileid="7" duration="100"/>
+    <frame tileid="8" duration="100"/>
+    <frame tileid="9" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="10">
+   <animation>
+    <frame tileid="10" duration="100"/>
+    <frame tileid="11" duration="100"/>
+    <frame tileid="12" duration="100"/>
+    <frame tileid="13" duration="100"/>
+    <frame tileid="14" duration="100"/>
+    <frame tileid="15" duration="100"/>
+    <frame tileid="16" duration="100"/>
+    <frame tileid="17" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="20">
+   <animation>
+    <frame tileid="20" duration="100"/>
+    <frame tileid="21" duration="100"/>
+    <frame tileid="22" duration="100"/>
+    <frame tileid="23" duration="100"/>
+    <frame tileid="24" duration="100"/>
+    <frame tileid="25" duration="100"/>
+    <frame tileid="26" duration="100"/>
+    <frame tileid="27" duration="100"/>
+    <frame tileid="28" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="30">
+   <animation>
+    <frame tileid="30" duration="100"/>
+    <frame tileid="31" duration="100"/>
+    <frame tileid="32" duration="100"/>
+    <frame tileid="33" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="40">
+   <animation>
+    <frame tileid="40" duration="100"/>
+    <frame tileid="41" duration="100"/>
+    <frame tileid="42" duration="100"/>
+    <frame tileid="43" duration="100"/>
+    <frame tileid="44" duration="100"/>
+    <frame tileid="45" duration="100"/>
+    <frame tileid="46" duration="100"/>
+    <frame tileid="47" duration="100"/>
+    <frame tileid="48" duration="100"/>
+    <frame tileid="49" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="49">
+   <animation>
+    <frame tileid="40" duration="100"/>
+    <frame tileid="40" duration="100"/>
+    <frame tileid="41" duration="100"/>
+    <frame tileid="42" duration="100"/>
+    <frame tileid="43" duration="100"/>
+    <frame tileid="44" duration="100"/>
+    <frame tileid="45" duration="100"/>
+    <frame tileid="46" duration="100"/>
+    <frame tileid="47" duration="100"/>
+    <frame tileid="48" duration="100"/>
+    <frame tileid="49" duration="100"/>
+    <frame tileid="41" duration="100"/>
+    <frame tileid="42" duration="100"/>
+    <frame tileid="43" duration="100"/>
+    <frame tileid="44" duration="100"/>
+    <frame tileid="45" duration="100"/>
+    <frame tileid="46" duration="100"/>
+    <frame tileid="47" duration="100"/>
+    <frame tileid="48" duration="100"/>
+    <frame tileid="49" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="50">
+   <animation>
+    <frame tileid="50" duration="100"/>
+    <frame tileid="51" duration="100"/>
+    <frame tileid="52" duration="100"/>
+    <frame tileid="53" duration="100"/>
+    <frame tileid="54" duration="100"/>
+    <frame tileid="55" duration="100"/>
+    <frame tileid="56" duration="100"/>
+    <frame tileid="57" duration="100"/>
+    <frame tileid="58" duration="100"/>
+    <frame tileid="59" duration="100"/>
+   </animation>
+  </tile>
+ </tileset>
  <objectgroup id="13" name="fons"/>
  <objectgroup id="15" name="Doors">
   <object id="318" name="Door" type="Door" x="11776" y="0" width="512" height="256">
@@ -44179,16 +44281,16 @@
   <object id="335" name="Magician" type="Magician" x="18408" y="4208">
    <point/>
   </object>
-  <object id="350" name="Hidden Scap of Paper" x="12361.8" y="7120.12">
+  <object id="350" name="HiddenScrapOfPaper" type="HiddenScrapOfPaper" x="12361.8" y="7120.12">
    <point/>
   </object>
-  <object id="351" name="Locked door" x="11128" y="2440">
+  <object id="351" name="LockedDoor" type="LockedDoor" x="11128" y="2440">
    <point/>
   </object>
-  <object id="352" name="Discarded scroll" x="21383" y="2086.79">
+  <object id="352" name="DiscardedScroll" type="DiscardedScroll" x="21383" y="2086.79">
    <point/>
   </object>
-  <object id="353" name="Mysterious sketches" x="9744" y="5936">
+  <object id="353" name="Sketches" type="Sketches" x="9744" y="5936">
    <point/>
   </object>
  </objectgroup>
@@ -55318,7 +55420,7 @@
   <object id="345" x="6400" y="2858" width="1024" height="214"/>
  </objectgroup>
  <objectgroup id="21" name="Checkpoints">
-  <object id="330" name="Flag" type="Flag" x="12930.7" y="2474">
+  <object id="330" name="Flag" type="Flag" x="12925.4" y="2571.33">
    <point/>
   </object>
   <object id="331" name="Flag" type="Flag" x="2045.45" y="5708.97">

@@ -11,7 +11,7 @@
 #include "EntityManager.h"
 
 //El primer dialogo es el ultimo del vector!!
-
+//
 
 Dialogue :: Dialogue(const char	*tsxPath, const char* name) {
 	textureDialogue = Engine::GetInstance().textures->Load("resources/UI/UI_Dialogue/UI_Dialogue_Base_01.png");

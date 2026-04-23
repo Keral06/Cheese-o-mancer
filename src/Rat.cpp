@@ -21,6 +21,12 @@ bool Rat::Start()
 	attackRange = 5;
     offsetAttackHitboxX = 40;
     offsetAttackHitboxY = -texH/2;
+
+    std::unordered_map<int, std::string> aliases = { {0,"idle"},{10,"walk"},{20,"run"},{30,"fall"},{49,"spawn"},{50,"death"}, };
+    anims.LoadFromTSX("assets/Textures/Spritesheets/Rata/spritesheet_ratEnemy_02.tsx", aliases);
+
+    anims.SetCurrent("idle");
+
     texName = "resources/spritesheets/Rata/Singles/Sprite_Rat_Fly_01.png";
     spriteSheetName = "";
     Enemy::Start();
@@ -69,6 +75,7 @@ bool Rat::Update(float dt)
             else {
                 PerformPathfinding();
                 Move();
+                anims.SetCurrent("walk");
             }
         }
         else {
@@ -153,6 +160,7 @@ void Rat::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 
 //Muerte
 void Rat::Die() {
+    anims.SetCurrent("death");
     auto newCoin = Engine::GetInstance().entityManager->CreateEntity(EntityType::COIN);
     auto coinEntity = std::static_pointer_cast<Coins>(newCoin);
 
