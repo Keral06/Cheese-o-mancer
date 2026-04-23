@@ -21,6 +21,7 @@ NPC::NPC(EntityType entityType) : Entity(entityType)
 
 NPC::NPC()
 {
+	pbody = nullptr;
 }
 
 NPC::~NPC() {
@@ -37,25 +38,25 @@ bool NPC::Awake() {
 bool NPC::Start() {
 
 
-	std::unordered_map<int, std::string> aliases = { {0, "idle"} };
-	anims.LoadFromTSX(tsxPath, aliases);
-	/*coinPickupFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/coin-collision-sound-342335.wav");*/
-	anims.SetCurrent("idle");
+	//std::unordered_map<int, std::string> aliases = { {0, "idle"} };
+	//anims.LoadFromTSX(tsxPath, aliases);
+	///*coinPickupFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/coin-collision-sound-342335.wav");*/
+	//anims.SetCurrent("idle");
 
-	texture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/coin_sprite.png");
+	//texture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/coin_sprite.png");
 
-	//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
-		texW = 32;
-		texH = 32;
-	
-		pbody = Engine::GetInstance().physics->CreateRectangleSensor(
-			(int)position.getX() + 16,
-			(int)position.getY() + 16,
-			32, 32,
-			bodyType::STATIC
-		);
-	
-	
+	////32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
+	//	texW = 32;
+	//	texH = 32;
+	//
+	//	pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+	//		(int)position.getX() + 16,
+	//		(int)position.getY() + 16,
+	//		32, 32,
+	//		bodyType::STATIC
+	//	);
+	//
+	//
 
 	return true;
 }
@@ -100,7 +101,7 @@ void NPC::OnCollision(PhysBody* physA, PhysBody* physB) {
 }
 
 HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
-		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_HiddenScrapOfPaper.tsx");
+		Dialogue paperDialogue("Resources/Dialogues/Interactuables/Justice_Dialogues_HiddenScrapOfPaper.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -117,8 +118,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool HiddenScrapOfPaper::Start() {
 
-		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -130,14 +130,33 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
 				(int)position.getX(),
 				(int)position.getY(),
-				texW / 2,
-				texH / 2,
+				texW ,
+				texH	,
 				bodyType::DYNAMIC
 			);
 			b2Body_SetGravityScale(pbody->body, 0.0f);
 
 			pbody->listener = this;
-			pbody->ctype = ColliderType::MAGICIAN;
+			pbody->ctype = ColliderType::NPC;
+
+
+
+
+		}if (pbody != nullptr) {
+			pbody = nullptr;
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
 
 
 
@@ -209,7 +228,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	DiscardedScroll::DiscardedScroll() :NPC(EntityType::DISCARDEDSCROLL) {
-		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_DiscardedScroll.tsx");
+		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_DiscardedScroll.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -226,7 +245,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool DiscardedScroll::Start() {
 
-		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
@@ -253,7 +272,26 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 		}
 
+		if (pbody != nullptr) {
+			pbody = nullptr;
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
 
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+
+
+
+
+		}
 
 		return true;
 
@@ -319,7 +357,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	Sketches::Sketches() :NPC(EntityType::SKETCHES) {
-		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_Sketches.tsx");
+		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_Sketches.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -336,8 +374,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool Sketches::Start() {
 
-		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -363,8 +400,26 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 		}
 
+		if (pbody != nullptr) {
+			pbody = nullptr;
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
 
 
+
+
+		}
 		return true;
 
 	}
@@ -429,7 +484,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	WallBeforeWheel::WallBeforeWheel() :NPC(EntityType::WALLBEFOREWHEEL) {
-		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_WallBeforeWheel.tsx");
+		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_WallBeforeWheel.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -446,8 +501,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool WallBeforeWheel::Start() {
 
-		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -473,7 +527,26 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 		}
 
+		if (pbody != nullptr) {
+			pbody = nullptr;
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
 
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+
+
+
+
+		}
 
 		return true;
 
@@ -539,7 +612,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	LockedDoor::LockedDoor() :NPC(EntityType::LOCKEDDOOR) {
-		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_LockedDoor.tsx");
+		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_LockedDoor.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -556,8 +629,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool LockedDoor::Start() {
 
-		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -583,7 +655,26 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 		}
 
+		if (pbody != nullptr) {
+			pbody = nullptr;
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
 
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+
+
+
+
+		}
 
 		return true;
 
@@ -649,7 +740,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	DestructDoor::DestructDoor() :NPC(EntityType::DESTRUCTDOOR) {
-		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_DestructDoor.tsx");
+		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_DestructDoor.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -666,8 +757,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool DestructDoor::Start() {
 
-		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -693,7 +783,26 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 		}
 
+		if (pbody != nullptr) {
+			pbody = nullptr;
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
 
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+
+
+
+
+		}
 
 		return true;
 
@@ -759,7 +868,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	NormalFlag::NormalFlag() :NPC(EntityType::NORMALFLAG) {
-		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_NormalFlag.tsx");
+		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_NormalFlag.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -776,7 +885,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool NormalFlag::Start() {
 
-		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
@@ -804,7 +913,26 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		}
 
 
+		if (pbody != nullptr) {
+			pbody = nullptr;
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
 
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+
+
+
+
+		}
 		return true;
 
 	}
@@ -869,7 +997,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	CheeseFlag::CheeseFlag() :NPC(EntityType::CHEESEFLAG) {
-		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_CheeseFlag.tsx");
+		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CheeseFlag.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -886,7 +1014,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool CheeseFlag::Start() {
 
-		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
@@ -914,13 +1042,32 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		}
 
 
+		if (pbody != nullptr) {
+			pbody = nullptr;
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
 
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+
+
+
+
+		}
 		return true;
 
 	}
 	bool  CheeseFlag::Update(float dt) {
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+			InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 
 
@@ -979,7 +1126,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	NoteRoyalHalls::NoteRoyalHalls() :NPC(EntityType::NOTEROYALHALLS) {
-		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_NoteRoyalHalls.tsx");
+		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_NoteRoyalHalls.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -996,8 +1143,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool NoteRoyalHalls::Start() {
 
-		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -1022,7 +1168,26 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 		}
+		if (pbody != nullptr) {
+			pbody = nullptr;
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
 
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+
+
+
+
+		}
 
 
 		return true;
@@ -1089,7 +1254,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	Compass::Compass() :NPC(EntityType::COMPASS) {
-		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_Compass.tsx");
+		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_Compass.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -1106,7 +1271,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool Compass::Start() {
 
-		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
@@ -1133,7 +1298,26 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 		}
 
+		if (pbody != nullptr) {
+			pbody = nullptr;
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
 
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+
+
+
+
+		}
 
 		return true;
 
@@ -1199,7 +1383,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	Portrait::Portrait() :NPC(EntityType::PORTRAIT) {
-		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_Portrait.tsx");
+		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_Portrait.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -1216,7 +1400,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool Portrait::Start() {
 
-		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
@@ -1243,7 +1427,26 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 		}
 
+		if (pbody != nullptr) {
+			pbody = nullptr;
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
 
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+
+
+
+
+		}
 
 		return true;
 
@@ -1309,7 +1512,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	UnfinishedPortrait::UnfinishedPortrait() :NPC(EntityType::UNFINISHEDPORTRAIT) {
-		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_Compass.tsx");
+		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_Compass.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -1325,9 +1528,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		return true;
 	}
 	bool UnfinishedPortrait::Start() {
-
-		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -1352,7 +1553,26 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 		}
+		if (pbody != nullptr) {
+			pbody = nullptr;
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
 
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+
+
+
+
+		}
 
 
 		return true;
@@ -1419,7 +1639,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	HungSword::HungSword() :NPC(EntityType::HUNGSWORD) {
-		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_HungSword.tsx");
+		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_HungSword.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -1436,8 +1656,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool HungSword::Start() {
 
-		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -1463,7 +1682,26 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 		}
 
+		if (pbody != nullptr) {
+			pbody = nullptr;
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
 
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+
+
+
+
+		}
 
 		return true;
 
@@ -1529,7 +1767,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	CowWeb::CowWeb() :NPC(EntityType::COWWEB) {
-		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_CowWeb.tsx");
+		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -1546,7 +1784,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool CowWeb::Start() {
 
-		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
@@ -1573,7 +1811,26 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 		}
 
+		if (pbody != nullptr) {
+			pbody = nullptr;
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
 
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+
+
+
+
+		}
 
 		return true;
 
@@ -1605,6 +1862,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			}
 		}
+
 		return true;
 	}
 	bool CowWeb::CleanUp() {

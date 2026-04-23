@@ -42,7 +42,8 @@ enum class ColliderType {
     FINALBOSS,
     MAGICIAN,
     HANDMAN,
-	CHEESEBALLINTERACT
+	CHEESEBALLINTERACT,
+    NPC
     // ..
 };
 
