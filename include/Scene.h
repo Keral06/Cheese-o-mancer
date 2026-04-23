@@ -200,4 +200,5 @@ public:
 	std::string nextMap = "";
 	std::string nextSpawnPoint = "Door_1_1";
 	std::string nextDoor = "";
+	bool cheese = false;
 };

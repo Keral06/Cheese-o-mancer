@@ -129,12 +129,14 @@ void Dialogue::BeginDialogue() {
 }
 
 void Dialogue:: NextDialogue() {
-	if (lenghtHelper < lenght-1) {
+	if (lenghtHelper < 48) {
 	
 		lenghtHelper++;
-	
-		printf("%s",dialogueHelper[lenghtHelper].c_str());
-		printf("%s",nameHelper[lenghtHelper].c_str());
+
+		printf("%d\n", lenght);
+		printf("%d\n", lenghtHelper);
+		printf("%s\n",dialogueHelper[lenghtHelper].c_str());
+		printf("%s\n",nameHelper[lenghtHelper].c_str());
 	}
 	else {
 		hasStarted = false;

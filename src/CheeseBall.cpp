@@ -64,11 +64,12 @@ bool CheeseBall::Update(float dt)
 
 void CheeseBall::OnCollision(PhysBody* physA, PhysBody* physB)
 {
-    //if (physB->ctype == ColliderType::PLAYER)
-    //{
-    //    LOG("Player touched CheeseBall");
-    //    // aquí decides: sumar puntos, heal, boost, etc.
-    //}
+    if ((physB->ctype == ColliderType::PLATFORM || physB->ctype == ColliderType::PARED) && !ismounted)
+    {
+        LOG("Player touched CheeseBall");
+        toDelete = true;
+        // aquí decides: sumar puntos, heal, boost, etc.
+    }
 }
 
 void CheeseBall::OnCollisionEnd(PhysBody* physA, PhysBody* physB)

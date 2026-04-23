@@ -883,7 +883,7 @@ void Player::UpdateAttackHitbox()
 
 void Player::SpawnCheeseBall()
 {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_C) == KEY_DOWN && !isMounted && hasCheese)
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_C) == KEY_DOWN && !isMounted && Engine::GetInstance().scene->cheese == true)
 	{
 
 			auto entity = Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEESEBALL);
@@ -894,13 +894,14 @@ void Player::SpawnCheeseBall()
 				LOG("Error: CheeseBall cast failed");
 				return;
 			}
-
+			cb->ismounted = true;
 			int px, py;
 			pbody->GetPosition(px, py);
 
 			Vector2D spawnPos(px, py + texH / 2 + cb->radius - 200);
 			cb->SetPosition(spawnPos);
 			cb->Start();
+			
 
 			int bx, by;
 			cb->pbody->GetPosition(bx, by);
@@ -978,6 +979,7 @@ void Player::DismountAndLaunch()
 	);
 
 	// romper vínculo
+	mountedBall->ismounted = false;
 	mountedBall = nullptr;
 	isMounted = false;
 	state = DEFAULT;

@@ -9,6 +9,7 @@
 #include "Physics.h"
 #include "EntityManager.h"
 
+
 Magician::Magician() : NPC(EntityType::MAGICIAN)
 {
 	
@@ -94,6 +95,7 @@ bool Magician::Update(float dt)
 
 		if (dialogueMagicianStart.hasEnded) {
 			firstTime = false;
+			Engine::GetInstance().scene->cheese = true;
 			return true;
 
 		}

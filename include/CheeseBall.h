@@ -23,6 +23,7 @@ public:
     void SetVelocityy(b2Vec2 vel);
     PhysBody* pbody = nullptr;
     float radius = 128.0f;
+    bool ismounted = false;
 private:
     
 
