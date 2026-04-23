@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="20" nextobjectid="276">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="20" nextobjectid="277">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -4483,6 +4483,9 @@
   </data>
  </layer>
  <layer id="13" name="AssetsBG" width="86" height="52">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -17922,20 +17925,19 @@
   </object>
  </objectgroup>
  <objectgroup id="11" name="Doors">
-  <object id="231" x="10752" y="640" width="256" height="1152">
+  <object id="231" name="Door" type="Door" x="10756" y="1504" width="256" height="1152">
    <properties>
     <property name="name" value="Door_3_1"/>
-    <property name="offsetX" type="int" value="0"/>
+    <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
     <property name="targetMap" value="TEST_map_LV1_towerCenter_01.tmx"/>
     <property name="targetSpawn" value="Door_2_2"/>
    </properties>
   </object>
-  <object id="232" x="12096" y="4640"/>
-  <object id="233" x="10752" y="4992" width="256" height="1280">
+  <object id="233" name="Door" type="Door" x="10780" y="5988" width="256" height="1280">
    <properties>
     <property name="name" value="Door_3_2"/>
-    <property name="offsetX" type="int" value="0"/>
+    <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
     <property name="targetMap" value="TEST_map_LV1_towerCenter_01.tmx"/>
     <property name="targetSpawn" value="Door_2_3"/>
@@ -17964,7 +17966,6 @@
   <object id="267" x="6016" y="1792" width="2432" height="128"/>
   <object id="268" x="8448" y="1920" width="768" height="128"/>
   <object id="269" x="9216" y="1792" width="1792" height="128"/>
-  <object id="271" x="8392" y="1280"/>
  </objectgroup>
  <objectgroup id="19" name="spikes">
   <object id="264" x="5760" y="6272" width="768" height="128"/>

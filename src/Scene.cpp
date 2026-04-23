@@ -1148,8 +1148,11 @@ void Scene::LoadLevel1() {
 void Scene::UpdateLevel1(float dt) {
 	//DIbujar mapa
 	Engine::GetInstance().map->DrawLayer("Background");
+	Engine::GetInstance().map->DrawLayer("Tower");
 	Engine::GetInstance().map->DrawLayer("Map");
+	Engine::GetInstance().map->DrawLayer("AssetsBG");
 	Engine::GetInstance().map->DrawLayer("Assets");
+	
 
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
 		SetPause(!isPaused);
