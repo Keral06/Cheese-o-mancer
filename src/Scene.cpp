@@ -56,6 +56,7 @@ bool Scene::PreUpdate()
 	return true;
 }
 
+
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
@@ -801,6 +802,8 @@ void Scene::LoadScene(SceneID newScene)
 
 void Scene::ChangeScene(SceneID newScene)
 {
+	lastscene = currentScene;
+
 	UnloadCurrentScene();
 	currentScene = newScene;
 	LoadScene(currentScene);

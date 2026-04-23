@@ -12,7 +12,7 @@
 CheeseBallInteract::CheeseBallInteract() : NPC(EntityType::CHEESEBALLINTERACT)
 {
 	pbody = nullptr;
-	
+	dialogue = Dialogue("resources/Dialogues/Interactuables/Justice_Dialogues_FindCheeseWheel.txt");
 }
 
 
@@ -65,20 +65,35 @@ bool CheeseBallInteract::Update(float dt)
 	if (!active) return true;
 
 	Draw(dt);
-	if (isGettingTouched) {
 		
-		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - 16, (int)position.getY() - texH / 2 - 32);
-		if ( Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-			
-			py->hasCheese = true;
-			CleanUp();
-
-		}
+			if (isGettingTouched) {
+				Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
 
 
+				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
-	}
+
+					if (dialogue.hasStarted) {
+
+						dialogue.NextDialogue();
+						dialogue.Draw(dt);
+						return true;
+					}
+					dialogue.BeginDialogue();
+					dialogue.Draw(dt);
+
+
+					return true;
+				}
+				if (dialogue.hasStarted && !dialogue.hasEnded) {
+					dialogue.Draw(dt);
+					return true;
+					CleanUp();
+
+				}
+			}
+
 
 
 

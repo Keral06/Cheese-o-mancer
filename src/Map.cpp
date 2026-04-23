@@ -559,7 +559,9 @@ MapLayer* Map::GetNavigationLayer() {
                                 LOG("Player created.");
                             }
                             //If the player already exists, just set its position
-
+                            if (Engine::GetInstance().scene->GetLastScene() != SceneID::INTRO_SCREEN && Engine::GetInstance().scene->GetCurrentScene() != SceneID::LEVEL1) {
+                            
+                            
                             auto obj = Engine::GetInstance().map->GetObjectByProperty(
                                 "Doors",
                                 "name",
@@ -583,6 +585,7 @@ MapLayer* Map::GetNavigationLayer() {
 
 
                             player->SetPosition(spawn);
+                            }
                             if (objectNode.attribute("score")) {
                                 Player::score = objectNode.attribute("score").as_int();
                                 LOG("Score cargado desde XML: %d", Player::score);

@@ -41,12 +41,12 @@ bool Magician::Awake() {
 bool Magician::Start() {
 
 
-	std::unordered_map<int, std::string> aliases = { {0, "idle"}, { 19, "talking"} };
-	anims.LoadFromTSX("resources/spritesheets/Wizard/sprite_mage_01.tsx", aliases);
-	/*coinPickupFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/coin-collision-sound-342335.wav");*/
-	anims.SetCurrent("idle");
+	//std::unordered_map<int, std::string> aliases = { {0, "idle"}, { 19, "talking"} };
+	//anims.LoadFromTSX("resources/spritesheets/Wizard/sprite_mage_01.tsx", aliases);
+	///*coinPickupFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/coin-collision-sound-342335.wav");*/
+	//anims.SetCurrent("idle");
 
-	texture = Engine::GetInstance().textures->Load("resources/spritesheets/Wizard/sprite_mage_01.png");
+	texture = Engine::GetInstance().textures->Load("resources/spritesheets/Wizard/sprite_ph_mage_01.png");
 	InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
 	//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
@@ -82,34 +82,42 @@ bool Magician::Start() {
 bool Magician::Update(float dt)
 {
 	Draw(dt);
+	if (firstTime == true && Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN) {
 
+	
+		dialogueMagicianStart.BeginDialogue();
+		dialogueMagicianStart.Draw(dt);
+
+
+		return true;
+	}if (firstTime == true && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+
+		if (dialogueMagicianStart.hasEnded) {
+			firstTime = false;
+			return true;
+
+		}
+		if (dialogueMagicianStart.hasStarted) {
+
+			dialogueMagicianStart.NextDialogue();
+			dialogueMagicianStart.Draw(dt);
+			return true;
+		}
+		
+
+
+		return true;
+	}
+	if (dialogueMagicianStart.hasStarted && !dialogueMagicianStart.hasEnded) {
+		dialogueMagicianStart.Draw(dt);
+		return true;
+
+	}
 	if(isGettingTouched){
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() -texW/2, (int)position.getY() + texH / 2 );
 		
-		if (firstTime == true && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-
-			if (dialogueMagicianStart.hasEnded) {
-				firstTime = false;
-				return true;
-
-			}
-			if (dialogueMagicianStart.hasStarted) { 
-			
-				dialogueMagicianStart.NextDialogue();
-				dialogueMagicianStart.Draw(dt);
-				return true;
-				 }
-			dialogueMagicianStart.BeginDialogue();
-			dialogueMagicianStart.Draw(dt);
-			
-
-			return true;
-		}
-		if (dialogueMagicianStart.hasStarted && !dialogueMagicianStart.hasEnded) {
-			dialogueMagicianStart.Draw(dt);
-			return true;
-			
-		}
+		
+		
 		if (py->beatBoss && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 			
@@ -196,8 +204,8 @@ bool Magician::Update(float dt)
 }
 void Magician::Draw(float dt) {
 
-	anims.Update(dt);
-	const SDL_Rect& animFrame = anims.GetCurrentFrame();
+	//anims.Update(dt);
+	//const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 	int x, y;
 	pbody->GetPosition(x, y);
@@ -205,7 +213,7 @@ void Magician::Draw(float dt) {
 	position.setY((float)y);
 
 
-	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
+	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2/*, &animFrame*/);
 
 }
 bool Magician::CleanUp()

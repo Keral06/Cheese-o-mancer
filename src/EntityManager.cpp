@@ -141,6 +141,48 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 	case EntityType::CHEESEBALLINTERACT:
 		entity = std::make_shared<CheeseBallInteract>();
 		break;
+	case EntityType::HIDDENSCRAPOFPAPER:
+		entity = std::make_shared<HiddenScrapOfPaper>();
+		break;
+	case EntityType::DISCARDEDSCROLL:
+		entity = std::make_shared<DiscardedScroll>();
+		break;
+	case EntityType::SKETCHES:
+		entity = std::make_shared<Sketches>();
+		break;
+	case EntityType::WALLBEFOREWHEEL:
+		entity = std::make_shared<WallBeforeWheel>();
+		break;
+	case EntityType::LOCKEDDOOR:
+		entity = std::make_shared<LockedDoor>();
+		break;
+	case EntityType::DESTRUCTDOOR:
+		entity = std::make_shared<DestructDoor>();
+		break;
+	case EntityType::NORMALFLAG:
+		entity = std::make_shared<NormalFlag>();
+		break;
+	case EntityType::CHEESEFLAG:
+		entity = std::make_shared<CheeseFlag>();
+		break;
+	case EntityType::NOTEROYALHALLS:
+		entity = std::make_shared<NoteRoyalHalls>();
+		break;
+	case EntityType::COMPASS:
+		entity = std::make_shared<Compass>();
+		break;
+	case EntityType::PORTRAIT:
+		entity = std::make_shared<Portrait>();
+		break;
+	case EntityType::UNFINISHEDPORTRAIT:
+		entity = std::make_shared<UnfinishedPortrait>();
+		break;
+	case EntityType::HUNGSWORD:
+		entity = std::make_shared<HungSword>();
+		break;
+	case EntityType::COWWEB:
+		entity = std::make_shared<CowWeb>();
+		break;
 	default:
 		break;
 	}

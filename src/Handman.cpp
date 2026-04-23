@@ -206,8 +206,7 @@ bool HANDMAN::Update(float dt)
 
 		 }
 
-		 Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - 16, (int)position.getY() - texH / 2 - 32);
-
+		 Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
 	}
 

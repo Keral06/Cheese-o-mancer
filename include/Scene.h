@@ -69,7 +69,14 @@ public:
 	void ChangeScene(SceneID newScene);
 	void UnloadCurrentScene();
 	void LoadScene(SceneID newScene);
-
+	SceneID GetCurrentScene()
+	{
+		return currentScene;
+	}
+	SceneID GetLastScene()
+	{
+		return lastscene;
+	}
 	void SaveLevel();
 	void LoadGame();
 	void LoadMap(std::string map);
@@ -173,6 +180,7 @@ private:
 	bool exitGame = false;
 	bool showCredits = false;
 	SceneID currentScene = SceneID::MAIN_MENU;
+	SceneID lastscene = SceneID::MAIN_MENU;
 	SDL_Texture* loseTexture = nullptr;
 	AnimationSet loseAnimSet;
 	bool slidersOn = false;

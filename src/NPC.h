@@ -52,3 +52,19 @@ public:
 
 	
 };
+
+class HiddenScrapOfPaper : public NPC {};
+
+class DiscardedScroll : public NPC {};
+class Sketches : public NPC {};
+class WallBeforeWheel : public NPC {};
+class LockedDoor : public NPC {};
+class DestructDoor : public NPC {};
+class NormalFlag : public NPC {};
+class CheeseFlag : public NPC {};
+class NoteRoyalHalls : public NPC {};
+class Compass : public NPC {};
+class Portrait : public NPC {};
+class UnfinishedPortrait : public NPC {};
+class HungSword : public NPC {};
+class CowWeb : public NPC {};
