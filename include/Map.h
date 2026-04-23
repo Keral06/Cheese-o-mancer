@@ -81,6 +81,7 @@ struct ObjectGroup
         int height;
         int x;
         int y;
+        int gid = 0;
         Properties properties;
     };
 
@@ -179,6 +180,7 @@ public:
     Vector2D Map::GetMapSizeInTiles();
     Vector2D GetMapSizeInPixels();
     void DrawLayer(const char* layerName);
+    void DrawObjectLayerParallax(std::string layerName, float parallaxSpeed);
     int GetTileWidth() {
     return mapData.tileWidth;
 }

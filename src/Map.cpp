@@ -98,13 +98,19 @@ bool Map::Update(float dt)
 // L09: TODO 2: Implement function to the Tileset based on a tile id
 TileSet* Map::GetTilesetFromTileId(int gid) const
 {
+    TileSet* bestFit = nullptr;
+
     for (const auto& tileset : mapData.tilesets) {
-        if (gid >= tileset->firstGid && gid < tileset->firstGid + tileset->tileCount) {
-            return tileset;
+        // En lugar de depender del tileCount, simplemente buscamos el Tileset 
+        // con el firstGid más alto que sea menor o igual a nuestro GID.
+        if (gid >= tileset->firstGid) {
+            bestFit = tileset;
         }
     }
-    return nullptr;
+
+    return bestFit;
 }
+
 
 // Called before quitting
 bool Map::CleanUp()
@@ -189,9 +195,21 @@ bool Map::Load(std::string path, std::string fileName)//
 
 			//Load the tileset image
 			std::string imgName = tilesetNode.child("image").attribute("source").as_string();
-            tileSet->texture = Engine::GetInstance().textures->Load((mapPath+imgName).c_str());
 
-			mapData.tilesets.push_back(tileSet);
+            if (imgName == "") {
+                imgName = tilesetNode.child("tile").child("image").attribute("source").as_string();
+            }
+
+            // 2. SOLO cargamos si hay una imagen. Si no, lo dejamos en nullptr pero guardamos el Tileset
+            if (imgName != "") {
+                std::string fullPath = mapPath + imgName;
+                tileSet->texture = Engine::GetInstance().textures->Load(fullPath.c_str());
+            }
+            else {
+                tileSet->texture = nullptr; // Lo dejamos vacío para que no explote
+            }
+            LOG("Cargando imagen de tileset '%s'. Ruta completa: %s", tileSet->name.c_str(), (mapPath + imgName).c_str());
+            mapData.tilesets.push_back(tileSet); // Esto tiene que estar SIEMPRE al final del bucle
 		}
 
         // L07: TODO 3: Iterate all layers in the TMX and load each of them
@@ -232,6 +250,7 @@ bool Map::Load(std::string path, std::string fileName)//
                 object->y = objectNode.attribute("y").as_int();
                 object->width = objectNode.attribute("width").as_int();
                 object->height = objectNode.attribute("height").as_int();
+                object->gid = objectNode.attribute("gid").as_int(0);
                 LoadProperties(objectNode, object->properties);
 
                 objectGroup->objects.push_back(object);
@@ -921,4 +940,53 @@ MapLayer* Map::GetNavigationLayer() {
             }
         }
         return nullptr;
+    }
+
+    void Map::DrawObjectLayerParallax(std::string layerName, float parallaxSpeed)
+    {
+        if (!mapLoaded) return;
+
+        bool layerFound = false;
+
+        for (const auto& group : mapData.objectgroups) {
+            if (group->name == layerName) {
+                layerFound = true;
+                LOG("PARALLAX DEBUG: Capa '%s' encontrada. Tiene %d objetos.", layerName.c_str(), group->objects.size());
+
+                for (const auto& object : group->objects) {
+                    // Limpiamos el GID por si la imagen está rotada/espejada en Tiled
+                    int cleanGid = object->gid & 0x1FFFFFFF;
+
+                    LOG("PARALLAX DEBUG: Objeto '%s' procesando... cleanGid: %d", object->name.c_str(), cleanGid);
+
+                    if (cleanGid != 0) {
+                        TileSet* tileSet = GetTilesetFromTileId(cleanGid);
+
+                        if (tileSet != nullptr) {
+                            LOG("PARALLAX DEBUG: Tileset encontrado. Textura cargada: %s", (tileSet->texture != nullptr ? "SI" : "NO (¡Puntero Nulo!)"));
+
+                            if (tileSet->texture != nullptr) {
+                                SDL_Rect tileRect = tileSet->GetRect(cleanGid);
+
+                                float camX = Engine::GetInstance().render->camera.x * -1.0f;
+                                float camY = Engine::GetInstance().render->camera.y * -1.0f;
+
+                                int drawX = object->x + (int)(camX * parallaxSpeed);
+                                int drawY = object->y - object->height + (int)(camY * parallaxSpeed);
+
+                                LOG("PARALLAX DEBUG: Dibujando en X: %d, Y: %d", drawX, drawY);
+                                Engine::GetInstance().render->DrawTexture(tileSet->texture, drawX, drawY, &tileRect);
+                            }
+                        }
+                        else {
+                            LOG("PARALLAX DEBUG: ERROR - No se encontro un Tileset para el GID %d", cleanGid);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!layerFound) {
+            LOG("PARALLAX DEBUG: ERROR FATAL - La capa '%s' no existe en el mapa.", layerName.c_str());
+        }
     }
