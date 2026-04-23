@@ -53,18 +53,601 @@ public:
 	
 };
 
-class HiddenScrapOfPaper : public NPC {};
+class HiddenScrapOfPaper : public NPC
+{
+public:
+	HiddenScrapOfPaper();
 
-class DiscardedScroll : public NPC {};
-class Sketches : public NPC {};
-class WallBeforeWheel : public NPC {};
-class LockedDoor : public NPC {};
-class DestructDoor : public NPC {};
-class NormalFlag : public NPC {};
-class CheeseFlag : public NPC {};
-class NoteRoyalHalls : public NPC {};
-class Compass : public NPC {};
-class Portrait : public NPC {};
-class UnfinishedPortrait : public NPC {};
-class HungSword : public NPC {};
-class CowWeb : public NPC {};
+	virtual ~HiddenScrapOfPaper();
+	bool Awake();
+	bool Start();
+	bool Update(float dt);
+	bool CleanUp();
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+
+public:
+
+
+private:
+
+
+
+
+
+
+
+
+private:
+	SDL_Texture* texture;
+	AnimationSet anims;
+	PhysBody* pbody;
+	int texW, texH;
+	const char* tsxPath;
+
+public:
+	int coinFx;
+	int coinPickupFx;
+	int xInicial;
+	int yInicial;
+
+	bool isGettingTouched = false;
+	Player* py;
+
+	SDL_Texture* InteractTexture = nullptr;
+};
+class DiscardedScroll : public NPC
+{
+public:
+	DiscardedScroll();
+
+	virtual ~DiscardedScroll();
+	bool Awake();
+	bool Start();
+	bool Update(float dt);
+	bool CleanUp();
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+
+public:
+
+
+private:
+
+
+
+
+
+
+
+
+private:
+	SDL_Texture* texture;
+	AnimationSet anims;
+	PhysBody* pbody;
+	int texW, texH;
+	const char* tsxPath;
+
+public:
+	int coinFx;
+	int coinPickupFx;
+	int xInicial;
+	int yInicial;
+
+	bool isGettingTouched = false;
+	Player* py;
+
+	SDL_Texture* InteractTexture = nullptr;
+};
+class Sketches : public NPC
+{
+public:
+	Sketches();
+
+	virtual ~Sketches();
+	bool Awake();
+	bool Start();
+	bool Update(float dt);
+	bool CleanUp();
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+
+public:
+
+
+private:
+
+
+
+
+
+
+
+
+private:
+	SDL_Texture* texture;
+	AnimationSet anims;
+	PhysBody* pbody;
+	int texW, texH;
+	const char* tsxPath;
+
+public:
+	int coinFx;
+	int coinPickupFx;
+	int xInicial;
+	int yInicial;
+
+	bool isGettingTouched = false;
+	Player* py;
+
+	SDL_Texture* InteractTexture = nullptr;
+};
+class WallBeforeWheel : public NPC
+{
+public:
+	WallBeforeWheel();
+
+	virtual ~WallBeforeWheel();
+	bool Awake();
+	bool Start();
+	bool Update(float dt);
+	bool CleanUp();
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+
+public:
+
+
+private:
+
+
+
+
+
+
+
+
+private:
+	SDL_Texture* texture;
+	AnimationSet anims;
+	PhysBody* pbody;
+	int texW, texH;
+	const char* tsxPath;
+
+public:
+	int coinFx;
+	int coinPickupFx;
+	int xInicial;
+	int yInicial;
+
+	bool isGettingTouched = false;
+	Player* py;
+
+	SDL_Texture* InteractTexture = nullptr;
+};
+class LockedDoor : public NPC
+{
+public:
+	LockedDoor();
+	virtual ~LockedDoor();
+	bool Awake();
+	bool Start();
+	bool Update(float dt);
+	bool CleanUp();
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+
+public:
+
+
+private:
+
+
+
+
+
+
+
+
+private:
+	SDL_Texture* texture;
+	AnimationSet anims;
+	PhysBody* pbody;
+	int texW, texH;
+	const char* tsxPath;
+
+public:
+	int coinFx;
+	int coinPickupFx;
+	int xInicial;
+	int yInicial;
+
+	bool isGettingTouched = false;
+	Player* py;
+
+	SDL_Texture* InteractTexture = nullptr;
+};
+class DestructDoor : public NPC
+{
+public:
+	DestructDoor();
+
+	virtual ~DestructDoor();
+	bool Awake();
+	bool Start();
+	bool Update(float dt);
+	bool CleanUp();
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+
+public:
+
+
+private:
+
+
+
+
+
+
+
+
+private:
+	SDL_Texture* texture;
+	AnimationSet anims;
+	PhysBody* pbody;
+	int texW, texH;
+	const char* tsxPath;
+
+public:
+	int coinFx;
+	int coinPickupFx;
+	int xInicial;
+	int yInicial;
+
+	bool isGettingTouched = false;
+	Player* py;
+
+	SDL_Texture* InteractTexture = nullptr;
+};
+class NormalFlag : public NPC
+{
+public:
+	NormalFlag();
+	virtual ~NormalFlag();
+	bool Awake();
+	bool Start();
+	bool Update(float dt);
+	bool CleanUp();
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+
+public:
+
+
+private:
+
+
+
+
+
+
+
+
+private:
+	SDL_Texture* texture;
+	AnimationSet anims;
+	PhysBody* pbody;
+	int texW, texH;
+	const char* tsxPath;
+
+public:
+	int coinFx;
+	int coinPickupFx;
+	int xInicial;
+	int yInicial;
+
+	bool isGettingTouched = false;
+	Player* py;
+
+	SDL_Texture* InteractTexture = nullptr;
+};
+class CheeseFlag : public NPC
+{
+public:
+	CheeseFlag();
+	virtual ~CheeseFlag();
+	bool Awake();
+	bool Start();
+	bool Update(float dt);
+	bool CleanUp();
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+
+public:
+
+
+private:
+
+
+
+
+
+
+
+
+private:
+	SDL_Texture* texture;
+	AnimationSet anims;
+	PhysBody* pbody;
+	int texW, texH;
+	const char* tsxPath;
+
+public:
+	int coinFx;
+	int coinPickupFx;
+	int xInicial;
+	int yInicial;
+
+	bool isGettingTouched = false;
+	Player* py;
+
+	SDL_Texture* InteractTexture = nullptr;
+};
+class NoteRoyalHalls : public NPC
+{
+public:
+	NoteRoyalHalls();
+
+	virtual ~NoteRoyalHalls();
+	bool Awake();
+	bool Start();
+	bool Update(float dt);
+	bool CleanUp();
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+
+public:
+
+
+private:
+
+
+
+
+
+
+
+
+private:
+	SDL_Texture* texture;
+	AnimationSet anims;
+	PhysBody* pbody;
+	int texW, texH;
+	const char* tsxPath;
+
+public:
+	int coinFx;
+	int coinPickupFx;
+	int xInicial;
+	int yInicial;
+
+	bool isGettingTouched = false;
+	Player* py;
+
+	SDL_Texture* InteractTexture = nullptr;
+};
+class Compass : public NPC
+{
+public:
+	Compass();
+
+	virtual ~Compass();
+	bool Awake();
+	bool Start();
+	bool Update(float dt);
+	bool CleanUp();
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+public:
+
+
+private:
+
+
+
+
+
+
+
+
+private:
+	SDL_Texture* texture;
+	AnimationSet anims;
+	PhysBody* pbody;
+	int texW, texH;
+	const char* tsxPath;
+
+public:
+	int coinFx;
+	int coinPickupFx;
+	int xInicial;
+	int yInicial;
+
+	bool isGettingTouched = false;
+	Player* py;
+
+	SDL_Texture* InteractTexture = nullptr;
+};
+class Portrait : public NPC
+{
+public:
+	Portrait();
+	virtual ~Portrait();
+	bool Awake();
+	bool Start();
+	bool Update(float dt);
+	bool CleanUp();
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+
+public:
+
+
+private:
+
+
+
+
+
+
+
+
+private:
+	SDL_Texture* texture;
+	AnimationSet anims;
+	PhysBody* pbody;
+	int texW, texH;
+	const char* tsxPath;
+
+public:
+	int coinFx;
+	int coinPickupFx;
+	int xInicial;
+	int yInicial;
+
+	bool isGettingTouched = false;
+	Player* py;
+
+	SDL_Texture* InteractTexture = nullptr;
+};
+class UnfinishedPortrait : public NPC
+{
+public:
+	UnfinishedPortrait();
+
+	virtual ~UnfinishedPortrait();
+	bool Awake();
+	bool Start();
+	bool Update(float dt);
+	bool CleanUp();
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+
+public:
+
+
+private:
+
+
+
+
+
+
+
+
+private:
+	SDL_Texture* texture;
+	AnimationSet anims;
+	PhysBody* pbody;
+	int texW, texH;
+	const char* tsxPath;
+
+public:
+	int coinFx;
+	int coinPickupFx;
+	int xInicial;
+	int yInicial;
+
+	bool isGettingTouched = false;
+	Player* py;
+
+	SDL_Texture* InteractTexture = nullptr;
+};
+class HungSword : public NPC
+{
+public:
+	HungSword();
+
+	virtual ~HungSword();
+	bool Awake();
+	bool Start();
+	bool Update(float dt);
+	bool CleanUp();
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+
+public:
+
+
+private:
+
+
+
+
+
+
+
+
+private:
+	SDL_Texture* texture;
+	AnimationSet anims;
+	PhysBody* pbody;
+	int texW, texH;
+	const char* tsxPath;
+
+public:
+	int coinFx;
+	int coinPickupFx;
+	int xInicial;
+	int yInicial;
+
+	bool isGettingTouched = false;
+	Player* py;
+
+	SDL_Texture* InteractTexture = nullptr;
+};
+class CowWeb : public NPC
+{
+public:
+	CowWeb();
+
+	virtual ~CowWeb();
+	bool Awake();
+	bool Start();
+	bool Update(float dt);
+	bool CleanUp();
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+
+public:
+
+
+private:
+
+
+
+
+
+
+
+
+private:
+	SDL_Texture* texture;
+	AnimationSet anims;
+	PhysBody* pbody;
+	int texW, texH;
+	const char* tsxPath;
+
+public:
+	int coinFx;
+	int coinPickupFx;
+	int xInicial;
+	int yInicial;
+
+	bool isGettingTouched = false;
+	Player* py;
+
+	SDL_Texture* InteractTexture = nullptr;
+};

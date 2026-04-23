@@ -684,14 +684,103 @@ MapLayer* Map::GetNavigationLayer() {
                             magician->Start();
                             magician->mapID = id;
                         }
-                        else if (entityType == "cheeseballInteract") {
-                            std::shared_ptr<CheeseBallInteract> cheeseBallInteract = std::dynamic_pointer_cast<CheeseBallInteract>(Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEESEBALLINTERACT));
-                            cheeseBallInteract->position = Vector2D(x, y);
-                            cheeseBallInteract->xInicial = (int)x;
-                            cheeseBallInteract->yInicial = (int)y;
-                            cheeseBallInteract->Start();
-                            cheeseBallInteract->mapID = id;
+                        else if (entityType == "HiddenScrapOfPaper") {
+                            std::shared_ptr<HiddenScrapOfPaper> hiddenScrapOfPaper = std::dynamic_pointer_cast<HiddenScrapOfPaper>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HIDDENSCRAPOFPAPER));
+                            hiddenScrapOfPaper->position = Vector2D(x, y);
+                            hiddenScrapOfPaper->xInicial = (int)x;
+                            hiddenScrapOfPaper->yInicial = (int)y;
+                            hiddenScrapOfPaper->Start();
+                            hiddenScrapOfPaper->mapID = id;
                         }
+                        else if (entityType == "DiscardedScroll") {
+                            std::shared_ptr<DiscardedScroll> discardedScroll = std::dynamic_pointer_cast<DiscardedScroll>(Engine::GetInstance().entityManager->CreateEntity(EntityType::DISCARDEDSCROLL));
+                            discardedScroll->position = Vector2D(x, y);
+                            discardedScroll->xInicial = (int)x;
+                            discardedScroll->yInicial = (int)y;
+                            discardedScroll->Start();
+                            discardedScroll->mapID = id;
+                        }
+                        else if (entityType == "Sketches") {
+                            std::shared_ptr<Sketches> sketches = std::dynamic_pointer_cast<Sketches>(Engine::GetInstance().entityManager->CreateEntity(EntityType::SKETCHES));
+                            sketches->position = Vector2D(x, y);
+                            sketches->xInicial = (int)x;
+                            sketches->yInicial = (int)y;
+                            sketches->Start();
+                            sketches->mapID = id;
+                        }
+                        else if (entityType == "WallBeforeWheel") {
+                                std::shared_ptr<WallBeforeWheel> wallBeforeWheel = std::dynamic_pointer_cast<WallBeforeWheel>(Engine::GetInstance().entityManager->CreateEntity(EntityType::WALLBEFOREWHEEL));
+                                wallBeforeWheel->position = Vector2D(x, y);
+                                wallBeforeWheel->xInicial = (int)x;
+                                wallBeforeWheel->yInicial = (int)y;
+                                wallBeforeWheel->Start();
+                                wallBeforeWheel->mapID = id;
+                                }
+                        else if (entityType == "LockedDoor") {
+                                    std::shared_ptr<LockedDoor> lockedDoor = std::dynamic_pointer_cast<LockedDoor>(Engine::GetInstance().entityManager->CreateEntity(EntityType::LOCKEDDOOR));
+                                    lockedDoor->position = Vector2D(x, y);
+                                    lockedDoor->xInicial = (int)x;
+                                    lockedDoor->yInicial = (int)y;
+                                    lockedDoor->Start();
+                                    lockedDoor->mapID = id;
+                                    }
+                        else if (entityType == "DestructDoor") {
+                            std::shared_ptr<DestructDoor> destructDoor = std::dynamic_pointer_cast<DestructDoor>(Engine::GetInstance().entityManager->CreateEntity(EntityType::DESTRUCTDOOR));
+                            destructDoor->position = Vector2D(x, y);
+                            destructDoor->xInicial = (int)x;
+                            destructDoor->yInicial = (int)y;
+                            destructDoor->Start();
+                            destructDoor->mapID = id;
+                            }
+                        else if (entityType == "NormalFlag") {
+                            std::shared_ptr<NormalFlag> normalFlag = std::dynamic_pointer_cast<NormalFlag>(Engine::GetInstance().entityManager->CreateEntity(EntityType::NORMALFLAG));
+                            normalFlag->position = Vector2D(x, y);
+                            normalFlag->xInicial = (int)x;
+                            normalFlag->yInicial = (int)y;
+                            normalFlag->Start();
+                            normalFlag->mapID = id;
+                            }
+                        else if (entityType == "CheeseFlag") {
+                            std::shared_ptr<CheeseFlag> cheeseFlag = std::dynamic_pointer_cast<CheeseFlag>(Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEESEFLAG));
+                            cheeseFlag->position = Vector2D(x, y);
+                            cheeseFlag->xInicial = (int)x;
+                            cheeseFlag->yInicial = (int)y;
+                            cheeseFlag->Start();
+                            cheeseFlag->mapID = id;
+                            }
+                        else if (entityType == "Portrait") {
+                                std::shared_ptr<Portrait> portrait = std::dynamic_pointer_cast<Portrait>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PORTRAIT));
+                                portrait->position = Vector2D(x, y);
+                                portrait->xInicial = (int)x;
+                                portrait->yInicial = (int)y;
+                                portrait->Start();
+                                portrait->mapID = id;
+                                }
+                        else if (entityType == "UnfinishedPortrait") {
+                                    std::shared_ptr<UnfinishedPortrait> unfinishedPortrait = std::dynamic_pointer_cast<UnfinishedPortrait>(Engine::GetInstance().entityManager->CreateEntity(EntityType::UNFINISHEDPORTRAIT));
+                                    unfinishedPortrait->position = Vector2D(x, y);
+                                    unfinishedPortrait->xInicial = (int)x;
+                                    unfinishedPortrait->yInicial = (int)y;
+                                    unfinishedPortrait->Start();
+                                    unfinishedPortrait->mapID = id;
+                                    }
+                        else if (entityType == "HungSword") {
+                            std::shared_ptr<HungSword> hungSword = std::dynamic_pointer_cast<HungSword>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HUNGSWORD));
+                            hungSword->position = Vector2D(x, y);
+                            hungSword->xInicial = (int)x;
+                            hungSword->yInicial = (int)y;
+                            hungSword  ->Start();
+                            hungSword->mapID = id;
+                            }
+                        else if (entityType == "CowWeb") {
+                            std::shared_ptr<CowWeb> cowWeb = std::dynamic_pointer_cast<CowWeb>(Engine::GetInstance().entityManager->CreateEntity(EntityType::COWWEB));
+                            cowWeb->position = Vector2D(x, y);
+                            cowWeb->xInicial = (int)x;
+                            cowWeb->yInicial = (int)y;
+                            cowWeb  ->Start();
+                            cowWeb->mapID = id;
+                            }
+                        
                     }
                 }
             }

@@ -98,26 +98,24 @@ void NPC::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	}
 }
-class HiddenScrapOfPaper : public NPC
-{
-public:
-	HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
+
+HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_HiddenScrapOfPaper.tsx");
 		this->dialogue = paperDialogue;
 
 	}
 
-	virtual ~HiddenScrapOfPaper()
+	HiddenScrapOfPaper::~HiddenScrapOfPaper()
 	{
 		if (pbody != nullptr) {
 			Engine::GetInstance().physics->DeletePhysBody(pbody);
 			pbody = nullptr;
 		}
 	}
-	bool Awake() {
+	bool HiddenScrapOfPaper::Awake() {
 		return true;
 	}
-	bool Start() {
+	bool HiddenScrapOfPaper::Start() {
 
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -151,7 +149,7 @@ public:
 		return true;
 
 	}
-	bool Update(float dt) {
+	bool  HiddenScrapOfPaper::Update(float dt) {
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -180,8 +178,16 @@ public:
 		}
 		return true;
 	}
-	bool CleanUp();
-	void OnCollision(PhysBody* physA, PhysBody* physB) {
+	bool HiddenScrapOfPaper::CleanUp() {
+		LOG("Unloading Coin");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void  HiddenScrapOfPaper::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 		Player* pp = static_cast<Player*>(physB->listener);
 		py = pp;
@@ -194,63 +200,31 @@ public:
 
 
 	}
-	void OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+	void  HiddenScrapOfPaper::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
 
 
 	}
 
-public:
 
-
-private:
-
-
-
-
-
-
-
-
-private:
-	SDL_Texture* texture;
-	AnimationSet anims;
-	PhysBody* pbody;
-	int texW, texH;
-	const char* tsxPath;
-
-public:
-	int coinFx;
-	int coinPickupFx;
-	int xInicial;
-	int yInicial;
-
-	bool isGettingTouched = false;
-	Player* py;
-
-	SDL_Texture* InteractTexture = nullptr;
-};
-class DiscardedScroll : public NPC
-{
-public:
-	DiscardedScroll() :NPC(EntityType::DISCARDEDSCROLL) {
+	DiscardedScroll::DiscardedScroll() :NPC(EntityType::DISCARDEDSCROLL) {
 		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_DiscardedScroll.tsx");
 		this->dialogue = paperDialogue;
 
 	}
 
-	virtual ~DiscardedScroll()
+	DiscardedScroll::~DiscardedScroll()
 	{
 		if (pbody != nullptr) {
 			Engine::GetInstance().physics->DeletePhysBody(pbody);
 			pbody = nullptr;
 		}
 	}
-	bool Awake() {
+	bool DiscardedScroll::Awake() {
 		return true;
 	}
-	bool Start() {
+	bool DiscardedScroll::Start() {
 
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -284,7 +258,7 @@ public:
 		return true;
 
 	}
-	bool Update(float dt) {
+	bool DiscardedScroll::Update(float dt) {
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -313,8 +287,16 @@ public:
 		}
 		return true;
 	}
-	bool CleanUp();
-	void OnCollision(PhysBody* physA, PhysBody* physB) {
+	bool DiscardedScroll::CleanUp(){
+		LOG("Unloading Coin");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void DiscardedScroll::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 		Player* pp = static_cast<Player*>(physB->listener);
 		py = pp;
@@ -327,63 +309,32 @@ public:
 
 
 	}
-	void OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+	void DiscardedScroll::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
 
 
 	}
 
-public:
 
 
-private:
-
-
-
-
-
-
-
-
-private:
-	SDL_Texture* texture;
-	AnimationSet anims;
-	PhysBody* pbody;
-	int texW, texH;
-	const char* tsxPath;
-
-public:
-	int coinFx;
-	int coinPickupFx;
-	int xInicial;
-	int yInicial;
-
-	bool isGettingTouched = false;
-	Player* py;
-
-	SDL_Texture* InteractTexture = nullptr;
-};
-class Sketches : public NPC
-{
-public:
-	Sketches() :NPC(EntityType::SKETCHES) {
+	Sketches::Sketches() :NPC(EntityType::SKETCHES) {
 		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_Sketches.tsx");
 		this->dialogue = paperDialogue;
 
 	}
 
-	virtual ~Sketches()
+	Sketches:: ~Sketches()
 	{
 		if (pbody != nullptr) {
 			Engine::GetInstance().physics->DeletePhysBody(pbody);
 			pbody = nullptr;
 		}
 	}
-	bool Awake() {
+	bool Sketches::Awake() {
 		return true;
 	}
-	bool Start() {
+	bool Sketches::Start() {
 
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -417,7 +368,7 @@ public:
 		return true;
 
 	}
-	bool Update(float dt) {
+	bool Sketches::Update(float dt) {
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -446,8 +397,16 @@ public:
 		}
 		return true;
 	}
-	bool CleanUp();
-	void OnCollision(PhysBody* physA, PhysBody* physB) {
+	bool Sketches::CleanUp() {
+		LOG("Unloading Coin");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void Sketches::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 		Player* pp = static_cast<Player*>(physB->listener);
 		py = pp;
@@ -460,63 +419,32 @@ public:
 
 
 	}
-	void OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+	void Sketches::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
 
 
 	}
 
-public:
 
 
-private:
-
-
-
-
-
-
-
-
-private:
-	SDL_Texture* texture;
-	AnimationSet anims;
-	PhysBody* pbody;
-	int texW, texH;
-	const char* tsxPath;
-
-public:
-	int coinFx;
-	int coinPickupFx;
-	int xInicial;
-	int yInicial;
-
-	bool isGettingTouched = false;
-	Player* py;
-
-	SDL_Texture* InteractTexture = nullptr;
-};
-class WallBeforeWheel : public NPC
-{
-public:
-	WallBeforeWheel() :NPC(EntityType::WALLBEFOREWHEEL) {
+	WallBeforeWheel::WallBeforeWheel() :NPC(EntityType::WALLBEFOREWHEEL) {
 		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_WallBeforeWheel.tsx");
 		this->dialogue = paperDialogue;
 
 	}
 
-	virtual ~WallBeforeWheel()
+	WallBeforeWheel:: ~WallBeforeWheel()
 	{
 		if (pbody != nullptr) {
 			Engine::GetInstance().physics->DeletePhysBody(pbody);
 			pbody = nullptr;
 		}
 	}
-	bool Awake() {
+	bool WallBeforeWheel::Awake() {
 		return true;
 	}
-	bool Start() {
+	bool WallBeforeWheel::Start() {
 
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -550,13 +478,13 @@ public:
 		return true;
 
 	}
-	bool Update(float dt) {
+	bool WallBeforeWheel::Update(float dt) {
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
 
 
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && py->hasCheese==false) {
 
 
 				if (dialogue.hasStarted) {
@@ -579,8 +507,16 @@ public:
 		}
 		return true;
 	}
-	bool CleanUp();
-	void OnCollision(PhysBody* physA, PhysBody* physB) {
+	bool WallBeforeWheel::CleanUp() {
+		LOG("Unloading Coin");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void WallBeforeWheel::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 		Player* pp = static_cast<Player*>(physB->listener);
 		py = pp;
@@ -593,63 +529,32 @@ public:
 
 
 	}
-	void OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+	void WallBeforeWheel::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
 
 
 	}
 
-public:
 
 
-private:
-
-
-
-
-
-
-
-
-private:
-	SDL_Texture* texture;
-	AnimationSet anims;
-	PhysBody* pbody;
-	int texW, texH;
-	const char* tsxPath;
-
-public:
-	int coinFx;
-	int coinPickupFx;
-	int xInicial;
-	int yInicial;
-
-	bool isGettingTouched = false;
-	Player* py;
-
-	SDL_Texture* InteractTexture = nullptr;
-};
-class LockedDoor : public NPC
-{
-public:
-	LockedDoor() :NPC(EntityType::LOCKEDDOOR) {
+	LockedDoor::LockedDoor() :NPC(EntityType::LOCKEDDOOR) {
 		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_LockedDoor.tsx");
 		this->dialogue = paperDialogue;
 
 	}
 
-	virtual ~LockedDoor()
+	LockedDoor:: ~LockedDoor()
 	{
 		if (pbody != nullptr) {
 			Engine::GetInstance().physics->DeletePhysBody(pbody);
 			pbody = nullptr;
 		}
 	}
-	bool Awake() {
+	bool LockedDoor::Awake() {
 		return true;
 	}
-	bool Start() {
+	bool LockedDoor::Start() {
 
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -683,7 +588,7 @@ public:
 		return true;
 
 	}
-	bool Update(float dt) {
+	bool LockedDoor::Update(float dt) {
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -712,8 +617,16 @@ public:
 		}
 		return true;
 	}
-	bool CleanUp();
-	void OnCollision(PhysBody* physA, PhysBody* physB) {
+	bool LockedDoor::CleanUp() {
+		LOG("Unloading Coin");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void LockedDoor::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 		Player* pp = static_cast<Player*>(physB->listener);
 		py = pp;
@@ -726,63 +639,32 @@ public:
 
 
 	}
-	void OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+	void LockedDoor::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
 
 
 	}
 
-public:
 
 
-private:
-
-
-
-
-
-
-
-
-private:
-	SDL_Texture* texture;
-	AnimationSet anims;
-	PhysBody* pbody;
-	int texW, texH;
-	const char* tsxPath;
-
-public:
-	int coinFx;
-	int coinPickupFx;
-	int xInicial;
-	int yInicial;
-
-	bool isGettingTouched = false;
-	Player* py;
-
-	SDL_Texture* InteractTexture = nullptr;
-};
-class DestructDoor : public NPC
-{
-public:
-	DestructDoor() :NPC(EntityType::DESTRUCTDOOR) {
+	DestructDoor::DestructDoor() :NPC(EntityType::DESTRUCTDOOR) {
 		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_DestructDoor.tsx");
 		this->dialogue = paperDialogue;
 
 	}
 
-	virtual ~DestructDoor()
+	DestructDoor:: ~DestructDoor()
 	{
 		if (pbody != nullptr) {
 			Engine::GetInstance().physics->DeletePhysBody(pbody);
 			pbody = nullptr;
 		}
 	}
-	bool Awake() {
+	bool DestructDoor::Awake() {
 		return true;
 	}
-	bool Start() {
+	bool DestructDoor::Start() {
 
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -816,7 +698,7 @@ public:
 		return true;
 
 	}
-	bool Update(float dt) {
+	bool DestructDoor::Update(float dt) {
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -845,8 +727,16 @@ public:
 		}
 		return true;
 	}
-	bool CleanUp();
-	void OnCollision(PhysBody* physA, PhysBody* physB) {
+	bool DestructDoor::CleanUp() {
+		LOG("Unloading Coin");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void DestructDoor::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 		Player* pp = static_cast<Player*>(physB->listener);
 		py = pp;
@@ -859,63 +749,32 @@ public:
 
 
 	}
-	void OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+	void DestructDoor::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
 
 
 	}
 
-public:
 
 
-private:
-
-
-
-
-
-
-
-
-private:
-	SDL_Texture* texture;
-	AnimationSet anims;
-	PhysBody* pbody;
-	int texW, texH;
-	const char* tsxPath;
-
-public:
-	int coinFx;
-	int coinPickupFx;
-	int xInicial;
-	int yInicial;
-
-	bool isGettingTouched = false;
-	Player* py;
-
-	SDL_Texture* InteractTexture = nullptr;
-};
-class NormalFlag : public NPC
-{
-public:
-	NormalFlag() :NPC(EntityType::NORMALFLAG) {
+	NormalFlag::NormalFlag() :NPC(EntityType::NORMALFLAG) {
 		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_NormalFlag.tsx");
 		this->dialogue = paperDialogue;
 
 	}
 
-	virtual ~NormalFlag()
+	NormalFlag:: ~NormalFlag()
 	{
 		if (pbody != nullptr) {
 			Engine::GetInstance().physics->DeletePhysBody(pbody);
 			pbody = nullptr;
 		}
 	}
-	bool Awake() {
+	bool NormalFlag::Awake() {
 		return true;
 	}
-	bool Start() {
+	bool NormalFlag::Start() {
 
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -949,7 +808,7 @@ public:
 		return true;
 
 	}
-	bool Update(float dt) {
+	bool NormalFlag::Update(float dt) {
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -978,8 +837,16 @@ public:
 		}
 		return true;
 	}
-	bool CleanUp();
-	void OnCollision(PhysBody* physA, PhysBody* physB) {
+	bool NormalFlag::CleanUp() {
+		LOG("Unloading Coin");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void NormalFlag::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 		Player* pp = static_cast<Player*>(physB->listener);
 		py = pp;
@@ -992,63 +859,32 @@ public:
 
 
 	}
-	void OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+	void NormalFlag::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
 
 
 	}
 
-public:
 
 
-private:
-
-
-
-
-
-
-
-
-private:
-	SDL_Texture* texture;
-	AnimationSet anims;
-	PhysBody* pbody;
-	int texW, texH;
-	const char* tsxPath;
-
-public:
-	int coinFx;
-	int coinPickupFx;
-	int xInicial;
-	int yInicial;
-
-	bool isGettingTouched = false;
-	Player* py;
-
-	SDL_Texture* InteractTexture = nullptr;
-};
-class CheeseFlag : public NPC
-{
-public:
-	CheeseFlag() :NPC(EntityType::CHEESEFLAG) {
+	CheeseFlag::CheeseFlag() :NPC(EntityType::CHEESEFLAG) {
 		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_CheeseFlag.tsx");
 		this->dialogue = paperDialogue;
 
 	}
 
-	virtual ~CheeseFlag()
+	CheeseFlag:: ~CheeseFlag()
 	{
 		if (pbody != nullptr) {
 			Engine::GetInstance().physics->DeletePhysBody(pbody);
 			pbody = nullptr;
 		}
 	}
-	bool Awake() {
+	bool CheeseFlag::Awake() {
 		return true;
 	}
-	bool Start() {
+	bool CheeseFlag::Start() {
 
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -1082,7 +918,7 @@ public:
 		return true;
 
 	}
-	bool Update(float dt) {
+	bool  CheeseFlag::Update(float dt) {
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -1111,8 +947,16 @@ public:
 		}
 		return true;
 	}
-	bool CleanUp();
-	void OnCollision(PhysBody* physA, PhysBody* physB) {
+	bool  CheeseFlag::CleanUp() {
+		LOG("Unloading Coin");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void  CheeseFlag::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 		Player* pp = static_cast<Player*>(physB->listener);
 		py = pp;
@@ -1125,63 +969,32 @@ public:
 
 
 	}
-	void OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+	void  CheeseFlag::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
 
 
 	}
 
-public:
 
 
-private:
-
-
-
-
-
-
-
-
-private:
-	SDL_Texture* texture;
-	AnimationSet anims;
-	PhysBody* pbody;
-	int texW, texH;
-	const char* tsxPath;
-
-public:
-	int coinFx;
-	int coinPickupFx;
-	int xInicial;
-	int yInicial;
-
-	bool isGettingTouched = false;
-	Player* py;
-
-	SDL_Texture* InteractTexture = nullptr;
-};
-class NoteRoyalHalls : public NPC
-{
-public:
-	NoteRoyalHalls() :NPC(EntityType::NOTEROYALHALLS) {
+	NoteRoyalHalls::NoteRoyalHalls() :NPC(EntityType::NOTEROYALHALLS) {
 		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_NoteRoyalHalls.tsx");
 		this->dialogue = paperDialogue;
 
 	}
 
-	virtual ~NoteRoyalHalls()
+	NoteRoyalHalls:: ~NoteRoyalHalls()
 	{
 		if (pbody != nullptr) {
 			Engine::GetInstance().physics->DeletePhysBody(pbody);
 			pbody = nullptr;
 		}
 	}
-	bool Awake() {
+	bool NoteRoyalHalls::Awake() {
 		return true;
 	}
-	bool Start() {
+	bool NoteRoyalHalls::Start() {
 
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -1215,7 +1028,7 @@ public:
 		return true;
 
 	}
-	bool Update(float dt) {
+	bool NoteRoyalHalls::Update(float dt) {
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -1244,8 +1057,16 @@ public:
 		}
 		return true;
 	}
-	bool CleanUp();
-	void OnCollision(PhysBody* physA, PhysBody* physB) {
+	bool NoteRoyalHalls::CleanUp() {
+		LOG("Unloading Coin");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void NoteRoyalHalls::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 		Player* pp = static_cast<Player*>(physB->listener);
 		py = pp;
@@ -1258,63 +1079,32 @@ public:
 
 
 	}
-	void OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+	void NoteRoyalHalls::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
 
 
 	}
 
-public:
 
 
-private:
-
-
-
-
-
-
-
-
-private:
-	SDL_Texture* texture;
-	AnimationSet anims;
-	PhysBody* pbody;
-	int texW, texH;
-	const char* tsxPath;
-
-public:
-	int coinFx;
-	int coinPickupFx;
-	int xInicial;
-	int yInicial;
-
-	bool isGettingTouched = false;
-	Player* py;
-
-	SDL_Texture* InteractTexture = nullptr;
-};
-class Compass : public NPC
-{
-public:
-	Compass() :NPC(EntityType::COMPASS) {
+	Compass::Compass() :NPC(EntityType::COMPASS) {
 		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_Compass.tsx");
 		this->dialogue = paperDialogue;
 
 	}
 
-	virtual ~Compass()
+	Compass:: ~Compass()
 	{
 		if (pbody != nullptr) {
 			Engine::GetInstance().physics->DeletePhysBody(pbody);
 			pbody = nullptr;
 		}
 	}
-	bool Awake() {
+	bool Compass::Awake() {
 		return true;
 	}
-	bool Start() {
+	bool Compass::Start() {
 
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -1348,7 +1138,7 @@ public:
 		return true;
 
 	}
-	bool Update(float dt) {
+	bool Compass::Update(float dt) {
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -1377,8 +1167,16 @@ public:
 		}
 		return true;
 	}
-	bool CleanUp();
-	void OnCollision(PhysBody* physA, PhysBody* physB) {
+	bool Compass::CleanUp() {
+		LOG("Unloading Coin");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void Compass::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 		Player* pp = static_cast<Player*>(physB->listener);
 		py = pp;
@@ -1391,63 +1189,32 @@ public:
 
 
 	}
-	void OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+	void Compass::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
 
 
 	}
 
-public:
 
 
-private:
-
-
-
-
-
-
-
-
-private:
-	SDL_Texture* texture;
-	AnimationSet anims;
-	PhysBody* pbody;
-	int texW, texH;
-	const char* tsxPath;
-
-public:
-	int coinFx;
-	int coinPickupFx;
-	int xInicial;
-	int yInicial;
-
-	bool isGettingTouched = false;
-	Player* py;
-
-	SDL_Texture* InteractTexture = nullptr;
-};
-class Portrait : public NPC
-{
-public:
-	Portrait() :NPC(EntityType::PORTRAIT) {
+	Portrait::Portrait() :NPC(EntityType::PORTRAIT) {
 		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_Portrait.tsx");
 		this->dialogue = paperDialogue;
 
 	}
 
-	virtual ~Portrait()
+	Portrait:: ~Portrait()
 	{
 		if (pbody != nullptr) {
 			Engine::GetInstance().physics->DeletePhysBody(pbody);
 			pbody = nullptr;
 		}
 	}
-	bool Awake() {
+	bool Portrait::Awake() {
 		return true;
 	}
-	bool Start() {
+	bool Portrait::Start() {
 
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -1481,7 +1248,7 @@ public:
 		return true;
 
 	}
-	bool Update(float dt) {
+	bool Portrait::Update(float dt) {
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -1510,8 +1277,16 @@ public:
 		}
 		return true;
 	}
-	bool CleanUp();
-	void OnCollision(PhysBody* physA, PhysBody* physB) {
+	bool Portrait::CleanUp() {
+		LOG("Unloading Coin");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void Portrait::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 		Player* pp = static_cast<Player*>(physB->listener);
 		py = pp;
@@ -1524,63 +1299,32 @@ public:
 
 
 	}
-	void OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+	void Portrait::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
 
 
 	}
 
-public:
 
 
-private:
-
-
-
-
-
-
-
-
-private:
-	SDL_Texture* texture;
-	AnimationSet anims;
-	PhysBody* pbody;
-	int texW, texH;
-	const char* tsxPath;
-
-public:
-	int coinFx;
-	int coinPickupFx;
-	int xInicial;
-	int yInicial;
-
-	bool isGettingTouched = false;
-	Player* py;
-
-	SDL_Texture* InteractTexture = nullptr;
-};
-class UnfinishedPortrait : public NPC
-{
-public:
-	UnfinishedPortrait() :NPC(EntityType::UNFINISHEDPORTRAIT) {
+	UnfinishedPortrait::UnfinishedPortrait() :NPC(EntityType::UNFINISHEDPORTRAIT) {
 		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_Compass.tsx");
 		this->dialogue = paperDialogue;
 
 	}
 
-	virtual ~UnfinishedPortrait()
+	UnfinishedPortrait::~UnfinishedPortrait()
 	{
 		if (pbody != nullptr) {
 			Engine::GetInstance().physics->DeletePhysBody(pbody);
 			pbody = nullptr;
 		}
 	}
-	bool Awake() {
+	bool UnfinishedPortrait::Awake() {
 		return true;
 	}
-	bool Start() {
+	bool UnfinishedPortrait::Start() {
 
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -1614,7 +1358,7 @@ public:
 		return true;
 
 	}
-	bool Update(float dt) {
+	bool UnfinishedPortrait::Update(float dt) {
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -1643,8 +1387,16 @@ public:
 		}
 		return true;
 	}
-	bool CleanUp();
-	void OnCollision(PhysBody* physA, PhysBody* physB) {
+	bool UnfinishedPortrait::CleanUp() {
+		LOG("Unloading Coin");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void UnfinishedPortrait::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 		Player* pp = static_cast<Player*>(physB->listener);
 		py = pp;
@@ -1657,63 +1409,32 @@ public:
 
 
 	}
-	void OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+	void UnfinishedPortrait::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
 
 
 	}
 
-public:
 
 
-private:
-
-
-
-
-
-
-
-
-private:
-	SDL_Texture* texture;
-	AnimationSet anims;
-	PhysBody* pbody;
-	int texW, texH;
-	const char* tsxPath;
-
-public:
-	int coinFx;
-	int coinPickupFx;
-	int xInicial;
-	int yInicial;
-
-	bool isGettingTouched = false;
-	Player* py;
-
-	SDL_Texture* InteractTexture = nullptr;
-}; 
-class HungSword : public NPC
-{
-public:
-	HungSword() :NPC(EntityType::HUNGSWORD) {
+	HungSword::HungSword() :NPC(EntityType::HUNGSWORD) {
 		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_HungSword.tsx");
 		this->dialogue = paperDialogue;
 
 	}
 
-	virtual ~HungSword()
+	HungSword:: ~HungSword()
 	{
 		if (pbody != nullptr) {
 			Engine::GetInstance().physics->DeletePhysBody(pbody);
 			pbody = nullptr;
 		}
 	}
-	bool Awake() {
+	bool HungSword::Awake() {
 		return true;
 	}
-	bool Start() {
+	bool HungSword::Start() {
 
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -1747,7 +1468,7 @@ public:
 		return true;
 
 	}
-	bool Update(float dt) {
+	bool HungSword::Update(float dt) {
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -1776,8 +1497,16 @@ public:
 		}
 		return true;
 	}
-	bool CleanUp();
-	void OnCollision(PhysBody* physA, PhysBody* physB) {
+	bool HungSword::CleanUp() {
+		LOG("Unloading Coin");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void HungSword::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 		Player* pp = static_cast<Player*>(physB->listener);
 		py = pp;
@@ -1790,63 +1519,32 @@ public:
 
 
 	}
-	void OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+	void HungSword::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
 
 
 	}
 
-public:
 
 
-private:
-
-
-
-
-
-
-
-
-private:
-	SDL_Texture* texture;
-	AnimationSet anims;
-	PhysBody* pbody;
-	int texW, texH;
-	const char* tsxPath;
-
-public:
-	int coinFx;
-	int coinPickupFx;
-	int xInicial;
-	int yInicial;
-
-	bool isGettingTouched = false;
-	Player* py;
-
-	SDL_Texture* InteractTexture = nullptr;
-}; 
-class CowWeb : public NPC
-{
-public:
-	CowWeb() :NPC(EntityType::COWWEB) {
+	CowWeb::CowWeb() :NPC(EntityType::COWWEB) {
 		Dialogue paperDialogue("Assets/Dialogue/Interactuables/Justice_Dialogues_CowWeb.tsx");
 		this->dialogue = paperDialogue;
 
 	}
 
-	virtual ~CowWeb()
+	CowWeb::~CowWeb()
 	{
 		if (pbody != nullptr) {
 			Engine::GetInstance().physics->DeletePhysBody(pbody);
 			pbody = nullptr;
 		}
 	}
-	bool Awake() {
+	bool CowWeb::Awake() {
 		return true;
 	}
-	bool Start() {
+	bool CowWeb::Start() {
 
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -1880,7 +1578,7 @@ public:
 		return true;
 
 	}
-	bool Update(float dt) {
+	bool CowWeb::Update(float dt) {
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -1909,8 +1607,16 @@ public:
 		}
 		return true;
 	}
-	bool CleanUp();
-	void OnCollision(PhysBody* physA, PhysBody* physB) {
+	bool CowWeb::CleanUp() {
+		LOG("Unloading Coin");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void CowWeb::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 		Player* pp = static_cast<Player*>(physB->listener);
 		py = pp;
@@ -1923,41 +1629,10 @@ public:
 
 
 	}
-	void OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+	void CowWeb::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
 
 
 	}
-
-public:
-
-
-private:
-
-
-
-
-
-
-
-
-private:
-	SDL_Texture* texture;
-	AnimationSet anims;
-	PhysBody* pbody;
-	int texW, texH;
-	const char* tsxPath;
-
-public:
-	int coinFx;
-	int coinPickupFx;
-	int xInicial;
-	int yInicial;
-
-	bool isGettingTouched = false;
-	Player* py;
-
-	SDL_Texture* InteractTexture = nullptr;
-};
 
