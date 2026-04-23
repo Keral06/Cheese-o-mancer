@@ -1753,7 +1753,7 @@ void Scene::UnloadLevel5() {
 void Scene::LoadGameOver() {
 	LOG("Loading Game Over Screen");
 	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/losemusic.wav");
-	loseTexture = Engine::GetInstance().textures->Load("Assets/Screens/PREV/lose-win-screen.png");
+	loseTexture = Engine::GetInstance().textures->Load("Assets/Screens/gameOver_screen.png");
 
 	std::unordered_map<int, std::string> aliases;
 	aliases[4] = "play";

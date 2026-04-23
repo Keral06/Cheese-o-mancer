@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="19" nextobjectid="374">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="19" nextobjectid="377">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -53663,6 +53663,15 @@
   </object>
   <object id="365" name="Live" type="Live" x="4608" y="10496" width="256" height="384"/>
   <object id="373" name="Handman" type="Handman" x="10180" y="4036">
+   <point/>
+  </object>
+  <object id="374" name="Rat" type="Rat" x="5248" y="14176">
+   <point/>
+  </object>
+  <object id="375" name="Rat" type="Rat" x="4384" y="1456">
+   <point/>
+  </object>
+  <object id="376" name="Rat" type="Rat" x="10080" y="7136">
    <point/>
   </object>
  </objectgroup>
