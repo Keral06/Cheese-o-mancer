@@ -767,6 +767,14 @@ MapLayer* Map::GetNavigationLayer() {
                             cheeseFlag->Start();
                             cheeseFlag->mapID = id;
                             }
+                        else if (entityType == "interactball") {
+                                std::shared_ptr<CheeseBallInteract> cheeseBallInteract = std::dynamic_pointer_cast<CheeseBallInteract>(Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEESEBALLINTERACT));
+                                cheeseBallInteract->position = Vector2D(x, y);
+                                cheeseBallInteract->xInicial = (int)x;
+                                cheeseBallInteract->yInicial = (int)y;
+                                cheeseBallInteract->Start();
+                                cheeseBallInteract->mapID = id;
+                                }
                         else if (entityType == "Portrait") {
                                 std::shared_ptr<Portrait> portrait = std::dynamic_pointer_cast<Portrait>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PORTRAIT));
                                 portrait->position = Vector2D(x, y);
