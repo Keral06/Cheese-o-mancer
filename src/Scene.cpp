@@ -803,7 +803,7 @@ void Scene::LoadScene(SceneID newScene)
 void Scene::ChangeScene(SceneID newScene)
 {
 	lastscene = currentScene;
-	if (lastscene != SceneID::MAIN_MENU) {
+	/*if (lastscene != SceneID::MAIN_MENU) {
 	
 	Player lastPlayerState = *player;
 	UnloadCurrentScene();
@@ -812,7 +812,7 @@ void Scene::ChangeScene(SceneID newScene)
 	*player = lastPlayerState;
 	return;
 	
-	}
+	}*/
 	UnloadCurrentScene();
 	currentScene = newScene;
 	LoadScene(currentScene);
