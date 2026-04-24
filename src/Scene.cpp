@@ -1169,9 +1169,7 @@ void Scene::UpdateLevel1(float dt) {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
 		SetPause(!isPaused);
 	}
-	if (isPaused) {
-		return; 
-	}
+	
 
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
 		ChangeScene(SceneID::LEVEL2);
@@ -1189,6 +1187,10 @@ void Scene::UpdateLevel1(float dt) {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
 	{
 		showHelp = !showHelp;
+	}
+
+	if (isPaused||showHelp) {
+		return;
 	}
 	//logica de mapa
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_M) == KEY_DOWN && player->hasMap1)
@@ -1210,7 +1212,7 @@ void Scene::UpdateLevel1(float dt) {
 		if (Engine::GetInstance().input->GetKey((SDL_Scancode)(SDL_SCANCODE_1 + i)) == KEY_DOWN) {
 			if (i < Engine::GetInstance().map->checkpoints.size()) {
 				Vector2D checkpointPos = Engine::GetInstance().map->checkpoints[i]->position;
-				checkpointPos.setY(checkpointPos.getY() - 16);
+				checkpointPos.setY(checkpointPos.getY() - 150);
 				if (player) player->SetPosition(checkpointPos);
 			}
 		}
@@ -1275,7 +1277,7 @@ void  Scene::PostUpdateLevel1() {
 	// Dibujar Ayuda
 	if (showHelp && helpTexture != nullptr)
 	{
-		Engine::GetInstance().render->DrawTexture(helpTexture, 560, 300, NULL, 0.0f);
+		Engine::GetInstance().render->DrawTexture(helpTexture, 640, 360, NULL, 0.0f);
 	}
 	if (showMap && map1Texture != nullptr)
 	{
@@ -1454,7 +1456,7 @@ void Scene::UpdateLevel2(float dt) {
 		if (Engine::GetInstance().input->GetKey((SDL_Scancode)(SDL_SCANCODE_1 + i)) == KEY_DOWN) {
 			if (i < Engine::GetInstance().map->checkpoints.size()) {
 				Vector2D checkpointPos = Engine::GetInstance().map->checkpoints[i]->position;
-				checkpointPos.setY(checkpointPos.getY() - 16);
+				checkpointPos.setY(checkpointPos.getY() - 150);
 				if (player) player->SetPosition(checkpointPos);
 			}
 		}
@@ -1548,7 +1550,7 @@ void Scene::UpdateLevel3(float dt) {
 		if (Engine::GetInstance().input->GetKey((SDL_Scancode)(SDL_SCANCODE_1 + i)) == KEY_DOWN) {
 			if (i < Engine::GetInstance().map->checkpoints.size()) {
 				Vector2D checkpointPos = Engine::GetInstance().map->checkpoints[i]->position;
-				checkpointPos.setY(checkpointPos.getY() - 16);
+				checkpointPos.setY(checkpointPos.getY() - 150);
 				if (player) player->SetPosition(checkpointPos);
 			}
 		}
@@ -1642,7 +1644,7 @@ void Scene::UpdateLevel4(float dt) {
 		if (Engine::GetInstance().input->GetKey((SDL_Scancode)(SDL_SCANCODE_1 + i)) == KEY_DOWN) {
 			if (i < Engine::GetInstance().map->checkpoints.size()) {
 				Vector2D checkpointPos = Engine::GetInstance().map->checkpoints[i]->position;
-				checkpointPos.setY(checkpointPos.getY() - 16);
+				checkpointPos.setY(checkpointPos.getY() - 150);
 				if (player) player->SetPosition(checkpointPos);
 			}
 		}
@@ -1736,7 +1738,7 @@ void Scene::UpdateLevel5(float dt) {
 		if (Engine::GetInstance().input->GetKey((SDL_Scancode)(SDL_SCANCODE_1 + i)) == KEY_DOWN) {
 			if (i < Engine::GetInstance().map->checkpoints.size()) {
 				Vector2D checkpointPos = Engine::GetInstance().map->checkpoints[i]->position;
-				checkpointPos.setY(checkpointPos.getY() - 16);
+				checkpointPos.setY(checkpointPos.getY() - 150);
 				if (player) player->SetPosition(checkpointPos);
 			}
 		}

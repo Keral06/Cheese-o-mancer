@@ -115,7 +115,7 @@ bool Player::Start() {
 bool Player::Update(float dt)
 {
 
-	bool isPaused = Engine::GetInstance().scene->isPaused;
+	bool isPaused = Engine::GetInstance().scene->isPaused || Engine::GetInstance().scene->showHelp;
 	const SDL_Rect& animFrame = currentAnimSet->GetCurrentFrame();
 	if (!isPaused) {
 		if (animFrame.x == 160 && animFrame.y == 96 && isdead) {

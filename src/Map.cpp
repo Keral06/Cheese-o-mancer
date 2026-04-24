@@ -289,6 +289,8 @@ bool Map::Load(std::string path, std::string fileName)//
                         Engine::GetInstance().entityManager->CreateEntity(EntityType::CHECKPOINT)
                     );
                     checkpoint->position = Vector2D((float)object->x, (float)object->y);
+                    checkpoint->xInicial = (int)object->x;
+                    checkpoint->yInicial = (int)object->y;
                     checkpoint->name = object->name;
                     checkpoint->Start();
                     checkpoints.push_back(checkpoint);
