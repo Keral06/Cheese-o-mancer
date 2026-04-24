@@ -47,11 +47,16 @@ void Rat::Attack()
 
 bool Rat::Update(float dt)
 {
-    //debug para matar ratas con la K
-    if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) {
-        Die();
-        return true;
+    if (health <= 0 && !coinDropped) {
+        coinDropped = true; 
+        Die();              
+        return true;        
     }
+    ////debug para matar ratas con la K
+    //if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) {
+    //    Die();
+    //    return true;
+    //}
     repathTimer++;
 
     GetPhysicsValues();

@@ -25,6 +25,7 @@ protected:
     bool hitboxActive = false;
 
     bool isAttacking = false;
+    bool coinDropped = false;
 
     bool playerInHitbox = true;
 };
