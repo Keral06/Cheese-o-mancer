@@ -7,6 +7,9 @@
   <image source="tileset_lv1_Pantry_04.png" width="3840" height="3537"/>
  </tileset>
  <layer id="16" name="Background" width="86" height="52">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -8962,6 +8965,9 @@
   </data>
  </layer>
  <layer id="14" name="Assets" width="86" height="52">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>

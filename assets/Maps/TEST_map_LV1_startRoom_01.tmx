@@ -138,9 +138,17 @@
   </object>
  </objectgroup>
  <objectgroup id="24" name="BG Parallax" parallaxx="1.2">
-  <object id="354" gid="816" x="13448" y="10346" width="12784" height="6380"/>
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+   <property name="Parallax" type="float" value="0.1"/>
+  </properties>
+  <object id="354" gid="816" x="13448" y="13130" width="9968" height="9164"/>
  </objectgroup>
  <objectgroup id="23" name="Jails" parallaxx="1.1">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+   <property name="Parallax" type="float" value="0.3"/>
+  </properties>
   <object id="355" gid="817" x="11497.6" y="4942" width="7112" height="3172"/>
  </objectgroup>
  <layer id="17" name="Background" width="175" height="63">
@@ -22208,6 +22216,9 @@
   </data>
  </layer>
  <layer id="25" name="AssetsBG" width="175" height="63">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>

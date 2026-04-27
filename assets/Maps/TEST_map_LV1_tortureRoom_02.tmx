@@ -10,6 +10,9 @@
   <image source="tileset_lv1_Justice_02.png" width="3840" height="3537"/>
  </tileset>
  <layer id="20" name="Back" width="107" height="104" opacity="0.8">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -11142,6 +11145,9 @@
   </data>
  </layer>
  <layer id="19" name="Background" width="107" height="104" opacity="0.6">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -33409,6 +33415,9 @@
   </data>
  </layer>
  <layer id="14" name="AssetsBG" width="107" height="104">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -44541,6 +44550,9 @@
   </data>
  </layer>
  <layer id="13" name="Assets" width="107" height="104">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>

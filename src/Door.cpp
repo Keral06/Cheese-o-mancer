@@ -70,6 +70,8 @@ void Door::OnCollision(PhysBody* physA, PhysBody* physB)
     // Guardamos a qué puerta queremos aparecer
    Engine::GetInstance().scene->nextSpawnPoint = targetDoor;
 
+   Engine::GetInstance().scene->firstDoor = false;
+
     // Cambiar de mapa
     Engine::GetInstance().scene->LoadMap(targetMap);
 }

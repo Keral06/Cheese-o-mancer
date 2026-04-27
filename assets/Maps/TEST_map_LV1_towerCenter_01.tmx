@@ -7,6 +7,9 @@
   <image source="tileset_lv1_dungeon_base_04.png" width="3840" height="3537"/>
  </tileset>
  <layer id="16" name="Background" width="93" height="115">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -10706,6 +10709,9 @@
   </data>
  </layer>
  <layer id="12" name="Tower" width="93" height="115">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -21405,6 +21411,9 @@
   </data>
  </layer>
  <layer id="14" name="AssetsBG" width="93" height="115">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -32104,6 +32113,9 @@
   </data>
  </layer>
  <layer id="10" name="Map" width="93" height="115">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile gid="235"/>
    <tile gid="235"/>
@@ -42803,6 +42815,9 @@
   </data>
  </layer>
  <layer id="13" name="Assets" width="93" height="115">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>

@@ -72,6 +72,7 @@ struct ObjectGroup
     // L07: TODO 1: Add the info to the MapLayer Struct
     int id;
     std::string name;
+    Properties properties;
     struct Object
     {
         // L07: TODO 1: Add the info to the MapLayer Struct
@@ -179,7 +180,7 @@ public:
     MapLayer* GetNavigationLayer();
     Vector2D Map::GetMapSizeInTiles();
     Vector2D GetMapSizeInPixels();
-    void DrawLayer(const char* layerName);
+    void DrawLayer(std::string layerName);
     void DrawObjectLayerParallax(std::string layerName, float parallaxSpeed);
     int GetTileWidth() {
     return mapData.tileWidth;

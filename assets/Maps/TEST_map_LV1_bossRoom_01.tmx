@@ -7,6 +7,9 @@
   <image source="tileset_lv1_dungeon_base_04.png" width="3840" height="3537"/>
  </tileset>
  <layer id="16" name="Background" width="86" height="38">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -3279,6 +3282,9 @@
   </data>
  </layer>
  <layer id="11" name="Map" width="86" height="38">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile gid="235"/>
    <tile gid="235"/>

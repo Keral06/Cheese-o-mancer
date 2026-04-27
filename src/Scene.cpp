@@ -91,27 +91,10 @@ bool Scene::Update(float dt)
 		}
 		
 		break;
-	case SceneID::LEVEL1:
-		UpdateLevel1(dt);
+	case SceneID::IN_GAME:
+		UpdateLevel(dt);
 		
 		break;
-	case SceneID::LEVEL2:
-		UpdateLevel2(dt);
-		
-		break;
-	case SceneID::LEVEL3:
-		UpdateLevel3(dt);
-		
-		break;
-	case SceneID::LEVEL4:
-		UpdateLevel4(dt);
-		
-		break;
-	case SceneID::LEVEL5:
-		UpdateLevel5(dt);
-		
-		break;
-
 	case SceneID::GAME_OVER:
 		UpdateGameOver(dt);
 		break;
@@ -204,368 +187,11 @@ bool Scene::PostUpdate()
 		}
 		break;
 
-	case SceneID::LEVEL1:
-		PostUpdateLevel1();
+	case SceneID::IN_GAME:
+		PostUpdateLevel();
 		SaveLevel();
 		break;
-	case SceneID::LEVEL2:
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-			Engine::GetInstance().map->LoadEntities(player, enemies);
-		}
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-			Engine::GetInstance().map->SaveEntities(player);
-			savedLevel = 2;
-			SaveLevel();
-		}
-
-		Engine::GetInstance().map->DrawLayer("Map");
-		if (player != nullptr && player->hasTalkedMagician) {
-			if (panelTexture != nullptr) {
-				float w, h;
-				SDL_GetTextureSize(panelTexture, &w, &h);
-			
-
-					SDL_FRect destRect = { 10, 20, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heartTexture, NULL, &destRect);
-				
-			}
-			if (player->lives == 4) {
-				if (heart4Texture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(heart4Texture, &w, &h);
-					
-
-					SDL_FRect destRect = { 15, 25, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart4Texture, NULL, &destRect);
-
-				}
-			}
-			else if (player->lives == 3) {
-				if (heart3Texture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(heart3Texture, &w, &h);
-
-
-					SDL_FRect destRect = { 15, 25, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart3Texture, NULL, &destRect);
-
-				}
-			
-			}else if(player->lives == 2) {
-			
-				if (heart2Texture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(heart2Texture, &w, &h);
-
-
-					SDL_FRect destRect = { 15, 25, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart2Texture, NULL, &destRect);
-
-				}
-			}
-			else if (player->lives == 1) {
-			
-				if (heart1Texture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(heart1Texture, &w, &h);
-
-
-					SDL_FRect destRect = { 15, 25, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart1Texture, NULL, &destRect);
-
-				}
-			}
-			if (player->extralife) {
-
-				if (extraHeartTexture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(extraHeartTexture, &w, &h);
-
-
-					SDL_FRect destRect = { 25, 25, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, extraHeartTexture, NULL, &destRect);
-				}
-
-			}
-			
-			std::string scoreText = "Score: " + std::to_string(player->score);
-			Engine::GetInstance().render->DrawText(scoreText.c_str(), 1100, 30, 0, 0, { 255, 255, 255, 255 });
-
-			std::string timerText = "Time: " + std::to_string((int)levelTimer);
-			Engine::GetInstance().render->DrawText(timerText.c_str(), 1100, 70, 0, 0, { 255, 255, 255, 255 });
-		}
-		if (isPaused) {
-			SDL_Rect screenRect = { 0, 0, 1280, 720 }; 
-			Engine::GetInstance().render->DrawRectangle(screenRect, 0, 0, 0, 150, true, false);
-
-			Engine::GetInstance().render->DrawText("PAUSE", 580, 150, 0, 0, { 255, 255, 255, 255 });
-		}
-		Engine::GetInstance().uiManager->PostUpdate();
-		if (showHelp && helpTexture != nullptr)
-		{
-			float w, h;
-			SDL_GetTextureSize(helpTexture, &w, &h);
-			Engine::GetInstance().render->DrawTextureNoCamera(helpTexture, 600, 300, w*2, h*2);
-		}
-
-		//STORE IS IN LEVEL 2
-		if (storeOn) {
-			float w, h;
-			SDL_GetTextureSize(storeBag, &w, &h);
-			Engine::GetInstance().render->DrawTextureNoCamera(storeBag, 80, -100, w / 1.5, h / 1.5);
-			if (selectedStoreItem == 1) {
-				SDL_GetTextureSize(storePaperMap, &w, &h);
-				Engine::GetInstance().render->DrawTextureNoCamera(storePaperMap, 550, 0, w / 1.5, h / 1.5);
-			}
-			else if (selectedStoreItem == 2) {
-				SDL_GetTextureSize(storePaperKey, &w, &h);
-				Engine::GetInstance().render->DrawTextureNoCamera(storePaperKey, 550, 0, w / 1.5, h / 1.5);
-			}
-			else if (selectedStoreItem == 3) {
-
-				SDL_GetTextureSize(storePaperLife, &w, &h);
-				Engine::GetInstance().render->DrawTextureNoCamera(storePaperLife, 550, 0, w / 1.5, h / 1.5);
-			}
-
-
-
-		}
-		break;
-
-	case SceneID::LEVEL3:
-		Engine::GetInstance().map->DrawLayer("Map");
-		if (player != nullptr && player->hasTalkedMagician) {
-			if (panelTexture != nullptr) {
-				float w, h;
-				SDL_GetTextureSize(panelTexture, &w, &h);
-
-
-				SDL_FRect destRect = { 10, 20, w, h };
-				SDL_RenderTexture(Engine::GetInstance().render->renderer, heartTexture, NULL, &destRect);
-
-			}
-			if (player->lives == 4) {
-				if (heart4Texture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(heart4Texture, &w, &h);
-
-
-					SDL_FRect destRect = { 15, 25, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart4Texture, NULL, &destRect);
-
-				}
-			}
-			else if (player->lives == 3) {
-				if (heart3Texture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(heart3Texture, &w, &h);
-
-
-					SDL_FRect destRect = { 15, 25, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart3Texture, NULL, &destRect);
-
-				}
-
-			}
-			else if (player->lives == 2) {
-
-				if (heart2Texture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(heart2Texture, &w, &h);
-
-
-					SDL_FRect destRect = { 15, 25, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart2Texture, NULL, &destRect);
-
-				}
-			}
-			else if (player->lives == 1) {
-
-				if (heart1Texture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(heart1Texture, &w, &h);
-
-
-					SDL_FRect destRect = { 15, 25, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart1Texture, NULL, &destRect);
-
-				}
-			}
-			if (player->extralife) {
-
-				if (extraHeartTexture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(extraHeartTexture, &w, &h);
-
-
-					SDL_FRect destRect = { 25, 25, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, extraHeartTexture, NULL, &destRect);
-				}
-
-			}
-
-			std::string scoreText = "Score: " + std::to_string(player->score);
-			Engine::GetInstance().render->DrawText(scoreText.c_str(), 1100, 30, 0, 0, { 255, 255, 255, 255 });
-
-			std::string timerText = "Time: " + std::to_string((int)levelTimer);
-			Engine::GetInstance().render->DrawText(timerText.c_str(), 1100, 70, 0, 0, { 255, 255, 255, 255 });
-		}
-	case SceneID::LEVEL4:
-		Engine::GetInstance().map->DrawLayer("Map");
-		if (player != nullptr && player->hasTalkedMagician) {
-			if (panelTexture != nullptr) {
-				float w, h;
-				SDL_GetTextureSize(panelTexture, &w, &h);
-
-
-				SDL_FRect destRect = { 10, 20, w, h };
-				SDL_RenderTexture(Engine::GetInstance().render->renderer, heartTexture, NULL, &destRect);
-
-			}
-			if (player->lives == 4) {
-				if (heart4Texture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(heart4Texture, &w, &h);
-
-
-					SDL_FRect destRect = { 15, 25, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart4Texture, NULL, &destRect);
-
-				}
-			}
-			else if (player->lives == 3) {
-				if (heart3Texture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(heart3Texture, &w, &h);
-
-
-					SDL_FRect destRect = { 15, 25, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart3Texture, NULL, &destRect);
-
-				}
-
-			}
-			else if (player->lives == 2) {
-
-				if (heart2Texture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(heart2Texture, &w, &h);
-
-
-					SDL_FRect destRect = { 15, 25, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart2Texture, NULL, &destRect);
-
-				}
-			}
-			else if (player->lives == 1) {
-
-				if (heart1Texture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(heart1Texture, &w, &h);
-
-
-					SDL_FRect destRect = { 15, 25, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart1Texture, NULL, &destRect);
-
-				}
-			}
-			if (player->extralife) {
-
-				if (extraHeartTexture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(extraHeartTexture, &w, &h);
-
-
-					SDL_FRect destRect = { 25, 25, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, extraHeartTexture, NULL, &destRect);
-				}
-
-			}
-
-			std::string scoreText = "Score: " + std::to_string(player->score);
-			Engine::GetInstance().render->DrawText(scoreText.c_str(), 1100, 30, 0, 0, { 255, 255, 255, 255 });
-
-			std::string timerText = "Time: " + std::to_string((int)levelTimer);
-			Engine::GetInstance().render->DrawText(timerText.c_str(), 1100, 70, 0, 0, { 255, 255, 255, 255 });
-		}
-	case SceneID::LEVEL5:
-		Engine::GetInstance().map->DrawLayer("Map");
-		if (player != nullptr && player->hasTalkedMagician) {
-			if (panelTexture != nullptr) {
-				float w, h;
-				SDL_GetTextureSize(panelTexture, &w, &h);
-
-
-				SDL_FRect destRect = { 10, 20, w, h };
-				SDL_RenderTexture(Engine::GetInstance().render->renderer, heartTexture, NULL, &destRect);
-
-			}
-			if (player->lives == 4) {
-				if (heart4Texture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(heart4Texture, &w, &h);
-
-
-					SDL_FRect destRect = { 15, 25, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart4Texture, NULL, &destRect);
-
-				}
-			}
-			else if (player->lives == 3) {
-				if (heart3Texture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(heart3Texture, &w, &h);
-
-
-					SDL_FRect destRect = { 15, 25, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart3Texture, NULL, &destRect);
-
-				}
-
-			}
-			else if (player->lives == 2) {
-
-				if (heart2Texture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(heart2Texture, &w, &h);
-
-
-					SDL_FRect destRect = { 15, 25, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart2Texture, NULL, &destRect);
-
-				}
-			}
-			else if (player->lives == 1) {
-
-				if (heart1Texture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(heart1Texture, &w, &h);
-
-
-					SDL_FRect destRect = { 15, 25, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart1Texture, NULL, &destRect);
-
-				}
-			}
-			if (player->extralife) {
-
-				if (extraHeartTexture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(extraHeartTexture, &w, &h);
-
-
-					SDL_FRect destRect = { 25, 25, w, h };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, extraHeartTexture, NULL, &destRect);
-				}
-
-			}
-
-			std::string scoreText = "Score: " + std::to_string(player->score);
-			Engine::GetInstance().render->DrawText(scoreText.c_str(), 1100, 30, 0, 0, { 255, 255, 255, 255 });
-
-			std::string timerText = "Time: " + std::to_string((int)levelTimer);
-			Engine::GetInstance().render->DrawText(timerText.c_str(), 1100, 70, 0, 0, { 255, 255, 255, 255 });
-		}
+	
 	case SceneID::GAME_OVER:
 		if (loseTexture != nullptr) {
 			SDL_Rect sourceRect = loseAnimSet.GetCurrentFrame();
@@ -625,27 +251,7 @@ bool Scene::PostUpdate()
 	default:
 		break;
 	}
-	switch (currentScene)
-	{
-	case SceneID::LEVEL1:
-		ChangeToLvl2();
-		break;
-	case SceneID::LEVEL2:
-		
-		ChangeToLvl5();
-		break;
-	case SceneID::LEVEL3:
-		ChangeToLvl4();
-		break;
-	case SceneID::LEVEL4:
-		ChangeToLvl1();
-		break;
-	case SceneID::LEVEL5:
-		ChangeToLvl3();
-		break;
-	default:
-		break;
-	}
+	
 	if (showUIDebug) {
 		for (const auto& ui : Engine::GetInstance().uiManager->UIElementsList) {
 
@@ -708,21 +314,11 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 		HandleMainMenuUIEvents(uiElement);
 		
 		break;
-	case SceneID::LEVEL1:
-		break;
-	case SceneID::LEVEL2:
-		break;
-	case SceneID::LEVEL3:
-		break;
-	case SceneID::LEVEL4:
-		break;
-	case SceneID::LEVEL5:
-		break;
 	case SceneID::GAME_OVER: 
 		HandleGameOverUIEvents(uiElement);
 		break;
 	case SceneID::WIN_SCREEN:
-		HandleWinScreenUIEvents(uiElement);
+		
 		break;
 	case SceneID::FINAL_WIN:
 		HandleFinalWinUIEvents(uiElement);
@@ -767,24 +363,8 @@ void Scene::LoadScene(SceneID newScene)
 		CreateStoreLevel1();
 		break;
 
-	case SceneID::LEVEL1:
-		LoadLevel1();
-		break;
-
-	case SceneID::LEVEL2:
-		LoadLevel2();
-		break;
-
-	case SceneID::LEVEL3:
-		LoadLevel3();
-		break;
-
-	case SceneID::LEVEL4:
-		LoadLevel4();
-		break;
-
-	case SceneID::LEVEL5:
-		LoadLevel5();
+	case SceneID::IN_GAME:
+		LoadMap("TEST_map_LV1_startRoom_01.tmx");
 		break;
 
 	case SceneID::GAME_OVER:
@@ -829,27 +409,6 @@ void Scene::UnloadCurrentScene() {
 	case SceneID::MAIN_MENU:
 		UnloadMainMenu();
 		break;
-
-	case SceneID::LEVEL1:
-		UnloadLevel1();
-		break;
-
-	case SceneID::LEVEL2:
-		UnloadLevel2();
-		break;
-
-	case SceneID::LEVEL3:
-		UnloadLevel3();
-		break;
-
-	case SceneID::LEVEL4:
-		UnloadLevel4();
-		break;
-
-	case SceneID::LEVEL5:
-		UnloadLevel5();
-		break;
-
 	case SceneID::GAME_OVER:
 		UnloadGameOver();
 		break;
@@ -982,7 +541,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 	case 1:
 		LOG("Main Menu: MyButton clicked!");
 		continueGame = false;
-		ChangeScene(SceneID::LEVEL1);
+		ChangeScene(SceneID::IN_GAME);
 		break;
 	case 2: 
 		if (uiElement->type == UIElementType::SLIDER) {
@@ -1074,114 +633,18 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 	}
 }
 
-void Scene::ChangeToLvl1() {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
-	{
-		ChangeScene(SceneID::LEVEL1);
-	}
-}
-void Scene::ChangeToLvl2() {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
-	{
-		ChangeScene(SceneID::LEVEL2);
-	}
-}
-void Scene::ChangeToLvl3() {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
-	{
-		ChangeScene(SceneID::LEVEL3);
-	}
-}
-void Scene::ChangeToLvl4() {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
-	{
-		ChangeScene(SceneID::LEVEL4);
-	}
-}
-void Scene::ChangeToLvl5() {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
-	{
-		ChangeScene(SceneID::LEVEL5);
-	}
-}
 // *********************************************
 // Level 1 functions
 // *********************************************
 
-void Scene::LoadLevel1() {
 
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/DOWNTIME_ratmosphere.wav");
-
-	// Load Map
-	Engine::GetInstance().map->Load("Assets/Maps/", "TEST_map_LV1_startRoom_01.tmx");//"TEST_map_LV1_towerCenter_01.tmx"
-																					  //"TEST_map_LV1_pantryRoom_01.tmx"
-
-	// Load Entities from map
-	Engine::GetInstance().map->LoadEntities(player, enemies);
-
-	heartTexture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/heart4.png");
-	panelTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_01.png");
-	heart1Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese1_01.png");
-	heart2Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese2_01.png");
-	heart3Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese3_01.png");
-	heart4Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese4_01.png");
-	extraHeartTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_CheeseExtra_01.png");
-	isPaused = false;   
-	CreatePauseUI();
-
-	if (player != nullptr) {
-		if (continueGame == false) {
-			Vector2D startPos = Engine::GetInstance().map->GetStartPoint("Checkpoints", "Player");
-
-			if (startPos.getX() != 0 || startPos.getY() != 0) {
-				player->SetPosition(startPos);
-				player->respawnPosition = { PIXEL_TO_METERS(startPos.getX()), PIXEL_TO_METERS(startPos.getY()) };
-			}
-			Player::score = 0;
-			levelTimer = 0.0f;
-			
-		}
-		
-	}
-
-	// Crear Items Manuales (Del antiguo Awake/Start)
-	std::shared_ptr<Item> item = std::dynamic_pointer_cast<Item>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM));
-	item->position = Vector2D(200, 672);
-	item->Start();
-
-	// Textura de ayuda
-	helpTexture = Engine::GetInstance().textures->Load("resources/UI/UI_Tutorial/UI_TutorialControls_.png");
-	//textura de mapa
-	map1Texture = Engine::GetInstance().textures->Load("resources/UI/UI_MapLVL1_01.png");
-}
-
-void Scene::UpdateLevel1(float dt) {
-	//DIbujar mapa
-	Engine::GetInstance().map->DrawObjectLayerParallax("BG Parallax", 0.1f);
-	Engine::GetInstance().map->DrawObjectLayerParallax("Jails", 0.3f);
-	Engine::GetInstance().map->DrawLayer("Background");
-	Engine::GetInstance().map->DrawLayer("Tower");
-	Engine::GetInstance().map->DrawLayer("Map");
-	Engine::GetInstance().map->DrawLayer("AssetsBG");
-	Engine::GetInstance().map->DrawLayer("Assets");
-	
+void Scene::UpdateLevel(float dt) {
+	//DIbujar mapa	
 
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
 		SetPause(!isPaused);
 	}
 	
-
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-
-	if (player && !player->isDead()) {
-		levelTimer += dt / 1000.0f;
-	}
-	// Lógica de cambio de nivel (Debug)
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
 
 	// Lógica de Ayuda (H)
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
@@ -1208,7 +671,7 @@ void Scene::UpdateLevel1(float dt) {
 	}
 
 	// Lógica de Checkpoints (Teclas 1-9)
-	for (int i = 0; i < 9; ++i) {
+	/*for (int i = 0; i < 9; ++i) {
 		if (Engine::GetInstance().input->GetKey((SDL_Scancode)(SDL_SCANCODE_1 + i)) == KEY_DOWN) {
 			if (i < Engine::GetInstance().map->checkpoints.size()) {
 				Vector2D checkpointPos = Engine::GetInstance().map->checkpoints[i]->position;
@@ -1216,7 +679,7 @@ void Scene::UpdateLevel1(float dt) {
 				if (player) player->SetPosition(checkpointPos);
 			}
 		}
-	}
+	}*/
 
 	for (const auto& checkpoint : Engine::GetInstance().map->checkpoints) {
 		if (checkpoint->name == "end" && checkpoint->isActivated) {
@@ -1240,7 +703,7 @@ void Scene::UpdateLevel1(float dt) {
 	
 }
 
-void Scene::UnloadLevel1() {
+void Scene::UnloadLevel() {
 
 	// Clean up UI elements
 	auto& uiManager = Engine::GetInstance().uiManager;
@@ -1260,7 +723,7 @@ void Scene::UnloadLevel1() {
 
 }
 
-void  Scene::PostUpdateLevel1() {
+void  Scene::PostUpdateLevel() {
 
 	// Cargar/Guardar estado (F5/F6)
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
@@ -1377,388 +840,6 @@ void  Scene::PostUpdateLevel1() {
 }
 
 // *********************************************
-// Level 2 functions
-// *********************************************
-
-void Scene::LoadLevel2() {
-
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/DOWNTIME_ratmosphere.wav");
-
-	isPaused = false;   
-	CreatePauseUI();
-	
-	heartTexture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/heart4.png");
-	panelTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_01.png");
-	heart1Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese1_01.png");
-	heart2Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese2_01.png");
-	heart3Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese3_01.png");
-	heart4Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese4_01.png");
-	extraHeartTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_CheeseExtra_01.png");
-	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/", "TEST_map_LV1_towerCenter_01.tmx");
-
-	//Call the function to load entities from the map
-	Engine::GetInstance().map->LoadEntities(player, enemies);
-	if (continueGame == false) {
-
-		levelTimer = 0.0f;
-		Player::score = 0;
-		if (player) {
-			player->lives = 3;
-		}
-
-		Vector2D startPos = Engine::GetInstance().map->GetStartPoint("Checkpoints", "Player");
-
-		if (startPos.getX() != 0 || startPos.getY() != 0) {
-			player->SetPosition(startPos);
-			player->respawnPosition = { PIXEL_TO_METERS(startPos.getX()), PIXEL_TO_METERS(startPos.getY()) };
-		}
-	}
-	CreateStoreLevel1();
-}
-
-void Scene::UpdateLevel2(float dt) {
-	Engine::GetInstance().map->DrawLayer("Background");
-	Engine::GetInstance().map->DrawLayer("Map");
-	Engine::GetInstance().map->DrawLayer("AssetsBG");
-	Engine::GetInstance().map->DrawLayer("Tower");
-	Engine::GetInstance().map->DrawLayer("Assets");
-	
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
-		SetPause(!isPaused);
-	}
-	if (isPaused) {
-		return;
-	}
-
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-
-	if (player && !player->isDead()) {
-		levelTimer += dt / 1000.0f;
-	}
-	if (player && player->lives <= 0) {
-		ChangeScene(SceneID::GAME_OVER);
-		return;
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
-	{
-		showHelp = !showHelp;
-	}
-	if (player) {
-		levelTimer += dt / 1000.0f;
-	}
-	for (int i = 0; i < 9; ++i) {
-		if (Engine::GetInstance().input->GetKey((SDL_Scancode)(SDL_SCANCODE_1 + i)) == KEY_DOWN) {
-			if (i < Engine::GetInstance().map->checkpoints.size()) {
-				Vector2D checkpointPos = Engine::GetInstance().map->checkpoints[i]->position;
-				checkpointPos.setY(checkpointPos.getY() - 150);
-				if (player) player->SetPosition(checkpointPos);
-			}
-		}
-	}
-	//if the finalboss PlayerClose= true, bossmusic sounds (same as dead music)
-	
-}
-
-void Scene::UnloadLevel2() {
-
-	auto& uiManager = Engine::GetInstance().uiManager;
-	uiManager->CleanUp();
-
-	player.reset();
-
-	Engine::GetInstance().map->CleanUp();
-	Engine::GetInstance().entityManager->CleanUp();
-
-}
-
-// *********************************************
-// Level 3 functions
-// *********************************************
-
-void Scene::LoadLevel3() {
-
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/DOWNTIME_ratmosphere.wav");
-
-	isPaused = false;
-	CreatePauseUI();
-
-	heartTexture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/heart4.png");
-	panelTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_01.png");
-	heart1Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese1_01.png");
-	heart2Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese2_01.png");
-	heart3Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese3_01.png");
-	heart4Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese4_01.png");
-	extraHeartTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_CheeseExtra_01.png");
-	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/", "TEST_map_LV1_pantryRoom_01.tmx");
-
-	//Call the function to load entities from the map
-	Engine::GetInstance().map->LoadEntities(player, enemies);
-	if (continueGame == false) {
-
-		levelTimer = 0.0f;
-		Player::score = 0;
-		if (player) {
-			player->lives = 3;
-		}
-
-		Vector2D startPos = Engine::GetInstance().map->GetStartPoint("Checkpoints", "Player");
-
-		if (startPos.getX() != 0 || startPos.getY() != 0) {
-			player->SetPosition(startPos);
-			player->respawnPosition = { PIXEL_TO_METERS(startPos.getX()), PIXEL_TO_METERS(startPos.getY()) };
-		}
-	}
-}
-
-void Scene::UpdateLevel3(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
-		SetPause(!isPaused);
-	}
-	if (isPaused) {
-		return;
-	}
-
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-
-	if (player && !player->isDead()) {
-		levelTimer += dt / 1000.0f;
-	}
-	if (player && player->lives <= 0) {
-		ChangeScene(SceneID::GAME_OVER);
-		return;
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
-	{
-		showHelp = !showHelp;
-	}
-	if (player) {
-		levelTimer += dt / 1000.0f;
-	}
-	for (int i = 0; i < 9; ++i) {
-		if (Engine::GetInstance().input->GetKey((SDL_Scancode)(SDL_SCANCODE_1 + i)) == KEY_DOWN) {
-			if (i < Engine::GetInstance().map->checkpoints.size()) {
-				Vector2D checkpointPos = Engine::GetInstance().map->checkpoints[i]->position;
-				checkpointPos.setY(checkpointPos.getY() - 150);
-				if (player) player->SetPosition(checkpointPos);
-			}
-		}
-	}
-	//if the finalboss PlayerClose= true, bossmusic sounds (same as dead music)
-
-}
-
-void Scene::UnloadLevel3() {
-
-	auto& uiManager = Engine::GetInstance().uiManager;
-	uiManager->CleanUp();
-
-	player.reset();
-
-	Engine::GetInstance().map->CleanUp();
-	Engine::GetInstance().entityManager->CleanUp();
-
-}
-
-// *********************************************
-// Level 4 functions
-// *********************************************
-
-void Scene::LoadLevel4() {
-
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/level2music.wav");
-
-	isPaused = false;
-	CreatePauseUI();
-
-	heartTexture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/heart4.png");
-	panelTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_01.png");
-	heart1Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese1_01.png");
-	heart2Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese2_01.png");
-	heart3Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese3_01.png");
-	heart4Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese4_01.png");
-	extraHeartTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_CheeseExtra_01.png");
-	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/", "TEST_map_LV1_tortureRoom_02.tmx");
-
-	//Call the function to load entities from the map
-	Engine::GetInstance().map->LoadEntities(player, enemies);
-	if (continueGame == false) {
-
-		levelTimer = 0.0f;
-		Player::score = 0;
-		if (player) {
-			player->lives = 3;
-		}
-
-		Vector2D startPos = Engine::GetInstance().map->GetStartPoint("Checkpoints", "Player");
-
-		if (startPos.getX() != 0 || startPos.getY() != 0) {
-			player->SetPosition(startPos);
-			player->respawnPosition = { PIXEL_TO_METERS(startPos.getX()), PIXEL_TO_METERS(startPos.getY()) };
-		}
-	}
-}
-
-void Scene::UpdateLevel4(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
-		SetPause(!isPaused);
-	}
-	if (isPaused) {
-		return;
-	}
-
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-
-	if (player && !player->isDead()) {
-		levelTimer += dt / 1000.0f;
-	}
-	if (player && player->lives <= 0) {
-		ChangeScene(SceneID::GAME_OVER);
-		return;
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
-	{
-		showHelp = !showHelp;
-	}
-	if (player) {
-		levelTimer += dt / 1000.0f;
-	}
-	for (int i = 0; i < 9; ++i) {
-		if (Engine::GetInstance().input->GetKey((SDL_Scancode)(SDL_SCANCODE_1 + i)) == KEY_DOWN) {
-			if (i < Engine::GetInstance().map->checkpoints.size()) {
-				Vector2D checkpointPos = Engine::GetInstance().map->checkpoints[i]->position;
-				checkpointPos.setY(checkpointPos.getY() - 150);
-				if (player) player->SetPosition(checkpointPos);
-			}
-		}
-	}
-	//if the finalboss PlayerClose= true, bossmusic sounds (same as dead music)
-
-}
-
-void Scene::UnloadLevel4() {
-
-	auto& uiManager = Engine::GetInstance().uiManager;
-	uiManager->CleanUp();
-
-	player.reset();
-
-	Engine::GetInstance().map->CleanUp();
-	Engine::GetInstance().entityManager->CleanUp();
-
-}
-
-// *********************************************
-// Level 5 functions
-// *********************************************
-
-void Scene::LoadLevel5() {
-
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/level2music.wav");
-
-	isPaused = false;
-	CreatePauseUI();
-
-	heartTexture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/heart4.png");
-	panelTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_01.png");
-	heart1Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese1_01.png");
-	heart2Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese2_01.png");
-	heart3Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese3_01.png");
-	heart4Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese4_01.png");
-	extraHeartTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_CheeseExtra_01.png");
-	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/", "TEST_map_LV1_tortureRoom_02.tmx");
-
-	//Call the function to load entities from the map
-	Engine::GetInstance().map->LoadEntities(player, enemies);
-	if (continueGame == false) {
-
-		levelTimer = 0.0f;
-		Player::score = 0;
-		if (player) {
-			player->lives = 3;
-		}
-
-		Vector2D startPos = Engine::GetInstance().map->GetStartPoint("Checkpoints", "Player");
-
-		if (startPos.getX() != 0 || startPos.getY() != 0) {
-			player->SetPosition(startPos);
-			player->respawnPosition = { PIXEL_TO_METERS(startPos.getX()), PIXEL_TO_METERS(startPos.getY()) };
-		}
-	}
-}
-
-void Scene::UpdateLevel5(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
-		SetPause(!isPaused);
-	}
-	if (isPaused) {
-		return;
-	}
-
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-
-	if (player && !player->isDead()) {
-		levelTimer += dt / 1000.0f;
-	}
-	if (player && player->lives <= 0) {
-		ChangeScene(SceneID::GAME_OVER);
-		return;
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
-	{
-		showHelp = !showHelp;
-	}
-	if (player) {
-		levelTimer += dt / 1000.0f;
-	}
-	for (int i = 0; i < 9; ++i) {
-		if (Engine::GetInstance().input->GetKey((SDL_Scancode)(SDL_SCANCODE_1 + i)) == KEY_DOWN) {
-			if (i < Engine::GetInstance().map->checkpoints.size()) {
-				Vector2D checkpointPos = Engine::GetInstance().map->checkpoints[i]->position;
-				checkpointPos.setY(checkpointPos.getY() - 150);
-				if (player) player->SetPosition(checkpointPos);
-			}
-		}
-	}
-	//if the finalboss PlayerClose= true, bossmusic sounds (same as dead music)
-
-}
-
-void Scene::UnloadLevel5() {
-
-	auto& uiManager = Engine::GetInstance().uiManager;
-	uiManager->CleanUp();
-
-	player.reset();
-
-	Engine::GetInstance().map->CleanUp();
-	Engine::GetInstance().entityManager->CleanUp();
-
-}
-// *********************************************
 // GAME OVER functions
 // *********************************************
 
@@ -1829,12 +910,6 @@ void Scene::UnloadWinScreen() {
 	Engine::GetInstance().textures->UnLoad(loseTexture);
 	loseTexture = nullptr;
 	Engine::GetInstance().uiManager->CleanUp();
-}
-
-void Scene::HandleWinScreenUIEvents(UIElement* uiElement) {
-	if (uiElement->id == 10) { 
-		ChangeScene(SceneID::LEVEL2);
-	}
 }
 
 void Scene::CreatePauseUI() {
@@ -2047,7 +1122,7 @@ void Scene::HandleFinalWinUIEvents(UIElement* uiElement) {
 
 void Scene::LoadMap(std::string map)
 {
-	UnloadLevel1();
+	UnloadLevel();
 	
 	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/level2music.wav");
 

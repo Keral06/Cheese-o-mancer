@@ -12,14 +12,25 @@ enum class SceneID
 {
 	INTRO_SCREEN,
 	MAIN_MENU,
-	LEVEL1,
-	LEVEL2,
-	LEVEL3,
-	LEVEL4,
-	LEVEL5,
+	IN_GAME,
 	GAME_OVER,
 	WIN_SCREEN,
 	FINAL_WIN
+};
+
+enum Level {
+	LEVEL1,
+	LEVEL2,
+	LEVEL3,
+	LEVEL4
+};
+
+enum Areas1 {
+	START,
+	TOWER,
+	PANTRY,
+	TORTURE,
+	BOSS
 };
 
 class Scene : public Module
@@ -87,12 +98,6 @@ private:
 	void UpdateIntro(float dt);
 	void UnloadIntro();
 
-	void ChangeToLvl1();
-	void ChangeToLvl2();
-	void ChangeToLvl3();
-	void ChangeToLvl4();
-	void ChangeToLvl5();
-
 	// L17 TODO 3: Define specific function for main menu scene: Load, Unload, Handle UI events
 	void LoadMainMenu();
 	void UnloadMainMenu();
@@ -100,30 +105,9 @@ private:
 	void HandleMainMenuUIEvents(UIElement* uiElement);
 
 	// L17 TODO 4: Define specific functions for level1 scene: Load, Unload, Update, PostUpdate
-	void LoadLevel1();
-	void UnloadLevel1();
-	void UpdateLevel1(float dt);
-	void PostUpdateLevel1();
-
-	// L17 TODO 5: Define specific functions for level2 scene: Load, Unload, Update
-	void LoadLevel2();
-	void UpdateLevel2(float dt);
-	void UnloadLevel2();
-
-	//Lvl3 Functions
-	void LoadLevel3();
-	void UpdateLevel3(float dt);
-	void UnloadLevel3();
-
-	//Lvl4 Functions
-	void LoadLevel4();
-	void UpdateLevel4(float dt);
-	void UnloadLevel4();
-
-	//Lvl5 Functions
-	void LoadLevel5();
-	void UpdateLevel5(float dt);
-	void UnloadLevel5();
+	void UnloadLevel();
+	void UpdateLevel(float dt);
+	void PostUpdateLevel();
 
 	// Funciones para la pantalla de Game Over
 	void LoadGameOver(); 
@@ -135,7 +119,7 @@ private:
 	void LoadWinScreen();           
 	void UpdateWinScreen(float dt);  
 	void UnloadWinScreen();          
-	void HandleWinScreenUIEvents(UIElement* uiElement);
+
 
 	// Funciones para el Menú de Pausa
 	void CreatePauseUI();            
@@ -201,5 +185,6 @@ public:
 	std::string nextMap = "";
 	std::string nextSpawnPoint = "Door_1_1";
 	std::string nextDoor = "";
+	bool firstDoor = true;
 	bool cheese = false;
 };

@@ -55,41 +55,30 @@ bool Map::Update(float dt)
     if (mapLoaded) {
         // L07 TODO 5: Prepare the loop to draw all tiles in a layer + DrawTexture()
         // iterate all tiles in a layer
-        for (const auto& mapLayer : mapData.layers) {
-            if (mapLayer->name == "Map"|| mapLayer->name == "Assets"||mapLayer->name == "Background"|| mapLayer->name == "AssetsBG"||
-                mapLayer->name == "Tower") {
-                continue;
-            }
-            //L09 TODO 7: Check if the property Draw exist get the value, if it's true draw the lawyer
-            if (mapLayer->properties.GetProperty("Draw") != NULL && mapLayer->properties.GetProperty("Draw")->value == true) {
-                // L19 TODO 3: Compute which tiles of the map are visible inside the camera view
-                Vector2D camPosTile = GetCameraPositionInTiles();
-                Vector2D limits = GetCameraLimitsInTiles(camPosTile);
-                
-                // L19 TODO 3: Update the loop to draw only the tiles in the camera view
-                for (int i = camPosTile.getX(); i < limits.getX(); i++) {
-                    for (int j = camPosTile.getY(); j < limits.getY(); j++) {
-						// L07 TODO 9: Complete the draw function
-                        //Get the gid from tile
-                        int gid = mapLayer->Get(i, j);
+        for (const auto& group : mapData.objectgroups) {
 
-                        //Check if the gid is different from 0 - some tiles are empty
-                        if (gid != 0) {
-                            //L09: TODO 3: Obtain the tile set using GetTilesetFromTileId
-                            TileSet* tileSet = GetTilesetFromTileId(gid);
-                            if (tileSet != nullptr) {
-                                //Get the Rect from the tileSetTexture;
-                                SDL_Rect tileRect = tileSet->GetRect(gid);
-                                //Get the screen coordinates from the tile coordinates
-                                Vector2D mapCoord = MapToWorld(i, j);
-                                //Draw the texture
-                                Engine::GetInstance().render->DrawTexture(tileSet->texture, (int)mapCoord.getX(), (int)mapCoord.getY(), &tileRect);
-                            }
-                        }
-                    }
+            auto drawProp = group->properties.GetProperty("Draw");
+
+            if (drawProp && drawProp->value == true) {
+
+                float parallax = 1.0f;
+                auto parallaxProp = group->properties.GetProperty("Parallax");
+
+                if (parallaxProp) {
+                    parallax = parallaxProp->valueFloat;
                 }
+
+                DrawObjectLayerParallax(group->name, parallax);
             }
         }
+        for (const auto& mapLayer : mapData.layers) {
+            
+            if (mapLayer->properties.GetProperty("Draw") != NULL && mapLayer->properties.GetProperty("Draw")->value == true) {
+                
+                DrawLayer(mapLayer->name);
+            }
+        }
+        
     }
 
     return ret;
@@ -240,6 +229,7 @@ bool Map::Load(std::string path, std::string fileName)//
             ObjectGroup* objectGroup = new ObjectGroup();
             objectGroup->id = objectGroupNode.attribute("id").as_int();
             objectGroup->name = objectGroupNode.attribute("name").as_string();
+            LoadProperties(objectGroupNode, objectGroup->properties);
 
             // Itera sobre todos los objetos y asigna los valores en el array de datos
             for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
@@ -421,24 +411,28 @@ Vector2D Map::MapToWorld(int i, int j) const
 // L09: TODO 6: Load a group of properties from a node and fill a list with it
 bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 {
-    bool ret = false;
-
-    for (pugi::xml_node propertieNode = node.child("properties").child("property"); propertieNode; propertieNode = propertieNode.next_sibling("property"))
+    for (pugi::xml_node propertieNode = node.child("properties").child("property");
+        propertieNode;
+        propertieNode = propertieNode.next_sibling("property"))
     {
-        
         Properties::Property* p = new Properties::Property();
+
         p->name = propertieNode.attribute("name").as_string();
-        p->value = propertieNode.attribute("value").as_bool(); // (!!) I'm assuming that all values are bool !!
-        p->valueInt = propertieNode.attribute("value").as_int();
-        p->valueFloat = propertieNode.attribute("value").as_float();
-        p->valueString = propertieNode.attribute("value").as_string();
-        
-        
+
+        const char* value = propertieNode.attribute("value").as_string();
+
+        p->valueString = value;
+        p->valueInt = atoi(value);
+        p->valueFloat = (float)atof(value);
+
+        // bool robusto
+        std::string v = value;
+        p->value = (v == "true" || v == "1");
 
         properties.propertyList.push_back(p);
     }
 
-    return ret;
+    return true;
 }
 
 Vector2D Map::GetMapSizeInPixels()
@@ -580,13 +574,13 @@ MapLayer* Map::GetNavigationLayer() {
                                 LOG("Player created.");
                             }
                             //If the player already exists, just set its position
-                            if (Engine::GetInstance().scene->GetLastScene() != SceneID::INTRO_SCREEN && Engine::GetInstance().scene->GetCurrentScene() != SceneID::LEVEL1) {
+                            if (Engine::GetInstance().scene->GetLastScene() != SceneID::INTRO_SCREEN && Engine::GetInstance().scene->firstDoor == false) {
                             
                             
-                            auto obj = Engine::GetInstance().map->GetObjectByProperty(
-                                "Doors",
-                                "name",
-                                Engine::GetInstance().scene->nextSpawnPoint
+                                auto obj = Engine::GetInstance().map->GetObjectByProperty(
+                                    "Doors",
+                                    "name",
+                                    Engine::GetInstance().scene->nextSpawnPoint
                             );
 
                             Vector2D spawn(0, 0);
@@ -659,16 +653,16 @@ MapLayer* Map::GetNavigationLayer() {
                             jailer->mapID = id;
 
                         }
-                        else if (entityType == "Handman") {
-                            std::shared_ptr<HANDMAN> Handman = std::dynamic_pointer_cast<HANDMAN>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HANDMAN));
+                        //else if (entityType == "Handman") {
+                        //    std::shared_ptr<HANDMAN> Handman = std::dynamic_pointer_cast<HANDMAN>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HANDMAN));
 
-                            Handman->position = Vector2D(x, y);
-                            /*enemy->xInicial = (int)x;
-                            enemy->yInicial = (int)y;*/
-                            Handman->Start();
-                            Handman->mapID = id;
+                        //    Handman->position = Vector2D(x, y);
+                        //    /*enemy->xInicial = (int)x;
+                        //    enemy->yInicial = (int)y;*/
+                        //    Handman->Start();
+                        //    Handman->mapID = id;
 
-                        }
+                        //}
                         else if (entityType == "NPC") {
                             std::shared_ptr<NPC> Npc = std::dynamic_pointer_cast<NPC>(Engine::GetInstance().entityManager->CreateEntity(EntityType::NPC));
 
@@ -865,7 +859,7 @@ MapLayer* Map::GetNavigationLayer() {
         }
         return Vector2D(0, 0);
     }
-    void Map::DrawLayer(const char* layerName) {
+    void Map::DrawLayer(std::string layerName) {
         if (!mapLoaded) return;
 
         for (const auto& mapLayer : mapData.layers) {
@@ -961,19 +955,19 @@ MapLayer* Map::GetNavigationLayer() {
         for (const auto& group : mapData.objectgroups) {
             if (group->name == layerName) {
                 layerFound = true;
-                LOG("PARALLAX DEBUG: Capa '%s' encontrada. Tiene %d objetos.", layerName.c_str(), group->objects.size());
+                //LOG("PARALLAX DEBUG: Capa '%s' encontrada. Tiene %d objetos.", layerName.c_str(), group->objects.size());
 
                 for (const auto& object : group->objects) {
                     // Limpiamos el GID por si la imagen está rotada/espejada en Tiled
                     int cleanGid = object->gid & 0x1FFFFFFF;
 
-                    LOG("PARALLAX DEBUG: Objeto '%s' procesando... cleanGid: %d", object->name.c_str(), cleanGid);
+                    //LOG("PARALLAX DEBUG: Objeto '%s' procesando... cleanGid: %d", object->name.c_str(), cleanGid);
 
                     if (cleanGid != 0) {
                         TileSet* tileSet = GetTilesetFromTileId(cleanGid);
 
                         if (tileSet != nullptr) {
-                            LOG("PARALLAX DEBUG: Tileset encontrado. Textura cargada: %s", (tileSet->texture != nullptr ? "SI" : "NO (¡Puntero Nulo!)"));
+                            //LOG("PARALLAX DEBUG: Tileset encontrado. Textura cargada: %s", (tileSet->texture != nullptr ? "SI" : "NO (¡Puntero Nulo!)"));
 
                             if (tileSet->texture != nullptr) {
                                 SDL_Rect tileRect = tileSet->GetRect(cleanGid);
@@ -984,12 +978,12 @@ MapLayer* Map::GetNavigationLayer() {
                                 int drawX = object->x + (int)(camX * parallaxSpeed);
                                 int drawY = object->y - object->height + (int)(camY * parallaxSpeed);
 
-                                LOG("PARALLAX DEBUG: Dibujando en X: %d, Y: %d", drawX, drawY);
+                                //LOG("PARALLAX DEBUG: Dibujando en X: %d, Y: %d", drawX, drawY);
                                 Engine::GetInstance().render->DrawTexture(tileSet->texture, drawX, drawY, &tileRect);
                             }
                         }
                         else {
-                            LOG("PARALLAX DEBUG: ERROR - No se encontro un Tileset para el GID %d", cleanGid);
+                            //LOG("PARALLAX DEBUG: ERROR - No se encontro un Tileset para el GID %d", cleanGid);
                         }
                     }
                 }
@@ -997,6 +991,6 @@ MapLayer* Map::GetNavigationLayer() {
         }
 
         if (!layerFound) {
-            LOG("PARALLAX DEBUG: ERROR FATAL - La capa '%s' no existe en el mapa.", layerName.c_str());
+            //LOG("PARALLAX DEBUG: ERROR FATAL - La capa '%s' no existe en el mapa.", layerName.c_str());
         }
     }
