@@ -40,7 +40,7 @@ public:
 
 	Vector2D GetPosition();
 	void SetPosition(Vector2D pos);
-	void CameraRender();
+	void CameraRender(float dt);
 	void UpdateFireballs(float dt);
 	static bool isPlayerProtectedquestion();
 	static bool IsPlayerProtected;

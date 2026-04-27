@@ -19,6 +19,7 @@
 #include "Scene.h"
 #include "Window.h"
 #include "CheeseBall.h"
+#include <algorithm>
 
 // Variables estaticas del jugador
 int Player::score = 0;
@@ -154,7 +155,7 @@ bool Player::Update(float dt)
 	}
 	Draw(dt);
 
-	CameraRender();
+	CameraRender(dt);
 	if (!isPaused) {
 		if (IsProtected) {
 			//check if the protection has been active for more than 10 seconds
@@ -412,42 +413,44 @@ void Player::Draw(float dt) {
 	
 }
 
-void Player::CameraRender() {
+void Player::CameraRender(float dt) {
 
-	Vector2D mapSize = Engine::GetInstance().map->GetMapSizeInPixels();
-	float limitLeft = Engine::GetInstance().render->camera.w / 4;
-	float limitRight = mapSize.getX() - Engine::GetInstance().render->camera.w;
-	int windowX;
-	int windowY;
+	auto& engine = Engine::GetInstance();
+	auto render = engine.render;
+
+	Vector2D mapSize = engine.map->GetMapSizeInPixels();
+
 	int px, py;
 	pbody->GetPosition(px, py);
 
-	Engine::GetInstance().window->GetWindowSize(windowX, windowY);
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
-		godMode = !godMode;
-		if (godMode) { b2Body_SetGravityScale(pbody->body, 0); }
-		else { b2Body_SetGravityScale(pbody->body, 1); }
-	}
+	int rw, rh;
+	SDL_GetRenderOutputSize(render->renderer, &rw, &rh);
 
-	if (px < Engine::GetInstance().render->camera.w / 4) {
-		Engine::GetInstance().render->camera.x = limitLeft;
-	}
-	else if (px > mapSize.getX() - Engine::GetInstance().render->camera.w / 4) {
-		Engine::GetInstance().render->camera.x = 3 * Engine::GetInstance().render->camera.w / 4 - mapSize.getX();
-	}
-	else { Engine::GetInstance().render->camera.x = (int)(-px + windowX * 1.5); }
+	float camW = (float)render->camera.w;
+	float camH = (float)render->camera.h;
 
-	float limitUp = Engine::GetInstance().render->camera.h / 4;
-	float limitDown = (3 * Engine::GetInstance().render->camera.h / 4) - mapSize.getY();
+	float centerX = camW * 0.5f / render->zoom;
+	float centerY = camH * 0.5f / render->zoom;
 
-	if (py - texH * 4 < Engine::GetInstance().render->camera.h / 4) {
-		Engine::GetInstance().render->camera.y = limitUp;
-	}
-	else if (py > mapSize.getY() - Engine::GetInstance().render->camera.h / 4) {
-		int x = 9;
-		Engine::GetInstance().render->camera.y = limitDown;
-	}
-	else { Engine::GetInstance().render->camera.y = (int)(-py + windowY * 1.5); }
+	float targetX = -px + centerX;
+	float targetY = -py + centerY;
+
+	float visibleW = camW / render->zoom;
+	float visibleH = camH / render->zoom;
+
+	float minX = -(mapSize.getX() - visibleW);
+	float maxX = 0.0f;
+
+	float minY = -(mapSize.getY() - visibleH);
+	float maxY = 0.0f;
+
+	targetX = std::clamp(targetX, minX, maxX);
+	targetY = std::clamp(targetY, minY, maxY);
+
+	render->camera.x = targetX;
+	render->camera.y = targetY;
+
+
 }
 
 // =====================

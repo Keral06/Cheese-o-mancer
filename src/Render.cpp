@@ -31,7 +31,6 @@ bool Render::Awake()
 
 	int scale = Engine::GetInstance().window->GetScale() / 6;
 	SDL_Window* window = Engine::GetInstance().window->window;
-
 	//L05 TODO 5 - Load the configuration of the Render module
 	
 	// SDL3: no flags; create default renderer and set vsync separately
@@ -56,8 +55,8 @@ bool Render::Awake()
 			}
 		}
 		SDL_SetRenderLogicalPresentation(renderer, 1280, 720, SDL_LOGICAL_PRESENTATION_LETTERBOX);
-		camera.w = Engine::GetInstance().window->width * scale;
-		camera.h = Engine::GetInstance().window->height * scale;
+		camera.w = Engine::GetInstance().window->width;
+		camera.h = Engine::GetInstance().window->height;
 		camera.x = 0;
 		camera.y = 0;
 		
@@ -139,58 +138,69 @@ void Render::ResetViewPort()
 // Blit to screen
 bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivotX, int pivotY, SDL_FlipMode flip) const
 {
-	bool ret = true;
 	int scale = Engine::GetInstance().window->GetScale();
 
-	// SDL3 uses float rects for rendering
 	SDL_FRect rect;
-	float world_x = (float)((int)(camera.x * speed) + x * scale);
-	float world_y = (float)((int)(camera.y * speed) + y * scale);
-	float center_x = (float)(camera.w / 2);
-	float center_y = (float)(camera.h / 2);
 
-	rect.x = center_x + (world_x - center_x) * ZOOM_LEVEL;
-	rect.y = center_y + (world_y - center_y) * ZOOM_LEVEL;
 	
+	float world_x = (camera.x + x * scale) * ZOOM_LEVEL;
+	float world_y = (camera.y + y * scale) * ZOOM_LEVEL;
 
-	if (section != NULL)
+	rect.x = world_x;
+	rect.y = world_y;
+
+	
+	if (section)
 	{
-		rect.w = (float)(section->w * scale * ZOOM_LEVEL);
-		rect.h = (float)(section->h * scale * ZOOM_LEVEL);
+		rect.w = section->w * scale * ZOOM_LEVEL;
+		rect.h = section->h * scale * ZOOM_LEVEL;
 	}
 	else
 	{
-		float tw = 0.0f, th = 0.0f;
-		if (!SDL_GetTextureSize(texture, &tw, &th)) { return false; }
+		float tw, th;
+		SDL_GetTextureSize(texture, &tw, &th);
+
 		rect.w = tw * scale * ZOOM_LEVEL;
 		rect.h = th * scale * ZOOM_LEVEL;
 	}
 
-	const SDL_FRect* src = NULL;
-	SDL_FRect srcRect;
-	if (section != NULL)
-	{
-		srcRect = { (float)section->x, (float)section->y, (float)section->w, (float)section->h };
-		src = &srcRect;
-	}
-
-	SDL_FPoint* p = NULL;
+	
+	SDL_FPoint* p = nullptr;
 	SDL_FPoint pivot;
+
 	if (pivotX != INT_MAX && pivotY != INT_MAX)
 	{
-		pivot = { (float)pivotX * scale * ZOOM_LEVEL, (float)pivotY * scale * ZOOM_LEVEL };
+		pivot = {
+			pivotX * scale * ZOOM_LEVEL,
+			pivotY * scale * ZOOM_LEVEL
+		};
 		p = &pivot;
 	}
 
-	// SDL3: returns bool; map to int-style check
-	int rc = SDL_RenderTextureRotated(renderer, texture, src, &rect, angle, p, flip) ? 0 : -1;
-	if (rc != 0)
+	
+	const SDL_FRect* src = nullptr;
+	SDL_FRect srcRect;
+
+	if (section)
 	{
-		LOG("Cannot blit to screen. SDL_RenderTextureRotated error: %s", SDL_GetError());
-		ret = false;
+		srcRect = {
+			(float)section->x,
+			(float)section->y,
+			(float)section->w,
+			(float)section->h
+		};
+		src = &srcRect;
 	}
 
-	return ret;
+	return SDL_RenderTextureRotated(
+		renderer,
+		texture,
+		src,
+		&rect,
+		angle,
+		p,
+		flip
+	);
 }
 bool Render::DrawTextureNoCamera(SDL_Texture* texture, int x, int y, int w, int h, float speed, double angle, int pivotX, int pivotY, SDL_FlipMode flip) const
 {
