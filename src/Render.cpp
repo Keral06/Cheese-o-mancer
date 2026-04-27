@@ -7,8 +7,6 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-const float ZOOM_LEVEL = 0.30f;
-
 Render::Render() : Module()
 {
 	name = "render";
@@ -143,8 +141,8 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 	SDL_FRect rect;
 
 	
-	float world_x = (camera.x + x * scale) * ZOOM_LEVEL;
-	float world_y = (camera.y + y * scale) * ZOOM_LEVEL;
+	float world_x = (camera.x + x * scale) * zoom;
+	float world_y = (camera.y + y * scale) * zoom;
 
 	rect.x = world_x;
 	rect.y = world_y;
@@ -152,16 +150,16 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 	
 	if (section)
 	{
-		rect.w = section->w * scale * ZOOM_LEVEL;
-		rect.h = section->h * scale * ZOOM_LEVEL;
+		rect.w = section->w * scale * zoom;
+		rect.h = section->h * scale * zoom;
 	}
 	else
 	{
 		float tw, th;
 		SDL_GetTextureSize(texture, &tw, &th);
 
-		rect.w = tw * scale * ZOOM_LEVEL;
-		rect.h = th * scale * ZOOM_LEVEL;
+		rect.w = tw * scale * zoom;
+		rect.h = th * scale * zoom;
 	}
 
 	
@@ -171,8 +169,8 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 	if (pivotX != INT_MAX && pivotY != INT_MAX)
 	{
 		pivot = {
-			pivotX * scale * ZOOM_LEVEL,
-			pivotY * scale * ZOOM_LEVEL
+			pivotX * scale * zoom,
+			pivotY * scale * zoom
 		};
 		p = &pivot;
 	}
@@ -244,39 +242,33 @@ bool Render::DrawTextureNoCamera(SDL_Texture* texture, int x, int y, int w, int 
 }
 bool Render::DrawRectangle(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, bool use_camera) const
 {
-	bool ret = true;
 	int scale = Engine::GetInstance().window->GetScale();
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
 
 	SDL_FRect rec;
+
+	float world_x = (camera.x + rect.x * scale) * zoom;
+	float world_y = (camera.y + rect.y * scale) * zoom;
+
 	if (use_camera)
 	{
-		float world_x = (float)((int)(camera.x + rect.x * scale));
-		float world_y = (float)((int)(camera.y + rect.y * scale));
-		float center_x = (float)(camera.w / 2);
-		float center_y = (float)(camera.h / 2);
-
-		rec.x = center_x + (world_x - center_x) * ZOOM_LEVEL;
-		rec.y = center_y + (world_y - center_y) * ZOOM_LEVEL;
-		rec.w = (float)(rect.w * scale * ZOOM_LEVEL);
-		rec.h = (float)(rect.h * scale * ZOOM_LEVEL);
+		rec.x = world_x;
+		rec.y = world_y;
 	}
 	else
 	{
-		rec = { (float)rect.x * scale, (float)rect.y * scale, (float)rect.w * scale, (float)rect.h * scale };
+		rec.x = rect.x * scale;
+		rec.y = rect.y * scale;
 	}
 
-	int result = (filled ? SDL_RenderFillRect(renderer, &rec) : SDL_RenderRect(renderer, &rec)) ? 0 : -1;
+	rec.w = rect.w * scale * zoom;
+	rec.h = rect.h * scale * zoom;
 
-	if (result != 0)
-	{
-		LOG("Cannot draw quad to screen. SDL_RenderFillRect/SDL_RenderRect error: %s", SDL_GetError());
-		ret = false;
-	}
-
-	return ret;
+	return filled ?
+		SDL_RenderFillRect(renderer, &rec) :
+		SDL_RenderRect(renderer, &rec);
 }
 
 bool Render::DrawText(const char* text, int x, int y, int w, int h, SDL_Color color) const
@@ -338,15 +330,15 @@ bool Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b,
 		float center_x = (float)(camera.w / 2);
 		float center_y = (float)(camera.h / 2);
 
-		float world_x1 = (float)(camera.x + x1 * scale);
-		float world_y1 = (float)(camera.y + y1 * scale);
-		X1 = center_x + (world_x1 - center_x) * ZOOM_LEVEL;
-		Y1 = center_y + (world_y1 - center_y) * ZOOM_LEVEL;
+		float world_x1 = (float)(camera.x + x1 * scale) * zoom;
+		float world_y1 = (float)(camera.y + y1 * scale) * zoom;
+		X1 = center_x + (world_x1 - center_x);
+		Y1 = center_y + (world_y1 - center_y);
 
-		float world_x2 = (float)(camera.x + x2 * scale);
-		float world_y2 = (float)(camera.y + y2 * scale);
-		X2 = center_x + (world_x2 - center_x) * ZOOM_LEVEL;
-		Y2 = center_y + (world_y2 - center_y) * ZOOM_LEVEL;
+		float world_x2 = (float)(camera.x + x2 * scale) * zoom;
+		float world_y2 = (float)(camera.y + y2 * scale) * zoom;
+		X2 = center_x + (world_x2 - center_x);
+		Y2 = center_y + (world_y2 - center_y);
 	}
 	else
 	{
@@ -369,54 +361,41 @@ bool Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b,
 
 bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool use_camera) const
 {
-	bool ret = true;
 	int scale = Engine::GetInstance().window->GetScale();
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
 
-	int result = -1;
 	SDL_FPoint points[360];
 
-	float factor = (float)M_PI / 180.0f;
+	float rad = radius * scale * zoom;
 
-	float cx = (float)((use_camera ? camera.x : 0) + x * scale);
-	float cy = (float)((use_camera ? camera.y : 0) + y * scale);
-	float scale_final;
+	float cx, cy;
+
+	float screenX = camera.w * 0.5f;
+	float screenY = camera.h * 0.5f;
 
 	if (use_camera)
 	{
-		float screen_center_x = (float)(camera.w / 2);
-		float screen_center_y = (float)(camera.h / 2);
-		float world_x = (float)(camera.x + x * scale);
-		float world_y = (float)(camera.y + y * scale);
-
-		cx = screen_center_x + (world_x - screen_center_x) * ZOOM_LEVEL;
-		cy = screen_center_y + (world_y - screen_center_y) * ZOOM_LEVEL;
-		scale_final = (float)radius * scale * ZOOM_LEVEL;
+		cx = (camera.x + x * scale) * zoom + screenX;
+		cy = (camera.y + y * scale) * zoom + screenY;
 	}
 	else
 	{
-		cx = (float)(x * scale);
-		cy = (float)(y * scale);
-		scale_final= (float)radius * scale;
+		cx = x * scale + screenX;
+		cy = y * scale + screenY;
+		rad = radius * scale;
 	}
 
-	for (int i = 0; i < 360; ++i)
+	float factor = (float)M_PI / 180.0f;
+
+	for (int i = 0; i < 360; i++)
 	{
-		points[i].x = cx + (float)(radius * cos(i * factor));
-		points[i].y = cy + (float)(radius * sin(i * factor));
+		points[i].x = cx + cosf(i * factor) * rad;
+		points[i].y = cy + sinf(i * factor) * rad;
 	}
 
-	result = SDL_RenderPoints(renderer, points, 360) ? 0 : -1;
-
-	if (result != 0)
-	{
-		LOG("Cannot draw quad to screen. SDL_RenderPoints error: %s", SDL_GetError());
-		ret = false;
-	}
-
-	return ret;
+	return SDL_RenderPoints(renderer, points, 360);
 }
 bool Render::IsOnScreenWorldRect(float x, float y, float w, float h, int margin) const
 {
