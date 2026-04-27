@@ -17,11 +17,11 @@ Door::~Door()
 
 bool Door::Start()
 {
-    // Crear sensor físico (no colisiona, solo detecta)
+   
     pbody = Engine::GetInstance().physics->CreateRectangleSensor(
-        position.getX(),
-        position.getY(),
-        64, 64, // tamaño puerta (ajústalo)
+        position.getX() + width/2,
+        position.getY() + height/2,
+        width, height,
         bodyType::STATIC
     );
 
@@ -51,13 +51,17 @@ void Door::SetDoorData(
     const std::string& targetMap,
     const std::string& targetDoor,
     int offsetX,
-    int offsetY
+    int offsetY,
+    int width,
+    int height
 )
 {
     this->targetMap = targetMap;
     this->targetDoor = targetDoor;
     this->offsetX = offsetX;
     this->offsetY = offsetY;
+    this->width = width;
+    this->height = height;
 }
 
 void Door::OnCollision(PhysBody* physA, PhysBody* physB)

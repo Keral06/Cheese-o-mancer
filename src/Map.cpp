@@ -525,13 +525,16 @@ MapLayer* Map::GetNavigationLayer() {
                         auto spawnProp = tempProperties.GetProperty("targetSpawn");
                         auto offsetX = tempProperties.GetProperty("offsetX");
                         auto offsetY = tempProperties.GetProperty("offsetY");
-
+                        int width = objectNode.attribute("width").as_int();
+                        int height = objectNode.attribute("height").as_int();
 
                         door->SetDoorData(
                             mapProp ? mapProp->valueString : "",
                             spawnProp ? spawnProp->valueString : "",
                             offsetX ? offsetX->valueInt : 0,
-                            offsetY ? offsetY->valueInt : 0
+                            offsetY ? offsetY->valueInt : 0,
+                            width,
+                            height
                         );
 
                         door->Start();

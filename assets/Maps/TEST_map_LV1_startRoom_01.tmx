@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="175" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="30" nextobjectid="360">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="175" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="30" nextobjectid="360">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -137,14 +137,14 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="24" name="BG Parallax" parallaxx="1.2">
+ <objectgroup id="24" name="BG Parallax">
   <properties>
    <property name="Draw" type="bool" value="true"/>
    <property name="Parallax" type="float" value="0.1"/>
   </properties>
   <object id="354" gid="816" x="13448" y="13130" width="9968" height="9164"/>
  </objectgroup>
- <objectgroup id="23" name="Jails" parallaxx="1.1">
+ <objectgroup id="23" name="Jails">
   <properties>
    <property name="Draw" type="bool" value="true"/>
    <property name="Parallax" type="float" value="0.3"/>
@@ -17487,7 +17487,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile gid="234"/>
    <tile gid="237"/>
    <tile/>
@@ -17662,7 +17662,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile gid="234"/>
    <tile gid="237"/>
    <tile/>
@@ -17837,7 +17837,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile gid="234"/>
    <tile gid="237"/>
    <tile/>
@@ -18012,7 +18012,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile gid="234"/>
    <tile gid="237"/>
    <tile/>
@@ -18187,7 +18187,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile gid="234"/>
    <tile gid="237"/>
    <tile/>
@@ -18362,7 +18362,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile gid="234"/>
    <tile gid="237"/>
    <tile/>
@@ -18537,7 +18537,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile gid="234"/>
    <tile gid="237"/>
    <tile/>
@@ -18712,7 +18712,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile gid="234"/>
    <tile gid="237"/>
    <tile/>
@@ -18887,7 +18887,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile gid="234"/>
    <tile gid="237"/>
    <tile/>
@@ -19062,7 +19062,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile gid="234"/>
    <tile gid="237"/>
    <tile/>
@@ -19237,7 +19237,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile gid="234"/>
    <tile gid="237"/>
    <tile/>
@@ -19412,7 +19412,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile gid="234"/>
    <tile gid="234"/>
    <tile gid="205"/>

@@ -23,7 +23,9 @@ public:
         const std::string& targetMap,
         const std::string& targetDoor,
         int offsetX,
-        int offsetY
+        int offsetY,
+        int width,
+        int height
     );
 
 public:
@@ -35,6 +37,8 @@ public:
     int offsetY = 0;
 
     Vector2D position;
+    int width = 0;
+    int height = 0;
 
 private:
 
