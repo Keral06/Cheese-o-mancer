@@ -42,6 +42,10 @@ public:
 
 	bool IsOnScreenWorldRect(float x, float y, float w, float h, int margin = 0) const;
 
+	void SetZoomSmooth(float newZoom, float duration);
+
+	float EaseInOut(float t);
+
 public:
 
 	SDL_Renderer* renderer;
@@ -49,6 +53,14 @@ public:
 	SDL_Rect viewport;
 	SDL_Color background;
 	float zoom = 0.3f;
+
+	float startZoom = 1.0f;
+	float targetZoom = 1.0f;
+
+	float zoomTime = 0.0f;
+	float zoomDuration = 0.0f;
+
+	bool zooming = false;
 private:
 	bool vsync = false;
 	TTF_Font* font;

@@ -100,6 +100,22 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
+	if (zooming)
+	{
+		zoomTime += dt;
+
+		float t = zoomTime / zoomDuration;
+
+		if (t >= 1.0f)
+		{
+			t = 1.0f;
+			zooming = false;
+		}
+
+		
+		float easedT = EaseInOut(t);
+		zoom = startZoom + (targetZoom - startZoom) * easedT;
+	}
 	return true;
 }
 
@@ -430,3 +446,17 @@ bool Render::IsOnScreenWorldRect(float x, float y, float w, float h, int margin)
 	return result;
 }
 
+void Render::SetZoomSmooth(float newZoom, float duration)
+{
+	startZoom = zoom;
+	targetZoom = newZoom;
+
+	zoomDuration = duration;
+	zoomTime = 0.0f;
+
+	zooming = true;
+}
+float Render::EaseInOut(float t)
+{
+	return t * t * (3.0f - 2.0f * t);
+}
