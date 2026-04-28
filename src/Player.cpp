@@ -85,7 +85,7 @@ bool Player::Start() {
 	// L08 TODO 5: Add physics to the player - initialize physics body
 	texW = 215;
 	texH = 384;
-	pbody = Engine::GetInstance().physics->CreateRectangle(position.getX(),position.getY(),texW,texH, bodyType::DYNAMIC);
+	pbody = Engine::GetInstance().physics->CreateRectangleFriction(position.getX(),position.getY(),texW,texH, bodyType::DYNAMIC, 0.0f);
 	
 	// L08 TODO 6: Assign player class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
@@ -214,7 +214,9 @@ void Player::Move() {
 		return;*/
 	if (isAttacking) return;
 	isWalking = false;
-
+	if (velocity.y == 0) {
+		isCollidedFloor = true;
+	}
 	// =====================
 	// INPUT HORIZONTAL
 	// =====================
@@ -234,7 +236,15 @@ void Player::Move() {
 	{
 		velocity.x = 0;
 	}
-
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_U) == KEY_REPEAT)
+	{
+		LOG("STATE: %d | jumping: %d | onGround: %d | velY: %.2f | velX: %.2f",
+    state,
+    isJumping,
+    isCollidedFloor,
+    velocity.y,
+    velocity.x);
+	}
 	// =====================
 	// GOD MODE (VERTICAL)
 	// =====================
@@ -263,12 +273,14 @@ void Player::Move() {
 		return;
 	}
 	// PRIORIDAD 1: aire
-	if (isJumping || !isCollidedFloor)
+	if (!isCollidedFloor)
 	{
 		state = JUMPING;
+
 	}
 	else
 	{
+		isJumping = false;
 		// SOBRE QUESO
 		if (isMounted)
 		{
@@ -587,6 +599,7 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 	{
 	case ColliderType::PLATFORM:
 		LOG("End Collision PLATFORM");
+		
 		isCollidedFloor = false;
 		break;
 	case ColliderType::ITEM:

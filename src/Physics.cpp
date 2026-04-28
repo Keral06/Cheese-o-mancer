@@ -102,6 +102,30 @@ PhysBody* Physics::CreateRectangle(int x, int y, int width, int height, bodyType
     return pbody;
 }
 
+PhysBody* Physics::CreateRectangleFriction(int x, int y, int width, int height, bodyType type, float friction)
+{
+    b2BodyDef def = b2DefaultBodyDef();
+    def.type = ToB2Type(type);
+    def.position = { PIXEL_TO_METERS(x), PIXEL_TO_METERS(y) };
+    def.fixedRotation = true;
+    b2BodyId b = b2CreateBody(world, &def);
+
+    b2Polygon box = b2MakeBox(PIXEL_TO_METERS(width) * 0.5f, PIXEL_TO_METERS(height) * 0.5f);
+    b2ShapeDef sdef = b2DefaultShapeDef();
+    sdef.density = 1.0f;
+    sdef.material.friction = friction;
+    sdef.enableContactEvents = true;   // contact begin/end for this shape
+    sdef.enableSensorEvents = true;   // so it can participate in sensor overlaps
+
+    b2CreatePolygonShape(b, &sdef, &box);
+
+    PhysBody* pbody = new PhysBody();
+    pbody->body = b;
+    b2Body_SetUserData(b, ToUserData(pbody));
+
+    return pbody;
+}
+
 PhysBody* Physics::CreateCircle(int x, int y, int radious, bodyType type)
 {
     b2BodyDef def = b2DefaultBodyDef();
