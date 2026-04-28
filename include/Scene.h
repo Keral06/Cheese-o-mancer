@@ -92,11 +92,17 @@ public:
 	void SaveLevel();
 	void LoadGame();
 	void LoadMap(std::string map);
+
+	void StartFadeOut(float duration);
+
+	void StartFadeIn(float duration);
 private:
 	//Introscreen functions
 	void LoadIntro();
 	void UpdateIntro(float dt);
 	void UnloadIntro();
+
+	
 
 	// L17 TODO 3: Define specific function for main menu scene: Load, Unload, Handle UI events
 	void LoadMainMenu();
@@ -187,4 +193,10 @@ public:
 	std::string nextDoor = "";
 	bool firstDoor = true;
 	bool cheese = false;
+
+	bool isFading = false;
+	bool fadeIn = false;   // true = fade in, false = fade out
+	float fadeTime = 0.0f;
+	float fadeDuration = 1.0f; // segundos
+	Uint8 fadeAlpha = 0;
 };

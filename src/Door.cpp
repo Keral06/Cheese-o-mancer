@@ -76,6 +76,7 @@ void Door::OnCollision(PhysBody* physA, PhysBody* physB)
 
    Engine::GetInstance().scene->firstDoor = false;
 
+   Engine::GetInstance().scene->nextMap = targetMap;
     // Cambiar de mapa
-    Engine::GetInstance().scene->LoadMap(targetMap);
+   Engine::GetInstance().scene->StartFadeOut(0.5f);
 }

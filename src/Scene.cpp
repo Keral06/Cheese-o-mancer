@@ -109,6 +109,40 @@ bool Scene::Update(float dt)
 		UpdatePauseMenu();
 	}
 
+	if (isFading)
+	{
+		fadeTime += dt / 1000.0f;
+
+		float t = fadeTime / fadeDuration;
+		if (t > 1.0f) t = 1.0f;
+
+		
+		t = t * t * (3 - 2 * t);
+		if (t > 1.0f) t = 1.0f;
+
+		if (fadeIn)
+			fadeAlpha = (Uint8)((1.0f - t) * 255);
+		else
+			fadeAlpha = (Uint8)(t * 255);
+
+		if (t >= 1.0f)
+		{
+			isFading = false;
+
+			
+			if (!fadeIn)
+			{
+				
+			}
+		}
+	}
+
+	if (!fadeIn && !isFading)
+	{
+		LoadMap(nextMap);
+		StartFadeIn(1.0f);
+	}
+
 	return true;
 }
 
@@ -280,6 +314,19 @@ bool Scene::PostUpdate()
 		
 		}
 	}
+
+	if (fadeAlpha > 0)
+	{
+		SDL_Rect screen = { 0, 0, 1280 / 0.3, 720 / 0.3 };
+		Engine::GetInstance().render->DrawRectangle(
+			screen,
+			0, 0, 0,
+			fadeAlpha,
+			true,
+			false
+		);
+	}
+
 	if (exitGame) return false;
 
 	return ret;
@@ -1180,7 +1227,21 @@ void Scene::UnloadIntro() {
 }
 
 
+void Scene::StartFadeOut(float duration)
+{
+	isFading = true;
+	fadeIn = false;
+	fadeTime = 0.0f;
+	fadeDuration = duration;
+}
 
+void Scene::StartFadeIn(float duration)
+{
+	isFading = true;
+	fadeIn = true;
+	fadeTime = 0.0f;
+	fadeDuration = duration;
+}
 
 //ALL STORE THINGS
 
