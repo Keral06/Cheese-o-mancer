@@ -83,31 +83,20 @@ bool Magician::Start() {
 bool Magician::Update(float dt)
 {
 	Draw(dt);
-	if (firstTime == true && Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN) {
+	if (firstTime == true && isGettingTouched && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
-	
-		dialogueMagicianStart.BeginDialogue();
-		dialogueMagicianStart.Draw(dt);
-
-
-		return true;
-	}if (firstTime == true && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-
-		if (dialogueMagicianStart.hasEnded) {
+		if (!dialogueMagicianStart.hasStarted) {
+			dialogueMagicianStart.BeginDialogue();
+			dialogueMagicianStart.Draw(dt);
+		}
+		else if (dialogueMagicianStart.hasEnded) {
 			firstTime = false;
 			Engine::GetInstance().scene->cheese = true;
-			return true;
-
 		}
-		if (dialogueMagicianStart.hasStarted) {
-
+		else {
 			dialogueMagicianStart.NextDialogue();
 			dialogueMagicianStart.Draw(dt);
-			return true;
 		}
-		
-
-
 		return true;
 	}
 	if (dialogueMagicianStart.hasStarted && !dialogueMagicianStart.hasEnded) {

@@ -787,11 +787,13 @@ void  Scene::PostUpdateLevel() {
 	// Dibujar Ayuda
 	if (showHelp && helpTexture != nullptr)
 	{
-		Engine::GetInstance().render->DrawTexture(helpTexture, 640, 360, NULL, 0.0f);
+		SDL_FRect centrar = { 0, 0, 1280, 720 };
+		SDL_RenderTexture(Engine::GetInstance().render->renderer, helpTexture, NULL, &centrar);
 	}
 	if (showMap && map1Texture != nullptr)
 	{
-		Engine::GetInstance().render->DrawTexture(map1Texture, 560, 300, NULL, 0.0f);
+		SDL_FRect centrar = { 0, 0, 1280, 720 };
+		SDL_RenderTexture(Engine::GetInstance().render->renderer, map1Texture, NULL, &centrar);
 	}
 
 	if (player != nullptr && player->hasTalkedMagician) {
@@ -1175,7 +1177,8 @@ void Scene::LoadMap(std::string map)
 
 	isPaused = false;
 	CreatePauseUI();
-
+	helpTexture = Engine::GetInstance().textures->Load("resources/UI/UI_Tutorial/UI_TutorialControls_.png");
+	map1Texture = Engine::GetInstance().textures->Load("resources/UI/UI_Map/UI_Map_level1_.png");
 	heartTexture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/heart4.png");
 	panelTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_01.png");
 	heart1Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese1_01.png");
