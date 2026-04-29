@@ -880,8 +880,9 @@ void  Scene::PostUpdateLevel() {
 		Engine::GetInstance().render->DrawText(timerText.c_str(), 1100, 70, 0, 0, { 255, 255, 255, 255 });
 	}
 	if (isPaused) {
-		SDL_Rect screenRect = { 0, 0, 1280, 720 };
+		SDL_Rect screenRect = { -10000, -10000, 50000, 50000 };
 		Engine::GetInstance().render->DrawRectangle(screenRect, 0, 0, 0, 150, true, false);
+
 		Engine::GetInstance().render->DrawText("PAUSE", 580, 150, 0, 0, { 255, 255, 255, 255 });
 	}
 
@@ -1018,8 +1019,8 @@ void Scene::CreatePauseUI() {
 	//BACK FROM OPTIONS
 	SDL_Texture* buttonBackPressed;
 	SDL_Texture* buttonBackNormal;
-	buttonBackPressed = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextBack2_01.png");
-	buttonBackNormal = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Options/UI_Settings_TextBack1_01.png");
+	buttonBackPressed = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextBackPressed_01.png");
+	buttonBackNormal = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextBack1_01.png");
 	auto btnBackOpt = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 25, "BACK", { x, y + 140, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonBackNormal, buttonBackPressed);
 	btnBackOpt->visible = false;
 
@@ -1089,6 +1090,7 @@ void Scene::HandlePauseUIEvents(UIElement* uiElement) {
 			if (el->id >= 20 && el->id <= 23) el->visible = true;
 			if (el->id == 52 || (el->id >= 25 && el->id <= 28)) el->visible = false;
 		}
+		slidersOn = false;
 		break;
 	case 27:
 		if (uiElement->type == UIElementType::SLIDER) {
