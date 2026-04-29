@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="175" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="30" nextobjectid="360">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="175" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="31" nextobjectid="372">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -117,26 +117,6 @@
   </tile>
  </tileset>
  <objectgroup id="13" name="fons"/>
- <objectgroup id="15" name="Doors">
-  <object id="318" name="Door" type="Door" x="11776" y="0" width="512" height="256">
-   <properties>
-    <property name="name" value="Door_1_1"/>
-    <property name="offsetX" type="int" value="0"/>
-    <property name="offsetY" type="int" value="-40"/>
-    <property name="targetMap" value="TEST_map_LV1_towerCenter_01.tmx"/>
-    <property name="targetSpawn" value="Door_2_1"/>
-   </properties>
-  </object>
-  <object id="319" name="Door" type="Door" x="22144" y="4480" width="256" height="1536">
-   <properties>
-    <property name="name" value="Door_1_2"/>
-    <property name="offsetX" type="int" value="0"/>
-    <property name="offsetY" type="int" value="0"/>
-    <property name="targetMap" value="TEST_map_LV1_bossRoom_01.tmx"/>
-    <property name="targetSpawn" value="Door_5_1"/>
-   </properties>
-  </object>
- </objectgroup>
  <objectgroup id="24" name="BG Parallax">
   <properties>
    <property name="Draw" type="bool" value="true"/>
@@ -44279,6 +44259,26 @@
    <tile/>
   </data>
  </layer>
+ <objectgroup id="15" name="Doors">
+  <object id="318" name="Door" type="Door" x="11776" y="0" width="512" height="256">
+   <properties>
+    <property name="name" value="Door_1_1"/>
+    <property name="offsetX" type="int" value="0"/>
+    <property name="offsetY" type="int" value="-40"/>
+    <property name="targetMap" value="TEST_map_LV1_towerCenter_01.tmx"/>
+    <property name="targetSpawn" value="Door_2_1"/>
+   </properties>
+  </object>
+  <object id="319" name="Door" type="Door" x="22332" y="4480" width="68" height="1536">
+   <properties>
+    <property name="name" value="Door_1_2"/>
+    <property name="offsetX" type="int" value="0"/>
+    <property name="offsetY" type="int" value="0"/>
+    <property name="targetMap" value="TEST_map_LV1_bossRoom_01.tmx"/>
+    <property name="targetSpawn" value="Door_5_1"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup id="22" name="Items">
   <object id="333" name="Live" type="Live" x="12800" y="1792" width="256" height="384"/>
  </objectgroup>
@@ -55393,6 +55393,15 @@
   <object id="341" x="3584" y="2816" width="2816" height="128"/>
   <object id="342" x="6400" y="3072" width="1024" height="128"/>
  </objectgroup>
+ <objectgroup id="30" name="WeakWalls">
+  <object id="361" x="12032" y="4864" width="128" height="1152"/>
+  <object id="362" x="10496" y="4864" width="128" height="1152"/>
+  <object id="363" x="8960" y="4864" width="128" height="1152"/>
+  <object id="364" x="7424" y="4864" width="128" height="1152"/>
+  <object id="365" x="5888" y="4864" width="128" height="1152"/>
+  <object id="366" x="4224" y="4864" width="128" height="1152"/>
+  <object id="371" x="22272" y="3712" width="128" height="2304"/>
+ </objectgroup>
  <objectgroup id="11" name="Walls">
   <object id="223" x="14208" y="6144" width="128" height="384"/>
   <object id="224" x="13568" y="6144" width="128" height="384"/>
@@ -55405,7 +55414,6 @@
   <object id="233" x="20352" y="7168" width="128" height="768"/>
   <object id="234" x="20736" y="6656" width="128" height="384"/>
   <object id="235" x="20992" y="6144" width="128" height="384"/>
-  <object id="236" x="22272" y="3072" width="128" height="2944"/>
   <object id="260" x="21760" y="1280" width="128" height="1024"/>
   <object id="261" x="14848" y="1152" width="6912" height="128"/>
   <object id="263" x="14592" y="1280" width="256" height="640"/>
@@ -55438,6 +55446,7 @@
   <object id="338" x="11008" y="1408" width="256" height="512"/>
   <object id="343" x="6272" y="2944" width="128" height="128"/>
   <object id="344" x="7424" y="2944" width="128" height="128"/>
+  <object id="370" x="22272" y="3072" width="128" height="640"/>
  </objectgroup>
  <objectgroup id="27" name="spikes">
   <object id="345" x="6400" y="2858" width="1024" height="214"/>

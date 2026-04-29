@@ -115,7 +115,9 @@ bool Player::Start() {
 
 bool Player::Update(float dt)
 {
-
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
+		godMode = !godMode;
+	}
 	bool isPaused = Engine::GetInstance().scene->isPaused || Engine::GetInstance().scene->showHelp;
 	const SDL_Rect& animFrame = currentAnimSet->GetCurrentFrame();
 	if (!isPaused) {
@@ -238,12 +240,7 @@ void Player::Move() {
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_U) == KEY_REPEAT)
 	{
-		LOG("STATE: %d | jumping: %d | onGround: %d | velY: %.2f | velX: %.2f",
-    state,
-    isJumping,
-    isCollidedFloor,
-    velocity.y,
-    velocity.x);
+		Engine::GetInstance().render->SetZoomSmooth(0.7f, 600.0f);
 	}
 	// =====================
 	// GOD MODE (VERTICAL)
@@ -252,12 +249,12 @@ void Player::Move() {
 	{
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
-			velocity.y = -speed;
+			velocity.y = -godmodeSpeed;
 			isWalking = true;
 		}
 		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 		{
-			velocity.y = speed;
+			velocity.y = godmodeSpeed;
 			isWalking = true;
 		}
 		else

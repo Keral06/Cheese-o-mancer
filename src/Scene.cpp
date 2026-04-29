@@ -63,7 +63,7 @@ bool Scene::Update(float dt)
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
 		showUIDebug = !showUIDebug; 
 	}
-
+	
 	switch (currentScene)
 	{
 	case SceneID::INTRO_SCREEN:

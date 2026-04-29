@@ -75,6 +75,7 @@ public:
 	bool hasMap1 = false;
 	//Declare player parameters
 	float speed = 15.0f;
+	float godmodeSpeed = 40.0f;
 	SDL_Texture* texture = NULL;
 	int texW, texH;
 	//Audio fx

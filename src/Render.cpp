@@ -160,14 +160,14 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 	float world_x = (camera.x + x * scale) * zoom;
 	float world_y = (camera.y + y * scale) * zoom;
 
-	rect.x = world_x;
-	rect.y = world_y;
+	rect.x = floor(world_x);
+	rect.y = floor(world_y);
 
 	
 	if (section)
 	{
-		rect.w = section->w * scale * zoom;
-		rect.h = section->h * scale * zoom;
+		rect.w = section->w * scale * zoom + 1;
+		rect.h = section->h * scale * zoom + 1;
 	}
 	else
 	{
