@@ -477,15 +477,15 @@ void Scene::UnloadCurrentScene() {
 void Scene::LoadMainMenu() {
 
 	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/MAIN_menu.wav");
-	introTexture = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_Background_01.png");
+	introTexture = Engine::GetInstance().textures->Load("assets/UI/MainMenu/UI_Start_Background_01.png");
 	// Instantiate a UIButton in the Scene
 	
 	//Botón START
 	SDL_Rect btPos = { 520, 370, 200, 50 };
 	SDL_Texture* buttonStartPressed;
 	SDL_Texture* buttonStartNormal;
-	buttonStartPressed = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonStart2_02.png");
-	buttonStartNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonStart1_02.png");
+	buttonStartPressed = Engine::GetInstance().textures->Load("assets/UI/MainMenu/UI_Start_ButtonStart2_02.png");
+	buttonStartNormal = Engine::GetInstance().textures->Load("assets/UI/MainMenu/UI_Start_ButtonStart1_02.png");
 	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "START", btPos, this, SDL_Rect{0,0,0,0}, buttonStartNormal, buttonStartPressed);
 
 	
@@ -494,8 +494,8 @@ void Scene::LoadMainMenu() {
 	SDL_Rect continuePos = { 520, 420, 200, 50 };
 	SDL_Texture* buttonContinuePressed;
 	SDL_Texture *buttonContinueNormal;
-	buttonContinueNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonContinue1_01.png");
-	buttonContinuePressed = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonContinue2_01.png");
+	buttonContinueNormal = Engine::GetInstance().textures->Load("assets/UI/MainMenu/UI_Start_ButtonContinue1_01.png");
+	buttonContinuePressed = Engine::GetInstance().textures->Load("assets/UI/MainMenu/UI_Start_ButtonContinue2_01.png");
 	
 	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "CONTINUE", continuePos, this, SDL_Rect{0,0,0,0}, buttonContinueNormal, buttonContinuePressed);
 
@@ -503,17 +503,17 @@ void Scene::LoadMainMenu() {
 	SDL_Rect optionsBtnRect = { 520, 470, 200, 50 };
 	SDL_Texture* buttonOptionsPressed;
 	SDL_Texture* buttonOptionsNormal;
-	buttonOptionsPressed = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonSettings2_01.png");
-	buttonOptionsNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonSettings1_01.png");
+	buttonOptionsPressed = Engine::GetInstance().textures->Load("assets/UI/MainMenu/UI_Start_ButtonSettings2_01.png");
+	buttonOptionsNormal = Engine::GetInstance().textures->Load("assets/UI/MainMenu/UI_Start_ButtonSettings1_01.png");
 	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "OPTIONS", optionsBtnRect, this, SDL_Rect{0,0,0,0}, buttonOptionsNormal, buttonOptionsPressed);
 
 	// Slider VOLUMEN
 	SDL_Texture* SliderBar;
 	SDL_Texture* thumbPressed;
 	SDL_Texture* thumbNormal;
-	SliderBar = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_SliderBar_01.png");
-	thumbPressed = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_SliderButton_01.png");
-	thumbNormal = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_Checkbox_01.png");
+	SliderBar = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_SliderBar_01.png");
+	thumbPressed = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_SliderButton_01.png");
+	thumbNormal = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_Checkbox_01.png");
 
 	SDL_Rect sliderRect = { 520,500, 200, 30 };
 	auto slider = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::SLIDER, 2, "VOLUME MUSIC", sliderRect, this, SDL_Rect{ 0,0,0,0 }, SliderBar, thumbNormal, thumbPressed);
@@ -526,8 +526,8 @@ void Scene::LoadMainMenu() {
 	//Checkbox de la fullscreen
 	SDL_Texture* buttonPressed;
 	SDL_Texture* buttonNormal;
-	buttonPressed = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_Checkbox2_01.png");
-	buttonNormal = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_Checkbox_01.png");
+	buttonPressed = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_CheckboxPressed_01.png");
+	buttonNormal = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_Checkbox_01.png");
 	SDL_Rect Fullscreen = { 600,390, 35, 35 };
 	auto fullscreen = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::CHECKBOX, 12, "FULL SCREEN", Fullscreen, this, SDL_Rect{0,0,0,0}, buttonPressed, buttonNormal);
 	if (fullscreen) fullscreen->visible = false;
@@ -535,8 +535,8 @@ void Scene::LoadMainMenu() {
 	// Botón BACK 
 	SDL_Texture* buttonBackPressed;
 	SDL_Texture* buttonBackNormal;
-	buttonBackPressed = Engine::GetInstance().textures->Load("resources/UI/UI_Options/UI_Settings_TextBack2_01.png");
-	buttonBackNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Options/UI_Settings_TextBack1_01.png");
+	buttonBackPressed = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextBackPressed_01.png");
+	buttonBackNormal = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextBack1_01.png");
 	SDL_Rect backBtnRect = { 520, 530, 200, 50 };
 	auto backBtn = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, "BACK", backBtnRect, this, SDL_Rect{0,0,0,0}, buttonBackNormal,buttonBackPressed);
 	if (backBtn) backBtn->visible = false; 
@@ -544,8 +544,8 @@ void Scene::LoadMainMenu() {
 	//Botón EXIT
 	SDL_Texture* buttonExitPressed;
 	SDL_Texture* buttonExitNormal;
-	buttonExitPressed = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonExit2_01.png");
-	buttonExitNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Start/UI_Start_ButtonExit1_01.png");
+	buttonExitPressed = Engine::GetInstance().textures->Load("assets/UI/MainMenu/UI_Start_ButtonExitPressed_01.png");
+	buttonExitNormal = Engine::GetInstance().textures->Load("assets/UI/MainMenu/UI_Start_ButtonExit1_01.png");
 	SDL_Rect exitPosRect = { 520, 560, 200, 50 };
 	auto exitPos = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "EXIT", exitPosRect, this, SDL_Rect{0,0,0,0}, buttonExitNormal, buttonExitPressed);
 
@@ -557,9 +557,9 @@ void Scene::LoadMainMenu() {
 	//SDL_Rect backCreditPosRect = { 520, 560, 200, 50 };
 	//auto backCreditsBtn = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, "BACK", backCreditPosRect, this);
 	//if (backCreditsBtn) backCreditsBtn->visible = false;
-	this->Volume = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextVolume2_.png");
-	this->VolumeEffects = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextEffectsVolume2_01.png");
-	this->fullscreen = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextFullScreen2_01.png");
+	this->Volume = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextVolume2.png");
+	this->VolumeEffects = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextEffectsVolume2_01.png");
+	this->fullscreen = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextFullScreen2_01.png");
 }
 
 void Scene::UnloadMainMenu() {
@@ -970,16 +970,16 @@ void Scene::CreatePauseUI() {
 	// RESUME
 	SDL_Texture* buttonResumeNormal;
 	SDL_Texture* buttonResumedClicked;
-	buttonResumeNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonContinue1_01.png");
-	buttonResumedClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonContinue2_01.png");
+	buttonResumeNormal = Engine::GetInstance().textures->Load("assets/UI/Pause/UI_Pause_ButtonContinue1_01.png");
+	buttonResumedClicked = Engine::GetInstance().textures->Load("assets/UI/Pause/UI_Pause_ButtonContinuePressed_01.png");
 	auto btnResume = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 20, "RESUME", { x, y - 50, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonResumeNormal, buttonResumedClicked);
 	btnResume->visible = false;
 
 	// OPTIONS
 	SDL_Texture* buttonOptionsNormal;
 	SDL_Texture* buttonOptionsClicked;
-	buttonOptionsNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonOptions1_01.png");
-	buttonOptionsClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonOptions2_01.png");
+	buttonOptionsNormal = Engine::GetInstance().textures->Load("assets/UI/Pause/UI_Pause_ButtonOptions1_01.png");
+	buttonOptionsClicked = Engine::GetInstance().textures->Load("assets/UI/Pause/UI_Pause_ButtonOptionsPressed_01.png");
 	auto btnOptions = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 21, "OPTIONS", { x, y+20, 200, 50 }, this, SDL_Rect{ 0,0,0,0 }, buttonOptionsNormal,buttonOptionsClicked);
 	btnOptions->visible = false;
 
@@ -987,16 +987,16 @@ void Scene::CreatePauseUI() {
 	SDL_Texture* buttonTitleNormal;
 	SDL_Texture* buttonTitleClicked;
 	
-	buttonTitleNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonQuit1_01.png");
-	buttonTitleClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Pause/UI_Pause_ButtonQuit2_01.png");
+	buttonTitleNormal = Engine::GetInstance().textures->Load("assets/UI/Pause/UI_Pause_ButtonQuit1_01.png");
+	buttonTitleClicked = Engine::GetInstance().textures->Load("assets/UI/Pause/UI_Pause_ButtonQuitPressed_01.png");
 	auto btnTitle = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 22, "TITLE SCREEN", { x, y + 100, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonTitleNormal, buttonTitleClicked);
 	btnTitle->visible = false;
 
 	// EXIT
 	SDL_Texture* buttonExitPressed;
 	SDL_Texture* buttonExitNormal;
-	buttonExitPressed = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextExit2_01.png");
-	buttonExitNormal = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextExit1_01.png");
+	buttonExitPressed = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextExitPressed_01.png");
+	buttonExitNormal = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextExit1_01.png");
 	auto btnExit = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 23, "EXIT GAME", { x, y + 200, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonExitNormal, buttonExitPressed);
 	btnExit->visible = false;
 
@@ -1004,9 +1004,9 @@ void Scene::CreatePauseUI() {
 	SDL_Texture* SliderBar;
 	SDL_Texture* thumbPressed;
 	SDL_Texture* thumbNormal;
-	SliderBar = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_SliderBar_01.png");
-	thumbPressed = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_SliderButton_01.png");
-	thumbNormal = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_Checkbox_01.png");
+	SliderBar = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_SliderBar_01.png");
+	thumbPressed = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_SliderButton_01.png");
+	thumbNormal = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_Checkbox_01.png");
 
 	auto sliderMusic = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::SLIDER, 26, "MUSIC", { x, y+15, 200, 30 }, this, SDL_Rect{0,0,0,0}, SliderBar, thumbNormal, thumbPressed);
 	sliderMusic->visible = false;
@@ -1018,8 +1018,8 @@ void Scene::CreatePauseUI() {
 	//BACK FROM OPTIONS
 	SDL_Texture* buttonBackPressed;
 	SDL_Texture* buttonBackNormal;
-	buttonBackPressed = Engine::GetInstance().textures->Load("resources/UI/UI_Options/UI_Settings_TextBack2_01.png");
-	buttonBackNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Options/UI_Settings_TextBack1_01.png");
+	buttonBackPressed = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextBack2_01.png");
+	buttonBackNormal = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Options/UI_Settings_TextBack1_01.png");
 	auto btnBackOpt = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 25, "BACK", { x, y + 140, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonBackNormal, buttonBackPressed);
 	btnBackOpt->visible = false;
 
@@ -1027,14 +1027,14 @@ void Scene::CreatePauseUI() {
 	//Checkbox de la fullscreen
 	SDL_Texture* buttonPressed;
 	SDL_Texture* buttonNormal;
-	buttonPressed = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_Checkbox2_01.png");
-	buttonNormal = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_Checkbox_01.png");
+	buttonPressed = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_CheckboxPressed_01.png");
+	buttonNormal = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_Checkbox_01.png");
 	SDL_Rect Fullscreen = { x+90,y-50, 35, 35 };
 	auto fullscreen = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::CHECKBOX, 52, "FULL SCREEN", Fullscreen, this, SDL_Rect{ 0,0,0,0 }, buttonPressed, buttonNormal);
 	if (fullscreen) fullscreen->visible = false;
-	this->Volume = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextVolume1.png");
-	this->VolumeEffects = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextEffectsVolume_01.png");
-	this->fullscreen = Engine::GetInstance().textures->Load("resources/UI/UI_options/UI_Settings_TextFullScreen_01.png");
+	this->Volume = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextVolume1.png");
+	this->VolumeEffects = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextEffectsVolume_01.png");
+	this->fullscreen = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextFullScreen_01.png");
 }
 
 
@@ -1177,17 +1177,17 @@ void Scene::LoadMap(std::string map)
 
 	isPaused = false;
 	CreatePauseUI();
-	helpTexture = Engine::GetInstance().textures->Load("resources/UI/UI_Tutorial/UI_TutorialControls_.png");
-	map1Texture = Engine::GetInstance().textures->Load("resources/UI/UI_Map/UI_Map_level1_.png");
-	heartTexture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/heart4.png");
-	panelTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_01.png");
-	heart1Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese1_01.png");
-	heart2Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese2_01.png");
-	heart3Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese3_01.png");
-	heart4Texture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_Cheese4_01.png");
-	extraHeartTexture = Engine::GetInstance().textures->Load("resources/UI/UI_LifeBar/UI_LifeBar_CheeseExtra_01.png");
+	helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_TutorialControls.png");
+	map1Texture = Engine::GetInstance().textures->Load("assets/UI/Map/UI_Map_Level1.png");
+	heartTexture = Engine::GetInstance().textures->Load("assets/Textures/PREV/heart4.png");
+	panelTexture = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_01.png");
+	heart1Texture = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_Cheese1_01.png");
+	heart2Texture = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_Cheese2_01.png");
+	heart3Texture = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_Cheese3_01.png");
+	heart4Texture = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_Cheese4_01.png");
+	extraHeartTexture = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_CheeseExtra_01.png");
 	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/", map);
+	Engine::GetInstance().map->Load("assets/Maps/", map);
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, enemies);
@@ -1256,24 +1256,24 @@ void Scene::CreateStoreLevel1() {
 	// MAP
 	SDL_Texture* MapNormal;
 	SDL_Texture* MapClicked;
-	MapClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_ItemMap1_01.png");
-	MapNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_ItemMap2_01.png");
+	MapClicked = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemMap1_01.png");
+	MapNormal = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemMap2_01.png");
 	auto btnMAP = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 35, "MAP", { 350, y, 170, 170 }, this, SDL_Rect {0,0,0,0}, MapNormal, MapClicked);
 	btnMAP->visible = false;
 
 	// KEY
 	SDL_Texture* KeyNormal;
 	SDL_Texture* KeyClicked;
-	KeyNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_ItemKey2_01.png");
-	KeyClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_ItemKey1_01.png");
+	KeyNormal = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemKey2_01.png");
+	KeyClicked = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemKey1_01.png");
 	auto btnKEY = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 36, "KEY", { x, y + 150, 170, 170 }, this, SDL_Rect {0,0,0,0}, KeyNormal, KeyClicked);
 	btnKEY->visible = false;
 
 	//LIFE
 	SDL_Texture* LifeNormal;
 	SDL_Texture* LifeClicked;
-	LifeNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_ItemLife2_01.png");
-	LifeClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_ItemLife1_01.png");
+	LifeNormal = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemLife2_01.png");
+	LifeClicked = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemLife1_01.png");
 	auto btnLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 37, "TEMPORARY LIFE", { 350, y +250, 170, 170 }, this, SDL_Rect {0,0,0,0}, LifeNormal, LifeClicked);
 	btnLIFE->visible = false;
 
@@ -1284,8 +1284,8 @@ void Scene::CreateStoreLevel1() {
 	// BUYMAP
 	SDL_Texture* BuyNormal;
 	SDL_Texture* BuyClicked;
-	BuyNormal = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_ButtonBuy1_01.png");
-	BuyClicked = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_ButtonBuy2_01.png");
+	BuyNormal = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ButtonBuy1_01.png");
+	BuyClicked = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ButtonBuy2_01.png");
 	auto btnBUYMAP = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 39, "BUYMAP", { 750, y+ 280, 300, 150 }, this, SDL_Rect{0,0,0,0}, BuyNormal, BuyClicked);
 	btnBUYMAP->visible = false;
 
@@ -1303,10 +1303,10 @@ void Scene::CreateStoreLevel1() {
 	//btnBUYLLANTERN->visible = false;
 
 	//texturas decoracion
-	storeBag = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_Bag_02.png");
-	storePaperMap = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_Paper_Map_.png");
-	storePaperLife = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_Paper_Life.png");
-	storePaperKey = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_Paper_Key_.png");
+	storeBag = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Bag_02.png");
+	storePaperMap = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Map.png");
+	storePaperLife = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Life.png");
+	storePaperKey = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Key.png");
 }
 
 void Scene::SetStore(bool store) {
@@ -1362,7 +1362,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 			for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
 				if (el->id == 39) el->Destroy();
 				if (el->id == 35) {
-					SDL_Texture* BeenBought = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_SoldOut_01.png");
+					SDL_Texture* BeenBought = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_SoldOut_01.png");
 					el->SetTexture(BeenBought);
 				}
 
@@ -1379,7 +1379,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				if (el->id == 40) el->Destroy();
 				if (el->id == 36) {
 				
-					SDL_Texture* BeenBought = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_SoldOut_01.png");
+					SDL_Texture* BeenBought = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_SoldOut_01.png");
 					el->SetTexture(BeenBought);
 				}
 
@@ -1395,7 +1395,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 			for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
 				if (el->id == 41) el->Destroy();
 				if (el->id == 37){
-					SDL_Texture* BeenBought = Engine::GetInstance().textures->Load("resources/UI/UI_Store/UI_Store_SoldOut_01.png");
+					SDL_Texture* BeenBought = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_SoldOut_01.png");
 					el->SetTexture(BeenBought);
 
 				}
