@@ -3,6 +3,8 @@
 #include "Log.h"
 #include "Textures.h"
 #include <Scene.h>
+#include "coins.h"
+#include "EntityManager.h"
 
 Verdugo::Verdugo() : Enemy()
 {
@@ -91,6 +93,16 @@ void Verdugo::Attack()
 
 bool Verdugo::Update(float dt)
 {
+    if (health <= 0 && !coinDropped) {
+        coinDropped = true;
+        Die();
+        return true;
+    }
+    ////debug para matar ratas con la K
+    /*if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) {
+        Die();
+        return true;
+    }*/
     repathTimer++;
 
     GetPhysicsValues();
@@ -467,3 +479,24 @@ bool Verdugo::MoveToAttackRange(float targetRange)
     velocity.x = 0;
     return true;
 }
+
+void Verdugo::Die() {
+    anims.SetCurrent("death");
+    int numeroDeMonedas = 10;
+    const Vector2D& pos = this->GetPosition();
+
+    for (int i = 0; i < numeroDeMonedas; ++i) {
+        auto newCoin = Engine::GetInstance().entityManager->CreateEntity(EntityType::COIN);
+        auto coinEntity = std::static_pointer_cast<Coins>(newCoin);
+
+        if (coinEntity) {
+            int offsetX = (i * 30);
+
+            coinEntity->xInicial = (int)pos.getX() + offsetX;
+            coinEntity->yInicial = (int)pos.getY();
+            coinEntity->Start();
+        }
+    }
+    this->toDelete = true;
+}
+

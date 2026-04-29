@@ -40,7 +40,7 @@ public:
     void ExecuteAttack();
 
     void UpdateAttackLogic();
-
+    void Die();
     bool MoveToAttackRange(float targetRange);
    
 protected:
@@ -52,7 +52,7 @@ protected:
     float hitboxEnd = 15.0f;
     bool hasHit = false;
     bool hitboxActive = false;
-
+    bool coinDropped = false;
     bool isAttacking = false;
 
     bool playerInHitbox = true;

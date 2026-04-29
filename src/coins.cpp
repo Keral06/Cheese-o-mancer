@@ -29,29 +29,34 @@ bool Coins::Awake() {
 bool Coins::Start() {
 
 	std::unordered_map<int, std::string> aliases = { {0, "idle"} };
-	anims.LoadFromTSX("Assets/Textures/PREV/coin_sprite.tsx", aliases);
+	anims.LoadFromTSX("Assets/Textures/UI/UI_Store/UI_Store_coin.tsx", aliases);
 	coinPickupFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/coin-collision-sound-342335.wav");
 	anims.SetCurrent("idle");
 
-	texture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/coin_sprite.png");
+	texture = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Store/UI_Store_coin.png");
 
 	
-		texW = 32;
-		texH = 32;
+		texW = 128;
+		texH = 128;
 	
 	
 	if (pbody == nullptr) {
 		position.setX(xInicial);
 		position.setY(yInicial);
-		pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+		pbody = Engine::GetInstance().physics->CreateRectangle(
 			(int)position.getX() + texW / 2,
 			(int)position.getY() + texH / 2 - 16,
 			texW / 2,
 			texH/2,
 			bodyType::DYNAMIC
 		);
-		b2Body_SetGravityScale(pbody->body, 0.0f);
+		b2Body_SetGravityScale(pbody->body, 1.0f);
 	
+
+		b2ShapeId moneda;
+		b2Body_GetShapes(pbody->body, &moneda, 1);
+		b2Shape_SetRestitution(moneda, 0.6f); 
+
 		pbody->listener = this;
 		pbody->ctype = ColliderType::COIN;
 
