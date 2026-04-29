@@ -83,26 +83,23 @@ bool Magician::Start() {
 bool Magician::Update(float dt)
 {
 	Draw(dt);
-	if (firstTime == true && isGettingTouched && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-
-		if (!dialogueMagicianStart.hasStarted) {
+	if(firstTime == true) {
+		if (!dialogueMagicianStart.hasStarted && Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN) {
 			dialogueMagicianStart.BeginDialogue();
-			dialogueMagicianStart.Draw(dt);
 		}
-		else if (dialogueMagicianStart.hasEnded) {
-			firstTime = false;
-			Engine::GetInstance().scene->cheese = true;
-		}
-		else {
+		else if (dialogueMagicianStart.hasStarted && !dialogueMagicianStart.hasEnded && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+
 			dialogueMagicianStart.NextDialogue();
-			dialogueMagicianStart.Draw(dt);
+
+			if (dialogueMagicianStart.hasEnded) {
+				firstTime = false;
+				Engine::GetInstance().scene->cheese = true;
+			}
 		}
-		return true;
 	}
 	if (dialogueMagicianStart.hasStarted && !dialogueMagicianStart.hasEnded) {
 		dialogueMagicianStart.Draw(dt);
 		return true;
-
 	}
 	if(isGettingTouched){
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() -texW/2, (int)position.getY() + texH / 2 );

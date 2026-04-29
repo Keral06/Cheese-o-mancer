@@ -38,7 +38,7 @@ class Scene : public Module
 public:
 	int savedLevel = 1;
 	bool isPaused = false;
-	bool showHelp = false;
+	bool showHelp = true;
 	bool storeOn = false;
 	bool showUIDebug = false;
 	Scene();
