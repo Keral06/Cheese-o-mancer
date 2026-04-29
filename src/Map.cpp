@@ -23,6 +23,7 @@
 #include "Magician.h"
 #include "Door.h"
 #include "cheeseballInteractuable.h"
+#include "WeakWall.h"
 
 Map::Map() : Module(), mapLoaded(false)
 {
@@ -269,6 +270,23 @@ bool Map::Load(std::string path, std::string fileName)//
             }
             else if (objectGroup->name == "spikes") {
                 type = ColliderType::DANGER;
+            }
+            else if (objectGroup->name == "WeakWalls")
+            {
+                for (const auto& object : objectGroup->objects)
+                {
+                    std::shared_ptr<WeakWall> wall = std::dynamic_pointer_cast<WeakWall>(Engine::GetInstance().entityManager->CreateEntity(EntityType::WEAKWALL));
+
+                    wall->position = Vector2D((float)object->x, (float)object->y);
+
+                    // opcional si quieres tamaño desde Tiled
+                    wall->width = object->width;
+                    wall->height = object->height;
+
+                    wall->Start();
+                }
+
+                continue;
             }
             else if (objectGroup->name == "Checkpoints") {
                 for (const auto& object : objectGroup->objects) {

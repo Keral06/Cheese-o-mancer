@@ -38,7 +38,8 @@ enum class EntityType
 	PORTRAIT,
 	UNFINISHEDPORTRAIT,
 	HUNGSWORD,
-	COWWEB
+	COWWEB,
+	WEAKWALL
 	
 };
 

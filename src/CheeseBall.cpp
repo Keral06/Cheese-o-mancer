@@ -5,6 +5,7 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "Log.h"
+#include "DestructibleEntity.h"
 
 CheeseBall::CheeseBall()
     : Entity(EntityType::CHEESEBALL)
@@ -64,11 +65,26 @@ bool CheeseBall::Update(float dt)
 
 void CheeseBall::OnCollision(PhysBody* physA, PhysBody* physB)
 {
-    if ((physB->ctype == ColliderType::PLATFORM || physB->ctype == ColliderType::PARED) && !ismounted)
+    if (physB->ctype == ColliderType::WEAKWALL)
     {
-        LOG("Player touched CheeseBall");
+        if (physB->listener != nullptr)
+        {
+            DestructibleEntity* destructible = dynamic_cast<DestructibleEntity*>(physB->listener);
+
+            if (destructible)
+            {
+                destructible->TakeDamage(1);
+                if (!ismounted) {
+                    toDelete = true;
+                }
+            }
+        }
+    }
+
+    else if ((physB->ctype == ColliderType::PLATFORM || physB->ctype == ColliderType::PARED) && !ismounted)
+    {
+        LOG("CheeseBall touched platform/wall");
         toDelete = true;
-        // aquí decides: sumar puntos, heal, boost, etc.
     }
 }
 

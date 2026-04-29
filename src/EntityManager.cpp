@@ -21,6 +21,8 @@
 #include "Door.h"
 #include "Magician.h"
 #include "cheeseballInteractuable.h"
+#include "WeakWall.h"
+
 EntityManager::EntityManager() : Module()
 {
 	name = "entitymanager";
@@ -183,6 +185,9 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 	case EntityType::COWWEB:
 		entity = std::make_shared<CowWeb>();
 		break;
+	case EntityType::WEAKWALL:
+		entity = std::make_shared<WeakWall>();
+		break;
 	default:
 		break;
 	}
@@ -215,6 +220,10 @@ bool EntityManager::Update(float dt)
 	{
 		if ((*it)->toDelete)
 		{
+			LOG("Entity ptr: %p | toDelete: %d | type: %d",
+				(void*)(*it).get(),
+				(*it)->toDelete,
+				(*it)->type);
 			(*it)->CleanUp();
 			it = entities.erase(it);
 		}

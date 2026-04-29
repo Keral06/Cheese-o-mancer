@@ -43,6 +43,7 @@ enum class ColliderType {
     MAGICIAN,
     HANDMAN,
 	CHEESEBALLINTERACT,
+    WEAKWALL,
     NPC
     // ..
 };
