@@ -166,8 +166,8 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 	
 	if (section)
 	{
-		rect.w = section->w * scale * zoom + 1;
-		rect.h = section->h * scale * zoom + 1;
+		rect.w = (section->w * scale * zoom) + 1;
+		rect.h = (section->h * scale * zoom) + 1;
 	}
 	else
 	{

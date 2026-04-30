@@ -33,5 +33,4 @@ private:
 
     SDL_Texture* texture = NULL;
 
-    bool toDelete = false;
 };
