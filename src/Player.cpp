@@ -309,7 +309,6 @@ void Player::Move() {
 	{
 		lastStepTime = 0;
 	}
-
 }
 
 void Player::Jump() {
@@ -939,13 +938,21 @@ void Player::HandleMountedMovement()
 	b2Vec2 vel = b2Body_GetLinearVelocity(mountedBall->pbody->body);
 	movingBall = false;
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT){
+		if (!facingLeft) {
+			cheeseSpeed = 10.0f;
+		}
 		vel.x = -cheeseSpeed;
 		movingBall = true;
+		facingLeft = true;
 		
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		if (facingLeft) {
+			cheeseSpeed = 10.0f;
+		}
 		vel.x = cheeseSpeed;
 		movingBall = true;
+		facingLeft = false;
 		
 	}
 	if (state == ONCHEESE) {

@@ -71,7 +71,7 @@ void CheeseBall::OnCollision(PhysBody* physA, PhysBody* physB)
         {
             DestructibleEntity* destructible = dynamic_cast<DestructibleEntity*>(physB->listener);
 
-            if (destructible)
+            if (destructible && ismounted)
             {
                 destructible->TakeDamage(1);
                 if (!ismounted) {
