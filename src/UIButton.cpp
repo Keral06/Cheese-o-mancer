@@ -20,6 +20,7 @@ UIButton::UIButton(int id, SDL_Rect bounds, const char* text, SDL_Texture* norma
 	this->buttonPressedTexture = pressedTexture;
 
 	drawBasic = false;
+
 }
 
 UIButton::~UIButton()

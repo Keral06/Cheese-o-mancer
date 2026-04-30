@@ -456,10 +456,12 @@ void Scene::UnloadCurrentScene() {
 	case SceneID::MAIN_MENU:
 		UnloadMainMenu();
 		break;
+	case SceneID::IN_GAME:      
+		UnloadLevel();          
+		break;
 	case SceneID::GAME_OVER:
 		UnloadGameOver();
 		break;
-
 	case SceneID::WIN_SCREEN:
 		UnloadWinScreen();
 		break;
@@ -1197,8 +1199,20 @@ void Scene::LoadMap(std::string map)
 
 		levelTimer = 0.0f;
 		Player::score = 0;
+
+		//firstDoor = true;       
+		//cheese = false;         
+		//showMap = false;
+		//showHelp = true;       
+		//nextSpawnPoint = "";
+		//nextMap = "";
 		if (player) {
-			player->lives = 3;
+			player->lives = 3;/*
+			player->extralife = false;
+			player->hasCheese = false;
+			player->hasMap1 = false;
+			player->hasTalkedMagician = false;
+			player->isDeadDefinitive = false;*/
 		}
 
 		/*Vector2D startPos = Engine::GetInstance().map->GetStartPoint("Checkpoints", "Player");
