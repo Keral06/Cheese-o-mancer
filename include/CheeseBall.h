@@ -24,6 +24,7 @@ public:
     PhysBody* pbody = nullptr;
     float radius = 128.0f;
     bool ismounted = false;
+    bool launch = false;
 private:
     
 

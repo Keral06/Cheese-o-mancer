@@ -931,17 +931,20 @@ void Player::SpawnCheeseBall()
 
 void Player::HandleMountedMovement()
 {
-	float speed = 10.0f;
-
+	if (mountedBall->launch == true) {
+		DismountAndLaunch();
+		return;
+	}
+	cheeseSpeed = cheeseSpeed + 0.1f;
 	b2Vec2 vel = b2Body_GetLinearVelocity(mountedBall->pbody->body);
 	movingBall = false;
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT){
-		vel.x = -speed;
+		vel.x = -cheeseSpeed;
 		movingBall = true;
 		
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		vel.x = speed;
+		vel.x = cheeseSpeed;
 		movingBall = true;
 		
 	}
@@ -995,5 +998,6 @@ void Player::DismountAndLaunch()
 	mountedBall->ismounted = false;
 	mountedBall = nullptr;
 	isMounted = false;
+	cheeseSpeed = 10.0f;
 	state = DEFAULT;
 }

@@ -86,6 +86,11 @@ void CheeseBall::OnCollision(PhysBody* physA, PhysBody* physB)
         LOG("CheeseBall touched platform/wall");
         toDelete = true;
     }
+    else if ((physB->ctype == ColliderType::ENEMY) && ismounted)
+    {
+        LOG("CheeseBall touched platform/wall");
+        launch = true;
+    }
 }
 
 void CheeseBall::OnCollisionEnd(PhysBody* physA, PhysBody* physB)

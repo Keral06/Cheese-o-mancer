@@ -165,4 +165,6 @@ private:
 	bool isMounted = false;
 	int spawnOffset = 30;
 	bool movingBall = false;
+
+	float cheeseSpeed = 10.0f;
 };
