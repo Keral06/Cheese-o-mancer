@@ -1893,4 +1893,766 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	}
+	CommemorativeMonument::CommemorativeMonument() :NPC(EntityType::MONUMENT) {
+		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!!
+		this->dialogue = paperDialogue;
 
+	}
+
+	CommemorativeMonument::~CommemorativeMonument()
+	{
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+	}
+	bool CommemorativeMonument::Awake() {
+		return true;
+	}
+	bool CommemorativeMonument::Start() {
+
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+
+		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
+		texW = 128;
+		texH = 128;
+
+
+		if (pbody == nullptr) {
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW / 2,
+				texH / 2,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::MAGICIAN;
+
+
+
+
+		}
+
+		if (pbody != nullptr) {
+			pbody = nullptr;
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+
+
+
+
+		}
+
+		return true;
+
+	}
+	bool CommemorativeMonument::Update(float dt) {
+		if (isGettingTouched) {
+			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+
+
+
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+
+
+				if (dialogue.hasStarted) {
+
+					dialogue.NextDialogue();
+					dialogue.Draw(dt);
+					return true;
+				}
+				dialogue.BeginDialogue();
+				dialogue.Draw(dt);
+
+
+				return true;
+			}
+			if (dialogue.hasStarted && !dialogue.hasEnded) {
+				dialogue.Draw(dt);
+				return true;
+
+			}
+		}
+
+		return true;
+	}
+	bool CommemorativeMonument::CleanUp() {
+		LOG("Unloading Coin");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void CommemorativeMonument::OnCollision(PhysBody* physA, PhysBody* physB) {
+
+		Player* pp = static_cast<Player*>(physB->listener);
+		py = pp;
+		switch (physB->ctype)
+		{
+		case ColliderType::PLAYER:
+			isGettingTouched = true;
+			break;
+		}
+
+
+	}
+	void CommemorativeMonument::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+		isGettingTouched = false;
+
+
+
+	}
+
+	//PERSONAS SEGUNDO NIVEL
+
+	Nohuely::Nohuely() :NPC(EntityType::NOHUELY) {
+		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! Dialoguenormal
+		this->dialogue = paperDialogue;
+		Dialogue secondDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
+		this->secondDialogue = secondDialogue;
+	}
+
+	Nohuely::~Nohuely()
+	{
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+	}
+	bool Nohuely::Awake() {
+		return true;
+	}
+	bool Nohuely::Start() {
+
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+
+		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
+		texW = 128;
+		texH = 128;
+
+
+		if (pbody == nullptr) {
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW / 2,
+				texH / 2,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::MAGICIAN;
+
+
+
+
+		}
+
+		if (pbody != nullptr) {
+			pbody = nullptr;
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+
+
+
+
+		}
+
+		return true;
+
+	}
+	bool Nohuely::Update(float dt) {
+		if (isGettingTouched) {
+			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+
+			if (hasTalkedBefore && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+
+				if (secondDialogue.hasStarted) {
+
+					secondDialogue.NextDialogue();
+					secondDialogue.Draw(dt);
+					
+					return true;
+				}
+				secondDialogue.BeginDialogue();
+				secondDialogue.Draw(dt);
+
+
+				return true;
+			}
+			if (secondDialogue.hasStarted && !secondDialogue.hasEnded) {
+				secondDialogue.Draw(dt);
+				return true;
+
+			}
+			
+			
+
+
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+
+
+				if (dialogue.hasStarted) {
+
+					dialogue.NextDialogue();
+					dialogue.Draw(dt);
+					if (dialogue.hasEnded) { dialogue.CleanUp(); hasTalkedBefore = true; }
+					return true;
+				}
+				dialogue.BeginDialogue();
+				dialogue.Draw(dt);
+
+
+				return true;
+			}
+			if (dialogue.hasStarted && !dialogue.hasEnded) {
+				dialogue.Draw(dt);
+				return true;
+
+			}
+		}
+
+		return true;
+	}
+	bool Nohuely::CleanUp() {
+		LOG("Unloading Coin");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void Nohuely::OnCollision(PhysBody* physA, PhysBody* physB) {
+
+		Player* pp = static_cast<Player*>(physB->listener);
+		py = pp;
+		switch (physB->ctype)
+		{
+		case ColliderType::PLAYER:
+			isGettingTouched = true;
+			break;
+		}
+
+
+	}
+	void Nohuely::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+		isGettingTouched = false;
+
+
+
+	}
+	milkmaid::milkmaid() :NPC(EntityType::MILKMAID) {
+		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! Dialoguenormal
+		this->dialogue = paperDialogue;
+		Dialogue secondDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
+		this->secondDialogue = secondDialogue;
+	}
+
+	milkmaid::~milkmaid()
+	{
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+	}
+	bool milkmaid::Awake() {
+		return true;
+	}
+	bool milkmaid::Start() {
+
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+
+		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
+		texW = 128;
+		texH = 128;
+
+
+		if (pbody == nullptr) {
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW / 2,
+				texH / 2,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::MAGICIAN;
+
+
+
+
+		}
+
+		if (pbody != nullptr) {
+			pbody = nullptr;
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+
+
+
+
+		}
+
+		return true;
+
+	}
+	bool milkmaid::Update(float dt) {
+		if (isGettingTouched) {
+			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+
+			if (hasTalkedBefore && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+
+				if (secondDialogue.hasStarted) {
+
+					secondDialogue.NextDialogue();
+					secondDialogue.Draw(dt);
+
+					return true;
+				}
+				secondDialogue.BeginDialogue();
+				secondDialogue.Draw(dt);
+
+
+				return true;
+			}
+			if (secondDialogue.hasStarted && !secondDialogue.hasEnded) {
+				secondDialogue.Draw(dt);
+				return true;
+
+			}
+
+
+
+
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+
+
+				if (dialogue.hasStarted) {
+
+					dialogue.NextDialogue();
+					dialogue.Draw(dt);
+					if (dialogue.hasEnded) { dialogue.CleanUp(); hasTalkedBefore = true; }
+					return true;
+				}
+				dialogue.BeginDialogue();
+				dialogue.Draw(dt);
+
+
+				return true;
+			}
+			if (dialogue.hasStarted && !dialogue.hasEnded) {
+				dialogue.Draw(dt);
+				return true;
+
+			}
+		}
+
+		return true;
+	}
+	bool milkmaid::CleanUp() {
+		LOG("Unloading Coin");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void milkmaid::OnCollision(PhysBody* physA, PhysBody* physB) {
+
+		Player* pp = static_cast<Player*>(physB->listener);
+		py = pp;
+		switch (physB->ctype)
+		{
+		case ColliderType::PLAYER:
+			isGettingTouched = true;
+			break;
+		}
+
+
+	}
+	void milkmaid::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+		isGettingTouched = false;
+
+
+
+	}
+
+	TowGuard::TowGuard() :NPC(EntityType::GUARDTOWER) {
+		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! Dialoguenormal
+		this->dialogue = paperDialogue;
+		Dialogue secondDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
+		this->secondDialogue = secondDialogue;
+	}
+
+	TowGuard::~TowGuard()
+	{
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+	}
+	bool TowGuard::Awake() {
+		return true;
+	}
+	bool TowGuard::Start() {
+
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+
+		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
+		texW = 128;
+		texH = 128;
+
+
+		if (pbody == nullptr) {
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW / 2,
+				texH / 2,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::MAGICIAN;
+
+
+
+
+		}
+
+		if (pbody != nullptr) {
+			pbody = nullptr;
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+
+
+
+
+		}
+
+		return true;
+
+	}
+	bool TowGuard::Update(float dt) {
+		if (isGettingTouched) {
+			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+
+			if (hasTalkedBefore && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+
+				if (secondDialogue.hasStarted) {
+
+					secondDialogue.NextDialogue();
+					secondDialogue.Draw(dt);
+
+					return true;
+				}
+				secondDialogue.BeginDialogue();
+				secondDialogue.Draw(dt);
+
+
+				return true;
+			}
+			if (secondDialogue.hasStarted && !secondDialogue.hasEnded) {
+				secondDialogue.Draw(dt);
+				return true;
+
+			}
+
+
+
+
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+
+
+				if (dialogue.hasStarted) {
+
+					dialogue.NextDialogue();
+					dialogue.Draw(dt);
+					if (dialogue.hasEnded) { dialogue.CleanUp(); hasTalkedBefore = true; }
+					return true;
+				}
+				dialogue.BeginDialogue();
+				dialogue.Draw(dt);
+
+
+				return true;
+			}
+			if (dialogue.hasStarted && !dialogue.hasEnded) {
+				dialogue.Draw(dt);
+				return true;
+
+			}
+		}
+
+		return true;
+	}
+	bool TowGuard::CleanUp() {
+		LOG("Unloading Coin");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void TowGuard::OnCollision(PhysBody* physA, PhysBody* physB) {
+
+		Player* pp = static_cast<Player*>(physB->listener);
+		py = pp;
+		switch (physB->ctype)
+		{
+		case ColliderType::PLAYER:
+			isGettingTouched = true;
+			break;
+		}
+
+
+	}
+	void TowGuard::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+		isGettingTouched = false;
+
+
+
+	}
+	//Horsing arround
+
+
+	death::death() :NPC(EntityType::DEATH) {
+		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! Dialoguenormal
+		this->dialogue = paperDialogue;
+		Dialogue secondDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
+		this->secondDialogue = secondDialogue;
+
+		Dialogue percent("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
+		this->PercentChance = percent;
+	}
+
+	death::~death()
+	{
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+	}
+	bool death::Awake() {
+		return true;
+	}
+	bool death::Start() {
+
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+
+		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
+		texW = 128;
+		texH = 128;
+
+
+		if (pbody == nullptr) {
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW / 2,
+				texH / 2,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::MAGICIAN;
+
+
+
+
+		}
+
+		if (pbody != nullptr) {
+			pbody = nullptr;
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+
+
+
+
+		}
+
+		return true;
+
+	}
+	bool death::Update(float dt) {
+		if (isGettingTouched) {
+			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+
+			if (hasTalkedBefore && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+
+
+				if (randomNumber == 5) {
+					if (PercentChance.hasStarted) {
+
+						PercentChance.NextDialogue();
+						PercentChance.Draw(dt);
+
+						return true;
+					}
+					PercentChance.BeginDialogue();
+					PercentChance.Draw(dt);
+
+
+					return true;
+				
+				
+				}
+				if (secondDialogue.hasStarted) {
+
+					secondDialogue.NextDialogue();
+					secondDialogue.Draw(dt);
+
+					return true;
+				}
+				secondDialogue.BeginDialogue();
+				secondDialogue.Draw(dt);
+
+
+				return true;
+			}
+			if (PercentChance.hasStarted && !PercentChance.hasEnded) {
+				PercentChance.Draw(dt);
+				return true;
+
+			}
+			if (PercentChance.hasStarted && !PercentChance.hasEnded) {
+				PercentChance.Draw(dt);
+				return true;
+
+			}
+
+
+
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+
+
+				if (dialogue.hasStarted) {
+
+					dialogue.NextDialogue();
+					dialogue.Draw(dt);
+					if (dialogue.hasEnded) { dialogue.CleanUp(); hasTalkedBefore = true; }
+					return true;
+				}
+				dialogue.BeginDialogue();
+				dialogue.Draw(dt);
+
+
+				return true;
+			}
+			if (dialogue.hasStarted && !dialogue.hasEnded) {
+				dialogue.Draw(dt);
+				return true;
+
+			}
+		}
+
+		return true;
+	}
+	bool death::CleanUp() {
+		LOG("Unloading Coin");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void death::OnCollision(PhysBody* physA, PhysBody* physB) {
+
+		Player* pp = static_cast<Player*>(physB->listener);
+		py = pp;
+		switch (physB->ctype)
+		{
+		case ColliderType::PLAYER:
+			isGettingTouched = true;
+			randomNumber = (rand() % 100) + 1;
+			break;
+		}
+
+
+	}
+	void death::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+		isGettingTouched = false;
+
+
+
+	}

@@ -24,6 +24,7 @@
 #include "Door.h"
 #include "cheeseballInteractuable.h"
 #include "WeakWall.h"
+#include "Pickable_objects.h"
 
 Map::Map() : Module(), mapLoaded(false)
 {
@@ -674,16 +675,22 @@ MapLayer* Map::GetNavigationLayer() {
                             jailer->mapID = id;
 
                         }
-                        //else if (entityType == "Handman") {
-                        //    std::shared_ptr<HANDMAN> Handman = std::dynamic_pointer_cast<HANDMAN>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HANDMAN));
+                        else if (entityType == "Handman") {
+                            std::shared_ptr<HANDMAN> Handman = std::dynamic_pointer_cast<HANDMAN>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HANDMAN));
 
-                        //    Handman->position = Vector2D(x, y);
-                        //    /*enemy->xInicial = (int)x;
-                        //    enemy->yInicial = (int)y;*/
-                        //    Handman->Start();
-                        //    Handman->mapID = id;
+                            Handman->position = Vector2D(x, y);
+                            /*enemy->xInicial = (int)x;
+                            enemy->yInicial = (int)y;*/
+                            Handman->Start();
+                            Handman->mapID = id;
+                            if (objectGroupNode.attribute("levelAt").as_int()) { //add a cattegory called WhoIs, so i can check which one it is via it's name
+                                Handman->level = objectGroupNode.attribute("levelAt").as_int();
 
-                        //}
+
+
+                            }
+
+                        }
                         else if (entityType == "NPC") {
                             std::shared_ptr<NPC> Npc = std::dynamic_pointer_cast<NPC>(Engine::GetInstance().entityManager->CreateEntity(EntityType::NPC));
 
@@ -823,6 +830,60 @@ MapLayer* Map::GetNavigationLayer() {
                             cowWeb->yInicial = (int)y;
                             cowWeb  ->Start();
                             cowWeb->mapID = id;
+                            }
+                        else if (entityType == "Monument") {
+                            std::shared_ptr<CommemorativeMonument> monument = std::dynamic_pointer_cast<CommemorativeMonument>(Engine::GetInstance().entityManager->CreateEntity(EntityType::MONUMENT));
+                            monument->position = Vector2D(x, y);
+                            monument->xInicial = (int)x;
+                            monument->yInicial = (int)y;
+                            monument->Start();
+                            monument->mapID = id;
+                            }
+                        else if (entityType == "Nohuely") {
+                            std::shared_ptr<Nohuely> nohuely = std::dynamic_pointer_cast<Nohuely>(Engine::GetInstance().entityManager->CreateEntity(EntityType::NOHUELY));
+                            nohuely->position = Vector2D(x, y);
+                            nohuely->xInicial = (int)x;
+                            nohuely->yInicial = (int)y;
+                            nohuely->Start();
+                            nohuely->mapID = id;
+                            }
+                        else if (entityType == "death") {
+                            std::shared_ptr<death> nohuely = std::dynamic_pointer_cast<death>(Engine::GetInstance().entityManager->CreateEntity(EntityType::DEATH));
+                            nohuely->position = Vector2D(x, y);
+                            nohuely->xInicial = (int)x;
+                            nohuely->yInicial = (int)y;
+                            nohuely->Start();
+                            nohuely->mapID = id;
+                            }
+                        else if (entityType == "TowerGuard") {
+                            std::shared_ptr<TowGuard> nohuely = std::dynamic_pointer_cast<TowGuard>(Engine::GetInstance().entityManager->CreateEntity(EntityType::GUARDTOWER));
+                            nohuely->position = Vector2D(x, y);
+                            nohuely->xInicial = (int)x;
+                            nohuely->yInicial = (int)y;
+                            nohuely->Start();
+                            nohuely->mapID = id;
+                            }
+                        else if (entityType == "milkmaid") {
+                            std::shared_ptr<milkmaid> MILKY = std::dynamic_pointer_cast<milkmaid>(Engine::GetInstance().entityManager->CreateEntity(EntityType::MILKMAID));
+                            MILKY->position = Vector2D(x, y);
+                            MILKY->xInicial = (int)x;
+                            MILKY->yInicial = (int)y;
+                            MILKY->Start();
+                            MILKY->mapID = id;
+                            }
+                        else if (entityType == "Pics") {
+                            std::shared_ptr<Pics> Picsa = std::dynamic_pointer_cast<Pics>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PICS));
+                            Picsa->position = Vector2D(x, y);
+                            Picsa->xInicial = (int)x;
+                            Picsa->yInicial = (int)y;
+                            Picsa->Start();
+                            Picsa->mapID = id;
+                            if (objectGroupNode.attribute("WhoIs").as_string()) { //add a cattegory called WhoIs, so i can check which one it is via it's name
+                                Picsa->name = objectGroupNode.attribute("WhoIs").as_string();
+                            
+                            
+                            
+                            }
                             }
                         
                     }

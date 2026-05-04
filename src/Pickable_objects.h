@@ -1,6 +1,6 @@
 #pragma once
 
-#include "NPC.h"
+#include "Entity.h"
 #include "Animation.h"
 #include <box2d/box2d.h>
 #include <SDL3/SDL.h>
@@ -9,12 +9,12 @@
 
 struct SDL_Texture;
 
-class HANDMAN : public NPC
+class Pics : public Entity
 {
 public:
-	HANDMAN();
-	
-	virtual ~HANDMAN();
+	Pics(EntityType type);
+	Pics();
+	virtual ~Pics();
 
 	bool Awake();
 	bool Start();
@@ -39,30 +39,18 @@ private:
 
 private:
 	SDL_Texture* texture;
-	AnimationSet anims;
+	SDL_Texture* InteractTexture;
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
-	
 
 public:
-	SDL_Texture* InteractTexture = nullptr;
 	int coinFx;
 	int coinPickupFx;
 	int xInicial;
 	int yInicial;	
-	Dialogue dialogueHANDMAN;
-	Dialogue hasBought;
-	Dialogue hasNotBought;
-	Dialogue BeatBoss;
-	bool hasBeenKilled = false;
-	bool wantsBuy = false;
-	bool isStoreOn = true;
-	bool firstTime = true;
-	bool firstTimeBossKill = true;
-	bool isGettingTouched = false;
+	Dialogue dialogue;
+	int BoolOfPlayer = 0;
 	Player* py;
-	int moneyPlayer = 0;
-	int level = 0;
-	
+	bool isGettingTouched = false;
 };

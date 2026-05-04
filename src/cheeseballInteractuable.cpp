@@ -82,6 +82,9 @@ bool CheeseBallInteract::Update(float dt)
 					}
 					dialogue.BeginDialogue();
 					dialogue.Draw(dt);
+					if (py == nullptr)return true;
+					else
+					py->hasCheese = true;
 
 
 					return true;
@@ -130,6 +133,7 @@ void CheeseBallInteract::OnCollision(PhysBody* physA, PhysBody* physB) {
 	{
 	case ColliderType::PLAYER:
 		isGettingTouched = true;
+
 		break;
 	}
 

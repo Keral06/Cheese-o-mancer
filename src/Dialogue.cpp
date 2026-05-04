@@ -111,7 +111,7 @@ void Dialogue::Draw(float dt) {
 bool Dialogue::Update(float dt)
 {
 	if (!hasStarted) return true;
-	if (hasEnded) { CleanUp(); }
+	if (hasEnded) { return true; }
 	
 	
 	

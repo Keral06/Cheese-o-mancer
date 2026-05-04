@@ -119,6 +119,12 @@ public:
 	bool beatBoss = false;
 	bool hasTalkedWithMagician = false; //abrir puerta para poder seguir / desbloquea la vida UI
 	bool extralife = false;
+
+	//BOOLS OF THE PAPERS
+	bool day = false;
+	bool night = false;
+	bool dusk = false;
+	bool dawn = false;
 	
 	/*SDL_Rect& lastFrame;*/
 private: 
@@ -168,4 +174,9 @@ private:
 
 	float cheeseSpeed = 10.0f;
 	float cheeseTime = 300.0f;
+
+
+
+
+	
 };

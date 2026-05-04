@@ -22,6 +22,7 @@
 #include "Magician.h"
 #include "cheeseballInteractuable.h"
 #include "WeakWall.h"
+#include "Pickable_objects.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -187,6 +188,21 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::WEAKWALL:
 		entity = std::make_shared<WeakWall>();
+		break;
+	case EntityType::PICS:
+		entity = std::make_shared<Pics>();
+		break;
+	case EntityType::MONUMENT:
+		entity = std::make_shared<CommemorativeMonument>();
+		break;
+	case EntityType::MILKMAID:
+		entity = std::make_shared<milkmaid>();
+		break;
+	case EntityType::GUARDTOWER:
+		entity = std::make_shared<TowGuard>();
+		break;
+	case EntityType::DEATH:
+		entity = std::make_shared<death>();
 		break;
 	default:
 		break;

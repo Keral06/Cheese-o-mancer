@@ -15,17 +15,17 @@ HANDMAN::HANDMAN() : NPC(EntityType::HANDMAN)
 	this->name = name;
 	this->texture = texture;
 	this->tsxPath = tsxPath;
-	Dialogue firstStime("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_FirstMeeting.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_FirstMeeting.txt");
-	this->dialogue = firstStime; //dialogo al descubrirlo por primera vez
-	pbody = nullptr;
-	Dialogue dialogueHandman("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_SalesPitch_BeforeBoss.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_SalesPitch_BeforeBoss.txt");
-	dialogueHANDMAN = dialogueHandman; //dialogo despues de beat el boss
-	Dialogue hasbeensold("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_Buying.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_Buying.txt");
-	this->hasBought = hasbeensold; //dialogo salir habiendo comprado
-	Dialogue notbought("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_NoMoney.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_NoMoney.txt");
-	this->hasNotBought = notbought; //dialogo salir sin haber comprado
-	Dialogue hasBeatBoss("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_SalesPitch_AfterBoss.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_SalesPitch_AfterBoss.txt");
-	this->BeatBoss = hasBeatBoss;
+	//Dialogue firstStime("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_FirstMeeting.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_FirstMeeting.txt");
+	//this->dialogue = firstStime; //dialogo al descubrirlo por primera vez
+	//pbody = nullptr;
+	//Dialogue dialogueHandman("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_SalesPitch_BeforeBoss.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_SalesPitch_BeforeBoss.txt");
+	//dialogueHANDMAN = dialogueHandman; //dialogo despues de beat el boss
+	//Dialogue hasbeensold("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_Buying.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_Buying.txt");
+	//this->hasBought = hasbeensold; //dialogo salir habiendo comprado
+	//Dialogue notbought("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_NoMoney.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_NoMoney.txt");
+	//this->hasNotBought = notbought; //dialogo salir sin haber comprado
+	//Dialogue hasBeatBoss("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_SalesPitch_AfterBoss.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_SalesPitch_AfterBoss.txt");
+	//this->BeatBoss = hasBeatBoss;
 }
 
 
@@ -75,7 +75,34 @@ bool HANDMAN::Start() {
 
 
 	}
-
+	//Poner dialogo dependiendo del nivel
+	if (level == 1) {
+		//Dialogue firstStime("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_FirstMeeting.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_FirstMeeting.txt");
+//this->dialogue = firstStime; //dialogo al descubrirlo por primera vez
+//pbody = nullptr;
+//Dialogue dialogueHandman("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_SalesPitch_BeforeBoss.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_SalesPitch_BeforeBoss.txt");
+//dialogueHANDMAN = dialogueHandman; //dialogo despues de beat el boss
+//Dialogue hasbeensold("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_Buying.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_Buying.txt");
+//this->hasBought = hasbeensold; //dialogo salir habiendo comprado
+//Dialogue notbought("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_NoMoney.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_NoMoney.txt");
+//this->hasNotBought = notbought; //dialogo salir sin haber comprado
+//Dialogue hasBeatBoss("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_SalesPitch_AfterBoss.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_SalesPitch_AfterBoss.txt");
+//this->BeatBoss = hasBeatBoss;
+	}
+	else if (level == 2) {
+	
+		//Dialogue firstStime("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_FirstMeeting.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_FirstMeeting.txt");
+	//this->dialogue = firstStime; //dialogo al descubrirlo por primera vez
+	//pbody = nullptr;
+	//Dialogue dialogueHandman("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_SalesPitch_BeforeBoss.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_SalesPitch_BeforeBoss.txt");
+	//dialogueHANDMAN = dialogueHandman; //dialogo despues de beat el boss
+	//Dialogue hasbeensold("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_Buying.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_Buying.txt");
+	//this->hasBought = hasbeensold; //dialogo salir habiendo comprado
+	//Dialogue notbought("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_NoMoney.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_NoMoney.txt");
+	//this->hasNotBought = notbought; //dialogo salir sin haber comprado
+	//Dialogue hasBeatBoss("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_SalesPitch_AfterBoss.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_SalesPitch_AfterBoss.txt");
+	//this->BeatBoss = hasBeatBoss;
+	}
 
 
 	return true;
