@@ -41,7 +41,9 @@ public:
 
     void UpdateAttackLogic();
     void Die();
+    void SpawnWeakWall();
     bool MoveToAttackRange(float targetRange);
+    void OnWallDestroyed();
    
 protected:
     int attackTimer = 0;
@@ -92,4 +94,7 @@ protected:
 
     bool facingLeft = false;
     bool bolazo = false;
+
+    bool wallSpawned = false;
+    bool wallDestroyed = false;
 };

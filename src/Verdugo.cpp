@@ -5,6 +5,7 @@
 #include <Scene.h>
 #include "coins.h"
 #include "EntityManager.h"
+#include "WeakWall.h"
 
 Verdugo::Verdugo() : Enemy()
 {
@@ -98,67 +99,52 @@ bool Verdugo::Update(float dt)
         Die();
         return true;
     }
-    ////debug para matar ratas con la K
-    /*if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) {
-        Die();
-        return true;
-    }*/
+    Vector2D playerPos = Engine::GetInstance().scene->GetPlayerPosition();
+    Vector2D myPos = GetPosition();
+
+    
+    facingLeft = playerPos.getX() > myPos.getX();
     repathTimer++;
 
     GetPhysicsValues();
 
-    distanceToPlayer = CalculateDistance();
+    float distance = CalculateDistance();
 
-    //if (isAttacking) {
-    //    velocity.x = 0; 
-    //    UpdateAttack();
-    //}
-    //else {
-    //    attackTimer--; // cooldown
-
-    //    if (distanceToPlayer < detectionRange) {
-    //        if (distanceToPlayer < attackRange && attackTimer <= 0.0f) {
-    //            Attack();
-    //        }
-    //        else if (distanceToPlayer < attackRange) {
-    //            //No hacer nada
-    //        }
-    //        else {
-    //            PerformPathfinding();
-    //            Move();
-    //        }
-    //    }
-    //    else {
-    //        Vector2D enemyPos = GetPosition();
-    //        Vector2D enemyTilePos = Engine::GetInstance().map->WorldToMap(enemyPos.getX(), enemyPos.getY());
-    //        ResetPathfinding(enemyTilePos);
-    //    }
-    //}
     if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
     {
         DebugChangeState();
     }
+
     if (!attackInProgress)
     {
-        currentAttack = ChooseRandomAttack();
+        // ================================
+        // LÓGICA POR DISTANCIA
+        // ================================
 
-        float range = attackRange1;
-
-        if (currentAttack == ATTACK_2) range = attackRange2;
-        if (currentAttack == ATTACK_3) range = attackRange3;
-
-        if (MoveToAttackRange(range))
+        if (distance > 200.0f)
         {
+            // Muy lejos, salto (ATAQUE 2)
+            currentAttack = ATTACK_2;
+            ExecuteAttack();
+        }
+        else if (distance > 100.0f)
+        {
+            // Distancia media, persecución (ATAQUE 3)
+            currentAttack = ATTACK_3;
+            ExecuteAttack();
+        }
+        else
+        {
+            // Cerca, ataque aleatorio
+            currentAttack = ChooseRandomAttack();
             ExecuteAttack();
         }
     }
     else
     {
         UpdateAttackLogic();
-        
     }
-    /*PerformPathfinding();
-    Move();*/
+
     ChangeCurrentAnimation();
     ApplyPhysics();
     Draw(dt);
@@ -177,8 +163,7 @@ void Verdugo::Draw(float dt)
     position.setX((float)x);
     position.setY((float)y);
 
-    // Draw pathfinding debug
-    pathfinding->DrawPath();
+    
 
     SDL_FlipMode flip = facingLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
 
@@ -355,7 +340,7 @@ void Verdugo::DebugChangeState()
 
 AttackType Verdugo::ChooseRandomAttack()
 {
-    int r = rand() % 3;
+    int r = rand() % 4; 
 
     AttackType atk;
 
@@ -364,6 +349,7 @@ AttackType Verdugo::ChooseRandomAttack()
     case 0: atk = ATTACK_1; break;
     case 1: atk = ATTACK_2; break;
     case 2: atk = ATTACK_3; break;
+    case 3: atk = ATTACK_4; break;
     default: atk = ATTACK_1; break;
     }
 
@@ -379,6 +365,7 @@ void Verdugo::ExecuteAttack()
         LOG("INICIO ATAQUE 1 (garrotazo)");
         state = ATAQUE1;
         attackInProgress = true;
+        velocity.x = facingLeft ? 25.0f : -25.0f;
         break;
 
     case ATTACK_2:
@@ -386,18 +373,29 @@ void Verdugo::ExecuteAttack()
         state = ATAQUE2;
 
         // impulso parabólico simple
-        velocity.y = -40.0f;
+        velocity.y = -30.0f;
         velocity.x = facingLeft ? 25.0f : -25.0f;
-
+        
         attackInProgress = true;
         break;
 
     case ATTACK_3:
         LOG("INICIO ATAQUE 3 (persecución)");
         state = ATAQUE3A;
+        velocity.x = facingLeft ? 25.0f : -25.0f;
         attackInProgress = true;
         break;
+    case ATTACK_4:
+        LOG("INICIO ATAQUE 4 (pared)");
 
+        state = ATAQUE4A;
+
+
+        velocity.y = -25.0f;
+        velocity.x = facingLeft ? -25.0f : 25.0f;
+
+        attackInProgress = true;
+        break;
     default:
         break;
     }
@@ -433,6 +431,7 @@ void Verdugo::UpdateAttackLogic()
             {
                 state = ATAQUE3B;
                 currentAnimSet->Resets();
+                break;
             }
 
             
@@ -441,18 +440,46 @@ void Verdugo::UpdateAttackLogic()
                 bolazo = false;
                 state = ATAQUE3C;
                 currentAnimSet->Resets();
+                break;
             }
-        }
-        else
-        {
+
             if (currentAnimSet->HasFinished())
             {
                 currentAnimSet->Resets();
                 attackInProgress = false;
             }
         }
+        
         break;
+    case ATTACK_4:
+        if (state == ATAQUE4A)
+        {
+            if (currentAnimSet->HasFinished() && !wallSpawned) {
+                SpawnWeakWall();
+                wallSpawned = true;
+            }
+            // esperar a que la pared se rompa
+            if (wallDestroyed)
+            {
+                wallDestroyed = false;
+                wallSpawned = false;
+                state = ATAQUE4B;
+                currentAnimSet->Resets();
 
+                LOG("Paso a ATAQUE4B");
+            }
+        }
+        else if (state == ATAQUE4B)
+        {
+            if (currentAnimSet->HasFinished())
+            {
+                currentAnimSet->Resets();
+                attackInProgress = false;
+                velocity.x = 0;
+            }
+        }
+        break;
+    
     default:
         break;
     }
@@ -465,12 +492,11 @@ bool Verdugo::MoveToAttackRange(float targetRange)
     float dx = playerPos.getX() - myPos.getX();
     float dy = playerPos.getY() - myPos.getY();
 
-    float distSq = dx * dx + dy * dy;
-    float rangeSq = targetRange * targetRange;
+    float dist = sqrt(dx * dx + dy * dy);
 
-    facingLeft = playerPos.getX() < myPos.getX();
+    facingLeft = dx < 0;
 
-    if (distSq > rangeSq)
+    if (dist > targetRange)
     {
         velocity.x = facingLeft ? -speed : speed;
         return false;
@@ -478,6 +504,13 @@ bool Verdugo::MoveToAttackRange(float targetRange)
 
     velocity.x = 0;
     return true;
+}
+
+void Verdugo::OnWallDestroyed()
+{
+    LOG("Verdugo detecta que la pared se rompió");
+    wallDestroyed = true;
+    
 }
 
 void Verdugo::Die() {
@@ -500,3 +533,35 @@ void Verdugo::Die() {
     this->toDelete = true;
 }
 
+void Verdugo::SpawnWeakWall()
+{
+    Vector2D playerPos = Engine::GetInstance().scene->GetPlayerPosition();
+    Vector2D myPos = GetPosition();
+
+    auto newWall = Engine::GetInstance().entityManager->CreateEntity(EntityType::WEAKWALL);
+    auto wall = std::static_pointer_cast<WeakWall>(newWall);
+
+    if (wall)
+    {
+        wall->width = 128;
+        wall->height = texH;
+        wall->owner = this;
+        int offset = 128;
+
+        if (facingLeft)
+        {
+            
+            wall->position.setX(myPos.getX() - offset);
+        }
+        else
+        {
+            
+            wall->position.setX(myPos.getX() + offset);
+        }
+
+        wall->position.setY(myPos.getY());
+
+        wall->Start();
+        wallSpawned = true;
+    }
+}

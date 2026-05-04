@@ -22,6 +22,10 @@ bool WeakWall::Destroy()
 {
     LOG("WeakWall broken!");
 
+    if (owner != nullptr)
+    {
+        owner->OnWallDestroyed();
+    }
     // Aquí puedes meter animación o sonido
 
     DestructibleEntity::Destroy(); // importante llamar al base

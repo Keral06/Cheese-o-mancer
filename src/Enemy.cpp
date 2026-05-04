@@ -263,7 +263,7 @@ float Enemy::CalculateDistance() {
     
     float dx = (float)enemyWorld.getX() - pWorld.getX();
     float dy = (float)enemyWorld.getY() - pWorld.getY();
-   
+	
     float distance = sqrtf((dx * dx) + (dy * dy));
 
     return (distance);
