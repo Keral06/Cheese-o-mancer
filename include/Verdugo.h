@@ -5,6 +5,7 @@
 enum VerdugoState {
     ATAQUE1,
     ATAQUE2,
+    ATAQUE3START,
     ATAQUE3A,
     ATAQUE3B,
     ATAQUE3C,
@@ -97,4 +98,7 @@ protected:
 
     bool wallSpawned = false;
     bool wallDestroyed = false;
+
+    int limitRight = 10100;
+    int limitLeft = 900;
 };

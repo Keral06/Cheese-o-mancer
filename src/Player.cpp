@@ -133,6 +133,7 @@ bool Player::Update(float dt)
 			position.setX(bx);
 			position.setY(by - mountedBall->radius - texH/2);
 			pbody->SetPosition(bx, by - mountedBall->radius - texH/2);
+			attackHitbox->SetPosition(bx, by - mountedBall->radius - texH / 2);
 
 			HandleMountedMovement(); 
 		}

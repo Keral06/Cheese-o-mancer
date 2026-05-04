@@ -104,6 +104,11 @@ bool Verdugo::Update(float dt)
 
     
     facingLeft = playerPos.getX() > myPos.getX();
+    if (attackInProgress && currentAttack == ATTACK_4 &&
+        (state == ATAQUE3START || state == ATAQUE3A))
+    {
+        facingLeft = !facingLeft;
+    }
     repathTimer++;
 
     GetPhysicsValues();
@@ -243,6 +248,11 @@ void Verdugo::OnCollision(PhysBody* physA, PhysBody* physB)
         playerInHitbox = true;
         break;
     }
+    case ColliderType::CHEESEBALL:
+    {
+        bolazo = true;
+        break;
+    }
 
     default:
         break;
@@ -277,11 +287,16 @@ void Verdugo::ChangeCurrentAnimation() {
         currentAnimSet->SetCurrent("ataque2");
         offset = 0.0f;
         break;
-
+    case ATAQUE3START:
+        currentAnimSet = &animsAtaque3a;
+        texture = textureA3a;
+        currentAnimSet->SetCurrent("ataque3start");
+        offset = texH / 2;
+        break;
     case ATAQUE3A:
         currentAnimSet = &animsAtaque3a;
         texture = textureA3a;
-        currentAnimSet->SetCurrent("ataque3start"); // importante: alias correcto
+        currentAnimSet->SetCurrent("ataque3run"); 
         offset = texH/2;
         break;
 
@@ -359,6 +374,8 @@ AttackType Verdugo::ChooseRandomAttack()
 }
 void Verdugo::ExecuteAttack()
 {
+    float targetX = facingLeft ? 900.0f : 10000.0f;
+    float dx = targetX - GetPosition().getX();
     switch (currentAttack)
     {
     case ATTACK_1:
@@ -381,19 +398,14 @@ void Verdugo::ExecuteAttack()
 
     case ATTACK_3:
         LOG("INICIO ATAQUE 3 (persecución)");
-        state = ATAQUE3A;
+        state = ATAQUE3START;
         velocity.x = facingLeft ? 25.0f : -25.0f;
         attackInProgress = true;
         break;
     case ATTACK_4:
         LOG("INICIO ATAQUE 4 (pared)");
 
-        state = ATAQUE4A;
-
-
-        velocity.y = -25.0f;
-        velocity.x = facingLeft ? -25.0f : 25.0f;
-
+        state = ATAQUE3START; 
         attackInProgress = true;
         break;
     default:
@@ -403,6 +415,10 @@ void Verdugo::ExecuteAttack()
 
 void Verdugo::UpdateAttackLogic()
 {
+    float targetX = facingLeft ? 6000.0f : 900.0f;
+    float myX = GetPosition().getX();
+    float playerX = Engine::GetInstance().scene->GetPlayerPosition().getX();
+
     switch (currentAttack)
     {
     case ATTACK_1:
@@ -425,12 +441,24 @@ void Verdugo::UpdateAttackLogic()
 
     case ATTACK_3:
         // fase A: acercarse corriendo
+        if (state == ATAQUE3START) {
+            if (currentAnimSet->HasFinished())
+            {
+                currentAnimSet->Resets();
+                state = ATAQUE3A;
+                hitboxActive = true;
+                bolazo = false;
+            }
+        }
         if (state == ATAQUE3A)
         {
+            velocity.x = (playerX > myX) ? speed : -speed;
+
             if (playerInHitbox)
             {
                 state = ATAQUE3B;
                 currentAnimSet->Resets();
+                hitboxActive = false;
                 break;
             }
 
@@ -440,29 +468,74 @@ void Verdugo::UpdateAttackLogic()
                 bolazo = false;
                 state = ATAQUE3C;
                 currentAnimSet->Resets();
+                hitboxActive = false;
                 break;
             }
 
+
+        }
+        if (state == ATAQUE3B)
+        {
             if (currentAnimSet->HasFinished())
             {
                 currentAnimSet->Resets();
                 attackInProgress = false;
             }
         }
-        
+        if (state == ATAQUE3C)
+        {
+            if (currentAnimSet->HasFinished())
+            {
+                currentAnimSet->Resets();
+                attackInProgress = false;
+            }
+        }
         break;
     case ATTACK_4:
-        if (state == ATAQUE4A)
+        
+        if (state == ATAQUE3START) {
+            if (currentAnimSet->HasFinished())
+            {
+                Engine::GetInstance().render->SetZoomSmooth(0.15f, 600.0f);
+                currentAnimSet->Resets();
+                state = ATAQUE3A;
+            }
+        }
+        // =========================
+        // FASE 1: CORRER AL BORDE
+        // =========================
+        if (state == ATAQUE3A)
+        {
+            velocity.x = (targetX > myX) ? speed : -speed;
+
+            if (abs(targetX - myX) < 20.0f)
+            {
+                velocity.x = 0;
+                position.setX(targetX); // fijar
+
+                state = ATAQUE4A;
+                currentAnimSet->Resets();
+
+                LOG("Llega al borde ATAQUE4A");
+            }
+        }
+
+        // =========================
+        // FASE 2: ATAQUE NORMAL
+        // =========================
+        else if (state == ATAQUE4A)
         {
             if (currentAnimSet->HasFinished() && !wallSpawned) {
                 SpawnWeakWall();
+                
                 wallSpawned = true;
             }
-            // esperar a que la pared se rompa
+
             if (wallDestroyed)
             {
                 wallDestroyed = false;
                 wallSpawned = false;
+
                 state = ATAQUE4B;
                 currentAnimSet->Resets();
 
@@ -473,11 +546,13 @@ void Verdugo::UpdateAttackLogic()
         {
             if (currentAnimSet->HasFinished())
             {
+                Engine::GetInstance().render->SetZoomSmooth(0.3f, 600.0f);
                 currentAnimSet->Resets();
                 attackInProgress = false;
-                velocity.x = 0;
             }
         }
+
+        
         break;
     
     default:
@@ -551,12 +626,12 @@ void Verdugo::SpawnWeakWall()
         if (facingLeft)
         {
             
-            wall->position.setX(myPos.getX() - offset);
+            wall->position.setX(myPos.getX() + offset);
         }
         else
         {
             
-            wall->position.setX(myPos.getX() + offset);
+            wall->position.setX(myPos.getX() - offset);
         }
 
         wall->position.setY(myPos.getY());
