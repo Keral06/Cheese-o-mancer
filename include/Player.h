@@ -167,4 +167,5 @@ private:
 	bool movingBall = false;
 
 	float cheeseSpeed = 10.0f;
+	float cheeseTime = 300.0f;
 };

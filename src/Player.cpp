@@ -922,7 +922,7 @@ void Player::SpawnCheeseBall()
 			mountedBall = cb;
 			isMounted = true;
 			state = ONCHEESE;
-
+			cheeseTime = 300.0f;
 			Engine::GetInstance().physics->SetLinearVelocity(pbody, { 0,0 });
 		
 	}
@@ -934,23 +934,45 @@ void Player::HandleMountedMovement()
 		DismountAndLaunch();
 		return;
 	}
-	cheeseSpeed = cheeseSpeed + 0.1f;
+	cheeseTime--;
+	
 	b2Vec2 vel = b2Body_GetLinearVelocity(mountedBall->pbody->body);
 	movingBall = false;
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT){
 		if (!facingLeft) {
 			cheeseSpeed = 10.0f;
+			cheeseTime = 300.0f;
 		}
-		vel.x = -cheeseSpeed;
+		if (cheeseTime < 200.0f && cheeseTime >= 100.0f) {
+			vel.x = -cheeseSpeed * 2.0f;
+		}
+		else if (cheeseTime < 100.0f) {
+			vel.x = -cheeseSpeed * 3.5f;
+		}
+		else {
+
+			vel.x = -cheeseSpeed;
+			
+		}
 		movingBall = true;
-		facingLeft = true;
-		
+		facingLeft = true;		
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		if (facingLeft) {
 			cheeseSpeed = 10.0f;
+			cheeseTime = 300.0f;
 		}
-		vel.x = cheeseSpeed;
+		if (cheeseTime < 200.0f && cheeseTime >= 100.0f) {
+			vel.x = cheeseSpeed * 2.0f;
+		}
+		else if (cheeseTime < 100.0f) {
+			vel.x = cheeseSpeed * 3.5f;
+		}
+		else {
+
+			vel.x = cheeseSpeed;
+
+		}
 		movingBall = true;
 		facingLeft = false;
 		
