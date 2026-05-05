@@ -19,13 +19,17 @@ HANDMAN::HANDMAN() : NPC(EntityType::HANDMAN)
 	this->dialogue = firstStime; //dialogo al descubrirlo por primera vez
 	pbody = nullptr;
 	Dialogue dialogueHandman("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_SalesPitch_BeforeBoss.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_SalesPitch_BeforeBoss.txt");
-	dialogueHANDMAN = dialogueHandman; //dialogo despues de beat el boss
+	dialogueHANDMAN = dialogueHandman; //dialogo antes de beat el boss
 	Dialogue hasbeensold("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_Buying.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_Buying.txt");
-	this->hasBought = hasbeensold; //dialogo salir habiendo comprado
-	Dialogue notbought("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_NoMoney.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_NoMoney.txt");
-	this->hasNotBought = notbought; //dialogo salir sin haber comprado
+	this->hasBeenSold = hasbeensold; //dialogo has comprado algo
+	Dialogue hasNoMoney("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_NoMoney.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_NoMoney.txt");
+	this->hasNoMoney = hasNoMoney; //dialogo no tiene dinero
 	Dialogue hasBeatBoss("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_SalesPitch_AfterBoss.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_SalesPitch_AfterBoss.txt");
-	this->BeatBoss = hasBeatBoss;
+	this->BeatBoss = hasBeatBoss; //dialogo has beat al boss
+    Dialogue notbought("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_Leaving_WithoutBuying.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_Leaving_WithoutBuying.txt");
+    this->hasNotBought = notbought; //dialogo salir sin haber comprado
+    Dialogue yesbought("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_Leaving_AfterBuying.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_Leaving_AfterBuying.txt");
+    this->hasBought = yesbought; //dialogo salir habiendo comprado
 }
 
 
@@ -123,6 +127,20 @@ bool HANDMAN::Update(float dt)
             if (!BeatBoss.hasEnded) BeatBoss.Draw(dt);
             return true;
         }
+        if (hasBeenSold.hasStarted && !hasBeenSold.hasEnded) {
+            if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+                hasBeenSold.NextDialogue();
+            }
+            if (!hasBeenSold.hasEnded) hasBeenSold.Draw(dt);
+            return true;
+        }
+        if (hasNoMoney.hasStarted && !hasNoMoney.hasEnded) {
+            if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+                hasNoMoney.NextDialogue();
+            }
+            if (!hasNoMoney.hasEnded) hasNoMoney.Draw(dt);
+            return true;
+        }
         if (hasBought.hasStarted && !hasBought.hasEnded) {
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
                 hasBought.NextDialogue();
@@ -165,12 +183,18 @@ bool HANDMAN::Update(float dt)
                         moneyPlayer = py->score;
                     }
                     else {
+                        
+
                         if (py->score < moneyPlayer) {
                             hasBought.hasEnded = false;
                             hasBought.BeginDialogue();
                             hasBought.Draw(dt);
                         }
-                        
+                        else {
+                            hasNotBought.hasEnded = false;
+                            hasNotBought.BeginDialogue();
+                            hasNotBought.Draw(dt);
+                        }
                     }
                 }
             }

@@ -54,6 +54,8 @@ public:
 	Dialogue dialogueHANDMAN;
 	Dialogue hasBought;
 	Dialogue hasNotBought;
+	Dialogue hasNoMoney;
+	Dialogue hasBeenSold;
 	Dialogue BeatBoss;
 	bool hasBeenKilled = false;
 	bool wantsBuy = false;
