@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "coins.h"
 #include "EntityManager.h"
+#include "Scene.h"
 
 Rat::Rat() : Enemy()
 {
@@ -21,151 +22,113 @@ bool Rat::Start()
 	attackRange = 5;
     offsetAttackHitboxX = 40;
     offsetAttackHitboxY = -texH/2;
-
+    type = EnemyType::MELEE;
+    
+    texName = "assets/Textures/Spritesheets/Rata/sprite_rat_02.png";
+    spriteSheetName = "";
+    Enemy::Start();
+    
+    
     std::unordered_map<int, std::string> aliases = { {0,"idle"},{10,"walk"},{20,"run"},{30,"fall"},{49,"spawn"},{50,"death"}, };
     anims.LoadFromTSX("assets/Textures/Spritesheets/Rata/spritesheet_ratEnemy_02.tsx", aliases);
 
-    anims.SetCurrent("idle");
+    anims.SetCurrent("idle");   
+    attackHitbox = nullptr;
+    patrolStart = GetPosition();
+    patrolEnd = Vector2D(patrolStart.getX() + 400, patrolStart.getY());
 
-    texName = "resources/spritesheets/Rata/Singles/Sprite_Rat_Fly_01.png";
-    spriteSheetName = "";
-    Enemy::Start();
-    CreateAttackHitbox(GetPosition().getX(),GetPosition().getY(), 70,200);
-    
-    LOG("Verdugo creado");
-
+    detectionRange = 10;
+    speed = 10;
     return true;
-}
-
-void Rat::Attack()
-{
-	isAttacking = true;
-	attackTimer = attackDuration;
-
-	/*LOG("Verdugo empieza ataque");*/
 }
 
 bool Rat::Update(float dt)
 {
-    if (health <= 0 && !coinDropped) {
-        coinDropped = true; 
-        Die();              
-        return true;        
+    if (isDead) {
+        Draw(dt);
+        return true;
     }
-    ////debug para matar ratas con la K
-    //if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) {
-    //    Die();
-    //    return true;
-    //}
+
+    if (health <= 0 && !coinDropped) {
+        coinDropped = true;
+        SetState(EnemyState::DYING);
+        Die();
+        return true;
+    }
+
     repathTimer++;
+    if (damageTimer > 0) {
+        damageTimer--;
+    }
 
     GetPhysicsValues();
 
     distanceToPlayer = CalculateDistance();
 
-    if (isAttacking) {
-        velocity.x = 0; 
-        UpdateAttack();
+    // =====================
+    // MOVERSE
+    // =====================
+
+    if (distanceToPlayer < detectionRange) {
+        if (!isKnockback) {
+            PerformPathfinding();
+            Move();
+        }
     }
     else {
-        attackTimer--; // cooldown
-
-        if (distanceToPlayer < detectionRange) {
-            if (distanceToPlayer < attackRange && attackTimer <= 0.0f) {
-                Attack();
-            }
-            else if (distanceToPlayer < attackRange) {
-                //No hacer nada
-            }
-            else {
-                PerformPathfinding();
-                Move();
-                anims.SetCurrent("walk");
-            }
-        }
-        else {
-            Vector2D enemyPos = GetPosition();
-            Vector2D enemyTilePos = Engine::GetInstance().map->WorldToMap(enemyPos.getX(), enemyPos.getY());
-            ResetPathfinding(enemyTilePos);
-        }
+       Patrol();
     }
 
     ApplyPhysics();
+
+    if (velocity.x < 0)
+        facingLeft = true;
+    else if (velocity.x > 0)
+        facingLeft = false;
+
     Draw(dt);
 
     return true;
 }
 
-void Rat::UpdateAttack()
-{
-    if (!isAttacking) return;
-
-    attackTimer--;
-
-    // Ventana de ataque
-    if (attackTimer <= (attackDuration - hitboxStart) &&
-        attackTimer >= (attackDuration - hitboxEnd))
-    {
-        if (!hitboxActive) {
-            hitboxActive = true;
-            hasHit = false; 
-           /* LOG("Hitbox ACTIVADA");*/
-        }
-    }
-    else {
-        if (hitboxActive) {
-            hitboxActive = false;
-           /* LOG("Hitbox DESACTIVADA");*/
-        }
-    }
-
-    
-    if (hitboxActive && playerInHitbox && !hasHit) {
-        /*LOG("AAUAUCHHH");*/
-
-      
-
-        hasHit = true; 
-    }
-
-    // Fin del ataque
-    if (attackTimer <= 0) {
-        isAttacking = false;
-        hitboxActive = false;
-        attackTimer = attackCooldown;
-
-        /*LOG("Ataque terminado");*/
-    }
-}
-
 void Rat::OnCollision(PhysBody* physA, PhysBody* physB)
 {
-    // Solo actuar si la hitbox está activa
-    if (!hitboxActive) return;
+    if (physB->ctype == ColliderType::PLAYER) {
 
-    switch (physB->ctype)
-    {
-    case ColliderType::PLAYER:
-    {
-        playerInHitbox = true;
-        break;
-    }
+        // daño directo
+        Player* player = dynamic_cast<Player*>(physB->listener);
 
-    default:
-        break;
+        if (player && damageTimer <= 0) {
+            player->lives--;
+        }
     }
 }
 
 void Rat::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 {
-    if (physA == attackHitbox && physB->ctype == ColliderType::PLAYER) {
-        playerInHitbox = false;
-    }
+    
 }
 
 //Muerte
 void Rat::Die() {
-    anims.SetCurrent("death");
+    isDead = true;
+    SetState(EnemyState::DYING);
+
+    deathPosition = GetPosition();
+
+    // eliminar físicas
+    if (pbody != nullptr) {
+        pbody->listener = nullptr;
+        Engine::GetInstance().physics->DeletePhysBody(pbody);
+        pbody = nullptr;
+    }
+
+    if (attackHitbox != nullptr) {
+        Engine::GetInstance().physics->DeletePhysBody(attackHitbox);
+        attackHitbox = nullptr;
+    }
+
+    // spawn coin
     auto newCoin = Engine::GetInstance().entityManager->CreateEntity(EntityType::COIN);
     auto coinEntity = std::static_pointer_cast<Coins>(newCoin);
 
@@ -175,6 +138,25 @@ void Rat::Die() {
         coinEntity->yInicial = (int)pos.getY();
         coinEntity->Start();
     }
-    this->toDelete = true;
 }
 
+void Rat::Patrol()
+{
+    float threshold = 5.0f;
+
+    Vector2D target = goingToEnd ? patrolEnd : patrolStart;
+
+    int ex, ey;
+    pbody->GetPosition(ex, ey);
+
+    if (abs(ex - target.getX()) < threshold) {
+        goingToEnd = !goingToEnd;
+    }
+
+    if (ex < target.getX())
+        velocity.x = speed/2;
+    else
+        velocity.x = -speed/2;
+
+    SetState(EnemyState::WALKING);
+}

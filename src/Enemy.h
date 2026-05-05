@@ -8,6 +8,25 @@
 
 struct SDL_Texture;
 
+enum class EnemyType {
+	GROUND,
+	AIR,
+	BOSS,
+	RANGED,
+	MELEE
+};
+
+enum class EnemyState {
+	IDLE,
+	WALKING,
+	RUNNING,
+	JUMPING,
+	FALLING,
+	ATTACKING,
+	HIT,
+	DYING
+};
+
 class Enemy : public Entity
 {
 public:
@@ -34,6 +53,18 @@ public:
 	void DecreaseHealth(int amount);
 	void Die();
 
+	void SetState(EnemyState newState);
+
+	void ChangeCurrentAnimation();
+
+	void MoveGround();
+
+	void MoveAir();
+
+	void MoveRanged();
+
+	void MoveMelee();
+
 protected:
 	void PerformPathfinding();
 	void GetPhysicsValues();
@@ -49,7 +80,7 @@ public:
 	int texW = 215;
 	int texH = 384;
 	PhysBody* pbody;
-	float detectionRange = 20.0f;
+	float detectionRange = 8.0f;
 	Vector2D lastPlayerTile = { -1, -1 };
 	int repathTimer = 0;
 	int repathDelay = 100;
@@ -67,9 +98,16 @@ public:
 	float knockbackForce = 20.0f;
 	int knockbackTimer = 0;
 	int knockbackDuration = 150;
+
+	Vector2D deathPosition;
 protected:
 	b2Vec2 velocity;
 	AnimationSet anims;
 	std::shared_ptr<Pathfinding> pathfinding;
 	PhysBody* attackHitbox;
+
+	EnemyType type = EnemyType::GROUND;
+
+	EnemyState state = EnemyState::IDLE;
+	EnemyState lastState = EnemyState::IDLE;
 };

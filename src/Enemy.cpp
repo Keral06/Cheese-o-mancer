@@ -48,7 +48,7 @@ bool Enemy::Start() {
 
 	/*anims.LoadFromTSX(spriteSheetName, aliases);*/
 	//Add physics to the enemy - initialize physics body
-	pbody = Engine::GetInstance().physics->CreateRectangle(position.getX(), position.getY(), texW, texH, bodyType::DYNAMIC);
+	pbody = Engine::GetInstance().physics->CreateRectangleFriction(position.getX(), position.getY(), texW, texH, bodyType::DYNAMIC, 0.0f);
 
 	//Assign enemy class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
@@ -87,11 +87,13 @@ bool Enemy::Update(float dt)
 			}
 		}
 		if (distanceToPlayer < attackRange) {
-			Attack();
+			SetState(EnemyState::ATTACKING);
+		}
+		else if (velocity.x != 0) {
+			SetState(EnemyState::WALKING);
 		}
 		else {
-			PerformPathfinding();
-			Move();
+			SetState(EnemyState::IDLE);
 		}
 		
 	}
@@ -141,44 +143,38 @@ void Enemy::GetPhysicsValues() {
 
 void Enemy::Move() {
 	if (isKnockback) return;
-	// Si no hay camino o ya llegamos, detenemos el movimiento horizontal
-	if (pathfinding->pathTiles.empty()) {
 
-		return;
+	switch (type)
+	{
+	case EnemyType::GROUND:
+		MoveGround();
+		break;
+
+	case EnemyType::AIR:
+		MoveAir();
+		break;
+
+	case EnemyType::RANGED:
+		MoveRanged();
+		break;
+
+	case EnemyType::MELEE:
+		MoveMelee();
+		break;
+
+	default:
+		MoveGround();
+		break;
 	}
-
-	// Obtenemos el siguiente paso del path (el último elemento añadido a la lista)
-	Vector2D nextTile = pathfinding->pathTiles.front();
-	Vector2D nextPosWorld = Engine::GetInstance().map->MapToWorld((int)nextTile.getX(), (int)nextTile.getY());
-
-	// Posición actual del enemigo
-	int ex, ey;
-	pbody->GetPosition(ex, ey);
-
-	float speed = 5.0f; // Ajusta según la escala de tu mundo Box2D
-
-	// Lógica de movimiento horizontal hacia el siguiente tile
-	float threshold = 5.0f;
-
-	if (ex < nextPosWorld.getX() - threshold)
-		velocity.x = speed;
-	else if (ex > nextPosWorld.getX() + threshold)
-		velocity.x = -speed;
-	else
-		velocity.x = 0;
-
-	if (velocity.x < 0)
-		facingLeft = true;
-	else if (velocity.x > 0)
-		facingLeft = false;
-	// Move 
 }
 
 void Enemy::ApplyPhysics() {
 
 	// Apply velocity via helper
 	Engine::GetInstance().physics->SetLinearVelocity(pbody, velocity);
-	attackHitbox->SetPosition(GetPosition().getX() - offsetAttackHitboxX, GetPosition().getY() - offsetAttackHitboxY);
+	if (attackHitbox != nullptr) {
+		attackHitbox->SetPosition(GetPosition().getX() - offsetAttackHitboxX, GetPosition().getY() - offsetAttackHitboxY);
+	}
 }
 
 // =====================
@@ -187,25 +183,31 @@ void Enemy::ApplyPhysics() {
 
 void Enemy::Draw(float dt) {
 
-	/*anims.Update(dt);
-	const SDL_Rect& animFrame = anims.GetCurrentFrame();*/
+	anims.Update(dt);
+	const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 	//// Update render position using your PhysBody helper
 	int x, y;
-	pbody->GetPosition(x, y);
-	position.setX((float)x);
-	position.setY((float)y);
+	if (pbody != nullptr) {
+		pbody->GetPosition(x, y);
+		position.setX((float)x);
+		position.setY((float)y);
+	}
+	else {
+		x = (int)deathPosition.getX();
+		y = (int)deathPosition.getY();
+	}
 
 	// Draw pathfinding debug
 	//pathfinding->DrawPath();
 
 	SDL_Rect sect = {0,0,texW,texH};
 	//Draw the player using the texture and the current animation frame
-	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &sect, 1, 0, 0, 0, SDL_FLIP_NONE);
+	/*Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &sect, 1, 0, 0, 0, SDL_FLIP_NONE);*/
 
-	//SDL_FlipMode flip = facingLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+	SDL_FlipMode flip = facingLeft ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 
-	/*Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame, 1.0f, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE);*/
+	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame, 1.0f, 0.0, INT_MAX, INT_MAX, flip);
 }
 
 bool Enemy::CleanUp()
@@ -274,10 +276,14 @@ void Enemy::SetPosition(Vector2D pos) {
 }
 
 Vector2D Enemy::GetPosition() {
-	int x, y;
-	pbody->GetPosition(x, y);
-	// Adjust for center
-	return Vector2D((float)x - texW / 2, (float)y - texH / 2);
+	if (pbody != nullptr) {
+		int x, y;
+		pbody->GetPosition(x, y);
+		return Vector2D((float)x - texW / 2, (float)y - texH / 2);
+	}
+	else {
+		return deathPosition;
+	}
 }
 
 void Enemy::ResetPathfinding(Vector2D pos) {
@@ -290,40 +296,149 @@ void Enemy::ResetPathfinding(Vector2D pos) {
 
 void Enemy::Attack() {
 
-	anims.SetCurrent("Animation");
+	SetState(EnemyState::ATTACKING);
 }
 
 void Enemy::DecreaseHealth(int amount) {
 	health -= amount;
-	isKnockback = true;
-	knockbackTimer = knockbackDuration;
-	// Aplicar knockback
+
+	SetState(EnemyState::HIT);
+
 	if (pbody != nullptr) {
-		Vector2D knockbackDir = {0,0};
 
-		// Si se está moviendo, usamos su dirección
-		if (velocity.x != 0) {
-			knockbackDir.setX((velocity.x > 0) ? 1.0f : -1.0f);
-		}
-		else {
-			// Si está quieto, empuja según hacia dónde mira
-			knockbackDir.setX(facingLeft ? 1.0f : -1.0f);
-		}
+		b2Vec2 vel = Engine::GetInstance().physics->GetLinearVelocity(pbody);
 
-		knockbackDir.setY(-0.5f); // pequeño empujón hacia arriba (opcional)
+		float dir = facingLeft ? 1.0f : -1.0f;
 
-		// Aplicar velocidad directamente (simple)
-		velocity.x = knockbackDir.getX() * knockbackForce;
-		velocity.y = knockbackDir.getY() * knockbackForce;
+		vel.x = dir * knockbackForce;
+		vel.y = -20.0f; // pequeño salto
 
-		Engine::GetInstance().physics->SetLinearVelocity(pbody, velocity);
+		Engine::GetInstance().physics->SetLinearVelocity(pbody, vel);
+
+		isKnockback = true;
+		knockbackTimer = knockbackDuration;
 	}
 
 	if (health <= 0) {
+		SetState(EnemyState::DYING);
 		Die();
 	}
 }
 void Enemy::Die() {
 	
 	toDelete = true;
+}
+
+void Enemy::SetState(EnemyState newState)
+{
+	if (state == newState) return;
+
+	lastState = state;
+	state = newState;
+
+	ChangeCurrentAnimation();
+}
+
+void Enemy::ChangeCurrentAnimation()
+{
+	if (state == lastState) return;
+
+	switch (state)
+	{
+	case EnemyState::IDLE:
+		anims.SetCurrent("idle");
+		break;
+
+	case EnemyState::WALKING:
+		anims.SetCurrent("walk");
+		break;
+
+	case EnemyState::RUNNING:
+		anims.SetCurrent("run");
+		break;
+
+	case EnemyState::JUMPING:
+		anims.SetCurrent("jump");
+		break;
+
+	case EnemyState::FALLING:
+		anims.SetCurrent("fall");
+		break;
+
+	case EnemyState::ATTACKING:
+		anims.SetCurrent("attack");
+		break;
+
+	case EnemyState::HIT:
+		anims.SetCurrent("hit");
+		break;
+
+	case EnemyState::DYING:
+		anims.SetCurrent("death");
+		break;
+	}
+}
+
+void Enemy::MoveGround() {
+	// tu lógica actual
+	if (isKnockback) return; // Si no hay camino o ya llegamos, detenemos el movimiento horizontal 
+	if (pathfinding->pathTiles.empty()) { return; } // Obtenemos el siguiente paso del path (el último elemento añadido a la lista) 
+	Vector2D nextTile = pathfinding->pathTiles.front(); 
+	Vector2D nextPosWorld = Engine::GetInstance().map->MapToWorld((int)nextTile.getX(), (int)nextTile.getY()); 
+	// Posición actual del enemigo 
+	int ex, ey; 
+	pbody->GetPosition(ex, ey); 
+	float speed = 5.0f; 
+	// Ajusta según la escala de tu mundo Box2D 
+	// Lógica de movimiento horizontal hacia el siguiente tile 
+	float threshold = 5.0f; 
+	if (ex < nextPosWorld.getX() - threshold) velocity.x = speed; 
+	else if (ex > nextPosWorld.getX() + threshold) velocity.x = -speed; 
+	else velocity.x = 0; if (velocity.x < 0) facingLeft = true; 
+	else if (velocity.x > 0) facingLeft = false; // Move
+
+	if (velocity.y < -0.1f) {
+		SetState(EnemyState::JUMPING);
+	}
+	else if (velocity.y > 0.1f) {
+		SetState(EnemyState::FALLING);
+	}
+}
+
+void Enemy::MoveAir() {
+	// ignora gravedad, mueve en Y también
+}
+
+void Enemy::MoveRanged() {
+	// mantener distancia del player
+}
+
+void Enemy::MoveMelee()
+{
+	// tu lógica actual
+	if (isKnockback) return; // Si no hay camino o ya llegamos, detenemos el movimiento horizontal 
+	if (pathfinding->pathTiles.empty()) { return; } // Obtenemos el siguiente paso del path (el último elemento añadido a la lista) 
+	Vector2D nextTile = pathfinding->pathTiles.front();
+	Vector2D nextPosWorld = Engine::GetInstance().map->MapToWorld((int)nextTile.getX(), (int)nextTile.getY());
+	// Posición actual del enemigo 
+	int ex, ey;
+	pbody->GetPosition(ex, ey);
+	// Ajusta según la escala de tu mundo Box2D 
+	// Lógica de movimiento horizontal hacia el siguiente tile 
+	float threshold = 5.0f;
+	if (ex < nextPosWorld.getX() - threshold) velocity.x = speed;
+	else if (ex > nextPosWorld.getX() + threshold) { 
+		velocity.x = -speed; 
+	}else velocity.x = 0; 
+	
+	if (velocity.x < 0) facingLeft = true;
+	else if (velocity.x > 0) facingLeft = false; // Move
+
+	if (velocity.y < -0.1f) {
+		SetState(EnemyState::JUMPING);
+	}
+	else if (velocity.y > 0.1f) {
+		SetState(EnemyState::FALLING);
+	}
+	
 }
