@@ -716,7 +716,7 @@ void Scene::UpdateLevel(float dt) {
 		return;
 	}
 
-	//Lógica de cambio de mapa (F1-F8?)
+	//Lógica de cambio de mapa (F1-F4)
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
 		LoadMap("TEST_map_LV1_startRoom_01.tmx"); 
 	}
@@ -728,9 +728,6 @@ void Scene::UpdateLevel(float dt) {
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN) {
 		LoadMap("TEST_map_LV1_tortureRoom_02.tmx");
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		LoadMap("TEST_map_LV1_bossRoom_01.tmx");
 	}
 
 
@@ -902,6 +899,25 @@ void  Scene::PostUpdateLevel() {
 		Engine::GetInstance().render->DrawRectangle(screenRect, 0, 0, 0, 150, true, false);
 
 		Engine::GetInstance().render->DrawText("PAUSE", 580, 150, 0, 0, { 255, 255, 255, 255 });
+	}
+	if (storeOn) {
+		float w, h;
+		SDL_GetTextureSize(storeBag, &w, &h);
+		Engine::GetInstance().render->DrawTextureNoCamera(storeBag, 80, -100, w / 1.5, h / 1.5);
+
+		if (selectedStoreItem == 1) {
+			SDL_GetTextureSize(storePaperMap, &w, &h);
+			Engine::GetInstance().render->DrawTextureNoCamera(storePaperMap, 550, -50, w / 1.5, h / 1.5);
+		}
+		else if (selectedStoreItem == 2) {
+			SDL_GetTextureSize(storePaperKey, &w, &h);
+			Engine::GetInstance().render->DrawTextureNoCamera(storePaperKey, 550, -50, w / 1.5, h / 1.5);
+		}
+		else if (selectedStoreItem == 3) {
+			SDL_GetTextureSize(storePaperLife, &w, &h);
+			Engine::GetInstance().render->DrawTextureNoCamera(storePaperLife, 550, -50, w / 1.5, h / 1.5);
+		}
+
 	}
 
 	Engine::GetInstance().uiManager->PostUpdate();
@@ -1284,7 +1300,7 @@ void Scene::StartFadeIn(float duration)
 void Scene::CreateStoreLevel1() {
 	
 	int x = 200;
-	int y = 50;
+	int y = 120;
 
 	// MAP
 	SDL_Texture* MapNormal;
