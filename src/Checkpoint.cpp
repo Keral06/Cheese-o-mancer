@@ -59,9 +59,9 @@ bool Checkpoint::Start() {
 
 bool Checkpoint::Update(float dt)
 {
-	if (isActivated) {
+	/*if (isActivated) {
 		return true;
-	}
+	}*/
 
 	/*if (currentAnim != nullptr)
 		currentAnim->Update(dt);
@@ -76,7 +76,7 @@ bool Checkpoint::Update(float dt)
 		int y = 0;
 		pbody->GetPosition(x, y);
 
-		Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2);
+		Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2 - 145);
 	}
 
 	return true;

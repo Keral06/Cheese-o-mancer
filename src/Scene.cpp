@@ -716,8 +716,26 @@ void Scene::UpdateLevel(float dt) {
 		return;
 	}
 
+	//Lógica de cambio de mapa (F1-F8?)
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
+		LoadMap("TEST_map_LV1_startRoom_01.tmx"); 
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
+		LoadMap("TEST_map_LV1_towerCenter_01.tmx");          
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
+		LoadMap("TEST_map_LV1_pantryRoom_01.tmx");           
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN) {
+		LoadMap("TEST_map_LV1_tortureRoom_02.tmx");
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
+		LoadMap("TEST_map_LV1_bossRoom_01.tmx");
+	}
+
+
 	// Lógica de Checkpoints (Teclas 1-9)
-	/*for (int i = 0; i < 9; ++i) {
+	for (int i = 0; i < 9; ++i) {
 		if (Engine::GetInstance().input->GetKey((SDL_Scancode)(SDL_SCANCODE_1 + i)) == KEY_DOWN) {
 			if (i < Engine::GetInstance().map->checkpoints.size()) {
 				Vector2D checkpointPos = Engine::GetInstance().map->checkpoints[i]->position;
@@ -725,7 +743,8 @@ void Scene::UpdateLevel(float dt) {
 				if (player) player->SetPosition(checkpointPos);
 			}
 		}
-	}*/
+	}
+	
 
 	for (const auto& checkpoint : Engine::GetInstance().map->checkpoints) {
 		if (checkpoint->name == "end" && checkpoint->isActivated) {
