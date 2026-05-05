@@ -18,6 +18,7 @@
 #include <fstream>
 #include "Physics.h"
 #include "FINALBOSS.h"
+#include "Handman.h"
 
 Scene::Scene() : Module()
 {
@@ -201,7 +202,7 @@ bool Scene::PostUpdate()
 		if (storeOn) {
 			float w, h;
 			SDL_GetTextureSize(storeBag, &w, &h);
-			Engine::GetInstance().render->DrawTextureNoCamera(storeBag, 80, -100, w/1.5, h/1.5);
+			Engine::GetInstance().render->DrawTextureNoCamera(storeBag, 80, -100, w / 1.5, h / 1.5);
 			if (selectedStoreItem == 1) {
 				SDL_GetTextureSize(storePaperMap, &w, &h);
 				Engine::GetInstance().render->DrawTextureNoCamera(storePaperMap, 550, 0, w / 1.5, h / 1.5);
@@ -211,13 +212,14 @@ bool Scene::PostUpdate()
 				Engine::GetInstance().render->DrawTextureNoCamera(storePaperKey, 550, 0, w / 1.5, h / 1.5);
 			}
 			else if (selectedStoreItem == 3) {
-			
 				SDL_GetTextureSize(storePaperLife, &w, &h);
 				Engine::GetInstance().render->DrawTextureNoCamera(storePaperLife, 550, 0, w / 1.5, h / 1.5);
 			}
-			
-			
-
+			if (player != nullptr) {
+				std::string coinsText = "COINS: " + std::to_string(player->score);
+				// Lo ponemos en x=120, y=50 para que se vea claramente sobre la tienda
+				Engine::GetInstance().render->DrawText(coinsText.c_str(), 120, 50, 0, 0, { 255, 215, 0, 255 });
+			}
 		}
 		break;
 
@@ -1181,6 +1183,7 @@ void Scene::LoadMap(std::string map)
 
 	isPaused = false;
 	CreatePauseUI();
+	CreateStoreLevel1();
 	helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_TutorialControls.png");
 	map1Texture = Engine::GetInstance().textures->Load("assets/UI/Map/UI_Map_Level1.png");
 	heartTexture = Engine::GetInstance().textures->Load("assets/Textures/PREV/heart4.png");
@@ -1331,8 +1334,14 @@ void Scene::SetStore(bool store) {
 		if (element->id == 35 || element->id==36 || element->id == 37) {
 			element->visible = storeOn;
 		}
-		
+		if (!storeOn && element->id >= 39 && element->id <= 41) {
+			element->visible = false;
+		}
 	}
+	if (!storeOn) {
+		selectedStoreItem = 0;
+	}
+		
 }
 
 
@@ -1340,16 +1349,16 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 	switch (uiElement->id) {
 	case 35:
 		for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
-			if (el->id ==39) el->visible = true;
+			if (el->id == 39) el->visible = true;
 			if (el->id > 39 && el->id <= 42) el->visible = false;
-			
+
 		}
 		selectedStoreItem = 1;
 		break;
 	case 36:
 		for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
 			if (el->id == 40) el->visible = true;
-			if (el->id == 39 || el->id >= 41 && el->id<=42) el->visible = false;
+			if (el->id == 39 || el->id >= 41 && el->id <= 42) el->visible = false;
 
 		}
 		selectedStoreItem = 2;
@@ -1357,34 +1366,58 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 	case 37:
 		for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
 			if (el->id == 41) el->visible = true;
-			if (el->id == 39 || el->id ==40 || el->id == 42) el->visible = false;
+			if (el->id == 39 || el->id == 40 || el->id == 42) el->visible = false;
 
 		}
-	
+
 		selectedStoreItem = 3;
 		break;
-	//case 38:
-	//	for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
-	//		if (el->id == 42) el->visible = true;
-	//		if (el->id == 39 || el->id == 40 || el->id == 41) el->visible = false;
+		//case 38:
+		//	for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
+		//		if (el->id == 42) el->visible = true;
+		//		if (el->id == 39 || el->id == 40 || el->id == 41) el->visible = false;
 
-	//	}
-	//	//imagen informativa de lo que hace en grande tmbn
-	//	break;
+		//	}
+		//	//imagen informativa de lo que hace en grande tmbn
+		//	break;
 	case 39:
 		//mira si el jugador tiene dinero
-		if(player->score >= 20) {
-			player->score -=20;
+		if (player->score >= 20) {
+			player->score -= 20;
 			for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
-				if (el->id == 39) el->Destroy();
+				if (el->id == 39) {
+					el->visible = false;
+					el->state = UIElementState::DISABLED;
+				}
 				if (el->id == 35) {
 					SDL_Texture* BeenBought = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_SoldOut_01.png");
 					el->SetTexture(BeenBought);
 				}
-
 			}
-			//FUNCION DE QUE EL MAPA ESTA DISPONIBLE
 			player->hasMap1 = true;
+			SetStore(false);
+			for (auto& entity : Engine::GetInstance().entityManager->entities) {
+				if (entity->type == EntityType::HANDMAN) {
+					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
+					handman->isStoreOn = false;
+					handman->hasBought.hasEnded = false;
+					handman->hasBought.BeginDialogue();
+					break;
+				}
+			}
+		}
+		else {
+			SetStore(false); 
+			for (auto& entity : Engine::GetInstance().entityManager->entities) {
+				if (entity->type == EntityType::HANDMAN) {
+					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
+					handman->isStoreOn = false;
+					handman->hasNotBought.hasEnded = false;
+					handman->hasNotBought.BeginDialogue();
+					break;
+				}
+			}
+
 		}
 		break;
 	case 40:
@@ -1394,15 +1427,40 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 			for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
 				if (el->id == 40) el->Destroy();
 				if (el->id == 36) {
-				
+
 					SDL_Texture* BeenBought = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_SoldOut_01.png");
 					el->SetTexture(BeenBought);
 				}
 
 			}
+
 			//FUNCION DE QUE PLAYER TIENE LA LLAVE
+			SetStore(false);
+			for (auto& entity : Engine::GetInstance().entityManager->entities) {
+				if (entity->type == EntityType::HANDMAN) {
+					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
+					handman->isStoreOn = false;
+					handman->hasBought.hasEnded = false;
+					handman->hasBought.BeginDialogue();
+					break;
+				}
+			}
+		}
+		else {
+			SetStore(false);
+			for (auto& entity : Engine::GetInstance().entityManager->entities) {
+				if (entity->type == EntityType::HANDMAN) {
+					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
+					handman->isStoreOn = false;
+					handman->hasNotBought.hasEnded = false;
+					handman->hasNotBought.BeginDialogue();
+					break;
+				}
+			}
+
 		}
 		
+
 		break;
 	case 41:
 		//mira si el jugador tiene dinero
@@ -1410,7 +1468,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 			player->score -= 10;
 			for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
 				if (el->id == 41) el->Destroy();
-				if (el->id == 37){
+				if (el->id == 37) {
 					SDL_Texture* BeenBought = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_SoldOut_01.png");
 					el->SetTexture(BeenBought);
 
@@ -1418,8 +1476,31 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 
 			}
 			player->extralife = true;
+			SetStore(false);
+			for (auto& entity : Engine::GetInstance().entityManager->entities) {
+				if (entity->type == EntityType::HANDMAN) {
+					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
+					handman->isStoreOn = false;
+					handman->hasBought.hasEnded = false;
+					handman->hasBought.BeginDialogue();
+					break;
+				}
+			}
 		}
-		break;
+		else {
+			SetStore(false);
+			for (auto& entity : Engine::GetInstance().entityManager->entities) {
+				if (entity->type == EntityType::HANDMAN) {
+					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
+					handman->isStoreOn = false;
+					handman->hasNotBought.hasEnded = false;
+					handman->hasNotBought.BeginDialogue();
+					break;
+				}
+			}
+
+		}
+	
 	/*case 42:
 		
 		break;*/

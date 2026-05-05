@@ -677,19 +677,17 @@ MapLayer* Map::GetNavigationLayer() {
                         }
                         else if (entityType == "Handman") {
                             std::shared_ptr<HANDMAN> Handman = std::dynamic_pointer_cast<HANDMAN>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HANDMAN));
+                            //if (objectGroupNode.attribute("levelAt").as_int()) { //add a cattegory called WhoIs, so i can check which one it is via it's name
+                            //    Handman->level = objectGroupNode.attribute("levelAt").as_int();
 
+
+
+                            //}
                             Handman->position = Vector2D(x, y);
-                            /*enemy->xInicial = (int)x;
-                            enemy->yInicial = (int)y;*/
+                            Handman->xInicial = (int)x;
+                            Handman->yInicial = (int)y;
                             Handman->Start();
                             Handman->mapID = id;
-                            if (objectGroupNode.attribute("levelAt").as_int()) { //add a cattegory called WhoIs, so i can check which one it is via it's name
-                                Handman->level = objectGroupNode.attribute("levelAt").as_int();
-
-
-
-                            }
-
                         }
                         else if (entityType == "NPC") {
                             std::shared_ptr<NPC> Npc = std::dynamic_pointer_cast<NPC>(Engine::GetInstance().entityManager->CreateEntity(EntityType::NPC));

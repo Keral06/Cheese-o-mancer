@@ -118,6 +118,12 @@ bool Player::Update(float dt)
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
 		godMode = !godMode;
 	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
+		beatBoss = true;
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_N) == KEY_DOWN) {
+		AddPoints(100);
+	}
 	bool isPaused = Engine::GetInstance().scene->isPaused || Engine::GetInstance().scene->showHelp;
 	const SDL_Rect& animFrame = currentAnimSet->GetCurrentFrame();
 	if (!isPaused) {

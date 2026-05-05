@@ -40,7 +40,7 @@ private:
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
-	PhysBody* pbody;
+	PhysBody* pbody = nullptr;
 	int texW, texH;
 	const char* tsxPath;
 	
@@ -57,12 +57,11 @@ public:
 	Dialogue BeatBoss;
 	bool hasBeenKilled = false;
 	bool wantsBuy = false;
-	bool isStoreOn = true;
+	bool isStoreOn = false;
 	bool firstTime = true;
 	bool firstTimeBossKill = true;
 	bool isGettingTouched = false;
 	Player* py;
 	int moneyPlayer = 0;
-	int level = 0;
 	
 };
