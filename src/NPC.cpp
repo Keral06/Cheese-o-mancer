@@ -2656,3 +2656,244 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	}
+
+	Hermit::Hermit() :NPC(EntityType::DEATH) {
+		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! Dialoguenormal
+		this->dialogue = paperDialogue;
+		Dialogue secondDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! lvl1
+		this->level1 = secondDialogue;
+
+		Dialogue percent("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
+		this->notAdvanced = percent;
+		Dialogue lvll2("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! lvl2
+		this->level2 = lvll2;
+		Dialogue third("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! lvl3
+		this->level3 = third;
+
+		Dialogue hasAll("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! all
+		this->hasAll = hasAll;
+	}
+
+	Hermit::~Hermit()
+	{
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+	}
+	bool Hermit::Awake() {
+		return true;
+	}
+	bool Hermit::Start() {
+
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+
+		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
+		texW = 128;
+		texH = 128;
+
+
+		if (pbody == nullptr) {
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW / 2,
+				texH / 2,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::MAGICIAN;
+
+
+
+
+		}
+
+		if (pbody != nullptr) {
+			pbody = nullptr;
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+
+
+
+
+		}
+
+		return true;
+
+	}
+	bool Hermit::Update(float dt) {
+		if (isGettingTouched) {
+			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+
+			
+
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !dialogue.hasEnded && dialogue.hasStarted) { //primer dialogo solo sale una vez
+
+
+				if (dialogue.hasStarted) {
+
+					dialogue.NextDialogue();
+					dialogue.Draw(dt);
+				
+					return true;
+				}
+				dialogue.BeginDialogue();
+				dialogue.Draw(dt);
+
+
+				return true;
+			}
+			if (dialogue.hasStarted && !dialogue.hasEnded) {
+				dialogue.Draw(dt);
+				return true;
+
+			}
+
+
+			//dialogo si le ha traido el primer objeto
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level1.hasEnded && level1.hasStarted && py!=nullptr &&py->springWater && !springWater) { //primer dialogo solo sale una vez
+
+
+				if (level1.hasStarted) {
+
+					level1.NextDialogue();
+					level1.Draw(dt);
+					if (level1.hasEnded) { springWater = true; }
+					return true;
+				}
+				level1.BeginDialogue();
+				level1.Draw(dt);
+
+
+				return true;
+			}
+			if (level1.hasStarted && !level1.hasEnded) {
+				level1.Draw(dt);
+				return true;
+
+			}
+
+			//Dialogo si tercer objeto
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level2.hasEnded && level2.hasStarted && py != nullptr && py->HorsekinManure && !HorsekinManure) { //primer dialogo solo sale una vez
+
+
+				if (level2.hasStarted) {
+
+					level2.NextDialogue();
+					level2.Draw(dt);
+					if (level2.hasEnded) { HorsekinManure = true; }
+					return true;
+				}
+				level2.BeginDialogue();
+				level2.Draw(dt);
+
+
+				return true;
+			}
+			if (level2.hasStarted && !level2.hasEnded) {
+				level2.Draw(dt);
+				return true;
+
+			}
+
+			//Dialogo si tercer objeto
+
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level3.hasEnded && level3.hasStarted && py != nullptr && py->Gargantuan && !Gargantuan) { //primer dialogo solo sale una vez
+
+
+				if (level3.hasStarted) {
+
+					level3.NextDialogue();
+					level3.Draw(dt);
+					if (level3.hasEnded) { Gargantuan = true; }
+					return true;
+				}
+				level3.BeginDialogue();
+				level3.Draw(dt);
+
+
+				return true;
+			}
+			if (level3.hasStarted && !level3.hasEnded) {
+				level3.Draw(dt);
+				return true;
+
+			}
+
+			//Dialogo si los tiene todos
+
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !hasAll.hasEnded && hasAll.hasStarted && py != nullptr &&HorsekinManure && springWater&& Gargantuan && !finishedMission) { //primer dialogo solo sale una vez
+
+
+				if (hasAll.hasStarted) {
+
+					hasAll.NextDialogue();
+					hasAll.Draw(dt);
+					if (hasAll.hasEnded) { finishedMission = true; }
+					return true;
+				}
+				hasAll.BeginDialogue();
+				hasAll.Draw(dt);
+
+
+				return true;
+			}
+			if (hasAll.hasStarted && !hasAll.hasEnded) {
+				hasAll.Draw(dt);
+				return true;
+
+			}
+
+			//Dialogo si ya ha acabado la mision
+
+			//Dialogo si esta a medias 
+		}
+		
+
+		return true;
+	}
+	bool Hermit::CleanUp() {
+		LOG("Unloading Coin");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void Hermit::OnCollision(PhysBody* physA, PhysBody* physB) {
+
+		Player* pp = static_cast<Player*>(physB->listener);
+		py = pp;
+		switch (physB->ctype)
+		{
+		case ColliderType::PLAYER:
+			isGettingTouched = true;
+			
+			break;
+		}
+
+
+	}
+	void Hermit::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+		isGettingTouched = false;
+
+
+
+	}

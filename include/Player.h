@@ -125,6 +125,12 @@ public:
 	bool night = false;
 	bool dusk = false;
 	bool dawn = false;
+
+	//Hermit bools
+	bool springWater = false;
+	bool HorsekinManure = false;
+	bool Gargantuan = false;
+
 	
 	/*SDL_Rect& lastFrame;*/
 private: 

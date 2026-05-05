@@ -883,3 +883,63 @@ public:
 
 	SDL_Texture* InteractTexture = nullptr;
 };
+
+//THE HERMIT MISSION 1
+
+class Hermit : public NPC
+{
+public:
+	Hermit();
+
+	virtual ~Hermit();
+	bool Awake();
+	bool Start();
+	bool Update(float dt);
+	bool CleanUp();
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+
+public:
+
+
+private:
+
+
+
+
+
+
+
+
+private:
+	SDL_Texture* texture;
+	AnimationSet anims;
+	PhysBody* pbody;
+	int texW, texH;
+	const char* tsxPath;
+
+	Dialogue notAdvanced;
+	Dialogue level1;
+	Dialogue level2;
+	Dialogue level3;
+	Dialogue hasAll;
+	bool finishedMission = false;
+	
+
+
+	//Hermit bools
+	bool springWater = false;
+	bool HorsekinManure = false;
+	bool Gargantuan = false;
+
+public:
+	int coinFx;
+	int coinPickupFx;
+	int xInicial;
+	int yInicial;
+
+	bool isGettingTouched = false;
+	Player* py;
+
+	SDL_Texture* InteractTexture = nullptr;
+};

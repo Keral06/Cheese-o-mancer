@@ -80,6 +80,39 @@ bool Pics::Start() {
 
 
 	}
+	else if (name == "Spring") {
+
+		Dialogue paperDialogue("resources/Dialogues/Pickable/SpringWater.txt");
+		this->dialogue = paperDialogue;
+		texture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/coin_sprite.png"); //placeholder
+
+		BoolOfPlayer = 5;
+
+
+
+	}
+	else if (name == "Horsekin") {
+
+		Dialogue paperDialogue("resources/Dialogues/Pickable/Horsekin.txt");
+		this->dialogue = paperDialogue;
+		texture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/coin_sprite.png"); //placeholder
+
+		BoolOfPlayer = 6;
+
+
+
+	}
+	else if (name == "TreeRoot") {
+
+		Dialogue paperDialogue("resources/Dialogues/Pickable/TreeRoot.txt");
+		this->dialogue = paperDialogue;
+		texture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/coin_sprite.png"); //placeholder
+
+		BoolOfPlayer = 6;
+
+
+
+	}
 	InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 	//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
