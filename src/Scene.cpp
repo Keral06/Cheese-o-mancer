@@ -19,6 +19,7 @@
 #include "Physics.h"
 #include "FINALBOSS.h"
 #include "Handman.h"
+#include "ParticleSystem.h"
 
 Scene::Scene() : Module()
 {
