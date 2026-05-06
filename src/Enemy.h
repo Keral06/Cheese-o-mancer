@@ -95,9 +95,9 @@ public:
 	int health = 100;
 	bool facingLeft = true;
 	bool isKnockback = false;
-	float knockbackForce = 20.0f;
+	float knockbackForce = 10.0f;
 	int knockbackTimer = 0;
-	int knockbackDuration = 150;
+	int knockbackDuration = 50;
 
 	Vector2D deathPosition;
 protected:

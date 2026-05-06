@@ -311,7 +311,7 @@ void Enemy::DecreaseHealth(int amount) {
 		float dir = facingLeft ? 1.0f : -1.0f;
 
 		vel.x = dir * knockbackForce;
-		vel.y = -20.0f; // pequeño salto
+		vel.y = -10.0f; // pequeño salto
 
 		Engine::GetInstance().physics->SetLinearVelocity(pbody, vel);
 
@@ -440,5 +440,6 @@ void Enemy::MoveMelee()
 	else if (velocity.y > 0.1f) {
 		SetState(EnemyState::FALLING);
 	}
+	
 	
 }

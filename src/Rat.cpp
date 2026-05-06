@@ -73,6 +73,26 @@ bool Rat::Update(float dt)
         if (!isKnockback) {
             PerformPathfinding();
             Move();
+            SetState(EnemyState::RUNNING);
+            if (velocity.y < -0.1f) {
+                SetState(EnemyState::JUMPING);
+            }
+            else if (velocity.y > 0.1f) {
+                SetState(EnemyState::FALLING);
+            }
+        }
+        else {
+            knockbackTimer--;
+
+            
+            SetState(EnemyState::FALLING);
+            
+
+            if (knockbackTimer < 0) {
+                knockbackTimer = knockbackDuration;
+                isKnockback = false;
+            }
+
         }
     }
     else {
