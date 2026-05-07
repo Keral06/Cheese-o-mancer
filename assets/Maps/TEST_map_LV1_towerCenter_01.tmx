@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="19" nextobjectid="377">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="19" nextobjectid="381">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -53524,19 +53524,19 @@
   <object id="372" x="6850.18" y="2857.27" width="269.333" height="73.3333"/>
  </objectgroup>
  <objectgroup id="11" name="Doors">
-  <object id="346" name="Door" type="Door" x="128" y="6016" width="256" height="1280">
+  <object id="346" name="Door" type="Door" x="128" y="6016" width="132" height="1280">
    <properties>
     <property name="name" value="Door_2_3"/>
-    <property name="offsetX" type="int" value="0"/>
+    <property name="offsetX" type="int" value="200"/>
     <property name="offsetY" type="int" value="0"/>
     <property name="targetMap" value="TEST_map_LV1_pantryRoom_01.tmx"/>
     <property name="targetSpawn" value="Door_3_2"/>
    </properties>
   </object>
-  <object id="347" name="Door" type="Door" x="128" y="1280" width="256" height="1024">
+  <object id="347" name="Door" type="Door" x="128" y="1280" width="132" height="1024">
    <properties>
     <property name="name" value="Door_2_2"/>
-    <property name="offsetX" type="int" value="0"/>
+    <property name="offsetX" type="int" value="200"/>
     <property name="offsetY" type="int" value="0"/>
     <property name="targetMap" value="TEST_map_LV1_pantryRoom_01.tmx"/>
     <property name="targetSpawn" value="Door_3_1"/>
@@ -53551,6 +53551,16 @@
     <property name="targetSpawn" value="Door_1_1"/>
    </properties>
   </object>
+  <object id="378" name="Door" type="Door" x="11648" y="6272" width="128" height="1280">
+   <properties>
+    <property name="name" value="Door_2_4"/>
+    <property name="offsetX" type="int" value="-200"/>
+    <property name="offsetY" type="int" value="0"/>
+    <property name="targetMap" value="TEST_map_LV1_tortureRoom_02.tmx"/>
+    <property name="targetSpawn" value="Door_4_2"/>
+   </properties>
+  </object>
+  <object id="379" x="12740" y="6696" width="16" height="8"/>
  </objectgroup>
  <objectgroup id="18" name="Checkpoint">
   <object id="363" name="Flag" type="Flag" x="10757.6" y="4684.85">
