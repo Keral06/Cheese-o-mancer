@@ -55301,7 +55301,7 @@
   <object id="319" name="Door" type="Door" x="22332" y="4480" width="68" height="1536">
    <properties>
     <property name="name" value="Door_1_2"/>
-    <property name="offsetX" type="int" value="0"/>
+    <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
     <property name="targetMap" value="TEST_map_LV1_bossRoom_01.tmx"/>
     <property name="targetSpawn" value="Door_5_1"/>

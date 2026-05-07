@@ -22407,7 +22407,7 @@
   </object>
  </objectgroup>
  <objectgroup id="11" name="Doors">
-  <object id="231" name="Door" type="Door" x="10756" y="1504" width="256" height="1152">
+  <object id="231" name="Door" type="Door" x="10882.3" y="640" width="125.697" height="1152">
    <properties>
     <property name="name" value="Door_3_1"/>
     <property name="offsetX" type="int" value="-200"/>
@@ -22416,7 +22416,7 @@
     <property name="targetSpawn" value="Door_2_2"/>
    </properties>
   </object>
-  <object id="233" name="Door" type="Door" x="10780" y="5988" width="256" height="1280">
+  <object id="233" name="Door" type="Door" x="10882.3" y="4992" width="125.697" height="1280">
    <properties>
     <property name="name" value="Door_3_2"/>
     <property name="offsetX" type="int" value="-200"/>
