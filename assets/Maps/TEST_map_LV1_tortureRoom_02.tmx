@@ -55684,7 +55684,7 @@
    <tile/>
   </data>
  </layer>
- <objectgroup id="22" name="Doors">
+ <objectgroup id="22" name="Doors" visible="0">
   <object id="394" name="Door" type="Door" x="0" y="896" width="128" height="1024">
    <properties>
     <property name="name" value="Door_4_2"/>
@@ -55713,12 +55713,12 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="18" name="spikes">
+ <objectgroup id="18" name="spikes" visible="0">
   <object id="357" x="1920" y="1958.67" width="768" height="89.3333"/>
   <object id="358" x="4864" y="1966.67" width="768" height="81.3333"/>
   <object id="359" x="10520" y="12576" width="360" height="96"/>
  </objectgroup>
- <objectgroup id="7" name="Floor">
+ <objectgroup id="7" name="Floor" visible="0">
   <object id="214" x="0" y="1920" width="1920" height="128"/>
   <object id="215" x="1920" y="2048" width="768" height="128"/>
   <object id="216" x="2688" y="1920" width="2176" height="128"/>
@@ -55753,7 +55753,7 @@
   <object id="387" x="1664" y="3524" width="494" height="60"/>
   <object id="388" x="1664" y="3072" width="484" height="62"/>
  </objectgroup>
- <objectgroup id="9" name="Walls">
+ <objectgroup id="9" name="Walls" visible="0">
   <object id="254" x="11264" y="1920" width="128" height="1408"/>
   <object id="255" x="9216" y="2304" width="128" height="128"/>
   <object id="256" x="8576" y="2048" width="128" height="128"/>
@@ -55806,7 +55806,7 @@
   <object id="379" x="11264" y="5632" width="128" height="128"/>
   <object id="380" x="7168" y="11904" width="128" height="896"/>
  </objectgroup>
- <objectgroup id="8" name="Entities">
+ <objectgroup id="8" name="Entities" visible="0">
   <object id="97" name="Player" type="Player" x="606.182" y="1640.33">
    <point/>
   </object>
