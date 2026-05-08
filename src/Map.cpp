@@ -25,6 +25,7 @@
 #include "cheeseballInteractuable.h"
 #include "WeakWall.h"
 #include "Pickable_objects.h"
+#include "Horse.h"
 
 Map::Map() : Module(), mapLoaded(false)
 {
@@ -664,6 +665,13 @@ MapLayer* Map::GetNavigationLayer() {
                             rat->Start();
                             rat->mapID = id;
 
+                        }
+                        else if (entityType == "Horse") {
+                            std::shared_ptr<Horse> horse = std::dynamic_pointer_cast<Horse>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HORSE));
+
+                            horse->position = Vector2D(x, y);
+                            horse->Start();
+                            horse->mapID = id;
                         }
                         else if (entityType == "Jailer") {
                             std::shared_ptr<Jailer> jailer = std::dynamic_pointer_cast<Jailer>(Engine::GetInstance().entityManager->CreateEntity(EntityType::JAILER));

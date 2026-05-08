@@ -45,7 +45,8 @@ enum class EntityType
 	NOHUELY,
 	MILKMAID,
 	GUARDTOWER,
-	DEATH
+	DEATH,
+	HORSE
 };
 
 class PhysBody;

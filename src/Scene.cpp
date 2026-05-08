@@ -1489,7 +1489,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 	case 41:
 		//mira si el jugador tiene dinero
 		if (player->score >= 10) {
-			player->score -= 10;
+			player->score -= 10;                                                                         
 			for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
 				if (el->id == 41) el->Destroy();
 				if (el->id == 37) {

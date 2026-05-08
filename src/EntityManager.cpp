@@ -23,6 +23,7 @@
 #include "cheeseballInteractuable.h"
 #include "WeakWall.h"
 #include "Pickable_objects.h"
+#include "Horse.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -203,6 +204,9 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::DEATH:
 		entity = std::make_shared<death>();
+		break;
+	case EntityType::HORSE:
+		entity = std::make_shared<Horse>();
 		break;
 	default:
 		break;

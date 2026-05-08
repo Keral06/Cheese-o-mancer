@@ -86,7 +86,7 @@ void Checkpoint::OnCollision(PhysBody* physA, PhysBody* physB)
 {
 
 	if (physB->ctype == ColliderType::PLAYER && !isActivated) {
-		isActivated = true;
+		isActivated = true; 
 		/*currentAnim = &activateAnim;
 		currentAnim->Reset();*/
 		Engine::GetInstance().audio->PlayFx(fxId);
