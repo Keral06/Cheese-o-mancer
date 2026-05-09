@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="21" nextobjectid="280">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="21" nextobjectid="280">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -22398,15 +22398,15 @@
    <tile gid="777"/>
   </data>
  </layer>
- <objectgroup id="17" name="Items" visible="0">
+ <objectgroup id="17" name="Items">
   <object id="258" name="Live" type="Live" x="768" y="5120" width="256" height="384"/>
  </objectgroup>
- <objectgroup id="18" name="Checkpoint" visible="0">
+ <objectgroup id="18" name="Checkpoint">
   <object id="259" name="Flag" type="Flag" x="644" y="4040">
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="11" name="Doors" visible="0">
+ <objectgroup id="11" name="Doors">
   <object id="231" name="Door" type="Door" x="10882.3" y="640" width="125.697" height="1152">
    <properties>
     <property name="name" value="Door_3_1"/>
@@ -22426,7 +22426,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="7" name="Floor" visible="0">
+ <objectgroup id="7" name="Floor">
   <object id="140" x="1536" y="3840" width="512" height="78"/>
   <object id="141" x="384" y="4352" width="512" height="76"/>
   <object id="178" x="2944" y="1408" width="256" height="128"/>
@@ -22449,13 +22449,13 @@
   <object id="268" x="8448" y="1920" width="768" height="128"/>
   <object id="269" x="9216" y="1792" width="1792" height="128"/>
  </objectgroup>
- <objectgroup id="19" name="spikes" visible="0">
+ <objectgroup id="19" name="spikes">
   <object id="264" x="5760" y="6272" width="768" height="128"/>
   <object id="265" x="8726" y="6180" width="710" height="220"/>
   <object id="266" x="2560" y="6053.33" width="685.333" height="218.667"/>
   <object id="270" x="8448" y="1792" width="768" height="128"/>
  </objectgroup>
- <objectgroup id="9" name="Walls" visible="0">
+ <objectgroup id="9" name="Walls">
   <object id="188" x="5120" y="384" width="128" height="256"/>
   <object id="189" x="4992" y="256" width="128" height="128"/>
   <object id="190" x="3072" y="128" width="1920" height="128"/>
@@ -22482,7 +22482,7 @@
   <object id="224" x="10968" y="4992" width="40" height="1280"/>
   <object id="256" x="5248" y="512" width="5760" height="128"/>
  </objectgroup>
- <objectgroup id="8" name="Entities" visible="0">
+ <objectgroup id="8" name="Entities">
   <object id="97" name="Player" type="Player" x="9888.64" y="1523.58">
    <point/>
   </object>
@@ -22495,7 +22495,7 @@
   <object id="274" name="Key" type="Key" x="1616" y="4920">
    <point/>
   </object>
-  <object id="275" name="Finding cheese wheel" x="4064" y="3000">
+  <object id="275" name="interactball" x="4064" y="3000">
    <point/>
   </object>
   <object id="277" name="Rat" type="Rat" x="4544" y="6128">

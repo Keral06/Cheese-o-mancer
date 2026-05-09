@@ -192,11 +192,40 @@ public:
 	std::string nextSpawnPoint = "Door_1_1";
 	std::string nextDoor = "";
 	bool firstDoor = true;
-	bool cheese = true;
+	bool cheese = false;
 
 	bool isFading = false;
 	bool fadeIn = false;   // true = fade in, false = fade out
 	float fadeTime = 0.0f;
 	float fadeDuration = 1.0f; // segundos
 	Uint8 fadeAlpha = 0;
+
+	int lives = 4;
+	bool hasTalkedMagician = false;
+
+
+	//MARC ESTOS SON LOS BOOLS DE EL PLAYER PARA CONVERSACIONES
+
+	
+	bool beatBoss = false;
+	
+	bool extralife = false;
+
+	//BOOLS OF THE PAPERS
+	bool day = false;
+	bool night = false;
+	bool dusk = false;
+	bool dawn = false;
+
+	//Hermit bools for player
+	bool springWater = false;
+	bool HorsekinManure = false;
+	bool Gargantuan = false;
+	//for hermit
+
+	bool springWaterHermit = false;
+	bool HorsekinManureHermit = false;
+	bool GargantuanHermit = false;
+	bool finishedmissionHermit = false;
+
 };

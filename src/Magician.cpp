@@ -16,14 +16,14 @@ Magician::Magician() : NPC(EntityType::MAGICIAN)
 	this->name = name;
 	
 	this->tsxPath = tsxPath;
-	Dialogue dialogue("resources/Dialogues/Magician/Magician_Dialogues_IntroTutorial.txt", "resources/Dialogues/Magician/Magician_Names_IntroTutorial.txt");
+	Dialogue dialogue("assets/Dialogues/Magician/Magician_Dialogues_IntroTutorial.txt", "assets/Dialogues/Magician/Magician_Names_IntroTutorial.txt");
 		dialogueMagicianStart=dialogue;
 	pbody = nullptr;
-	Dialogue hasCheese("resources/Dialogues/Magician/Magician_Dialogues_AfterCheeseWheel.txt", "resources/Dialogues/Magician/Magician_Names_AfterCheeseWheel.txt");
+	Dialogue hasCheese("assets/Dialogues/Magician/Magician_Dialogues_AfterCheeseWheel.txt", "assets/Dialogues/Magician/Magician_Names_AfterCheeseWheel.txt");
 	this->AfterCheese = hasCheese;
-	Dialogue BeforeCheeesee("resources/Dialogues/Magician/Magician_Dialogues_BeforeCheese.txt", "resources/Dialogues/Magician/Magician_Names_BeforeCheese.txt");
+	Dialogue BeforeCheeesee("assets/Dialogues/Magician/Magician_Dialogues_BeforeCheese.txt", "assets/Dialogues/Magician/Magician_Names_BeforeCheese.txt");
 	this->BeforeCheese = BeforeCheeesee;
-	Dialogue Beated("resources/Dialogues/Magician/Magician_Dialogues_AfterDefeatingBoss.txt", "resources/Dialogues/Magician/Magician_Names_AfterDefeatingBoss.txt");
+	Dialogue Beated("assets/Dialogues/Magician/Magician_Dialogues_AfterDefeatingBoss.txt", "assets/Dialogues/Magician/Magician_Names_AfterDefeatingBoss.txt");
 	BeatBoss = Beated;
 	
 }
@@ -43,7 +43,7 @@ bool Magician::Start() {
 
 
 	//std::unordered_map<int, std::string> aliases = { {0, "idle"}, { 19, "talking"} };
-	//anims.LoadFromTSX("resources/spritesheets/Wizard/sprite_mage_01.tsx", aliases);
+	//anims.LoadFromTSX("assets/spritesheets/Wizard/sprite_mage_01.tsx", aliases);
 	///*coinPickupFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/coin-collision-sound-342335.wav");*/
 	//anims.SetCurrent("idle");
 
@@ -126,7 +126,7 @@ bool Magician::Update(float dt)
 			return true;
 
 		}
-		if (py->hasCheese == false && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+		if (Engine::GetInstance().scene->cheese = true && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 			if (BeforeCheese.hasStarted) {
 				
@@ -136,7 +136,7 @@ bool Magician::Update(float dt)
 				if (BeforeCheese.GetCurrentDialogue() == "There! You did so well!") {
 
 
-					py->hasTalkedMagician = true;
+					Engine::GetInstance().scene->hasTalkedMagician == true;
 					py->lives = 4;
 				}
 				return true;
@@ -155,7 +155,7 @@ bool Magician::Update(float dt)
 
 		}
 
-		if (py->hasCheese == true && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+		if (Engine::GetInstance().scene->cheese = true && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 			if (AfterCheese.hasStarted) {
 

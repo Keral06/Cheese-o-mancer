@@ -84,7 +84,7 @@ bool CheeseBallInteract::Update(float dt)
 					dialogue.Draw(dt);
 					if (py == nullptr)return true;
 					else
-					py->hasCheese = true;
+					Engine::GetInstance().scene->cheese == true;
 
 
 					return true;

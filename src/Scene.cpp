@@ -813,7 +813,7 @@ void  Scene::PostUpdateLevel() {
 		SDL_RenderTexture(Engine::GetInstance().render->renderer, map1Texture, NULL, &centrar);
 	}
 
-	if (player != nullptr && player->hasTalkedMagician) {
+	if (player != nullptr && Engine::GetInstance().scene->hasTalkedMagician == true) {
 		
 			if (panelTexture != nullptr) {
 				float w, h;
@@ -1527,7 +1527,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 		break;*/
 		break;
 	}
-}}
+}
 
 
 
