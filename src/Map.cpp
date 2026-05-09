@@ -781,6 +781,14 @@ MapLayer* Map::GetNavigationLayer() {
                             destructDoor->Start();
                             destructDoor->mapID = id;
                             }
+                        else if (entityType == "Notice from the Royal Halls") {
+                                std::shared_ptr<NoteRoyalHalls> destructDoor = std::dynamic_pointer_cast<NoteRoyalHalls>(Engine::GetInstance().entityManager->CreateEntity(EntityType::NOTEROYALHALLS));
+                                destructDoor->position = Vector2D(x, y);
+                                destructDoor->xInicial = (int)x;
+                                destructDoor->yInicial = (int)y;
+                                destructDoor->Start();
+                                destructDoor->mapID = id;
+                                }
                         else if (entityType == "NormalFlag") {
                             std::shared_ptr<NormalFlag> normalFlag = std::dynamic_pointer_cast<NormalFlag>(Engine::GetInstance().entityManager->CreateEntity(EntityType::NORMALFLAG));
                             normalFlag->position = Vector2D(x, y);

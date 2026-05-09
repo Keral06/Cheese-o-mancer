@@ -141,7 +141,11 @@ void Dialogue:: NextDialogue() {
 		lenghtHelper++;
 
 		printf("%s\n",dialogueHelper[lenghtHelper].c_str());
+		if (nameHelper.size() != 0) {
+		
 		printf("%s\n",nameHelper[lenghtHelper].c_str());
+		
+		}
 	}
 	else {
 		hasStarted = false;

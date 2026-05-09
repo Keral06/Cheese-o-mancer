@@ -126,7 +126,7 @@ bool Magician::Update(float dt)
 			return true;
 
 		}
-		if (Engine::GetInstance().scene->cheese = true && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+		if (Engine::GetInstance().scene->cheese==false && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 			if (BeforeCheese.hasStarted) {
 				
@@ -136,7 +136,7 @@ bool Magician::Update(float dt)
 				if (BeforeCheese.GetCurrentDialogue() == "There! You did so well!") {
 
 
-					Engine::GetInstance().scene->hasTalkedMagician == true;
+					Engine::GetInstance().scene->hasTalkedMagician = true;
 					py->lives = 4;
 				}
 				return true;
