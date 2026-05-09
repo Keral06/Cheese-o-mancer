@@ -22486,16 +22486,16 @@
   <object id="97" name="Player" type="Player" x="9888.64" y="1523.58">
    <point/>
   </object>
-  <object id="272" name="WallBeforeWheel" type="WallBeforeWheel" x="2400" y="3084">
+  <object id="272" name="WallBeforeWheel" type="WallBeforeWheel" x="2400" y="3204">
    <point/>
   </object>
-  <object id="273" name="Notice from the Royal Halls" x="7100" y="5412">
+  <object id="273" name="Notice from the Royal Halls" type="Notice from the Royal Halls" x="7100" y="5412">
    <point/>
   </object>
   <object id="274" name="Key" type="Key" x="1616" y="4920">
    <point/>
   </object>
-  <object id="275" name="interactball" x="4064" y="3000">
+  <object id="275" name="interactball" type="interactball" x="4064" y="3000">
    <point/>
   </object>
   <object id="277" name="Rat" type="Rat" x="4544" y="6128">
