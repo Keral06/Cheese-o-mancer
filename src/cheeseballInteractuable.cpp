@@ -12,7 +12,7 @@
 CheeseBallInteract::CheeseBallInteract() : NPC(EntityType::CHEESEBALLINTERACT)
 {
 	pbody = nullptr;
-	dialogue = Dialogue("resources/Dialogues/Interactuables/Justice_Dialogues_FindCheeseWheel.txt");
+	dialogue = Dialogue("Assets/Dialogues/Interactuables/Justice_Dialogues_FindCheeseWheel.txt");
 }
 
 
@@ -32,7 +32,7 @@ bool CheeseBallInteract::Start() {
 	
 	texW = 256;
 	texH = 128;
-	CheeseBallTexture = Engine::GetInstance().textures->Load("resources/spritesheets/Jester/Cheese_flat_asset.png");
+	CheeseBallTexture = Engine::GetInstance().textures->Load("resources/spritesheets/Jester/Cheese_wheel/Cheese_flat_asset.png");
 	InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 	if (pbody == nullptr) {
@@ -65,7 +65,7 @@ bool CheeseBallInteract::Update(float dt)
 	if (!active) return true;
 
 	Draw(dt);
-		
+	CheeseBallTexture = Engine::GetInstance().textures->Load("resources/spritesheets/Jester/Cheese_wheel/Cheese_flat_asset.png");
 			if (isGettingTouched) {
 				Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -84,7 +84,7 @@ bool CheeseBallInteract::Update(float dt)
 					dialogue.Draw(dt);
 					if (py == nullptr)return true;
 					else
-					py->hasCheese = true;
+					Engine::GetInstance().scene->cheese == true;
 
 
 					return true;

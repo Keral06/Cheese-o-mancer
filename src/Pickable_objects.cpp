@@ -193,16 +193,16 @@ bool Pics::Update(float dt)
 			case 0:
 				break;
 			case 1:
-				py->dawn = true;
+				Engine::GetInstance().scene->dawn = true;
 				break;
 			case 2:
-				py->day = true;
+				Engine::GetInstance().scene->day = true;
 				break;
 			case 3:
-				py->dusk = true;
+				Engine::GetInstance().scene->dusk = true;
 				break;
 			case 4:
-				py->night = true;
+				Engine::GetInstance().scene->night = true;
 				break;
 			default: break;
 

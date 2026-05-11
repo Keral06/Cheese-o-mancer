@@ -30,7 +30,7 @@ Dialogue :: Dialogue(const char	*tsxPath, const char* name) {
 			
 
 		}
-		
+		lenght++;
 		dialogue.push_back(helper);
 		while (!helper.empty()) {
 
@@ -58,7 +58,7 @@ Dialogue :: Dialogue(const char	*tsxPath, const char* name) {
 		}
 
 		this->name.push_back(helpery);
-		lenght++;
+	
 		while (!helpery.empty()) {
 
 			helpery.pop_back();
@@ -125,6 +125,7 @@ void Dialogue::BeginDialogue() {
 	nameHelper = name;
 	lenghtHelper = 0;
 	hasStarted = true;
+	hasEnded = false;
 	printf("%s", dialogueHelper[lenghtHelper].c_str());
 	
 	
@@ -140,7 +141,11 @@ void Dialogue:: NextDialogue() {
 		lenghtHelper++;
 
 		printf("%s\n",dialogueHelper[lenghtHelper].c_str());
+		if (nameHelper.size() != 0) {
+		
 		printf("%s\n",nameHelper[lenghtHelper].c_str());
+		
+		}
 	}
 	else {
 		hasStarted = false;

@@ -101,7 +101,7 @@ void NPC::OnCollision(PhysBody* physA, PhysBody* physB) {
 }
 
 HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
-		Dialogue paperDialogue("Resources/Dialogues/Interactuables/Justice_Dialogues_HiddenScrapOfPaper.txt");
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_HiddenScrapOfPaper.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -118,7 +118,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool HiddenScrapOfPaper::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -228,7 +228,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	DiscardedScroll::DiscardedScroll() :NPC(EntityType::DISCARDEDSCROLL) {
-		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_DiscardedScroll.txt");
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_DiscardedScroll.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -245,7 +245,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool DiscardedScroll::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
@@ -357,7 +357,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	Sketches::Sketches() :NPC(EntityType::SKETCHES) {
-		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_Sketches.txt");
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_Sketches.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -374,7 +374,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool Sketches::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -484,7 +484,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	WallBeforeWheel::WallBeforeWheel() :NPC(EntityType::WALLBEFOREWHEEL) {
-		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_WallBeforeWheel.txt");
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_WallBeforeWheel.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -501,7 +501,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool WallBeforeWheel::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -557,7 +557,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && py->hasCheese==false) {
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->cheese == true) {
 
 
 				if (dialogue.hasStarted) {
@@ -612,7 +612,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	LockedDoor::LockedDoor() :NPC(EntityType::LOCKEDDOOR) {
-		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_LockedDoor.txt");
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_LockedDoor.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -629,7 +629,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool LockedDoor::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -740,7 +740,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	DestructDoor::DestructDoor() :NPC(EntityType::DESTRUCTDOOR) {
-		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_DestructDoor.txt");
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_DestructDoor.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -757,7 +757,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool DestructDoor::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -868,7 +868,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	NormalFlag::NormalFlag() :NPC(EntityType::NORMALFLAG) {
-		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_NormalFlag.txt");
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_NormalFlag.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -885,7 +885,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool NormalFlag::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
@@ -997,7 +997,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	CheeseFlag::CheeseFlag() :NPC(EntityType::CHEESEFLAG) {
-		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CheeseFlag.txt");
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CheeseFlag.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -1014,7 +1014,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool CheeseFlag::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
@@ -1067,7 +1067,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool  CheeseFlag::Update(float dt) {
 		if (isGettingTouched) {
-			InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+			InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 
 
@@ -1126,7 +1126,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	NoteRoyalHalls::NoteRoyalHalls() :NPC(EntityType::NOTEROYALHALLS) {
-		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_NoteRoyalHalls.txt");
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_NoteRoyalHalls.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -1143,7 +1143,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool NoteRoyalHalls::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -1254,7 +1254,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	Compass::Compass() :NPC(EntityType::COMPASS) {
-		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_Compass.txt");
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_Compass.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -1271,7 +1271,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool Compass::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
@@ -1383,7 +1383,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	Portrait::Portrait() :NPC(EntityType::PORTRAIT) {
-		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_Portrait.txt");
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_Portrait.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -1400,7 +1400,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool Portrait::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
@@ -1512,7 +1512,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	UnfinishedPortrait::UnfinishedPortrait() :NPC(EntityType::UNFINISHEDPORTRAIT) {
-		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_Compass.txt");
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_Compass.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -1528,7 +1528,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		return true;
 	}
 	bool UnfinishedPortrait::Start() {
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -1639,7 +1639,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	HungSword::HungSword() :NPC(EntityType::HUNGSWORD) {
-		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_HungSword.txt");
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_HungSword.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -1656,7 +1656,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool HungSword::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -1767,7 +1767,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	CowWeb::CowWeb() :NPC(EntityType::COWWEB) {
-		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt");
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt");
 		this->dialogue = paperDialogue;
 
 	}
@@ -1784,7 +1784,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool CowWeb::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
@@ -1894,7 +1894,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 	}
 	CommemorativeMonument::CommemorativeMonument() :NPC(EntityType::MONUMENT) {
-		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!!
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!!
 		this->dialogue = paperDialogue;
 
 	}
@@ -1911,7 +1911,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool CommemorativeMonument::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
@@ -2024,9 +2024,9 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	//PERSONAS SEGUNDO NIVEL
 
 	Nohuely::Nohuely() :NPC(EntityType::NOHUELY) {
-		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! Dialoguenormal
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! Dialoguenormal
 		this->dialogue = paperDialogue;
-		Dialogue secondDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
+		Dialogue secondDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
 		this->secondDialogue = secondDialogue;
 	}
 
@@ -2042,7 +2042,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool Nohuely::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
@@ -2175,9 +2175,9 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 	}
 	milkmaid::milkmaid() :NPC(EntityType::MILKMAID) {
-		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! Dialoguenormal
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! Dialoguenormal
 		this->dialogue = paperDialogue;
-		Dialogue secondDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
+		Dialogue secondDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
 		this->secondDialogue = secondDialogue;
 	}
 
@@ -2193,7 +2193,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool milkmaid::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
@@ -2327,9 +2327,9 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 
 	TowGuard::TowGuard() :NPC(EntityType::GUARDTOWER) {
-		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! Dialoguenormal
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! Dialoguenormal
 		this->dialogue = paperDialogue;
-		Dialogue secondDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
+		Dialogue secondDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
 		this->secondDialogue = secondDialogue;
 	}
 
@@ -2345,7 +2345,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool TowGuard::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
@@ -2481,12 +2481,12 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	death::death() :NPC(EntityType::DEATH) {
-		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! Dialoguenormal
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! Dialoguenormal
 		this->dialogue = paperDialogue;
-		Dialogue secondDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
+		Dialogue secondDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
 		this->secondDialogue = secondDialogue;
 
-		Dialogue percent("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
+		Dialogue percent("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
 		this->PercentChance = percent;
 	}
 
@@ -2502,7 +2502,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool death::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
@@ -2658,19 +2658,19 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 
 	Hermit::Hermit() :NPC(EntityType::DEATH) {
-		Dialogue paperDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! Dialoguenormal
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! Dialoguenormal
 		this->dialogue = paperDialogue;
-		Dialogue secondDialogue("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! lvl1
+		Dialogue secondDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! lvl1
 		this->level1 = secondDialogue;
 
-		Dialogue percent("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
+		Dialogue percent("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
 		this->notAdvanced = percent;
-		Dialogue lvll2("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! lvl2
+		Dialogue lvll2("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! lvl2
 		this->level2 = lvll2;
-		Dialogue third("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! lvl3
+		Dialogue third("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! lvl3
 		this->level3 = third;
 
-		Dialogue hasAll("resources/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! all
+		Dialogue hasAll("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! all
 		this->hasAll = hasAll;
 	}
 
@@ -2686,7 +2686,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool Hermit::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
@@ -2767,14 +2767,14 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 			//dialogo si le ha traido el primer objeto
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level1.hasEnded && level1.hasStarted && py!=nullptr &&py->springWater && !springWater) { //primer dialogo solo sale una vez
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level1.hasEnded && level1.hasStarted && py!=nullptr && Engine::GetInstance().scene->springWater==true && Engine::GetInstance().scene->springWaterHermit == false) { //primer dialogo solo sale una vez
 
 
 				if (level1.hasStarted) {
 
 					level1.NextDialogue();
 					level1.Draw(dt);
-					if (level1.hasEnded) { springWater = true; }
+					if (level1.hasEnded) { Engine::GetInstance().scene->springWaterHermit = true; }
 					return true;
 				}
 				level1.BeginDialogue();
@@ -2790,14 +2790,14 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 			}
 
 			//Dialogo si tercer objeto
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level2.hasEnded && level2.hasStarted && py != nullptr && py->HorsekinManure && !HorsekinManure) { //primer dialogo solo sale una vez
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level2.hasEnded && level2.hasStarted && py != nullptr && Engine::GetInstance().scene->HorsekinManure == false && Engine::GetInstance().scene->HorsekinManureHermit == true) { //primer dialogo solo sale una vez
 
 
 				if (level2.hasStarted) {
 
 					level2.NextDialogue();
 					level2.Draw(dt);
-					if (level2.hasEnded) { HorsekinManure = true; }
+					if (level2.hasEnded) { Engine::GetInstance().scene->HorsekinManureHermit = true; }
 					return true;
 				}
 				level2.BeginDialogue();
@@ -2814,14 +2814,14 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			//Dialogo si tercer objeto
 
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level3.hasEnded && level3.hasStarted && py != nullptr && py->Gargantuan && !Gargantuan) { //primer dialogo solo sale una vez
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level3.hasEnded && level3.hasStarted && py != nullptr && Engine::GetInstance().scene->Gargantuan == false && Engine::GetInstance().scene->GargantuanHermit == true) { //primer dialogo solo sale una vez
 
 
 				if (level3.hasStarted) {
 
 					level3.NextDialogue();
 					level3.Draw(dt);
-					if (level3.hasEnded) { Gargantuan = true; }
+					if (level3.hasEnded) { Engine::GetInstance().scene->GargantuanHermit = true; }
 					return true;
 				}
 				level3.BeginDialogue();
@@ -2838,14 +2838,14 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			//Dialogo si los tiene todos
 
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !hasAll.hasEnded && hasAll.hasStarted && py != nullptr &&HorsekinManure && springWater&& Gargantuan && !finishedMission) { //primer dialogo solo sale una vez
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !hasAll.hasEnded && hasAll.hasStarted && py != nullptr && Engine::GetInstance().scene->HorsekinManureHermit && Engine::GetInstance().scene->springWaterHermit && Engine::GetInstance().scene->GargantuanHermit && !Engine::GetInstance().scene->finishedmissionHermit) { //primer dialogo solo sale una vez
 
 
 				if (hasAll.hasStarted) {
 
 					hasAll.NextDialogue();
 					hasAll.Draw(dt);
-					if (hasAll.hasEnded) { finishedMission = true; }
+					if (hasAll.hasEnded) { Engine::GetInstance().scene->finishedmissionHermit = true; }
 					return true;
 				}
 				hasAll.BeginDialogue();
