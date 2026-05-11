@@ -1527,7 +1527,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 		break;*/
 		break;
 	}
-}}
+}
 
 
 
