@@ -116,6 +116,7 @@
    </animation>
   </tile>
  </tileset>
+ <tileset firstgid="878" source="PADDING_TEST.tsx"/>
  <objectgroup id="13" name="fons"/>
  <objectgroup id="24" name="BG Parallax" visible="0">
   <properties>

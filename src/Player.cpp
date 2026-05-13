@@ -579,7 +579,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 
 	case ColliderType::EXTRALIVE:
 	{
-		if (hasHealed = false) {
+		if (hasHealed == false) {
 			if (lives < 4) {
 				lives++;
 				LOG("Player healed.");

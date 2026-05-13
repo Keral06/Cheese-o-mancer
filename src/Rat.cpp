@@ -120,6 +120,7 @@ void Rat::OnCollision(PhysBody* physA, PhysBody* physB)
 
         if (player && damageTimer <= 0) {
             player->lives--;
+            LOG("Player hurt!");
         }
     }
 }
