@@ -900,7 +900,7 @@ void  Scene::PostUpdateLevel() {
 		SDL_Rect screenRect = { -10000, -10000, 50000, 50000 };
 		Engine::GetInstance().render->DrawRectangle(screenRect, 0, 0, 0, 150, true, false);
 
-		Engine::GetInstance().render->DrawText("PAUSE", 580, 150, 0, 0, { 255, 255, 255, 255 });
+		Engine::GetInstance().render->DrawText("PAUSE", 600, 150, 0, 0, { 255, 255, 255, 255 });
 	}
 	if (storeOn) {
 		float w, h;
@@ -1017,7 +1017,7 @@ void Scene::CreatePauseUI() {
 	SDL_Texture* buttonOptionsClicked;
 	buttonOptionsNormal = Engine::GetInstance().textures->Load("assets/UI/Pause/UI_Pause_ButtonOptions1_01.png");
 	buttonOptionsClicked = Engine::GetInstance().textures->Load("assets/UI/Pause/UI_Pause_ButtonOptionsPressed_01.png");
-	auto btnOptions = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 21, "OPTIONS", { x, y+20, 200, 50 }, this, SDL_Rect{ 0,0,0,0 }, buttonOptionsNormal,buttonOptionsClicked);
+	auto btnOptions = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 21, "OPTIONS", { x, y + 20, 200, 50 }, this, SDL_Rect{ 0,0,0,0 }, buttonOptionsNormal,buttonOptionsClicked);
 	btnOptions->visible = false;
 
 	//BACK TO TITLE
