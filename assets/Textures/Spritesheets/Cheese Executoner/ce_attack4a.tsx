@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.3.1" name="ataque4a" tilewidth="1152" tileheight="1792" tilecount="24" columns="8">
+<tileset version="1.10" tiledversion="1.12.1" name="ataque4a" tilewidth="1152" tileheight="1792" tilecount="24" columns="8">
  <image source="ataque4a.png" width="9216" height="5376"/>
  <tile id="0">
   <properties>
    <property name="loop" type="bool" value="false"/>
-   <property name="name" value="ataque4a"/>
+   <property name="name" value="attack4a"/>
   </properties>
   <animation>
    <frame tileid="0" duration="100"/>

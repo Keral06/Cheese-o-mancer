@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.3.1" name="ataque3c" tilewidth="1920" tileheight="1792" tilecount="25" columns="5">
- <image source="ataque3c.png" width="9600" height="8960"/>
+<tileset version="1.10" tiledversion="1.12.1" name="ataque3b" tilewidth="1920" tileheight="1792" tilecount="42" columns="6">
+ <image source="ataque3b.png" width="11520" height="12544"/>
  <tile id="0">
   <properties>
    <property name="loop" type="bool" value="false"/>
-   <property name="name" value="ataque3c"/>
+   <property name="name" value="attack3b"/>
   </properties>
   <animation>
    <frame tileid="0" duration="100"/>
@@ -32,6 +32,19 @@
    <frame tileid="22" duration="100"/>
    <frame tileid="23" duration="100"/>
    <frame tileid="24" duration="100"/>
+   <frame tileid="25" duration="100"/>
+   <frame tileid="26" duration="100"/>
+   <frame tileid="27" duration="100"/>
+   <frame tileid="28" duration="100"/>
+   <frame tileid="29" duration="100"/>
+   <frame tileid="30" duration="100"/>
+   <frame tileid="31" duration="100"/>
+   <frame tileid="32" duration="100"/>
+   <frame tileid="33" duration="100"/>
+   <frame tileid="34" duration="100"/>
+   <frame tileid="35" duration="100"/>
+   <frame tileid="36" duration="100"/>
+   <frame tileid="36" duration="100"/>
   </animation>
  </tile>
 </tileset>

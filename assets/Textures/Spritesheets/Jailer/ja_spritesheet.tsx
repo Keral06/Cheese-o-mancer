@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.3.1" name="death" tilewidth="1664" tileheight="1024" tilecount="70" columns="7">
- <image source="death.png" width="11648" height="10240"/>
+<tileset version="1.10" tiledversion="1.12.1" name="ja_spritesheet" tilewidth="512" tileheight="512" tilecount="57" columns="19">
+ <image source="../../../../resources/spritesheets/Jailer/sprite_jailer_02.png" width="9728" height="1536"/>
  <tile id="0">
   <properties>
-   <property name="loop" type="bool" value="false"/>
-   <property name="name" value="muerte"/>
+   <property name="loop" type="bool" value="true"/>
+   <property name="name" value="idle"/>
   </properties>
   <animation>
    <frame tileid="0" duration="100"/>
@@ -26,6 +26,14 @@
    <frame tileid="16" duration="100"/>
    <frame tileid="17" duration="100"/>
    <frame tileid="18" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="19">
+  <properties>
+   <property name="loop" type="bool" value="true"/>
+   <property name="name" value="walk"/>
+  </properties>
+  <animation>
    <frame tileid="19" duration="100"/>
    <frame tileid="20" duration="100"/>
    <frame tileid="21" duration="100"/>
@@ -38,13 +46,14 @@
    <frame tileid="28" duration="100"/>
    <frame tileid="29" duration="100"/>
    <frame tileid="30" duration="100"/>
-   <frame tileid="31" duration="100"/>
-   <frame tileid="32" duration="100"/>
-   <frame tileid="33" duration="100"/>
-   <frame tileid="34" duration="100"/>
-   <frame tileid="35" duration="100"/>
-   <frame tileid="36" duration="100"/>
-   <frame tileid="37" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="38">
+  <properties>
+   <property name="loop" type="bool" value="false"/>
+   <property name="name" value="transform"/>
+  </properties>
+  <animation>
    <frame tileid="38" duration="100"/>
    <frame tileid="39" duration="100"/>
    <frame tileid="40" duration="100"/>
@@ -57,23 +66,6 @@
    <frame tileid="47" duration="100"/>
    <frame tileid="48" duration="100"/>
    <frame tileid="49" duration="100"/>
-   <frame tileid="50" duration="100"/>
-   <frame tileid="51" duration="100"/>
-   <frame tileid="52" duration="100"/>
-   <frame tileid="53" duration="100"/>
-   <frame tileid="54" duration="100"/>
-   <frame tileid="55" duration="100"/>
-   <frame tileid="56" duration="100"/>
-   <frame tileid="57" duration="100"/>
-   <frame tileid="58" duration="100"/>
-   <frame tileid="59" duration="100"/>
-   <frame tileid="60" duration="100"/>
-   <frame tileid="61" duration="100"/>
-   <frame tileid="62" duration="100"/>
-   <frame tileid="63" duration="100"/>
-   <frame tileid="64" duration="100"/>
-   <frame tileid="65" duration="100"/>
-   <frame tileid="66" duration="100"/>
   </animation>
  </tile>
 </tileset>
