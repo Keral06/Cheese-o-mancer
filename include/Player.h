@@ -73,6 +73,8 @@ public:
 	PlayerState state;
 	PlayerState lastState;
 	bool hasMap1 = false;
+	bool hasLamp = false;  
+	bool hasKey = false;
 	//Declare player parameters
 	float speed = 15.0f;
 	float godmodeSpeed = 40.0f;

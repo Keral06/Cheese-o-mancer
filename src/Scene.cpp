@@ -699,8 +699,24 @@ void Scene::UpdateLevel(float dt) {
 	{
 		showHelp = !showHelp;
 	}
+	//INVENTARIO
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
+	{
+		SetInventory(!inventoryOn);
+	}
 
-	if (isPaused||showHelp) {
+	if (inventoryOn && player->hasMap1) {
+		if (Engine::GetInstance().input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
+			Vector2D mousePos = Engine::GetInstance().input->GetMousePosition();
+			int mx = mousePos.getX();
+			int my = mousePos.getY();
+			if (mx >= rectInvMap.x && mx <= rectInvMap.x + rectInvMap.w &&
+				my >= rectInvMap.y && my <= rectInvMap.y + rectInvMap.h) {
+				showMap = !showMap;
+			}
+		}
+	}
+	if (isPaused||showHelp||inventoryOn) {
 		return;
 	}
 	//logica de mapa
@@ -779,6 +795,12 @@ void Scene::UnloadLevel() {
 	// Clear enemies list
 	enemies.clear();
 	heartTexture = nullptr;
+	invPaperCombined = nullptr;
+	iconMap = nullptr;
+	iconKey = nullptr;
+	iconLamp = nullptr;
+	inventoryBag = nullptr;
+	uiCoin = nullptr;
 	// Clean up map and entities
 	Engine::GetInstance().map->CleanUp();
 	Engine::GetInstance().entityManager->CleanUp();
@@ -807,11 +829,7 @@ void  Scene::PostUpdateLevel() {
 		SDL_FRect centrar = { 0, 0, 1280, 720 };
 		SDL_RenderTexture(Engine::GetInstance().render->renderer, helpTexture, NULL, &centrar);
 	}
-	if (showMap && map1Texture != nullptr)
-	{
-		SDL_FRect centrar = { 0, 0, 1280, 720 };
-		SDL_RenderTexture(Engine::GetInstance().render->renderer, map1Texture, NULL, &centrar);
-	}
+	
 
 	if (player != nullptr && Engine::GetInstance().scene->hasTalkedMagician == true) {
 		
@@ -919,10 +937,65 @@ void  Scene::PostUpdateLevel() {
 			SDL_GetTextureSize(storePaperLife, &w, &h);
 			Engine::GetInstance().render->DrawTextureNoCamera(storePaperLife, 550, -50, w / 1.5, h / 1.5);
 		}
-
 	}
 
+	if (inventoryOn) {
+		SDL_Rect blackBackground = { 0, 0, 10000, 10000 };
+		Engine::GetInstance().render->DrawRectangle(blackBackground, 0, 0, 0, 200, true, false);
+
+		if (invPaperCombined != nullptr) {
+			Engine::GetInstance().render->DrawTextureNoCamera(invPaperCombined, 490, 60, 800, 600);
+
+			if (player != nullptr) {
+
+				if (player->hasMap1 && iconMap != nullptr) {
+					Engine::GetInstance().render->DrawTextureNoCamera(iconMap, 990, 200, 160, 160);
+
+				}
+				if (player->hasKey && iconKey != nullptr) {
+					Engine::GetInstance().render->DrawTextureNoCamera(iconKey, 820, 240, 160, 160);
+				}
+
+				if (player->hasLamp && iconLamp != nullptr) {
+					Engine::GetInstance().render->DrawTextureNoCamera(iconLamp, 680, 250, 160, 160);
+				}
+				if (player->hasMap1 && iconMap != nullptr) {
+
+					rectInvMap = { 990, 200, 160, 160 };
+					Engine::GetInstance().render->DrawTextureNoCamera(iconMap, 990, 200, 160, 160);
+				}
+			}
+
+			if (inventoryBag != nullptr) {
+				Engine::GetInstance().render->DrawTextureNoCamera(inventoryBag, 90, 30, 800, 800);
+			}
+			if (uiCoin != nullptr) {
+				int coinSize = 65;
+				int coinX = 800;
+				int coinY = 410;
+
+				Engine::GetInstance().render->DrawTextureNoCamera(uiCoin, coinX, coinY, coinSize, coinSize);
+				Engine::GetInstance().render->DrawTextureNoCamera(uiCoin, coinX + 25, coinY +25, coinSize, coinSize);
+				Engine::GetInstance().render->DrawTextureNoCamera(uiCoin, coinX -25, coinY +25, coinSize, coinSize);
+
+				if (player != nullptr) {
+					std::string scoreText = std::to_string(player->score);
+
+					int textX = coinX + coinSize + 30;
+					int textY = coinY + 40; 
+					Engine::GetInstance().render->DrawText(scoreText.c_str(), textX, textY, 0, 0, { 0, 0, 0, 255 });
+				}
+			}
+		
+		}
+	}
+	if (showMap && map1Texture != nullptr)
+	{
+		SDL_FRect centrar = { 0, 0, 1280, 720 };
+		SDL_RenderTexture(Engine::GetInstance().render->renderer, map1Texture, NULL, &centrar);
+	}
 	Engine::GetInstance().uiManager->PostUpdate();
+
 }
 
 // *********************************************
@@ -1216,6 +1289,7 @@ void Scene::LoadMap(std::string map)
 	isPaused = false;
 	CreatePauseUI();
 	CreateStoreLevel1();
+	CreateInventoryUI();
 	helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_TutorialControls.png");
 	map1Texture = Engine::GetInstance().textures->Load("assets/UI/Map/UI_Map_Level1.png");
 	heartTexture = Engine::GetInstance().textures->Load("assets/Textures/PREV/heart4.png");
@@ -1461,6 +1535,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				}
 
 			}
+			player->hasKey = true;
 
 			//FUNCION DE QUE PLAYER TIENE LA LLAVE
 			for (auto& entity : Engine::GetInstance().entityManager->entities) {
@@ -1527,6 +1602,20 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 		break;*/
 		break;
 	}
+}
+
+//funciones inventario
+void Scene::CreateInventoryUI() {
+	invPaperCombined = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Inventari_PaperAll_01.png"); 
+	iconMap = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemMap1_01.png"); 
+	iconKey = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemKey1_01.png");
+	iconLamp = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemLamp1_01.png"); 
+	inventoryBag = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Inventari_Bag_01.png"); 
+	uiCoin = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_coin.png"); 
+}
+
+void Scene::SetInventory(bool inventory) {
+	inventoryOn = inventory;
 }
 
 

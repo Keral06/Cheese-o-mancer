@@ -40,6 +40,7 @@ public:
 	bool isPaused = false;
 	bool showHelp = true;
 	bool storeOn = false;
+	bool inventoryOn = false;
 	bool showUIDebug = false;
 	Scene();
 
@@ -143,6 +144,17 @@ private:
 	//Funciones Store
 	void CreateStoreLevel1();
 
+	//Funciones para el inventario
+	void CreateInventoryUI();
+
+	// Texturas del inventario
+	SDL_Texture* invPaperCombined = nullptr;
+	SDL_Texture* iconMap = nullptr;
+	SDL_Texture* iconKey = nullptr;
+	SDL_Texture* iconLamp = nullptr;
+	SDL_Texture* inventoryBag = nullptr;
+	SDL_Texture* uiCoin = nullptr;
+
 	void UpdatePauseMenu(float dt);
 	void HandleStoreUIEvents(UIElement* uiElement);
 private:
@@ -188,6 +200,8 @@ private:
 
 public:
 	void SetStore(bool store);
+	void SetInventory(bool inventory);
+	SDL_Rect rectInvMap = { 0, 0, 0, 0 };
 	std::string nextMap = "";
 	std::string nextSpawnPoint = "Door_1_1";
 	std::string nextDoor = "";
