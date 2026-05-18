@@ -971,13 +971,16 @@ void Player::HandleMountedMovement()
 		}
 		if (cheeseTime < 200.0f && cheeseTime >= 100.0f) {
 			vel.x = cheeseSpeed * 2.0f;
+			mountedBall->canSmash = false;
 		}
 		else if (cheeseTime < 100.0f) {
 			vel.x = cheeseSpeed * 3.5f;
+			mountedBall->canSmash = true;
 		}
 		else {
 
 			vel.x = cheeseSpeed;
+			mountedBall->canSmash = false;
 
 		}
 		movingBall = true;
@@ -1011,6 +1014,7 @@ void Player::DismountAndLaunch()
 {
 	if (!isMounted || !mountedBall) return;
 
+	mountedBall->canSmash = false;
 	// Reactivar player
 	//pbody->body->SetEnabled(true);
 

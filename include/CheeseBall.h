@@ -25,6 +25,7 @@ public:
     float radius = 128.0f;
     bool ismounted = false;
     bool launch = false;
+    bool canSmash = false;
 private:
     
 

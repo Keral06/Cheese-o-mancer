@@ -6,6 +6,7 @@
 #include "Audio.h"
 #include "Log.h"
 #include "DestructibleEntity.h"
+#include "Enemy.h"
 
 CheeseBall::CheeseBall()
     : Entity(EntityType::CHEESEBALL)
@@ -79,17 +80,42 @@ void CheeseBall::OnCollision(PhysBody* physA, PhysBody* physB)
                 }
             }
         }
+        return;
     }
 
-    else if ((physB->ctype == ColliderType::PLATFORM || physB->ctype == ColliderType::PARED) && !ismounted)
+    if ((physB->ctype == ColliderType::PLATFORM || physB->ctype == ColliderType::PARED) && !ismounted)
     {
         LOG("CheeseBall touched platform/wall");
         toDelete = true;
+        return;
     }
-    else if ((physB->ctype == ColliderType::ENEMY) && ismounted)
+    if (physB->ctype == ColliderType::ENEMY)
     {
-        LOG("CheeseBall touched platform/wall");
-        launch = true;
+        Enemy* enemy = dynamic_cast<Enemy*>(physB->listener);
+
+        if (enemy)
+        {
+            // Bola en smash
+            if (canSmash)
+            {
+                enemy->toDelete = true;
+                return;
+            }
+
+            // Bola lanzada
+            if (!ismounted)
+            {
+                enemy->toDelete = true;
+                toDelete = true;
+                return;
+            }
+
+            // Bola montada
+            LOG("CheeseBall touched enemy");
+            launch = true;
+        }
+
+        return;
     }
 }
 
