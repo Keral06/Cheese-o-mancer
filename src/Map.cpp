@@ -1068,14 +1068,26 @@ MapLayer* Map::GetNavigationLayer() {
                             if (tileSet->texture != nullptr) {
                                 SDL_Rect tileRect = tileSet->GetRect(cleanGid);
 
-                                float camX = Engine::GetInstance().render->camera.x * -1.0f;
+                                /*float camX = Engine::GetInstance().render->camera.x * -1.0f;
                                 float camY = Engine::GetInstance().render->camera.y * -1.0f;
 
                                 int drawX = object->x + (int)(camX * parallaxSpeed);
-                                int drawY = object->y - object->height + (int)(camY * parallaxSpeed);
+                                int drawY = object->y - object->height + (int)(camY * parallaxSpeed);*/
 
                                 //LOG("PARALLAX DEBUG: Dibujando en X: %d, Y: %d", drawX, drawY);
-                                Engine::GetInstance().render->DrawTexture(tileSet->texture, drawX, drawY, &tileRect);
+                                Engine::GetInstance().render->DrawParallax(
+                                    tileSet->texture,
+                                    object->x,
+                                    object->y - object->height,
+                                    object->width,
+                                    object->height,
+                                    &tileRect,
+                                    parallaxSpeed,
+                                    0,
+                                    0,
+                                    0,
+                                    SDL_FLIP_NONE
+                                );
                             }
                         }
                         else {

@@ -216,6 +216,58 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 		flip
 	);
 }
+
+bool Render::DrawParallax(SDL_Texture* texture, int x, int y, int width, int height, const SDL_Rect* section, float speed, double angle, int pivotX, int pivotY, SDL_FlipMode flip) const
+{
+	SDL_FRect rect;
+
+	float world_x = (camera.x + x * speed) * zoom;
+	float world_y = (camera.y + y) * zoom;
+
+	rect.x = floor(world_x * zoom);
+	rect.y = floor(world_y);
+
+	rect.w = width * zoom;
+	rect.h = height * zoom;
+
+	SDL_FPoint* p = nullptr;
+	SDL_FPoint pivot;
+
+	if (pivotX != INT_MAX && pivotY != INT_MAX)
+	{
+		pivot = {
+			pivotX * zoom,
+			pivotY * zoom
+		};
+
+		p = &pivot;
+	}
+
+	const SDL_FRect* src = nullptr;
+	SDL_FRect srcRect;
+
+	if (section)
+	{
+		srcRect = {
+			(float)section->x,
+			(float)section->y,
+			(float)section->w,
+			(float)section->h
+		};
+
+		src = &srcRect;
+	}
+
+	return SDL_RenderTextureRotated(
+		renderer,
+		texture,
+		src,
+		&rect,
+		angle,
+		p,
+		flip
+	);
+}
 bool Render::DrawTextureNoCamera(SDL_Texture* texture, int x, int y, int w, int h, float speed, double angle, int pivotX, int pivotY, SDL_FlipMode flip) const
 {
 	bool ret = true;
