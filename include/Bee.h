@@ -13,6 +13,8 @@ public:
     bool Update(float dt) override;
     void ChangeCurrentAnimation() override;
 
+    void HoverPlayer(float dt);
+
     void OnCollision(PhysBody* physA, PhysBody* physB) override;
     void OnCollisionEnd(PhysBody* physA, PhysBody* physB) override;
 
@@ -29,11 +31,13 @@ private:
         BEE_CHARGE,
         BEE_HIT_WALL,
         BEE_STUNNED,
+        BEE_RETURN,
+        BEE_HOVER,
         BEE_DEATH
     };
 
     BeeState beeState = BEE_PATROL;
-
+    BeeState lastBeeState = BEE_PATROL;
     // =====================
     // MOVIMIENTO PATROL
     // =====================
@@ -57,13 +61,13 @@ private:
     // =====================
 
     float stunTimer = 0.0f;
-    float hitWallTimer = 0.2f;
+    float hitWallTimer = 0.5f;
 
     // =====================
     // DETECCIÓN
     // =====================
 
-    float detectionRange = 300.0f; // world units (ajustable)
+    float detectionRange = 100.0f; // world units (ajustable)
 
     // =====================
     // MÉTODOS INTERNOS
@@ -72,7 +76,16 @@ private:
     void Patrol();
     void StartCharge();
 
-   
+    void SetBeeState(BeeState newState);
 
-    
+    Vector2D chargeStartPosition;
+    bool returningToPatrol = false;
+
+    float attackCooldown = 3000.0f;
+    float attackTimer = 0.0f;
+
+    float hoverRadius = 120.0f;
+    float hoverHeight = 80.0f;
+    float hoverAngle = 0.0f;
+    float hoverSpeed = 2.0f;
 };

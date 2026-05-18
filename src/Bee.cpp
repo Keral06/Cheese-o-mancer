@@ -39,29 +39,18 @@ bool Bee::Start()
     anims.LoadFromTSX("assets/Textures/Spritesheets/Bee/b_spritesheet.tsx", aliases);
     anims.SetCurrent("idle");
 
-    pbody = Engine::GetInstance().physics->CreateRectangleFriction(
-        position.getX(),
-        position.getY(),
-        texW,
-        texH,
-        bodyType::DYNAMIC,
-        0.0f
-    );
-
-    pbody->listener = this;
-    pbody->ctype = ColliderType::ENEMY;
-
     patrolCenter = GetPosition();
 
     detectionRange = 12;
     speed = 4.0f;
-
+    attackHitbox = nullptr;
     // timers
     anticipationTimer = 0.0f;
     stunTimer = 0.0f;
     hitWallTimer = 0.2f;
 
     beeState = BEE_PATROL;
+    lastBeeState = BEE_PATROL;
 
     anims.SetCurrent("idle");
 
@@ -76,8 +65,7 @@ bool Bee::Update(float dt)
 {
     if (health <= 0 && beeState != BEE_DEATH)
     {
-        beeState = BEE_DEATH;
-        SetState(EnemyState::DYING);
+        SetBeeState(BeeState::BEE_DEATH);
         Die();
         return true;
     }
@@ -94,23 +82,38 @@ bool Bee::Update(float dt)
         Patrol();
 
         if (dist < detectionRange)
-            StartCharge();
+        {
+            attackTimer = attackCooldown;
+            SetBeeState(BeeState::BEE_HOVER);
+        }
 
         break;
     }
 
+    case BEE_HOVER:
+    {
+        HoverPlayer(dt);
+
+        attackTimer -= dt;
+
+        if (attackTimer <= 0.0f)
+        {
+            StartCharge();
+        }
+
+        break;
+    }
     // =====================
     case BEE_ANTICIPATION:
     {
         velocity.x = 0;
         velocity.y = 0;
 
-        anticipationTimer -= dt;
-
-        SetState(EnemyState::IDLE);
-
-        if (anticipationTimer <= 0.0f)
-            beeState = BEE_CHARGE;
+        if (anims.HasFinished())
+        {
+            anims.Resets();
+            SetBeeState(BeeState::BEE_CHARGE);
+        }
 
         break;
     }
@@ -121,7 +124,7 @@ bool Bee::Update(float dt)
         velocity.x = chargeDir.getX() * chargeSpeed;
         velocity.y = chargeDir.getY() * chargeSpeed;
 
-        SetState(EnemyState::ATTACKING);
+        SetBeeState(BeeState::BEE_CHARGE);
 
         break;
     }
@@ -134,12 +137,12 @@ bool Bee::Update(float dt)
 
         hitWallTimer -= dt;
 
-        SetState(EnemyState::HIT);
+        SetBeeState(BeeState::BEE_HIT_WALL);
 
         if (hitWallTimer <= 0.0f)
         {
-            beeState = BEE_STUNNED;
-            stunTimer = 2.0f;
+            SetBeeState(BeeState::BEE_STUNNED);
+            stunTimer = 10.0f;
         }
 
         break;
@@ -153,14 +156,43 @@ bool Bee::Update(float dt)
 
         stunTimer -= dt;
 
-        SetState(EnemyState::HIT);
+        SetBeeState(BeeState::BEE_STUNNED);
 
-        if (stunTimer <= 0.0f)
-            beeState = BEE_PATROL;
+        if (stunTimer <= 0.0f) {
+            attackTimer = attackCooldown;
+            SetBeeState(BeeState::BEE_HOVER);
+        }
 
         break;
     }
 
+    case BEE_RETURN:
+    {
+        int ex, ey;
+        pbody->GetPosition(ex, ey);
+
+        Vector2D current(ex, ey);
+
+        Vector2D dir = chargeStartPosition - current;
+
+        float len = sqrtf(dir.getX() * dir.getX() + dir.getY() * dir.getY());
+
+        if (len < 5.0f)
+        {
+            velocity.x = 0;
+            velocity.y = 0;
+
+            SetBeeState(BeeState::BEE_PATROL);
+            break;
+        }
+
+        dir = Vector2D(dir.getX() / len, dir.getY() / len);
+
+        velocity.x = dir.getX() * speed;
+        velocity.y = dir.getY() * speed;
+
+        break;
+    }
     // =====================
     case BEE_DEATH:
         return true;
@@ -198,7 +230,7 @@ void Bee::Patrol()
 
     facingLeft = velocity.x < 0;
 
-    SetState(EnemyState::IDLE);
+    SetBeeState(BeeState::BEE_PATROL);
 }
 
 // =====================
@@ -207,7 +239,7 @@ void Bee::Patrol()
 
 void Bee::StartCharge()
 {
-    beeState = BEE_ANTICIPATION;
+    SetBeeState(BeeState::BEE_ANTICIPATION);
 
     anticipationTimer = 0.4f;
 
@@ -216,6 +248,8 @@ void Bee::StartCharge()
     int ex, ey;
     pbody->GetPosition(ex, ey);
 
+
+    chargeStartPosition = Vector2D(ex, ey);
     chargeDir = player - Vector2D(ex, ey);
 
     float len = sqrtf(
@@ -235,6 +269,16 @@ void Bee::StartCharge()
     velocity.y = 0;
 }
 
+void Bee::SetBeeState(BeeState newState)
+{
+    if (beeState == newState) return;
+
+    lastBeeState = beeState;
+    beeState = newState;
+    LOG("Bee state: %d", beeState);
+    ChangeCurrentAnimation();
+}
+
 // =====================
 // COLLISIONS
 // =====================
@@ -250,12 +294,12 @@ void Bee::OnCollision(PhysBody* physA, PhysBody* physB)
             if (player)
                 player->lives--;
 
-            beeState = BEE_PATROL;
+            SetBeeState(BeeState::BEE_PATROL);
             return;
         }
 
         // cualquier otra cosa = pared
-        beeState = BEE_HIT_WALL;
+        SetBeeState(BeeState::BEE_HIT_WALL);
         hitWallTimer = 0.2f;
     }
 }
@@ -266,40 +310,64 @@ void Bee::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 
 void Bee::ChangeCurrentAnimation()
 {
-    if (state == lastState) return;
+    if (beeState == lastBeeState) return;
 
-    switch (state)
+    switch (beeState)
     {
-    case EnemyState::IDLE:
+    case BeeState::BEE_PATROL:
         anims.SetCurrent("idle");
         break;
 
-    case EnemyState::WALKING:
-        anims.SetCurrent("idle"); // o hover si tienes
-        break;
-
-    case EnemyState::RUNNING:
+    case BeeState::BEE_CHARGE:
         anims.SetCurrent("charge");
         break;
 
-    case EnemyState::ATTACKING:
-        anims.SetCurrent("charge");
+    case BeeState::BEE_HIT_WALL:
+        anims.SetCurrent("hit wall");
         break;
 
-    case EnemyState::HIT:
-        anims.SetCurrent("hit_wall");
+    case BeeState::BEE_HOVER:
+        anims.SetCurrent("idle");
         break;
 
-    case EnemyState::JUMPING:
-        anims.SetCurrent("anticipation_attack");
+    case BeeState::BEE_ANTICIPATION:
+        anims.SetCurrent("anticipation attack");
         break;
 
-    case EnemyState::FALLING:
+    case BeeState::BEE_STUNNED:
         anims.SetCurrent("stunned");
         break;
 
-    case EnemyState::DYING:
+    case BeeState::BEE_DEATH:
         anims.SetCurrent("death");
         break;
     }
+}
+
+void Bee::HoverPlayer(float dt)
+{
+    hoverAngle += hoverSpeed * dt;
+
+    Vector2D player = Engine::GetInstance().scene->GetPlayerPosition();
+
+    float targetX =
+        player.getX() + cosf(hoverAngle) * hoverRadius;
+
+    float targetY =
+        player.getY() - hoverHeight +
+        sinf(hoverAngle) * 20.0f;
+
+    int ex, ey;
+    pbody->GetPosition(ex, ey);
+
+    Vector2D current(ex, ey);
+
+    Vector2D target(targetX, targetY);
+
+    Vector2D dir = target - current;
+
+    velocity.x = dir.getX() * 0.05f;
+    velocity.y = dir.getY() * 0.05f;
+
+    facingLeft = velocity.x < 0;
 }
