@@ -227,13 +227,11 @@ bool Scene::PostUpdate()
 	
 	case SceneID::GAME_OVER:
 		if (loseTexture != nullptr) {
-			SDL_Rect sourceRect = loseAnimSet.GetCurrentFrame();
+			SDL_FRect destRect = { 0, 0, 1280, 720 };
 
-			SDL_FRect srcFRect = { (float)sourceRect.x, (float)sourceRect.y, (float)sourceRect.w, (float)sourceRect.h };
-
-			SDL_RenderTexture(Engine::GetInstance().render->renderer, loseTexture, &srcFRect, NULL);
-		}
-		Engine::GetInstance().render->DrawText("YOU LOST", 440, 100, 400, 100, { 255, 0, 0, 255 });
+			SDL_RenderTexture(Engine::GetInstance().render->renderer, loseTexture, NULL, &destRect);
+		}/*
+		Engine::GetInstance().render->DrawText("YOU LOST", 440, 100, 400, 100, { 255, 0, 0, 255 });*/
 
 		Engine::GetInstance().uiManager->PostUpdate();
 		break;
@@ -1005,19 +1003,29 @@ void  Scene::PostUpdateLevel() {
 void Scene::LoadGameOver() {
 	LOG("Loading Game Over Screen");
 	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/losemusic.wav");
-	loseTexture = Engine::GetInstance().textures->Load("Assets/Screens/gameOver_screen.png");
+	loseTexture = Engine::GetInstance().textures->Load("assets/UI/GameOver/UI_GameOver_.png");
 
-	std::unordered_map<int, std::string> aliases;
-	aliases[4] = "play";
 
-	loseAnimSet.LoadFromTSX("Assets/Maps/PREV/lose.tsx", aliases);
-
-	loseAnimSet.SetCurrent("play");
 	 Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/losemusic.wav");
 
-	SDL_Rect btnPos = { 1000, 650, 250, 50 };
-	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 9, "BACK TO TITLE ->", btnPos, this);
+	/*SDL_Rect btnPos = { 1000, 650, 250, 50 };
+	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 9, "BACK TO TITLE", btnPos, this);*/
 
+	 SDL_Texture* buttonTitleNormal = Engine::GetInstance().textures->Load("assets/UI/Pause/UI_Pause_ButtonQuit1_01.png");
+	 SDL_Texture* buttonTitleClicked = Engine::GetInstance().textures->Load("assets/UI/Pause/UI_Pause_ButtonQuitPressed_01.png");
+
+	 SDL_Rect btnPos = { 1000, 650, 200, 50 };
+
+	 Engine::GetInstance().uiManager->CreateUIElement(
+		 UIElementType::BUTTON,
+		 9,
+		 "",
+		 btnPos,
+		 this,
+		 SDL_Rect{ 0,0,0,0 },
+		 buttonTitleNormal,
+		 buttonTitleClicked
+	 );
 }
 
 void Scene::UpdateGameOver(float dt) {
