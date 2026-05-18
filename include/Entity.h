@@ -46,7 +46,8 @@ enum class EntityType
 	MILKMAID,
 	GUARDTOWER,
 	DEATH,
-	HORSE
+	HORSE,
+	BEE
 };
 
 class PhysBody;

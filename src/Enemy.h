@@ -55,7 +55,7 @@ public:
 
 	void SetState(EnemyState newState);
 
-	void ChangeCurrentAnimation();
+	virtual void ChangeCurrentAnimation();
 
 	void MoveGround();
 

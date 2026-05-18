@@ -26,6 +26,7 @@
 #include "WeakWall.h"
 #include "Pickable_objects.h"
 #include "Horse.h"
+#include "Bee.h"
 
 Map::Map() : Module(), mapLoaded(false)
 {
@@ -707,14 +708,12 @@ MapLayer* Map::GetNavigationLayer() {
                             Npc->mapID = id;
 
                         }
-                        else if (entityType == "EnemigoVolador") {
-                            std::shared_ptr<EnemigoVolador> flyer = std::dynamic_pointer_cast<EnemigoVolador>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMYFLYING));
+                        else if (entityType == "Bee") {
+                            std::shared_ptr<Bee> bee = std::dynamic_pointer_cast<Bee>(Engine::GetInstance().entityManager->CreateEntity(EntityType::BEE));
 
-                            flyer->position = Vector2D(x, y);
-                            flyer->xInicial = (int)x;
-                            flyer->yInicial = (int)y;
-                            flyer->Start();
-                            flyer->mapID = id;
+                            bee->position = Vector2D(x, y);
+                            bee->Start();
+                            bee->mapID = id;
 
                         }
                         else if (entityType == "FinalBoss") {

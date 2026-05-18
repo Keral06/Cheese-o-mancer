@@ -24,6 +24,7 @@
 #include "WeakWall.h"
 #include "Pickable_objects.h"
 #include "Horse.h"
+#include "Bee.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -141,6 +142,9 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::MAGICIAN:
 		entity = std::make_shared<Magician>();
+		break;
+	case EntityType::BEE:
+		entity = std::make_shared<Bee>();
 		break;
 	case EntityType::CHEESEBALLINTERACT:
 		entity = std::make_shared<CheeseBallInteract>();
