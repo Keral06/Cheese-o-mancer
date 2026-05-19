@@ -12,6 +12,8 @@ public:
     bool Update(float dt) override;
     void OnCollision(PhysBody* physA, PhysBody* physB) override;
     void OnCollisionEnd(PhysBody* physA, PhysBody* physB) override;
+    void ChangeCurrentAnimation() override;
+    void Draw(float dt) override;
     void Die();
     void Sprint(); 
 

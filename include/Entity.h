@@ -47,7 +47,9 @@ enum class EntityType
 	GUARDTOWER,
 	DEATH,
 	HORSE,
-	BEE
+	BEE,
+	PRINCESS,
+	KNIGHT
 };
 
 class PhysBody;

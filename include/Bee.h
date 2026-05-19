@@ -12,7 +12,7 @@ public:
     bool Start() override;
     bool Update(float dt) override;
     void ChangeCurrentAnimation() override;
-
+    void Draw(float dt) override;
     void HoverPlayer(float dt);
 
     void OnCollision(PhysBody* physA, PhysBody* physB) override;
@@ -61,7 +61,7 @@ private:
     // =====================
 
     float stunTimer = 0.0f;
-    float hitWallTimer = 0.5f;
+    float hitWallTimer = 100.0f;
 
     // =====================
     // DETECCIÓN
@@ -84,8 +84,8 @@ private:
     float attackCooldown = 3000.0f;
     float attackTimer = 0.0f;
 
-    float hoverRadius = 120.0f;
-    float hoverHeight = 80.0f;
+    float hoverRadius = 200.0f;
+    float hoverHeight = 680.0f;
     float hoverAngle = 0.0f;
-    float hoverSpeed = 2.0f;
+    float hoverSpeed = 1.2f;
 };

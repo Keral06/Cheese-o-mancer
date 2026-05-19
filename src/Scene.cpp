@@ -745,6 +745,9 @@ void Scene::UpdateLevel(float dt) {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN) {
 		LoadMap("TEST_map_LV1_tortureRoom_02.tmx");
 	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
+		LoadMap("Map_LV2_encreuada_01.tmx");
+	}
 
 
 	// Lógica de Checkpoints (Teclas 1-9)
@@ -1610,6 +1613,11 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 		break;*/
 		break;
 	}
+}
+
+Player* Scene::GetPlayer() const
+{
+	return player.get();
 }
 
 //funciones inventario
