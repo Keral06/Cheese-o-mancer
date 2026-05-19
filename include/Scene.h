@@ -97,6 +97,8 @@ public:
 	void StartFadeOut(float duration);
 
 	void StartFadeIn(float duration);
+
+	Player* Scene::GetPlayer() const;
 private:
 	//Introscreen functions
 	void LoadIntro();
@@ -157,6 +159,8 @@ private:
 
 	void UpdatePauseMenu(float dt);
 	void HandleStoreUIEvents(UIElement* uiElement);
+
+	
 private:
 
 	//L03: TODO 3b: Declare a Player attribute

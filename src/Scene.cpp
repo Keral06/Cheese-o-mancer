@@ -1612,6 +1612,11 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 	}
 }
 
+Player* Scene::GetPlayer() const
+{
+	return player.get();
+}
+
 //funciones inventario
 void Scene::CreateInventoryUI() {
 	invPaperCombined = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Inventari_PaperAll_01.png"); 
