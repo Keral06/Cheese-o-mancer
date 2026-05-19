@@ -5,6 +5,7 @@
 #include "coins.h"
 #include "EntityManager.h"
 #include "Scene.h"
+#include "Textures.h"
 
 Horse::Horse() : Enemy()
 {
@@ -18,19 +19,39 @@ Horse::~Horse()
 bool Horse::Start()
 {
     texW = 256;
-    texH = 256;
+    texH = 256 * 2;
     attackRange = 15;
     offsetAttackHitboxX = 60;
     offsetAttackHitboxY = -texH / 2;
+    knockbackDuration = 20;
     type = EnemyType::MELEE;
 
-    texName = "assets/Textures/Spritesheets/Rata/sprite_rat_02.png";
+    texName = "assets/Textures/Spritesheets/Unicorn/sprite_unicorn_b_02.png";
     spriteSheetName = "";
-    Enemy::Start();
+
+    texture = Engine::GetInstance().textures->Load(texName);
+
+    
+    pbody = Engine::GetInstance().physics->CreateRectangleFriction(position.getX(), position.getY(), texW, texH, bodyType::DYNAMIC, 0.0f);
+
+    
+    pbody->listener = this;
+
+   
+    pbody->ctype = ColliderType::ENEMY;
+
+  
+    pathfinding = std::make_shared<Pathfinding>();
+    
+    Vector2D pos = GetPosition();
+    
+    Vector2D tilePos = Engine::GetInstance().map->WorldToMap((int)pos.getX(), (int)pos.getY());
+    
+    pathfinding->ResetPath(tilePos);
 
 
-    std::unordered_map<int, std::string> aliases = { {0,"idle"},{10,"walk"},{20,"run"},{30,"fall"},{49,"spawn"},{50,"death"}, };
-    anims.LoadFromTSX("assets/Textures/Spritesheets/Rata/spritesheet_ratEnemy_02.tsx", aliases);
+    std::unordered_map<int, std::string> aliases = { {0,"idle"},{1,"walk"},{12,"charge"},{24,"stop"},{36,"death"}, };
+    anims.LoadFromTSX("assets/Textures/Spritesheets/Unicorn/u_spritesheet.tsx", aliases);
     anims.SetCurrent("idle");
     attackHitbox = nullptr;
 
@@ -74,10 +95,10 @@ bool Horse::Update(float dt)
                 Move();
                 SetState(EnemyState::RUNNING);
                 if (velocity.y < -0.1f) {
-                    SetState(EnemyState::JUMPING);
+                    SetState(EnemyState::IDLE);
                 }
                 else if (velocity.y > 0.1f) {
-                    SetState(EnemyState::FALLING);
+                    SetState(EnemyState::IDLE);
                 }
             }
             else {
@@ -88,7 +109,7 @@ bool Horse::Update(float dt)
     }
     else {
         knockbackTimer--;
-        SetState(EnemyState::FALLING);
+        SetState(EnemyState::IDLE);
 
         if (knockbackTimer < 0) {
             knockbackTimer = knockbackDuration;
@@ -124,6 +145,56 @@ void Horse::OnCollision(PhysBody* physA, PhysBody* physB)
 void Horse::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 {
 
+}
+
+void Horse::ChangeCurrentAnimation()
+{
+    if (state == lastState) return;
+
+    switch (state)
+    {
+    case EnemyState::IDLE:
+        anims.SetCurrent("idle");
+        break;
+
+    case EnemyState::WALKING:
+        anims.SetCurrent("walk");
+        break;
+
+    case EnemyState::RUNNING:
+        anims.SetCurrent("charge");
+        break;
+
+    case EnemyState::DYING:
+        anims.SetCurrent("death");
+        break;
+    }
+}
+
+void Horse::Draw(float dt)
+{
+    anims.Update(dt);
+    const SDL_Rect& animFrame = anims.GetCurrentFrame();
+
+    
+    int x, y;
+    if (pbody != nullptr) {
+        pbody->GetPosition(x, y);
+        position.setX((float)x);
+        position.setY((float)y);
+    }
+    else {
+        x = (int)deathPosition.getX();
+        y = (int)deathPosition.getY();
+    }
+
+    
+
+    SDL_Rect sect = { 0,0,texW,texH };
+
+    SDL_FlipMode flip = facingLeft ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+
+    Engine::GetInstance().render->DrawTexture(texture, x - texW, y - texH + 128, &animFrame, 1.0f, 0.0, INT_MAX, INT_MAX, flip);
 }
 
 void Horse::Die() {

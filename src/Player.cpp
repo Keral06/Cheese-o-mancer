@@ -254,6 +254,7 @@ void Player::Move() {
 	// =====================
 	if (godMode)
 	{
+		lives = 4;
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
 			velocity.y = -godmodeSpeed;

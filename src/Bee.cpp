@@ -142,7 +142,7 @@ bool Bee::Update(float dt)
         if (hitWallTimer <= 0.0f)
         {
             SetBeeState(BeeState::BEE_STUNNED);
-            stunTimer = 10.0f;
+            stunTimer = 3000.0f;
         }
 
         break;
@@ -344,6 +344,32 @@ void Bee::ChangeCurrentAnimation()
     }
 }
 
+void Bee::Draw(float dt)
+{
+    anims.Update(dt);
+    const SDL_Rect& animFrame = anims.GetCurrentFrame();
+
+
+    int x, y;
+    if (pbody != nullptr) {
+        pbody->GetPosition(x, y);
+        position.setX((float)x);
+        position.setY((float)y);
+    }
+    else {
+        x = (int)deathPosition.getX();
+        y = (int)deathPosition.getY();
+    }
+
+
+
+    SDL_Rect sect = { 0,0,texW,texH };
+
+    SDL_FlipMode flip = facingLeft ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+
+    Engine::GetInstance().render->DrawTexture(texture, x - texW, y - texH, &animFrame, 1.0f, 0.0, INT_MAX, INT_MAX, flip);
+}
+
 void Bee::HoverPlayer(float dt)
 {
     hoverAngle += hoverSpeed * dt;
@@ -361,13 +387,33 @@ void Bee::HoverPlayer(float dt)
     pbody->GetPosition(ex, ey);
 
     Vector2D current(ex, ey);
-
     Vector2D target(targetX, targetY);
 
     Vector2D dir = target - current;
 
-    velocity.x = dir.getX() * 0.05f;
-    velocity.y = dir.getY() * 0.05f;
+    float distance =
+        sqrtf(dir.getX() * dir.getX() +
+            dir.getY() * dir.getY());
 
-    facingLeft = velocity.x < 0;
+    // evitar jitter
+    if (distance > 10.0f)
+    {
+        velocity.x = dir.getX() * 0.02f;
+        velocity.y = dir.getY() * 0.02f;
+    }
+    else
+    {
+        velocity.x *= 0.9f;
+        velocity.y *= 0.9f;
+    }
+
+    // facing estable
+    float diffX = player.getX() - current.getX();
+
+    const float facingMargin = 25.0f;
+
+    if (diffX > facingMargin)
+        facingLeft = false;
+    else if (diffX < -facingMargin)
+        facingLeft = true;
 }
