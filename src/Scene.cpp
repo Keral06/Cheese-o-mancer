@@ -342,6 +342,25 @@ void Scene::LoadGame()
 }
 bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 {
+	if (uiElement->id == 45) {
+		cardsInventoryOn = !cardsInventoryOn; 
+		for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
+			if (element->id == 46 || element->id == 47) {
+				element->visible = cardsInventoryOn;
+			}
+		}
+		return true;
+	}
+	if (uiElement->id == 46) { 
+		currentCardIndex++;
+		if (currentCardIndex >= totalUnlockedCards) currentCardIndex = 0;
+		return true;
+	}
+	if (uiElement->id == 47) { 
+		currentCardIndex--;
+		if (currentCardIndex < 0) currentCardIndex = totalUnlockedCards - 1;
+		return true;
+	}
 	if ((uiElement->id >= 20 && uiElement->id <= 30)|| uiElement->id ==52) {
 		HandlePauseUIEvents(uiElement);
 		return true;
@@ -802,6 +821,11 @@ void Scene::UnloadLevel() {
 	iconLamp = nullptr;
 	inventoryBag = nullptr;
 	uiCoin = nullptr;
+	cardsBase = nullptr;
+	cardTheFool = nullptr;
+	cardTheMagician = nullptr;
+	arrowLeft = nullptr;
+	arrowRight = nullptr;
 	// Clean up map and entities
 	Engine::GetInstance().map->CleanUp();
 	Engine::GetInstance().entityManager->CleanUp();
@@ -985,6 +1009,18 @@ void  Scene::PostUpdateLevel() {
 					int textX = coinX + coinSize + 30;
 					int textY = coinY + 40; 
 					Engine::GetInstance().render->DrawText(scoreText.c_str(), textX, textY, 0, 0, { 0, 0, 0, 255 });
+				}
+			}
+			if (cardsInventoryOn) {
+				if (cardsBase != nullptr) {
+					Engine::GetInstance().render->DrawTextureNoCamera(cardsBase, 240, 60, 800, 600);
+				}
+
+				if (currentCardIndex == 0 && cardTheFool != nullptr) {
+					Engine::GetInstance().render->DrawTextureNoCamera(cardTheFool, 730, 200, 200, 350);
+				}
+				else if (currentCardIndex == 1 && cardTheMagician != nullptr) {
+					Engine::GetInstance().render->DrawTextureNoCamera(cardTheMagician, 730, 200, 200, 350);
 				}
 			}
 		
@@ -1628,10 +1664,51 @@ void Scene::CreateInventoryUI() {
 	iconLamp = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemLamp1_01.png"); 
 	inventoryBag = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Inventari_Bag_01.png"); 
 	uiCoin = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_coin.png"); 
+	cardTheFool = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Fool.png");
+	cardTheMagician = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Magician.png");
+	arrowRight = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_BurronRight_.png");
+	arrowLeft = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_ButtonLeft_.png");
+	cardsBase = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_Base_.png");
+
+	auto cardButton = Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 45, "",
+		{ 1000, 425, 96, 96 }, 
+		this, SDL_Rect{ 0,0,0,0 },
+		cardsBase, cardsBase
+	);
+	if (cardButton) cardButton->visible = false;
+
+	auto previousCard = Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 47, "",
+		{ 690, 350, 50, 50 }, this, SDL_Rect{ 0,0,0,0 },
+		arrowLeft, arrowLeft
+	);
+	if (previousCard) previousCard->visible = false;
+
+	auto nextCard = Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 46, "",
+		{ 920, 350, 50, 50 }, this, SDL_Rect{ 0,0,0,0 },
+		arrowRight, arrowRight
+	);
+	if (nextCard) nextCard->visible = false;
 }
 
 void Scene::SetInventory(bool inventory) {
 	inventoryOn = inventory;
+	if (!inventoryOn) {
+		cardsInventoryOn = false;
+	}
+	if (hasTalkedMagician) {
+		totalUnlockedCards = 2;
+	}
+	for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
+		if (element->id == 45) {
+			element->visible = inventoryOn;
+		}
+		if (element->id == 46 || element->id == 47) {
+			element->visible = (inventoryOn && cardsInventoryOn);
+		}
+	}
 }
 
 

@@ -41,6 +41,9 @@ public:
 	bool showHelp = true;
 	bool storeOn = false;
 	bool inventoryOn = false;
+	bool cardsInventoryOn = false;
+	int currentCardIndex = 0;
+	int totalUnlockedCards = 1;
 	bool showUIDebug = false;
 	Scene();
 
@@ -156,6 +159,13 @@ private:
 	SDL_Texture* iconLamp = nullptr;
 	SDL_Texture* inventoryBag = nullptr;
 	SDL_Texture* uiCoin = nullptr;
+
+	//Texturas tarot
+	SDL_Texture* cardsBase = nullptr;
+	SDL_Texture* cardTheFool = nullptr;
+	SDL_Texture* cardTheMagician = nullptr;
+	SDL_Texture* arrowRight = nullptr;
+	SDL_Texture* arrowLeft = nullptr;
 
 	void UpdatePauseMenu(float dt);
 	void HandleStoreUIEvents(UIElement* uiElement);
