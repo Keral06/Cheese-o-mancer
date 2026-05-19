@@ -22,6 +22,14 @@ enum class KnightState
     DEATH
 };
 
+enum KnightPhase
+{
+    PHASE_NONE,
+    PHASE_1,
+    PHASE_2,
+    PHASE_3
+};
+
 class KnightBoss : public Enemy
 {
 public:
@@ -70,6 +78,12 @@ public:
     void ChangeCurrentAnimation() override;
 
     void FinishAction();
+
+    void UpdateFacing();
+
+    void StartFight();
+
+    void OnTransformFinished();
 
 private:
 
@@ -154,4 +168,8 @@ private:
     Vector2D bounceDir;
     float bounceSpeed;
     int maxBounces;
+
+    bool facingLeft = true;
+
+    KnightPhase phase = PHASE_NONE;
 };

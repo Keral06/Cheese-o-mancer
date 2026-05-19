@@ -109,9 +109,9 @@ bool KnightBoss::Update(float dt)
 
     GetPhysicsValues();
 
-    if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_N))
+    if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
     {
-        StartBounceAttack();
+        StartFight();
     }
 
     switch (knightState)
@@ -125,11 +125,11 @@ bool KnightBoss::Update(float dt)
 
     case KnightState::TRANSFORM:
     {
-        if (stateTimer >= 2.0f)
-        {
-            busy = false;
+        velocity = { 0,0 };
 
-            SetKnightState(KnightState::IDLE);
+        if (currentAnim && currentAnim->HasFinished())
+        {
+            OnTransformFinished();
         }
 
         break;
@@ -150,6 +150,8 @@ bool KnightBoss::Update(float dt)
     case KnightState::DEATH:
         break;
     }
+
+    UpdateFacing();
 
     ApplyPhysics();
 
@@ -250,7 +252,8 @@ void KnightBoss::UpdateLunge(float dt)
     velocity.x = attackDirection.getX() * attackSpeed;
     velocity.y = attackDirection.getY() * attackSpeed;
 
-    if (stateTimer >= 1.2f)
+    
+    if (currentAnim && currentAnim->HasFinished())
     {
         velocity.x = 0;
         velocity.y = 0;
@@ -408,8 +411,7 @@ void KnightBoss::Draw(float dt)
 
     SDL_FlipMode flip =
         facingLeft ?
-        SDL_FLIP_NONE :
-        SDL_FLIP_HORIZONTAL;
+        SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
 
     Engine::GetInstance().render->DrawTexture(
         currentTexture,
@@ -524,3 +526,36 @@ void KnightBoss::FinishAction()
         //fightController->OnKnightFinishedAction();
 }
 
+void KnightBoss::UpdateFacing()
+{
+    Vector2D player = Engine::GetInstance().scene->GetPlayerPosition();
+
+    int x, y;
+    pbody->GetPosition(x, y);
+
+    facingLeft = (player.getX() < x);
+}
+
+void KnightBoss::StartFight()
+{
+    busy = true;
+
+    phase = PHASE_NONE;
+
+    SetKnightState(KnightState::TRANSFORM);
+
+    LOG("Boss fight start -> transforming");
+}
+
+void KnightBoss::OnTransformFinished()
+{
+    LOG("Transform finished -> Phase 1 start");
+
+    SetKnightState(KnightState::IDLE);
+
+    phase = PHASE_1;
+
+    busy = false;
+
+    canAct = true;
+}
