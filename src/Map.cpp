@@ -27,6 +27,8 @@
 #include "Pickable_objects.h"
 #include "Horse.h"
 #include "Bee.h"
+#include "KnightBoss.h"
+#include "PrincessBoss.h"
 
 Map::Map() : Module(), mapLoaded(false)
 {
@@ -673,6 +675,20 @@ MapLayer* Map::GetNavigationLayer() {
                             horse->position = Vector2D(x, y);
                             horse->Start();
                             horse->mapID = id;
+                        }
+                        else if (entityType == "KnightBoss") {
+                            std::shared_ptr<KnightBoss> knightBoss = std::dynamic_pointer_cast<KnightBoss>(Engine::GetInstance().entityManager->CreateEntity(EntityType::KNIGHT));
+
+                            knightBoss->position = Vector2D(x, y);
+                            knightBoss->Start();
+                            knightBoss->mapID = id;
+                        }
+                        else if (entityType == "Princess") {
+                            std::shared_ptr<PrincessBoss> princess = std::dynamic_pointer_cast<PrincessBoss>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PRINCESS));
+
+                            princess->position = Vector2D(x, y);
+                            princess->Start();
+                            princess->mapID = id;
                         }
                         else if (entityType == "Jailer") {
                             std::shared_ptr<Jailer> jailer = std::dynamic_pointer_cast<Jailer>(Engine::GetInstance().entityManager->CreateEntity(EntityType::JAILER));

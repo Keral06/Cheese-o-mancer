@@ -43,20 +43,20 @@
    <property name="name" value="hoponcheese"/>
   </properties>
   <animation>
-   <frame tileid="28" duration="100"/>
-   <frame tileid="29" duration="100"/>
-   <frame tileid="30" duration="100"/>
-   <frame tileid="31" duration="100"/>
-   <frame tileid="32" duration="100"/>
-   <frame tileid="33" duration="100"/>
-   <frame tileid="34" duration="100"/>
-   <frame tileid="35" duration="100"/>
-   <frame tileid="36" duration="100"/>
-   <frame tileid="37" duration="100"/>
-   <frame tileid="38" duration="100"/>
-   <frame tileid="39" duration="100"/>
-   <frame tileid="40" duration="100"/>
-   <frame tileid="41" duration="100"/>
+   <frame tileid="28" duration="20"/>
+                <frame tileid="29" duration="80"/>
+                <frame tileid="30" duration="80"/>
+                <frame tileid="31" duration="80"/>
+                <frame tileid="32" duration="80"/>
+                <frame tileid="33" duration="80"/>
+                <frame tileid="34" duration="80"/>
+                <frame tileid="35" duration="80"/>
+                <frame tileid="36" duration="80"/>
+                <frame tileid="37" duration="80"/>
+                <frame tileid="38" duration="80"/>
+                <frame tileid="39" duration="80"/>
+                <frame tileid="40" duration="80"/>
+                <frame tileid="41" duration="80"/>
   </animation>
  </tile>
 </tileset>

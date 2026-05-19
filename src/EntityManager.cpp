@@ -25,6 +25,8 @@
 #include "Pickable_objects.h"
 #include "Horse.h"
 #include "Bee.h"
+#include "PrincessBoss.h"
+#include "KnightBoss.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -145,6 +147,12 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::BEE:
 		entity = std::make_shared<Bee>();
+		break;
+	case EntityType::PRINCESS:
+		entity = std::make_shared<PrincessBoss>();
+		break;
+	case EntityType::KNIGHT:
+		entity = std::make_shared<KnightBoss>();
 		break;
 	case EntityType::CHEESEBALLINTERACT:
 		entity = std::make_shared<CheeseBallInteract>();
