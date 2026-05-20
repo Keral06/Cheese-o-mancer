@@ -111,10 +111,14 @@ bool KnightBoss::Update(float dt)
 
     GetPhysicsValues();
 
-    /*if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
+    if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
     {
         StartLungeAttack();
-    }*/
+    }
+    if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+    {
+        StartBounceAttack();
+    }
 
     switch (knightState)
     {
@@ -425,7 +429,7 @@ void KnightBoss::Draw(float dt)
 
     SDL_FlipMode flip =
         facingLeft ?
-            SDL_FLIP_NONE: SDL_FLIP_HORIZONTAL;
+        SDL_FLIP_HORIZONTAL :SDL_FLIP_NONE ;
 
     if (knightState == KnightState::BOUNCE_ATTACK)
     {
@@ -438,7 +442,7 @@ void KnightBoss::Draw(float dt)
     if (knightState == KnightState::LUNGE_ATTACK)
     {
         if (velocity.x > 0) {
-            flip = SDL_FLIP_HORIZONTAL;
+            flip = SDL_FLIP_NONE;
         }
     }
 
@@ -558,17 +562,6 @@ void KnightBoss::ChangeCurrentAnimation()
     }
 }
 
-void KnightBoss::FinishAction()
-{
-    actionFinished = true;
-    busy = false;
-
-    if (fightController) {
-    
-    }
-        //fightController->OnKnightFinishedAction();
-}
-
 void KnightBoss::UpdateFacing()
 {
     Vector2D player = Engine::GetInstance().scene->GetPlayerPosition();
@@ -601,4 +594,25 @@ void KnightBoss::OnTransformFinished()
     busy = false;
 
     canAct = true;
+}
+
+void KnightBoss::ReturnToBase(Vector2D pos)
+{
+    int x = (int)pos.getX();
+    int y = (int)pos.getY();
+
+    pbody->SetPosition(x, y);
+
+    velocity = { 0,0 };
+
+    busy = false;
+}
+
+void KnightBoss::FinishAction()
+{
+    actionFinished = true;
+    busy = false;
+
+    if (fightController)
+        fightController->OnBossFinishedAttack(BossTurn::KNIGHT);
 }

@@ -85,6 +85,8 @@ public:
 
     void OnTransformFinished();
 
+    void ReturnToBase(Vector2D pos);
+
 private:
 
     // =========================

@@ -21,14 +21,18 @@ public:
     bool Update(float dt) override;
     bool CleanUp() override;
 
-    void Activate();
+    void Resume();
+    void SetBorderSpike(bool v);
+    void SetTexture(SDL_Texture* tex);
+
 
 private:
 
     enum class State
     {
-        WARNING,
-        ACTIVE
+        RISING,
+        ACTIVE,
+        DEAD
     };
 
     void Draw(float dt);
@@ -37,19 +41,23 @@ private:
 
     State state;
 
-    float timer;
-
-    float warningDuration;
-    float activeDuration;
-
     SDL_Texture* texture;
 
-    AnimationSet animWarning;
-    AnimationSet animActive;
+    AnimationSet anim;
+    
+    bool borderSpike = false;
 
-    AnimationSet* currentAnim;
+    bool pausedAtTop = false;
+
+    SpikeHazard* leftBorder = nullptr;
+    SpikeHazard* rightBorder = nullptr;
 
     PhysBody* pbody;
+
+    float spawnDelay = 0.0f;
+    float timeAlive = 0.0f;
+    bool activated = false;
+
 };
 
 

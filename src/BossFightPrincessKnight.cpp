@@ -82,7 +82,7 @@ bool BossFightPrincessKnight::Update(float dt)
 
     if (!fightStarted && debugStartFight)
     {
-        if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+        if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
         {
             StartFight();
         }
@@ -145,6 +145,9 @@ void BossFightPrincessKnight::StartFight()
         return;
 
     LOG("BOSS FIGHT START");
+
+    knightBasePos = knight->GetPosition();
+    princessBasePos = princess->GetPosition();
 
     fightStarted = true;
 
@@ -304,27 +307,12 @@ void BossFightPrincessKnight::StartKnightTurn()
 {
     currentTurn = BossTurn::KNIGHT;
 
-    LOG("KNIGHT TURN");
+    int r = rand() % 2;
 
-    // ===============================
-    // PHASE LOGIC
-    // ===============================
-
-    switch (currentPhase)
-    {
-    case 1:
-        // knight->StartLungeAttack();
-        break;
-
-    case 2:
-        // knight->StartFastLungeAttack();
-        break;
-
-    case 3:
-        // Random:
-        // Lunge or Bounce
-        break;
-    }
+    if (r == 0)
+        knight->StartLungeAttack();
+    else
+        knight->StartBounceAttack();
 }
 
 // ===============================
@@ -335,22 +323,12 @@ void BossFightPrincessKnight::StartPrincessTurn()
 {
     currentTurn = BossTurn::PRINCESS;
 
-    LOG("PRINCESS TURN");
+    int r = rand() % 2;
 
-    switch (currentPhase)
-    {
-    case 1:
-        // princess->SpawnSmallFlowers();
-        break;
-
-    case 2:
-        // Random flowers/spikes
-        break;
-
-    case 3:
-        // Strong attacks
-        break;
-    }
+    if (r == 0)
+        princess->StartSpikeAttack();
+    else
+        princess->StartFlowerAttack(20);
 }
 
 // ===============================
@@ -416,3 +394,18 @@ bool BossFightPrincessKnight::IsFightActive() const
     return fightStarted &&
         fightState != BossFightState::FINISHED;
 }
+
+void BossFightPrincessKnight::OnBossFinishedAttack(BossTurn who)
+{
+    if (who == BossTurn::KNIGHT)
+    {
+        knight->ReturnToBase(knightBasePos);
+        StartPrincessTurn();
+    }
+    else
+    {
+        princess->ReturnToBase(princessBasePos);
+        StartKnightTurn();
+    }
+}
+

@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Module.h"
+#include <Vector2D.h>
 
 class PrincessBoss;
 class KnightBoss;
@@ -61,6 +62,8 @@ public:
 
     bool IsFightActive() const;
 
+    void OnBossFinishedAttack(BossTurn who);
+
 private:
 
     // ===============================
@@ -114,4 +117,7 @@ private:
 
     bool debugStartFight;
     bool introStarted;
+
+    Vector2D knightBasePos;
+    Vector2D princessBasePos;
 };

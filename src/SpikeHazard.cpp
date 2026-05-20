@@ -23,43 +23,22 @@ SpikeHazard::~SpikeHazard()
 
 bool SpikeHazard::Start()
 {
-    timer = 0.0f;
+    state = State::RISING;
 
-    warningDuration = 0.8f;
-    activeDuration = 1.0f;
-
-    state = State::WARNING;
-
-    std::unordered_map<int, std::string> aliasesWarning =
+    std::unordered_map<int, std::string> aliases =
     {
-        {0, "warning"}
+        {0, "flowerspike1"}, {34, "flowerspike2"}
     };
 
-    std::unordered_map<int, std::string> aliasesActive =
-    {
-        {0, "active"}
-    };
-
-    animWarning.LoadFromTSX(
-        "assets/Textures/Spritesheets/Princess/spike_warning.tsx",
-        aliasesWarning
+    anim.LoadFromTSX(
+        "assets/Textures/Spritesheets/Princess/ataques planta/pt_flowerspike.tsx",
+        aliases
     );
-
-    animActive.LoadFromTSX(
-        "assets/Textures/Spritesheets/Princess/spike_active.tsx",
-        aliasesActive
-    );
-
-    texture = Engine::GetInstance().textures->Load(
-        "assets/Textures/Spritesheets/Princess/SpikeHazard.png"
-    );
-
-    currentAnim = &animWarning;
 
     pbody = Engine::GetInstance().physics->CreateRectangle(
         position.getX(),
-        position.getY(),
-        64,
+        position.getY() + 128 * 3,
+        128,
         128,
         bodyType::STATIC
     );
@@ -75,21 +54,33 @@ bool SpikeHazard::Start()
 
 bool SpikeHazard::Update(float dt)
 {
-    timer += dt;
+    
 
-    if (state == State::WARNING)
+    // =========================
+    // BORDER SPIKE PAUSE
+    // =========================
+
+    if (borderSpike && !pausedAtTop)
     {
-        if (timer >= warningDuration)
+        int frame = anim.GetCurrentFrameIndex();
+
+        // frame pico
+        if (frame >= 5)
         {
-            Activate();
+            pausedAtTop = true;
         }
     }
-    else if (state == State::ACTIVE)
+
+    // SOLO actualiza si NO está pausado
+    if (!pausedAtTop)
     {
-        if (timer >= activeDuration)
-        {
-            toDelete = true;
-        }
+        anim.Update(dt);
+    }
+
+    // delete normal
+    if (anim.HasFinished())
+    {
+        toDelete = true;
     }
 
     Draw(dt);
@@ -97,32 +88,15 @@ bool SpikeHazard::Update(float dt)
     return true;
 }
 
-void SpikeHazard::Activate()
+void SpikeHazard::SetBorderSpike(bool v)
 {
-    LOG("Spike activate");
-
-    state = State::ACTIVE;
-
-    timer = 0.0f;
-
-    currentAnim = &animActive;
-    currentAnim->Resets();
-
-    if (pbody)
-    {
-        pbody->ctype = ColliderType::DANGER;
-    }
+    borderSpike = v;
 }
 
 void SpikeHazard::Draw(float dt)
 {
-    if (currentAnim == nullptr)
-        return;
-
-    currentAnim->Update(dt);
-
     const SDL_Rect& frame =
-        currentAnim->GetCurrentFrame();
+        anim.GetCurrentFrame();
 
     int x = (int)position.getX();
     int y = (int)position.getY();
@@ -145,5 +119,25 @@ void SpikeHazard::Draw(float dt)
 
 bool SpikeHazard::CleanUp()
 {
+    if (pbody != nullptr) {
+        pbody->listener = nullptr;
+        Engine::GetInstance().physics->DeletePhysBody(pbody);
+        pbody = nullptr;
+    }
+
     return true;
+}
+
+void SpikeHazard::Resume()
+{
+    pausedAtTop = false;
+}
+
+void SpikeHazard::SetTexture(SDL_Texture* tex)
+{
+    texture = tex;
+
+    if (borderSpike) {
+        anim.SetCurrent("flowerspike2");
+    }
 }

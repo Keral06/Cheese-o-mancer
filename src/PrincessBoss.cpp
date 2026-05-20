@@ -61,6 +61,14 @@ bool PrincessBoss::Start()
 
     texture = textureNIdle;
 
+    
+
+    spikeTexture = Engine::GetInstance().textures->Load(
+        "assets/Textures/Spritesheets/Princess/ataques planta/Flower spike.png"
+    );
+
+    
+
     pbody = Engine::GetInstance().physics->CreateRectangleFriction(position.getX(), position.getY(), texW, texH, bodyType::DYNAMIC, 0.0f);
 
 
@@ -107,6 +115,10 @@ bool PrincessBoss::Update(float dt)
     GetPhysicsValues();
 
     if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
+    {
+        StartSpikeAttack();
+    }
+    if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
     {
         StartFlowerAttack(20);
     }
@@ -236,17 +248,7 @@ void PrincessBoss::UpdateFlowerAttack(float dt)
     }
     
 
-    // FIN DEL ATAQUE
-    if (stateTimer >= 2.0f)
-    {
-        busy = false;
-        SetPrincessState(PrincessState::IDLE);
-
-        actionFinished = true;
-
-        flowersSpawned = 0;
-        spawnedFlowers.clear();
-    }
+    
 }
 
 // ===============================
@@ -259,6 +261,14 @@ void PrincessBoss::StartSpikeAttack()
 
     stateTimer = 0.0f;
 
+    waveSpawnTimer = 0.0f;
+
+    waveX = 0.0f;
+
+    bordersSpawned = false;
+
+    waveStarted = false;
+
     SetPrincessState(PrincessState::SPIKE_ATTACK);
 
     LOG("Princess Spike Attack");
@@ -268,26 +278,79 @@ void PrincessBoss::UpdateSpikeAttack(float dt)
 {
     stateTimer += dt;
 
-    if (stateTimer > 0.5f && !spawnedSpike)
+    Vector2D base = GetPosition();
+
+    // =========================
+    // 1. SPAWN BORDERS
+    // =========================
+
+    if (!bordersSpawned)
     {
-        spawnedSpike = true;
+        Vector2D leftPos(
+            base.getX() + 100.0f,
+            base.getY() + 128
+        );
 
-        Vector2D pos = GetPosition();
-        pos.setY(pos.getY() + 50);
+        Vector2D rightPos(
+            base.getX() + 3000.0f,
+            base.getY() + 128
+        );
 
-        SpawnSpike(pos);
+        leftBorderSpike = SpawnSpike(leftPos);
+        rightBorderSpike = SpawnSpike(rightPos);
+
+        if (leftBorderSpike)
+            leftBorderSpike->SetBorderSpike(true);
+
+        if (rightBorderSpike)
+            rightBorderSpike->SetBorderSpike(true);
+
+        waveX = leftPos.getX();
+
+        bordersSpawned = true;
     }
 
-    if (stateTimer >= 2.5f)
-    {
-        busy = false;
+    // =========================
+    // 2. WAIT FOR RISING
+    // =========================
 
-        SetPrincessState(PrincessState::IDLE);
+    if (stateTimer < 0.8f)
+        return;
+
+    // =========================
+    // 3. SPAWN WAVE
+    // =========================
+
+    waveSpawnTimer += dt;
+
+    if (waveSpawnTimer >= 200.0f)
+    {
+        waveSpawnTimer = 0.0f;
+
+        SpawnSpikeWave(waveX);
+
+        waveX += 120.0f;
+    }
+
+    // =========================
+    // 4. END CONDITION
+    // =========================
+
+    if (rightBorderSpike && waveX >= rightBorderSpike->position.getX())
+    {
+        if (leftBorderSpike)
+            leftBorderSpike->Resume();
+
+        if (rightBorderSpike)
+            rightBorderSpike->Resume();
+
+        busy = false;
 
         actionFinished = true;
 
-        /*if (fightController)
-            fightController->EndCurrentTurn();*/
+        fightController->OnBossFinishedAttack(BossTurn::PRINCESS);
+
+        SetPrincessState(PrincessState::IDLE);
     }
 }
 
@@ -428,13 +491,28 @@ void PrincessBoss::SpawnFlower(Vector2D pos)
     flower->Start();
 }
 
-void PrincessBoss::SpawnSpike(Vector2D pos)
+std::shared_ptr<SpikeHazard> PrincessBoss::SpawnSpike(Vector2D pos)
 {
-    auto spike = Engine::GetInstance()
+    auto entity =
+        Engine::GetInstance()
         .entityManager
         ->CreateEntity(EntityType::SPIKEHAZARD);
 
+    auto spike =
+        std::dynamic_pointer_cast<SpikeHazard>(entity);
+
+    if (!spike)
+    {
+        LOG("ERROR: SpikeHazard cast failed");
+        return nullptr;
+    }
+
     spike->position = pos;
+    spike->SetTexture(spikeTexture);
+    
+    spike->Start();
+
+    return spike;
 }
 
 bool PrincessBoss::IsFarEnough(Vector2D pos)
@@ -479,4 +557,51 @@ void PrincessBoss::SpawnFlowerGrid()
             }
         }
     }
+}
+
+void PrincessBoss::SpawnSpikeWave(float centerX)
+{
+    Vector2D base = GetPosition();
+
+    std::vector<float> offsets =
+    {
+        120.0f,
+        40.0f,
+        120.0f
+    };
+
+    float spacing = 160.0f;
+
+    for (int i = 0; i < (int)offsets.size(); i++)
+    {
+        float x = centerX + (i - 2) * spacing;
+        float y = base.getY() + offsets[i];
+
+        auto spike = SpawnSpike(Vector2D(x, y));
+
+        // IMPORTANT: por si quieres diferenciar comportamiento futuro
+        if (spike)
+        {
+            spike->SetBorderSpike(false);
+        }
+    }
+}
+
+void PrincessBoss::ReturnToBase(Vector2D pos)
+{
+    int x = (int)pos.getX();
+    int y = (int)pos.getY();
+
+    pbody->SetPosition(x, y);
+
+    busy = false;
+}
+
+void PrincessBoss::FinishAction()
+{
+    actionFinished = true;
+    busy = false;
+
+    if (fightController)
+        fightController->OnBossFinishedAttack(BossTurn::PRINCESS);
 }

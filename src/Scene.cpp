@@ -765,7 +765,7 @@ void Scene::UpdateLevel(float dt) {
 		LoadMap("TEST_map_LV1_tortureRoom_02.tmx");
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
-		LoadMap("Level2/Map_LV2_encreuada_01.tmx");
+		LoadMap("TEST_map_LV1_bossRoom_01.tmx");
 	}
 
 

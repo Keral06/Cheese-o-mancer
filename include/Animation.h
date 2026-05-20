@@ -16,11 +16,13 @@ public:
     void SetLoop(bool v);
     void Reset();
     bool HasFinishedOnce() const;
+    void ResetReverse();
     void Update(float dt);
     const SDL_Rect& GetCurrentFrame() const;
     bool IsAtLastFrame() const;
     int GetFrameCount() const;
     int GetCurrentFrameIndex() const;
+    void SetReverse(bool v);
 private:
     std::vector<AnimFrame> frames_;
     int currentIndex_ = 0;
@@ -29,6 +31,7 @@ private:
     bool finishedOnce_ = false;
 
     static SDL_Rect kEmpty_;
+    bool reverse_ = false;
 };
 
 class AnimationSet {
@@ -49,6 +52,8 @@ public:
     bool HasFinished() const;
     void Resets();
     int GetCurrentFrameIndex() const;
+    void SetReverse(bool v);
+    void ResetsReverse();
 private:
     int tileW_ = 0, tileH_ = 0, columns_ = 0;
     std::unordered_map<std::string, Animation> clips_;
