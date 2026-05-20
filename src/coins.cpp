@@ -29,11 +29,11 @@ bool Coins::Awake() {
 bool Coins::Start() {
 
 	std::unordered_map<int, std::string> aliases = { {0, "idle"} };
-	anims.LoadFromTSX("Assets/UI/Store/UI_Store_coin.tsx", aliases);
-	coinPickupFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/coin-collision-sound-342335.wav");
+	anims.LoadFromTSX("assets/UI/Store/UI_Store_coin.tsx", aliases);
+	coinPickupFx = Engine::GetInstance().audio->LoadFx("assets/Audio/Fx/PREV/coin-collision-sound-342335.wav");
 	anims.SetCurrent("idle");
 
-	texture = Engine::GetInstance().textures->Load("Assets/UI/Store/UI_Store_coin.png");
+	texture = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_coin_re.png");
 
 	
 		texW = 128;
@@ -95,7 +95,7 @@ bool Coins::Update(float dt)
 		
 
 		const SDL_Rect& currentFrame = anims.GetCurrentFrame();
-		Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2 , &currentFrame);
+		Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2 , nullptr);
 	}
 
 	return true;

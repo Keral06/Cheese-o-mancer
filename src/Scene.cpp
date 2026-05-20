@@ -823,6 +823,7 @@ void Scene::UnloadLevel() {
 	uiCoin = nullptr;
 	cardsBase = nullptr;
 	cardTheFool = nullptr;
+	cardsIcon = nullptr;
 	cardTheMagician = nullptr;
 	arrowLeft = nullptr;
 	arrowRight = nullptr;
@@ -1664,6 +1665,7 @@ void Scene::CreateInventoryUI() {
 	iconLamp = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemLamp1_01.png"); 
 	inventoryBag = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Inventari_Bag_01.png"); 
 	uiCoin = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_coin.png"); 
+	cardsIcon = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Tarot_InventoryItem1_.png");
 	cardTheFool = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Fool.png");
 	cardTheMagician = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Magician.png");
 	arrowRight = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_BurronRight_.png");
@@ -1674,7 +1676,7 @@ void Scene::CreateInventoryUI() {
 		UIElementType::BUTTON, 45, "",
 		{ 1000, 425, 96, 96 }, 
 		this, SDL_Rect{ 0,0,0,0 },
-		cardsBase, cardsBase
+		cardsIcon, cardsIcon
 	);
 	if (cardButton) cardButton->visible = false;
 
