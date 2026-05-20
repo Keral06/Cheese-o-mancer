@@ -2658,6 +2658,9 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 
 	Hermit::Hermit() :NPC(EntityType::NPC) {
+
+
+
 		Dialogue paperDialogue("assets/Dialogues/Mission_Hermit/Hermit_Initial_Dialogues.txt", "assets/Dialogues/Mission_Hermit/Hermit_Initial_Names.txt"); //change the dialogue lol!!!! Dialoguenormal
 		this->dialogue = paperDialogue;
 		Dialogue secondDialogue("assets/Dialogues/Mission_Hermit/Hermit_LVL1_Dialogues.txt", "assets/Dialogues/Mission_Hermit/Hermit_LVL1_Names.txt"); //change the dialogue lol!!!! lvl1

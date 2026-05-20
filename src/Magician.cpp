@@ -96,7 +96,7 @@ bool Magician::Update(float dt)
 
 			if (dialogueMagicianStart.hasEnded) {
 				firstTime = false;
-				Engine::GetInstance().scene->cheese = true;
+				
 			}
 		}
 	}
@@ -160,7 +160,7 @@ bool Magician::Update(float dt)
 
 		}
 
-		if (Engine::GetInstance().scene->cheese = true && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+		if (Engine::GetInstance().scene->cheese == true && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 			if (AfterCheese.hasStarted) {
 
