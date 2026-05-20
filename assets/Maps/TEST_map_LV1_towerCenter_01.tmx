@@ -53526,38 +53526,38 @@
  <objectgroup id="11" name="Doors">
   <object id="346" name="Door" type="Door" x="128" y="6016" width="132" height="1280">
    <properties>
-    <property name="name" value="Door_2_3"/>
+    <property name="name" value="Door_1_2_3"/>
     <property name="offsetX" type="int" value="200"/>
     <property name="offsetY" type="int" value="0"/>
     <property name="targetMap" value="TEST_map_LV1_pantryRoom_01.tmx"/>
-    <property name="targetSpawn" value="Door_3_2"/>
+    <property name="targetSpawn" value="Door_1_3_2"/>
    </properties>
   </object>
   <object id="347" name="Door" type="Door" x="128" y="1280" width="132" height="1024">
    <properties>
-    <property name="name" value="Door_2_2"/>
+    <property name="name" value="Door_1_2_2"/>
     <property name="offsetX" type="int" value="200"/>
     <property name="offsetY" type="int" value="0"/>
     <property name="targetMap" value="TEST_map_LV1_pantryRoom_01.tmx"/>
-    <property name="targetSpawn" value="Door_3_1"/>
+    <property name="targetSpawn" value="Door_1_3_1"/>
    </properties>
   </object>
   <object id="349" name="Door" type="Door" x="279" y="14592" width="465" height="128">
    <properties>
-    <property name="name" value="Door_2_1"/>
+    <property name="name" value="Door_1_2_1"/>
     <property name="offsetX" type="int" value="800"/>
     <property name="offsetY" type="int" value="-500"/>
     <property name="targetMap" value="TEST_map_LV1_startRoom_01.tmx"/>
-    <property name="targetSpawn" value="Door_1_1"/>
+    <property name="targetSpawn" value="Door_1_1_1"/>
    </properties>
   </object>
   <object id="378" name="Door" type="Door" x="11648" y="6272" width="128" height="1280">
    <properties>
-    <property name="name" value="Door_2_4"/>
+    <property name="name" value="Door_1_2_4"/>
     <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
     <property name="targetMap" value="TEST_map_LV1_tortureRoom_02.tmx"/>
-    <property name="targetSpawn" value="Door_4_2"/>
+    <property name="targetSpawn" value="Door_1_4_2"/>
    </properties>
   </object>
   <object id="379" x="12740" y="6696" width="16" height="8"/>
