@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="306" height="153" tilewidth="128" tileheight="128" infinite="0" nextlayerid="24" nextobjectid="363">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="306" height="153" tilewidth="128" tileheight="128" infinite="0" nextlayerid="24" nextobjectid="364">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="../LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -327774,7 +327774,17 @@
  </layer>
  <objectgroup id="17" name="Items"/>
  <objectgroup id="18" name="Checkpoint"/>
- <objectgroup id="11" name="Doors"/>
+ <objectgroup id="11" name="Doors">
+  <object id="363" name="Door" type="Door" x="0" y="14976" width="128" height="896">
+   <properties>
+    <property name="name" value="Door_2_9_1"/>
+    <property name="offsetX" type="int" value="300"/>
+    <property name="offsetY" type="int" value="0"/>
+    <property name="targetMap" value="Map_LV2_encreuada_01.tmx"/>
+    <property name="targetSpawn" value="Door_2_2_3"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup id="7" name="Floor">
   <object id="314" x="0" y="15872" width="1024" height="128"/>
   <object id="315" x="1024" y="15744" width="1536" height="128"/>

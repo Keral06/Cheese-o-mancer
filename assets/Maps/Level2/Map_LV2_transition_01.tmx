@@ -6127,7 +6127,7 @@
    <properties>
     <property name="name" value="Door_2_1_2"/>
     <property name="offsetX" type="int" value="0"/>
-    <property name="offsetY" type="int" value="0"/>
+    <property name="offsetY" type="int" value="-60"/>
     <property name="targetMap" value="Map_LV2_encreuada_01.tmx"/>
     <property name="targetSpawn" value="Door_2_2_1"/>
    </properties>
