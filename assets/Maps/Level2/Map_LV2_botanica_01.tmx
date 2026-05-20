@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="306" height="153" tilewidth="128" tileheight="128" infinite="0" nextlayerid="24" nextobjectid="313">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="306" height="153" tilewidth="128" tileheight="128" infinite="0" nextlayerid="24" nextobjectid="363">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="../LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -327774,8 +327774,59 @@
  <objectgroup id="17" name="Items"/>
  <objectgroup id="18" name="Checkpoint"/>
  <objectgroup id="11" name="Doors"/>
- <objectgroup id="7" name="Floor"/>
+ <objectgroup id="7" name="Floor">
+  <object id="314" x="0" y="15872" width="1024" height="128"/>
+  <object id="315" x="1024" y="15744" width="1536" height="128"/>
+  <object id="316" x="2560" y="15616" width="1024" height="128"/>
+  <object id="317" x="3584" y="15488" width="4096" height="128"/>
+  <object id="318" x="7680" y="15616" width="1152" height="128"/>
+  <object id="319" x="8832" y="15744" width="1792" height="128"/>
+  <object id="320" x="10624" y="15872" width="1024" height="128"/>
+  <object id="321" x="11648" y="15744" width="768" height="128"/>
+  <object id="322" x="12416" y="15616" width="640" height="128"/>
+  <object id="323" x="13056" y="15488" width="640" height="128"/>
+  <object id="324" x="13696" y="15360" width="512" height="128"/>
+  <object id="325" x="14208" y="15232" width="384" height="128"/>
+  <object id="326" x="14592" y="15104" width="640" height="128"/>
+  <object id="327" x="15232" y="14976" width="256" height="128"/>
+  <object id="328" x="15488" y="14848" width="256" height="128"/>
+  <object id="329" x="15744" y="14720" width="384" height="128"/>
+  <object id="330" x="16128" y="14592" width="512" height="128"/>
+  <object id="331" x="16640" y="14464" width="640" height="128"/>
+  <object id="332" x="17280" y="14336" width="1024" height="128"/>
+  <object id="333" x="18304" y="14208" width="2304" height="128"/>
+  <object id="334" x="20608" y="14336" width="640" height="128"/>
+  <object id="335" x="21248" y="14464" width="512" height="128"/>
+  <object id="336" x="21760" y="14592" width="384" height="128"/>
+  <object id="337" x="22144" y="14720" width="92" height="128"/>
+  <object id="344" x="19840" y="16128" width="1024" height="128"/>
+  <object id="345" x="19584" y="16000" width="256" height="128"/>
+  <object id="346" x="19456" y="15744" width="128" height="128"/>
+  <object id="347" x="20864" y="16000" width="256" height="128"/>
+  <object id="348" x="21120" y="15872" width="17792" height="128"/>
+  <object id="349" x="37120" y="13568" width="256" height="128"/>
+  <object id="350" x="37120" y="14720" width="256" height="128"/>
+  <object id="351" x="37760" y="12288" width="384" height="128"/>
+  <object id="352" x="37120" y="11136" width="256" height="128"/>
+  <object id="353" x="36480" y="10624" width="640" height="128"/>
+ </objectgroup>
  <objectgroup id="19" name="spikes"/>
- <objectgroup id="9" name="Walls"/>
+ <objectgroup id="9" name="Walls">
+  <object id="338" x="22144" y="14848" width="90.6667" height="256"/>
+  <object id="339" x="20224" y="14976" width="1920" height="128"/>
+  <object id="340" x="19712" y="14848" width="512" height="128"/>
+  <object id="341" x="19584" y="14976" width="128" height="128"/>
+  <object id="342" x="19456" y="15104" width="128" height="128"/>
+  <object id="343" x="19328" y="15232" width="128" height="512"/>
+  <object id="354" x="37120" y="11264" width="256" height="128"/>
+  <object id="355" x="36992" y="10752" width="128" height="384"/>
+  <object id="356" x="37760" y="12416" width="384" height="128"/>
+  <object id="357" x="36992" y="11392" width="128" height="2176"/>
+  <object id="358" x="37120" y="13696" width="256" height="128"/>
+  <object id="359" x="36992" y="13824" width="128" height="896"/>
+  <object id="360" x="37120" y="14848" width="256" height="128"/>
+  <object id="361" x="36992" y="14976" width="128" height="896"/>
+  <object id="362" x="36480" y="10752" width="128" height="5120"/>
+ </objectgroup>
  <objectgroup id="8" name="Entities"/>
 </map>
