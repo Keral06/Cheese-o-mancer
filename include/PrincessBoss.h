@@ -14,7 +14,10 @@ enum class PrincessState
 
     TRANSFORM,
 
+    CIDLE,
+
     FLOWER_ATTACK,
+
     SPIKE_ATTACK,
 
     CASTING,
@@ -64,6 +67,10 @@ public:
 
     void ChangeCurrentAnimation() override;
 
+    void SpawnFlower(Vector2D pos);
+
+    void SpawnSpike(Vector2D pos);
+
 private:
 
     // ===============================
@@ -103,22 +110,25 @@ private:
 
     bool actionFinished;
 
+    bool spawnedFlower = false;
+    bool spawnedSpike = false;
+
     AnimationSet animsNIdle;
-    AnimationSet animsNSlide;
-    AnimationSet animsCAttack1;
-    AnimationSet animsCAttack2;
-    AnimationSet animsCDefeat;
     AnimationSet animsCIdle;
-    AnimationSet animsCTransform;
+    AnimationSet animsDeath;
+    AnimationSet animsDefeat;
+    AnimationSet animsMagic;
+    AnimationSet animsMove;
 
     SDL_Texture* textureNIdle = nullptr;
-    SDL_Texture* textureNSlide = nullptr;
-    SDL_Texture* textureCAttack1 = nullptr;
-    SDL_Texture* textureCAttack2 = nullptr;
-    SDL_Texture* textureCDefeat = nullptr;
+    SDL_Texture* textureDeath = nullptr;
+    SDL_Texture* textureDefeat = nullptr;
+    SDL_Texture* textureMagic = nullptr;
     SDL_Texture* textureCIdle = nullptr;
-    SDL_Texture* textureCTransform = nullptr;
+    SDL_Texture* textureMove = nullptr;
 
     AnimationSet* currentAnim;
     SDL_Texture* currentTexture;
+
+
 };

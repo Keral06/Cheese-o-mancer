@@ -11,6 +11,7 @@
 #include "Log.h"
 #include "Physics.h"
 #include "Textures.h"
+#include "EntityManager.h"
 
 // ===============================
 // CONSTRUCTOR
@@ -32,33 +33,31 @@ PrincessBoss::~PrincessBoss()
 bool PrincessBoss::Start()
 {
     texW = 128*2;
-    texH = 128*3;
+    texH = 128*4;
 
     type = EnemyType::RANGED;
 
-    std::unordered_map<int, std::string> aliasesNIdle = { {0,"idle"} };
-    std::unordered_map<int, std::string> aliasesNSlide = { {0,"slide"} };
+    std::unordered_map<int, std::string> aliasesNIdle = { {0,"idle"}, {18,"prepared"}};
     std::unordered_map<int, std::string> aliasesCIdle = { {0,"idle"} };
-    std::unordered_map<int, std::string> aliasesCAttack1 = { {0,"attack1"} };
-    std::unordered_map<int, std::string> aliasesCAttack2 = { {0,"attack2"} };
-    std::unordered_map<int, std::string> aliasesCDefeat = { {0,"defeat"} };
-    std::unordered_map<int, std::string> aliasesCTransform = { {0,"transform"}, {21, "death"} };
+    std::unordered_map<int, std::string> aliasesDeath = { {0,"death"} };
+    std::unordered_map<int, std::string> aliasesDefeat = { {0,"defeat"} };
+    std::unordered_map<int, std::string> aliasesMagic = { {0,"magic"} };
+    std::unordered_map<int, std::string> aliasesMove = { {0,"move"} };
 
-    animsNIdle.LoadFromTSX("assets/Textures/Spritesheets/Knight/Normal/kn_idle.tsx", aliasesNIdle);
-    animsNSlide.LoadFromTSX("assets/Textures/Spritesheets/Knight/Normal/kn_slide.tsx", aliasesNSlide);
-    animsCIdle.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/j_sp_3x4.tsx", aliasesCIdle);
-    animsCAttack1.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/kc_attack1.tsx", aliasesCAttack1);
-    animsCAttack2.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/j_sp_5x5.tsx", aliasesCAttack2);
-    animsCDefeat.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/j_sp_5x5.tsx", aliasesCDefeat);
-    animsCTransform.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/j_sp_5x5.tsx", aliasesCTransform);
+    animsNIdle.LoadFromTSX("assets/Textures/Spritesheets/Princess/pn_idle_prepared.tsx", aliasesNIdle);
+    animsCIdle.LoadFromTSX("assets/Textures/Spritesheets/Princess/pt_idle.tsx", aliasesCIdle);
+    animsDeath.LoadFromTSX("assets/Textures/Spritesheets/Princess/pt_death.tsx", aliasesDeath);
+    animsDefeat.LoadFromTSX("assets/Textures/Spritesheets/Princess/pt_defeat.tsx", aliasesDefeat);
+    animsMagic.LoadFromTSX("assets/Textures/Spritesheets/Princess/pt_magic.tsx", aliasesMagic);
+    animsMove.LoadFromTSX("assets/Textures/Spritesheets/Princess/pt_move.tsx", aliasesMove);
+    /*animsCTransform.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/j_sp_5x5.tsx", aliasesCTransform);*/
 
-    textureNIdle = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Knight/Normal/KnightN_Idle.png");
-    textureNSlide = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Knight/Normal/KnightN_sliding.png");
-    textureCIdle = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Knight/Cheese/KnightC_Idle.png");
-    textureCAttack1 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Knight/Cheese/KnightC_Attack1.png");
-    textureCAttack2 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Knight/Cheese/KnightC_Attack2.png");
-    textureCDefeat = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Knight/Cheese/KnightC_Defeat.png");
-    textureCTransform = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Knight/Cheese/KnightC_Transform_And_Walk.png");
+    textureNIdle = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Princess/princessN_Idle+Prepared.png");
+    textureCIdle = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Princess/sprite_princessT_01_idle.png");
+    textureDeath = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Princess/sprite_princessT_06_death.png");
+    textureDefeat = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Princess/sprite_princessT_05_defeat.png");
+    textureMagic = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Princess/sprite_princessT_02_magic.png");
+    textureMove = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Princess/sprite_princessT_03_move.png");
 
     texture = textureNIdle;
 
@@ -178,17 +177,17 @@ void PrincessBoss::StartFlowerAttack(int amount)
 
 void PrincessBoss::UpdateFlowerAttack(float dt)
 {
-    // ===============================
-    // TODO:
-    // Spawn flower bombs
-    // ===============================
+    stateTimer += dt;
 
-    // Ejemplo futuro:
-    //
-    // for(int i = 0; i < flowersToSpawn; ++i)
-    // {
-    //      SpawnFlower();
-    // }
+    if (stateTimer > 0.5f && !spawnedFlower)
+    {
+        spawnedFlower = true;
+
+        Vector2D pos = GetPosition();
+        pos.setX(pos.getX() + 50);
+
+        SpawnFlower(pos);
+    }
 
     if (stateTimer >= 2.0f)
     {
@@ -196,9 +195,10 @@ void PrincessBoss::UpdateFlowerAttack(float dt)
 
         SetPrincessState(PrincessState::IDLE);
 
+        actionFinished = true;
+
         if (fightController)
             fightController->EndCurrentTurn();
-            actionFinished = true;
     }
 }
 
@@ -219,10 +219,17 @@ void PrincessBoss::StartSpikeAttack()
 
 void PrincessBoss::UpdateSpikeAttack(float dt)
 {
-    // ===============================
-    // TODO:
-    // Spawn spikes
-    // ===============================
+    stateTimer += dt;
+
+    if (stateTimer > 0.5f && !spawnedSpike)
+    {
+        spawnedSpike = true;
+
+        Vector2D pos = GetPosition();
+        pos.setY(pos.getY() + 50);
+
+        SpawnSpike(pos);
+    }
 
     if (stateTimer >= 2.5f)
     {
@@ -230,9 +237,10 @@ void PrincessBoss::UpdateSpikeAttack(float dt)
 
         SetPrincessState(PrincessState::IDLE);
 
+        actionFinished = true;
+
         if (fightController)
             fightController->EndCurrentTurn();
-            actionFinished = true;
     }
 }
 
@@ -265,6 +273,8 @@ void PrincessBoss::SetPrincessState(PrincessState newState)
     stateTimer = 0.0f;
 
     LOG("Princess State: %d", (int)princessState);
+
+    ChangeCurrentAnimation();
 }
 
 // ===============================
@@ -303,8 +313,8 @@ void PrincessBoss::Draw(float dt)
 
     Engine::GetInstance().render->DrawTexture(
         currentTexture,
-        x - texW / 2,
-        y - texH / 2,
+        x - animFrame.w / 2,
+        y - animFrame.h / 2,
         &animFrame,
         1.0f,
         0.0,
@@ -326,34 +336,55 @@ void PrincessBoss::ResetActionFinished()
 
 void PrincessBoss::ChangeCurrentAnimation()
 {
-    /*switch (princessState)
+    switch (princessState)
     {
     case PrincessState::IDLE:
-        currentAnim = &animsIdle;
-        currentTexture = texIdle;
+        currentAnim = &animsNIdle;
+        currentTexture = textureNIdle;
         break;
 
-    case PrincessState::TRANSFORM:
-        currentAnim = &animsTransform;
-        currentTexture = texTransform;
+    case PrincessState::CIDLE:
+        currentAnim = &animsCIdle;
+        currentTexture = textureCIdle;
         break;
 
     case PrincessState::FLOWER_ATTACK:
-        currentAnim = &animsFlower;
-        currentTexture = texFlower;
+        currentAnim = &animsMagic; 
+        currentTexture = textureMagic;
         break;
 
     case PrincessState::SPIKE_ATTACK:
-        currentAnim = &animsSpike;
-        currentTexture = texSpike;
+        currentAnim = &animsMove;
+        currentTexture = textureMove;
         break;
 
     case PrincessState::DEATH:
         currentAnim = &animsDeath;
-        currentTexture = texDeath;
+        currentTexture = textureDeath;
+        break;
+
+    default:
         break;
     }
 
     if (currentAnim)
-        currentAnim->Resets();*/
+        currentAnim->Resets();
+}
+
+void PrincessBoss::SpawnFlower(Vector2D pos)
+{
+    auto flower = Engine::GetInstance()
+        .entityManager
+        ->CreateEntity(EntityType::FLOWERBOMB);
+
+    flower->position = pos;
+}
+
+void PrincessBoss::SpawnSpike(Vector2D pos)
+{
+    auto spike = Engine::GetInstance()
+        .entityManager
+        ->CreateEntity(EntityType::SPIKEHAZARD);
+
+    spike->position = pos;
 }

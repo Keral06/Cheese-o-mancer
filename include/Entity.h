@@ -49,7 +49,9 @@ enum class EntityType
 	HORSE,
 	BEE,
 	PRINCESS,
-	KNIGHT
+	KNIGHT,
+	FLOWERBOMB,
+	SPIKEHAZARD
 };
 
 class PhysBody;
