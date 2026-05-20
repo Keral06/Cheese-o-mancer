@@ -765,7 +765,7 @@ void Scene::UpdateLevel(float dt) {
 		LoadMap("TEST_map_LV1_tortureRoom_02.tmx");
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
-		LoadMap("Map_LV2_encreuada_01.tmx");
+		LoadMap("Level2/Map_LV2_encreuada_01.tmx");
 	}
 
 
@@ -825,6 +825,7 @@ void Scene::UnloadLevel() {
 	cardTheFool = nullptr;
 	cardsIcon = nullptr;
 	cardTheMagician = nullptr;
+	cardWheelOfFortune = nullptr;
 	arrowLeft = nullptr;
 	arrowRight = nullptr;
 	// Clean up map and entities
@@ -1018,10 +1019,13 @@ void  Scene::PostUpdateLevel() {
 				}
 
 				if (currentCardIndex == 0 && cardTheFool != nullptr) {
-					Engine::GetInstance().render->DrawTextureNoCamera(cardTheFool, 730, 200, 200, 350);
+					Engine::GetInstance().render->DrawTextureNoCamera(cardTheFool, 730, 162, 200, 400);
 				}
 				else if (currentCardIndex == 1 && cardTheMagician != nullptr) {
-					Engine::GetInstance().render->DrawTextureNoCamera(cardTheMagician, 730, 200, 200, 350);
+					Engine::GetInstance().render->DrawTextureNoCamera(cardTheMagician, 730, 162, 200, 400);
+				}
+				else if (currentCardIndex == 2 && cardWheelOfFortune != nullptr) {
+					Engine::GetInstance().render->DrawTextureNoCamera(cardWheelOfFortune, 730, 162, 200, 400);
 				}
 			}
 		
@@ -1364,7 +1368,7 @@ void Scene::LoadMap(std::string map)
 		//nextSpawnPoint = "";
 		//nextMap = "";
 		if (player) {
-			player->lives = 3;/*
+			player->lives = 4;/*
 			player->extralife = false;
 			player->hasCheese = false;
 			player->hasMap1 = false;
@@ -1668,6 +1672,7 @@ void Scene::CreateInventoryUI() {
 	cardsIcon = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Tarot_InventoryItem1_.png");
 	cardTheFool = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Fool.png");
 	cardTheMagician = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Magician.png");
+	cardWheelOfFortune = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_WheelOfFortune.png");
 	arrowRight = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_BurronRight_.png");
 	arrowLeft = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_ButtonLeft_.png");
 	cardsBase = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_Base_.png");
@@ -1702,6 +1707,9 @@ void Scene::SetInventory(bool inventory) {
 	}
 	if (hasTalkedMagician) {
 		totalUnlockedCards = 2;
+	}
+	if (cheese) {
+		totalUnlockedCards = 3;
 	}
 	for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
 		if (element->id == 45) {

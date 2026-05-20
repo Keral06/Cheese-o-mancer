@@ -75,27 +75,32 @@ bool CheeseBallInteract::Update(float dt)
 
 
 					if (dialogue.hasStarted) {
-
 						dialogue.NextDialogue();
 						dialogue.Draw(dt);
+
+						if (dialogue.hasEnded) {
+							dialogue.CleanUp();
+							if (py != nullptr) {
+								
+								Engine::GetInstance().scene->cheese = true;
+							}
+						}
 						return true;
 					}
+
+					
 					dialogue.BeginDialogue();
 					dialogue.Draw(dt);
-					if (py == nullptr)return true;
-					else
-					Engine::GetInstance().scene->cheese == true;
-
 
 					return true;
 				}
+
 				if (dialogue.hasStarted && !dialogue.hasEnded) {
 					dialogue.Draw(dt);
 					return true;
-					CleanUp();
-
 				}
 			}
+
 
 
 

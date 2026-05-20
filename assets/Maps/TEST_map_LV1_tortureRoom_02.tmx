@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="107" height="104" tilewidth="128" tileheight="128" infinite="0" nextlayerid="23" nextobjectid="404">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="107" height="104" tilewidth="128" tileheight="128" infinite="0" nextlayerid="23" nextobjectid="410">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -21613,121 +21613,121 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
    <tile gid="74"/>
    <tile gid="76"/>
    <tile gid="77"/>
-   <tile gid="105"/>
-   <tile gid="105"/>
-   <tile gid="105"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile gid="106"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
    <tile gid="75"/>
-   <tile gid="76"/>
    <tile gid="77"/>
    <tile gid="75"/>
    <tile gid="76"/>
-   <tile gid="77"/>
-   <tile gid="75"/>
    <tile gid="76"/>
+   <tile gid="77"/>
+   <tile gid="76"/>
+   <tile gid="77"/>
+   <tile gid="105"/>
+   <tile gid="105"/>
+   <tile gid="105"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile gid="104"/>
+   <tile gid="105"/>
+   <tile gid="105"/>
+   <tile gid="106"/>
+   <tile gid="106"/>
+   <tile gid="107"/>
+   <tile gid="107"/>
+   <tile gid="107"/>
    <tile gid="107"/>
    <tile gid="105"/>
    <tile gid="105"/>
@@ -44552,29 +44552,29 @@
  <objectgroup id="22" name="Doors">
   <object id="394" name="Door" type="Door" x="0" y="896" width="128" height="1024">
    <properties>
-    <property name="name" value="Door_4_2"/>
+    <property name="name" value="Door_1_4_2"/>
     <property name="offsetX" type="int" value="200"/>
     <property name="offsetY" type="int" value="0"/>
     <property name="targetMap" value="TEST_map_LV1_towerCenter_01.tmx"/>
-    <property name="targetSpawn" value="Door_2_4"/>
+    <property name="targetSpawn" value="Door_1_2_4"/>
    </properties>
   </object>
   <object id="395" name="Door" type="Door" x="7296" y="11904" width="128" height="896">
    <properties>
-    <property name="name" value="Door_4_1"/>
+    <property name="name" value="Door_1_4_1"/>
     <property name="offsetX" type="int" value="200"/>
     <property name="offsetY" type="int" value="0"/>
     <property name="targetMap" value="TEST_map_LV1_bossRoom_01.tmx"/>
-    <property name="targetSpawn" value="Door_5_2"/>
+    <property name="targetSpawn" value="Door_1_5_2"/>
    </properties>
   </object>
   <object id="396" name="Door" type="Door" x="13568" y="10116" width="128" height="1788">
    <properties>
-    <property name="name" value="Door_4_2"/>
-    <property name="offsetX" type="int" value="0"/>
-    <property name="offsetY" type="int" value="0"/>
-    <property name="targetMap" value=""/>
-    <property name="targetSpawn" value=""/>
+    <property name="name" value="Door_1_4_2"/>
+    <property name="offsetX" type="int" value="-200"/>
+    <property name="offsetY" type="int" value="-50"/>
+    <property name="targetMap" value="Level2/Map_LV2_transition_01.tmx"/>
+    <property name="targetSpawn" value="Door_2_1_1"/>
    </properties>
   </object>
  </objectgroup>
@@ -44605,9 +44605,7 @@
   <object id="326" x="10880" y="9984" width="512" height="128"/>
   <object id="400" x="10880" y="11008" width="512" height="56"/>
   <object id="327" x="9984" y="11648" width="512" height="128"/>
-  <object id="333" x="10880" y="12416" width="1024" height="256"/>
   <object id="334" x="10496" y="12672" width="384" height="128"/>
-  <object id="335" x="11904" y="12416" width="384" height="128"/>
   <object id="337" x="12288" y="12288" width="384" height="128"/>
   <object id="338" x="12672" y="12160" width="384" height="128"/>
   <object id="339" x="13056" y="12032" width="384" height="128"/>
@@ -44621,6 +44619,7 @@
   <object id="388" x="1664" y="3072" width="484" height="62"/>
   <object id="397" x="10368" y="3072" width="768" height="128"/>
   <object id="402" x="11008" y="11794.3" width="512" height="40"/>
+  <object id="406" x="10880" y="12416" width="1408" height="128"/>
  </objectgroup>
  <objectgroup id="9" name="Walls">
   <object id="254" x="11264" y="1920" width="128" height="1408"/>
@@ -44675,6 +44674,7 @@
   <object id="378" x="11136" y="5888" width="128" height="128"/>
   <object id="379" x="11264" y="6016" width="128" height="128"/>
   <object id="380" x="7168" y="11904" width="128" height="896"/>
+  <object id="409" x="10880" y="12544" width="128" height="128"/>
  </objectgroup>
  <objectgroup id="8" name="Entities">
   <object id="97" name="Player" type="Player" x="606.182" y="1640.33">

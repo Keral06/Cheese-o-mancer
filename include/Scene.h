@@ -165,6 +165,7 @@ private:
 	SDL_Texture* cardsBase = nullptr;
 	SDL_Texture* cardTheFool = nullptr;
 	SDL_Texture* cardTheMagician = nullptr;
+	SDL_Texture* cardWheelOfFortune = nullptr;
 	SDL_Texture* arrowRight = nullptr;
 	SDL_Texture* arrowLeft = nullptr;
 
