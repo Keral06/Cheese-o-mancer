@@ -4486,6 +4486,9 @@
   </data>
  </layer>
  <layer id="20" name="Moho" width="86" height="52">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
