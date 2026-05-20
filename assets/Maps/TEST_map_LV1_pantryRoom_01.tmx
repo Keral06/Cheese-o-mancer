@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="21" nextobjectid="280">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="21" nextobjectid="280">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -22409,20 +22409,20 @@
  <objectgroup id="11" name="Doors">
   <object id="231" name="Door" type="Door" x="10882.3" y="640" width="125.697" height="1152">
    <properties>
-    <property name="name" value="Door_3_1"/>
+    <property name="name" value="Door_1_3_1"/>
     <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
     <property name="targetMap" value="TEST_map_LV1_towerCenter_01.tmx"/>
-    <property name="targetSpawn" value="Door_2_2"/>
+    <property name="targetSpawn" value="Door_1_2_2"/>
    </properties>
   </object>
   <object id="233" name="Door" type="Door" x="10882.3" y="4992" width="125.697" height="1280">
    <properties>
-    <property name="name" value="Door_3_2"/>
+    <property name="name" value="Door_1_3_2"/>
     <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
     <property name="targetMap" value="TEST_map_LV1_towerCenter_01.tmx"/>
-    <property name="targetSpawn" value="Door_2_3"/>
+    <property name="targetSpawn" value="Door_1_2_3"/>
    </properties>
   </object>
  </objectgroup>

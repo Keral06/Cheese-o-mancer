@@ -111,7 +111,7 @@ bool KnightBoss::Update(float dt)
 
     if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
     {
-        StartFight();
+        StartBounceAttack();
     }
 
     switch (knightState)

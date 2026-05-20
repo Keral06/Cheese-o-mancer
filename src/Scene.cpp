@@ -765,7 +765,7 @@ void Scene::UpdateLevel(float dt) {
 		LoadMap("TEST_map_LV1_tortureRoom_02.tmx");
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
-		LoadMap("Map_LV2_encreuada_01.tmx");
+		LoadMap("Level2/Map_LV2_encreuada_01.tmx");
 	}
 
 
@@ -1364,7 +1364,7 @@ void Scene::LoadMap(std::string map)
 		//nextSpawnPoint = "";
 		//nextMap = "";
 		if (player) {
-			player->lives = 3;/*
+			player->lives = 4;/*
 			player->extralife = false;
 			player->hasCheese = false;
 			player->hasMap1 = false;
