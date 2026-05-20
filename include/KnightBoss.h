@@ -161,6 +161,7 @@ private:
     AnimationSet* currentAnim;
     SDL_Texture* currentTexture;
 
+
     // ===============================
     // Bounce
     // ===============================
@@ -172,4 +173,6 @@ private:
     bool facingLeft = true;
 
     KnightPhase phase = PHASE_NONE;
+    bool bounceStarted = false;
+    
 };

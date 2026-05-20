@@ -57,6 +57,11 @@ bool Animation::IsAtLastFrame() const {
 
 int Animation::GetFrameCount() const { return static_cast<int>(frames_.size()); }
 
+int Animation::GetCurrentFrameIndex() const
+{
+    return currentIndex_;
+}
+
 // ---------- AnimationSet ----------
 
 AnimationSet::AnimationSet() {}
@@ -143,6 +148,16 @@ bool AnimationSet::LoadFromTSX(const char* tsxPath,
     if (!clips_.empty()) currentName_ = clips_.begin()->first;
 
     return !clips_.empty();
+}
+
+int AnimationSet::GetCurrentFrameIndex() const
+{
+    auto it = clips_.find(currentName_);
+
+    if (it == clips_.end())
+        return 0;
+
+    return it->second.GetCurrentFrameIndex();
 }
 
 void AnimationSet::SetCurrent(const std::string& name) {

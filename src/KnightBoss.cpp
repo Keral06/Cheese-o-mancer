@@ -48,15 +48,15 @@ bool KnightBoss::Start()
     std::unordered_map<int, std::string> aliasesCAttack1 = { {0,"attack1"} };
     std::unordered_map<int, std::string> aliasesCAttack2 = { {0,"attack2"} };
     std::unordered_map<int, std::string> aliasesCDefeat = { {0,"defeat"} };
-    std::unordered_map<int, std::string> aliasesCTransform = { {0,"transform"}, {21, "death"}};
+    std::unordered_map<int, std::string> aliasesCTransform = { {0,"transform"}, {45, "walk"}};
 
     animsNIdle.LoadFromTSX("assets/Textures/Spritesheets/Knight/Normal/kn_idle.tsx", aliasesNIdle);
     animsNSlide.LoadFromTSX("assets/Textures/Spritesheets/Knight/Normal/kn_slide.tsx", aliasesNSlide);
-    animsCIdle.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/j_sp_3x4.tsx", aliasesCIdle);
+    animsCIdle.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/kn_idle.tsx", aliasesCIdle);
     animsCAttack1.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/kc_attack1.tsx", aliasesCAttack1);
-    animsCAttack2.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/j_sp_5x5.tsx", aliasesCAttack2);
-    animsCDefeat.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/j_sp_5x5.tsx", aliasesCDefeat);
-    animsCTransform.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/j_sp_5x5.tsx", aliasesCTransform);
+    animsCAttack2.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/kc_attack2.tsx", aliasesCAttack2);
+    animsCDefeat.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/kc_defeat.tsx", aliasesCDefeat);
+    animsCTransform.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/kc_transform_walk.tsx", aliasesCTransform);
 
     textureNIdle = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Knight/Normal/KnightN_Idle.png");
     textureNSlide = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Knight/Normal/KnightN_sliding.png");
@@ -96,6 +96,8 @@ bool KnightBoss::Start()
     currentAnim = &animsNIdle;
     currentTexture = textureNIdle;
 
+    bounceStarted = false;
+
     return true;
 }
 
@@ -111,7 +113,7 @@ bool KnightBoss::Update(float dt)
 
     if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
     {
-        StartBounceAttack();
+        StartLungeAttack();
     }
 
     switch (knightState)
@@ -310,8 +312,18 @@ void KnightBoss::StartBounceAttack()
 
 void KnightBoss::UpdateBounce(float dt)
 {
-    velocity.x = bounceDir.getX() * bounceSpeed;
-    velocity.y = bounceDir.getY() * bounceSpeed;
+    int frame = currentAnim->GetCurrentFrameIndex();
+
+    if (frame >= 10)
+    {
+        velocity.x = bounceDir.getX() * bounceSpeed;
+        velocity.y = bounceDir.getY() * bounceSpeed;
+    }
+    else
+    {
+        velocity.x = 0;
+        velocity.y = 0;
+    }
 
     if (bounceCount >= maxBounces)
     {
@@ -389,6 +401,8 @@ void KnightBoss::Draw(float dt)
     if (currentAnim == nullptr)
         return;
 
+    double rotation = 0.0;
+
     currentAnim->Update(dt);
 
     const SDL_Rect& animFrame =
@@ -411,15 +425,30 @@ void KnightBoss::Draw(float dt)
 
     SDL_FlipMode flip =
         facingLeft ?
-        SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+            SDL_FLIP_NONE: SDL_FLIP_HORIZONTAL;
+
+    if (knightState == KnightState::BOUNCE_ATTACK)
+    {
+        if (bounceDir.getY() > 0.0f)
+        {
+            rotation = 90.0f;
+        }
+    }
+
+    if (knightState == KnightState::LUNGE_ATTACK)
+    {
+        if (velocity.x > 0) {
+            flip = SDL_FLIP_HORIZONTAL;
+        }
+    }
 
     Engine::GetInstance().render->DrawTexture(
         currentTexture,
-        x - texW / 2,
-        y - texH / 2,
+        x - animFrame.w / 2,
+        y - animFrame.h / 2,
         &animFrame,
         1.0f,
-        0.0,
+        rotation,
         INT_MAX,
         INT_MAX,
         flip
@@ -463,6 +492,8 @@ void KnightBoss::ChangeCurrentAnimation()
     {
         currentAnim = &animsNIdle;
         currentTexture = textureNIdle;
+
+       
         break;
     }
 
@@ -470,6 +501,8 @@ void KnightBoss::ChangeCurrentAnimation()
     {
         currentAnim = &animsNSlide;
         currentTexture = textureNSlide;
+
+        
         break;
     }
 
@@ -477,6 +510,8 @@ void KnightBoss::ChangeCurrentAnimation()
     {
         currentAnim = &animsCTransform;
         currentTexture = textureCTransform;
+
+        
         break;
     }
 
@@ -484,6 +519,8 @@ void KnightBoss::ChangeCurrentAnimation()
     {
         currentAnim = &animsCAttack1;
         currentTexture = textureCAttack1;
+
+        
         break;
     }
 
@@ -491,6 +528,8 @@ void KnightBoss::ChangeCurrentAnimation()
     {
         currentAnim = &animsCAttack2;
         currentTexture = textureCAttack2;
+
+        
         break;
     }
 
@@ -498,6 +537,8 @@ void KnightBoss::ChangeCurrentAnimation()
     {
         currentAnim = &animsCIdle;
         currentTexture = textureCIdle;
+
+        
         break;
     }
 
@@ -505,6 +546,8 @@ void KnightBoss::ChangeCurrentAnimation()
     {
         currentAnim = &animsCDefeat;
         currentTexture = textureCDefeat;
+
+        
         break;
     }
     }
