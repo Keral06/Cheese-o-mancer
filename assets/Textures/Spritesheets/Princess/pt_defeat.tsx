@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.12.1" name="pn_idle" tilewidth="384" tileheight="513" tilecount="36" columns="18">
- <image source="princessN_Idle+Prepared.png" width="6914" height="1027"/>
+<tileset version="1.10" tiledversion="1.12.1" name="pt_defeat" tilewidth="1024" tileheight="1280" tilecount="30" columns="6">
+ <image source="sprite_princessT_05_defeat.png" width="6144" height="6400"/>
  <tile id="0">
   <properties>
-   <property name="loop" type="bool" value="true"/>
-   <property name="name" value="idle"/>
+   <property name="loop" type="bool" value="false"/>
+   <property name="name" value="defeat"/>
   </properties>
   <animation>
    <frame tileid="0" duration="100"/>
@@ -25,14 +25,6 @@
    <frame tileid="15" duration="100"/>
    <frame tileid="16" duration="100"/>
    <frame tileid="17" duration="100"/>
-  </animation>
- </tile>
- <tile id="18">
-  <properties>
-   <property name="loop" type="bool" value="false"/>
-   <property name="name" value="prepared"/>
-  </properties>
-  <animation>
    <frame tileid="18" duration="100"/>
    <frame tileid="19" duration="100"/>
    <frame tileid="20" duration="100"/>
@@ -41,12 +33,6 @@
    <frame tileid="23" duration="100"/>
    <frame tileid="24" duration="100"/>
    <frame tileid="25" duration="100"/>
-   <frame tileid="26" duration="100"/>
-   <frame tileid="27" duration="100"/>
-   <frame tileid="28" duration="100"/>
-   <frame tileid="29" duration="100"/>
-   <frame tileid="30" duration="100"/>
-   <frame tileid="31" duration="100"/>
   </animation>
  </tile>
 </tileset>
