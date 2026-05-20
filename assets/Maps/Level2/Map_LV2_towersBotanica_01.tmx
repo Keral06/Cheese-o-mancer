@@ -13,7 +13,7 @@
  <tileset firstgid="3504" source="tileset_lv2_sky_parallax_4.tsx"/>
  <tileset firstgid="3505" source="tileset_lv2_sky_parallax_5.tsx"/>
  <tileset firstgid="3506" source="tileset_lv2_sky_parallax_6.tsx"/>
- <layer id="22" name="Wall Parallax" width="154" height="120" parallaxx="0.9">
+ <layer id="22" name="Wall Parallax" width="154" height="120" visible="0" parallaxx="0.9">
   <data>
    <tile/>
    <tile/>
@@ -18498,26 +18498,26 @@
   </data>
  </layer>
  <group id="29" name="Sky" offsetx="8472" offsety="-3208">
-  <objectgroup id="30" name="Sky1" parallaxx="0.82">
+  <objectgroup id="30" name="Sky1" parallaxx="0.8" parallaxy="0.8">
    <object id="331" gid="3501" x="1732" y="6077" width="7000" height="2250"/>
   </objectgroup>
-  <objectgroup id="31" name="Sky2" parallaxx="0.83">
+  <objectgroup id="31" name="Sky2" parallaxx="0.82" parallaxy="0.82">
    <object id="333" gid="3502" x="1340" y="6125" width="7000" height="2250"/>
   </objectgroup>
-  <objectgroup id="32" name="Sky3" parallaxx="0.84">
-   <object id="334" gid="3503" x="1244" y="6125" width="7000" height="2250"/>
+  <objectgroup id="32" name="Sky3" parallaxx="0.84" parallaxy="0.84">
+   <object id="334" gid="3503" x="1244" y="6140.15" width="7000" height="2250"/>
   </objectgroup>
-  <objectgroup id="33" name="Sky4" parallaxx="0.85">
-   <object id="336" gid="3504" x="1700" y="6141" width="7000" height="2250"/>
+  <objectgroup id="33" name="Sky4" parallaxx="0.86" parallaxy="0.86">
+   <object id="336" gid="3504" x="1748" y="6140.15" width="7000" height="2250"/>
   </objectgroup>
-  <objectgroup id="34" name="Sky5" parallaxx="0.86">
-   <object id="337" gid="3505" x="2468" y="6101" width="7000" height="2250"/>
+  <objectgroup id="34" name="Sky5" parallaxx="0.88" parallaxy="0.88">
+   <object id="337" gid="3505" x="2228" y="6165" width="7000" height="2250"/>
   </objectgroup>
-  <objectgroup id="35" name="Sky6" parallaxx="0.87">
-   <object id="339" gid="3506" x="2825.6" y="5973" width="4000" height="2250"/>
+  <objectgroup id="35" name="Sky6" parallaxx="0.9" parallaxy="0.9">
+   <object id="339" gid="3506" x="3807.66" y="6188.52" width="4000" height="2250"/>
   </objectgroup>
  </group>
- <group id="24" name="Boss Room">
+ <group id="24" name="Boss Room" visible="0">
   <layer id="26" name="BossWall" width="154" height="120">
    <data>
     <tile/>
@@ -37006,7 +37006,7 @@
    <object id="327" gid="2531" x="11368" y="2692" width="6528" height="2432"/>
   </objectgroup>
  </group>
- <layer id="13" name="AssetsBG" width="154" height="120">
+ <layer id="13" name="AssetsBG" width="154" height="120" visible="0">
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>
@@ -55493,7 +55493,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="16" name="Background" width="154" height="120">
+ <layer id="16" name="Background" width="154" height="120" visible="0">
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>
@@ -73980,7 +73980,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="14" name="Assets" width="154" height="120">
+ <layer id="14" name="Assets" width="154" height="120" visible="0">
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>
@@ -92467,7 +92467,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="10" name="Map" width="154" height="120">
+ <layer id="10" name="Map" width="154" height="120" visible="0">
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>
@@ -110954,7 +110954,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="21" name="testtt" width="154" height="120">
+ <layer id="21" name="testtt" width="154" height="120" visible="0">
   <data>
    <tile/>
    <tile/>
@@ -129438,11 +129438,11 @@
    <tile/>
   </data>
  </layer>
- <objectgroup id="17" name="Items"/>
- <objectgroup id="18" name="Checkpoint"/>
- <objectgroup id="11" name="Doors"/>
- <objectgroup id="7" name="Floor"/>
- <objectgroup id="19" name="spikes"/>
- <objectgroup id="9" name="Walls"/>
- <objectgroup id="8" name="Entities"/>
+ <objectgroup id="17" name="Items" visible="0"/>
+ <objectgroup id="18" name="Checkpoint" visible="0"/>
+ <objectgroup id="11" name="Doors" visible="0"/>
+ <objectgroup id="7" name="Floor" visible="0"/>
+ <objectgroup id="19" name="spikes" visible="0"/>
+ <objectgroup id="9" name="Walls" visible="0"/>
+ <objectgroup id="8" name="Entities" visible="0"/>
 </map>
