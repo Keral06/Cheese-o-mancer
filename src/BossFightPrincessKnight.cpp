@@ -57,6 +57,8 @@ bool BossFightPrincessKnight::Start()
     // TEMP:
     // Crear bosses manualmente
 
+
+
     princess = new PrincessBoss();
     knight = new KnightBoss();
 

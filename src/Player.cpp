@@ -226,6 +226,34 @@ void Player::Move() {
 	if (velocity.y == 0) {
 		isCollidedFloor = true;
 	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
+	{
+		isWallWalking = true;
+		isJumping = false;
+	}
+	else {
+		isWallWalking = false;
+	}
+
+	if (isWallWalking)
+	{
+		velocity.y = 0;
+		velocity.x = 0;
+
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+			velocity.y = -speed;
+
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+			velocity.y = speed;
+
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			velocity.x = -speed;
+
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			velocity.x = speed;
+		
+	}
+
 	// =====================
 	// INPUT HORIZONTAL
 	// =====================
@@ -415,13 +443,20 @@ void Player::Draw(float dt) {
 	int drawX = x - animFrame.w / 2;
 	int drawY = y - animFrame.h / 2; 
 
+	float rotation = 0.0f;
+
+	if (isWallWalking)
+	{
+		rotation = 90.0f;
+	}
+
 	Engine::GetInstance().render->DrawTexture(
 		texture,
 		drawX,
 		drawY,
 		&animFrame,
 		1.0f,
-		0.0,
+		rotation,
 		INT_MAX,
 		INT_MAX,
 		flip
@@ -496,6 +531,13 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 			hasHit = true;
 		}
 
+
+		/*case ColliderType::CHEESE_POWERDOWNJUMP:
+			hasCheeseDownJump = true;
+			cheeseDownJumpUsed = false;
+			LOG("Cheese Down Jump acquired");
+			break;*/ //METER AQUI LO DEL DOBLE SALTO
+
 		return; // importante: no seguir procesando como player normal
 	}
 
@@ -531,7 +573,9 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 		AddPoints(10);
 		break;
 	}
-
+	case ColliderType::MOHOWALL:
+		isOnSpecialWall = true;
+		break;
 	case ColliderType::SAVE:
 	{
 		if (physB->objectName != "Player")
@@ -623,6 +667,10 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 
 
 
+		break;
+	case ColliderType::MOHOWALL:
+		isOnSpecialWall = false;
+		isWallWalking = false;
 		break;
 	default:
 		break;
@@ -1000,14 +1048,33 @@ void Player::HandleMountedMovement()
 
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		Engine::GetInstance().physics->ApplyLinearImpulseToCenter(
-			mountedBall->pbody,
-			0.0f,
-			-jumpForce,
-			true
-		);
+		if (hasCheeseDownJump && !cheeseDownJumpUsed)
+		{
+			
+			Engine::GetInstance().physics->ApplyLinearImpulseToCenter(
+				mountedBall->pbody,
+				0.0f,
+				jumpForce * 2.0f, // hacia abajo (positivo)
+				true
+			);
 
-		b2Body_SetAwake(mountedBall->pbody->body, true);
+			cheeseDownJumpUsed = true;
+			DismountAndLaunch(); // opcional: o crea un nuevo estado
+		}
+		else
+		{
+			// comportamiento normal
+			Engine::GetInstance().physics->ApplyLinearImpulseToCenter(
+				mountedBall->pbody,
+				0.0f,
+				-jumpForce,
+				true
+			);
+
+			cheeseDownJumpUsed = false;
+		}
+
+		//b2Body_SetAwake(mountedBall->pbody->body, true);
 	}
 }
 
@@ -1041,4 +1108,7 @@ void Player::DismountAndLaunch()
 	isMounted = false;
 	cheeseSpeed = 10.0f;
 	state = DEFAULT;
+
+	
+	
 }

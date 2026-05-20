@@ -44,7 +44,8 @@ enum class ColliderType {
     HANDMAN,
 	CHEESEBALLINTERACT,
     WEAKWALL,
-    NPC
+    NPC,
+    MOHOWALL
     // ..
 };
 

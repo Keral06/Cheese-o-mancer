@@ -133,7 +133,8 @@ public:
 	bool HorsekinManure = false;
 	bool Gargantuan = false;
 
-	
+	bool hasCheeseDownJump = true;
+	bool cheeseDownJumpUsed = false;
 	/*SDL_Rect& lastFrame;*/
 private: 
 	b2Vec2 velocity;
@@ -183,7 +184,9 @@ private:
 	float cheeseSpeed = 10.0f;
 	float cheeseTime = 300.0f;
 
-
+	bool isWallWalking = false;
+	bool isOnSpecialWall = false;
+	float wallNormal = 0.0f;
 
 
 	
