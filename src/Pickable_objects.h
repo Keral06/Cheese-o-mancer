@@ -55,4 +55,5 @@ public:
 	Player* py;
 	bool isGettingTouched = false;
 	bool PopUpOn = false;
+	void ChooseWhoIs();
 };

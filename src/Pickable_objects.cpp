@@ -38,80 +38,7 @@ bool Pics::Awake() {
 bool Pics::Start() {
 
 	//here i make them different depending on what it is
-	if (name == "Dawn") {
 	
-		dialogue = nullptr;
-		PopUpImage = Engine::GetInstance().textures->Load("Assets/UI/UI_Poem_1_.png");
-		texture = Engine::GetInstance().textures->Load("Assets/Textures/Spritesheets/Carta/Carta1.png"); //placeholder
-		BoolOfPlayer = 1;
-	
-	
-	}
-	else if (name == "Day") {
-	
-		dialogue = nullptr;
-		PopUpImage = Engine::GetInstance().textures->Load("Assets/UI/UI_Poem_2_.png");
-		texture = Engine::GetInstance().textures->Load("Assets/Textures/Spritesheets/Carta/Carta2.png"); //placeholder
-		BoolOfPlayer = 2;
-
-	
-	
-	
-	}
-	else if (name == "Dusk") {
-
-		dialogue = nullptr;
-		PopUpImage = Engine::GetInstance().textures->Load("Assets/UI/UI_Poem_3_.png");
-		texture = Engine::GetInstance().textures->Load("Assets/Textures/Spritesheets/Carta/Carta3.png"); //placeholder
-		BoolOfPlayer = 3;
-
-
-
-
-	}
-	else if (name == "Night") {
-
-		dialogue = nullptr;
-		PopUpImage = Engine::GetInstance().textures->Load("Assets/UI/UI_Poem_4_.png");
-		texture = Engine::GetInstance().textures->Load("Assets/Textures/Spritesheets/Carta/Carta4.png"); //placeholder
-
-		BoolOfPlayer = 4;
-
-
-
-	}
-	else if (name == "Spring") {
-
-		Dialogue paperDialogue("resources/Dialogues/Pickable/SpringWater.txt");
-		this->dialogue = paperDialogue;
-
-		BoolOfPlayer = 5;
-
-
-
-	}
-	else if (name == "Horsekin") {
-
-		Dialogue paperDialogue("resources/Dialogues/Pickable/Horsekin.txt");
-		this->dialogue = paperDialogue;
-	
-
-		BoolOfPlayer = 6;
-
-
-
-	}
-	else if (name == "TreeRoot") {
-
-		Dialogue paperDialogue("resources/Dialogues/Pickable/TreeRoot.txt");
-		this->dialogue = paperDialogue;
-
-
-		BoolOfPlayer = 6;
-
-
-
-	}
 	InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 	//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
@@ -162,7 +89,86 @@ bool Pics::Start() {
 
 	return true;
 }
+void Pics:: ChooseWhoIs() {
 
+
+	if (name == "Dawn") {
+
+		dialogue = nullptr;
+		PopUpImage = Engine::GetInstance().textures->Load("Assets/UI/UI_Poem_1_.png");
+		texture = Engine::GetInstance().textures->Load("Assets/Textures/Spritesheets/Carta/Carta1.png"); //placeholder
+		BoolOfPlayer = 1;
+
+
+	}
+	else if (name == "Day") {
+
+		dialogue = nullptr;
+		PopUpImage = Engine::GetInstance().textures->Load("Assets/UI/UI_Poem_2_.png");
+		texture = Engine::GetInstance().textures->Load("Assets/Textures/Spritesheets/Carta/Carta2.png"); //placeholder
+		BoolOfPlayer = 2;
+
+
+
+
+	}
+	else if (name == "Dusk") {
+
+		dialogue = nullptr;
+		PopUpImage = Engine::GetInstance().textures->Load("Assets/UI/UI_Poem_3_.png");
+		texture = Engine::GetInstance().textures->Load("Assets/Textures/Spritesheets/Carta/Carta3.png"); //placeholder
+		BoolOfPlayer = 3;
+
+
+
+
+	}
+	else if (name == "Night") {
+
+		dialogue = nullptr;
+		PopUpImage = Engine::GetInstance().textures->Load("Assets/UI/UI_Poem_4_.png");
+		texture = Engine::GetInstance().textures->Load("Assets/Textures/Spritesheets/Carta/Carta4.png"); //placeholder
+
+		BoolOfPlayer = 4;
+
+
+
+	}
+	else if (name == "Spring") {
+
+		Dialogue paperDialogue("resources/Dialogues/Pickable/SpringWater.txt");
+		this->dialogue = paperDialogue;
+
+		BoolOfPlayer = 5;
+
+
+
+	}
+	else if (name == "Horsekin") {
+
+		Dialogue paperDialogue("resources/Dialogues/Pickable/Horsekin.txt");
+		this->dialogue = paperDialogue;
+
+
+		BoolOfPlayer = 6;
+
+
+
+	}
+	else if (name == "TreeRoot") {
+
+		Dialogue paperDialogue("resources/Dialogues/Pickable/TreeRoot.txt");
+		this->dialogue = paperDialogue;
+
+
+		BoolOfPlayer = 6;
+
+
+
+	}
+
+
+}
 bool Pics::Update(float dt)
 {
 	if (!active) return true;
