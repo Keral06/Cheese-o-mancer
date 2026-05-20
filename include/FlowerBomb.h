@@ -38,10 +38,7 @@ private:
 
     SDL_Texture* texture = nullptr;
 
-    AnimationSet animIdle;
-    AnimationSet animExplosion;
-
-    AnimationSet* currentAnim = nullptr;
+    AnimationSet anim;
 
     PhysBody* pbody = nullptr;
 };

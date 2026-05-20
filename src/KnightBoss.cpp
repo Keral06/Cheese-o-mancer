@@ -111,10 +111,10 @@ bool KnightBoss::Update(float dt)
 
     GetPhysicsValues();
 
-    if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
+    /*if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
     {
         StartLungeAttack();
-    }
+    }*/
 
     switch (knightState)
     {

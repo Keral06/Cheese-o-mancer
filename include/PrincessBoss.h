@@ -5,6 +5,14 @@
 #pragma once
 
 #include "Enemy.h"
+#include <vector>
+
+struct SpawnedPos
+{
+    Vector2D pos;
+};
+
+
 
 class BossFightPrincessKnight;
 
@@ -71,6 +79,10 @@ public:
 
     void SpawnSpike(Vector2D pos);
 
+    bool IsFarEnough(Vector2D pos);
+
+    void SpawnFlowerGrid();
+
 private:
 
     // ===============================
@@ -130,5 +142,12 @@ private:
     AnimationSet* currentAnim;
     SDL_Texture* currentTexture;
 
+    std::vector<Vector2D> spawnedFlowers;
+    float flowerSpawnTimer = 0.0f;
+    int flowersSpawned = 0;
 
+    int gridRows = 4;
+    int gridCols = 6;
+
+    bool gridUsed[4][6] = { false };
 };

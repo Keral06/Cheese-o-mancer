@@ -39,21 +39,17 @@ bool FlowerBomb::Start()
         {0, "explode"}
     };
 
-    animIdle.LoadFromTSX(
-        "assets/Textures/Spritesheets/Princess/flower_idle.tsx",
+    anim.LoadFromTSX(
+        "assets/Textures/Spritesheets/Princess/ataques planta/pt_flowerbomb.tsx",
         aliasesIdle
     );
 
-    animExplosion.LoadFromTSX(
-        "assets/Textures/Spritesheets/Princess/flower_explode.tsx",
-        aliasesExplosion
-    );
 
     texture = Engine::GetInstance().textures->Load(
-        "assets/Textures/Spritesheets/Princess/FlowerBomb.png"
+        "assets/Textures/Spritesheets/Princess/ataques planta/Flowe bomb.png"
     );
 
-    currentAnim = &animIdle;
+   
 
     pbody = Engine::GetInstance().physics->CreateCircle(
         position.getX(),
@@ -84,7 +80,7 @@ bool FlowerBomb::Update(float dt)
     }
     else if (state == State::EXPLODING)
     {
-        if (currentAnim->HasFinished())
+        if (anim.HasFinished())
         {
             toDelete = true;
         }
@@ -103,8 +99,8 @@ void FlowerBomb::Explode()
 
     timer = 0.0f;
 
-    currentAnim = &animExplosion;
-    currentAnim->Resets();
+    
+    anim.Resets();
 
     // TODO:
     // Spawn explosion collider
@@ -115,13 +111,11 @@ void FlowerBomb::Explode()
 
 void FlowerBomb::Draw(float dt)
 {
-    if (currentAnim == nullptr)
-        return;
 
-    currentAnim->Update(dt);
+    anim.Update(dt);
 
     const SDL_Rect& frame =
-        currentAnim->GetCurrentFrame();
+        anim.GetCurrentFrame();
 
     int x = (int)position.getX();
     int y = (int)position.getY();
@@ -144,6 +138,14 @@ void FlowerBomb::Draw(float dt)
 
 bool FlowerBomb::CleanUp()
 {
+    if (pbody != nullptr) {
+        pbody->listener = nullptr;
+        Engine::GetInstance().physics->DeletePhysBody(pbody);
+        pbody = nullptr;
+    }
+
+    Engine::GetInstance().textures->UnLoad(texture);
+
     return true;
 }
 

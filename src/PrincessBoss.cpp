@@ -106,6 +106,11 @@ bool PrincessBoss::Update(float dt)
 
     GetPhysicsValues();
 
+    if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
+    {
+        StartFlowerAttack(20);
+    }
+
     switch (princessState)
     {
     case PrincessState::IDLE:
@@ -165,40 +170,82 @@ void PrincessBoss::StartTransform()
 void PrincessBoss::StartFlowerAttack(int amount)
 {
     busy = true;
-
-    flowersToSpawn = amount;
-
     stateTimer = 0.0f;
 
     SetPrincessState(PrincessState::FLOWER_ATTACK);
 
-    LOG("Princess Flower Attack");
+    LOG("Princess Flower Grid Attack");
+
+    SpawnFlowerGrid();
 }
 
 void PrincessBoss::UpdateFlowerAttack(float dt)
 {
+
     stateTimer += dt;
 
-    if (stateTimer > 0.5f && !spawnedFlower)
-    {
-        spawnedFlower = true;
+    float minY = -200.0f; 
+    float maxY = 80.0f;
 
-        Vector2D pos = GetPosition();
-        pos.setX(pos.getX() + 50);
+    Vector2D base = GetPosition();
+
+    for (int i = flowersSpawned; i < flowersToSpawn; i++)
+    {
+        Vector2D pos;
+        bool valid = false;
+
+        
+        for (int attempt = 0; attempt < 10; attempt++)
+        {
+            float offsetX = (rand() % 300) - 150;
+            float offsetY = minY + (rand() / (float)RAND_MAX) * (maxY - minY);
+
+            pos = Vector2D(base.getX() + offsetX, base.getY() + offsetY);
+
+            if (IsFarEnough(pos))
+            {
+                valid = true;
+                break;
+            }
+        }
+
+        
+        if (!valid)
+        {
+            float offsetX = (rand() % 3000) - 150;
+            float offsetY = 80 - (rand() % 200);
+
+            pos = Vector2D(base.getX() + offsetX, base.getY() + offsetY);
+        }
 
         SpawnFlower(pos);
+        spawnedFlowers.push_back(pos);
+        flowersSpawned++;
     }
 
+    // FIN ATAQUE
     if (stateTimer >= 2.0f)
     {
         busy = false;
-
         SetPrincessState(PrincessState::IDLE);
 
         actionFinished = true;
 
-        if (fightController)
-            fightController->EndCurrentTurn();
+        flowersSpawned = 0;
+        spawnedFlowers.clear();
+    }
+    
+
+    // FIN DEL ATAQUE
+    if (stateTimer >= 2.0f)
+    {
+        busy = false;
+        SetPrincessState(PrincessState::IDLE);
+
+        actionFinished = true;
+
+        flowersSpawned = 0;
+        spawnedFlowers.clear();
     }
 }
 
@@ -239,8 +286,8 @@ void PrincessBoss::UpdateSpikeAttack(float dt)
 
         actionFinished = true;
 
-        if (fightController)
-            fightController->EndCurrentTurn();
+        /*if (fightController)
+            fightController->EndCurrentTurn();*/
     }
 }
 
@@ -378,6 +425,7 @@ void PrincessBoss::SpawnFlower(Vector2D pos)
         ->CreateEntity(EntityType::FLOWERBOMB);
 
     flower->position = pos;
+    flower->Start();
 }
 
 void PrincessBoss::SpawnSpike(Vector2D pos)
@@ -387,4 +435,48 @@ void PrincessBoss::SpawnSpike(Vector2D pos)
         ->CreateEntity(EntityType::SPIKEHAZARD);
 
     spike->position = pos;
+}
+
+bool PrincessBoss::IsFarEnough(Vector2D pos)
+{
+    float minDist = 200.0f;
+
+    for (auto& p : spawnedFlowers)
+    {
+        float dx = pos.getX() - p.getX();
+        float dy = pos.getY() - p.getY();
+
+        float distSq = dx * dx + dy * dy;
+
+        if (distSq < minDist * minDist)
+            return false;
+    }
+
+    return true;
+}
+
+void PrincessBoss::SpawnFlowerGrid()
+{
+    Vector2D base = GetPosition();
+
+    float width = 3000.0f;   // ancho total del grid
+    float height = 1500.0f;  // alto total del grid
+
+    float cellW = width / (gridCols - 1);
+    float cellH = height / (gridRows - 1);
+
+    for (int r = 0; r < gridRows; r++)
+    {
+        for (int c = 0; c < gridCols; c++)
+        {
+            // patrón tipo ajedrez
+            if ((r + c) % 2 == 0)
+            {
+                float x = base.getX() + 1000 - width * 0.5f + c * cellW;
+                float y = base.getY() - height * 0.5f + r * cellH;
+
+                SpawnFlower(Vector2D(x, y));
+            }
+        }
+    }
 }
