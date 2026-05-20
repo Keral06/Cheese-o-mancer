@@ -9,7 +9,10 @@ public:
 
     bool Start() override;
     bool Destroy() override;
+    bool Update(float dt) override;
+    bool CleanUp() override;
 
+    SDL_Texture* texture = nullptr;
     Verdugo* owner = nullptr;
     int width = 0;
     int height = 0;
