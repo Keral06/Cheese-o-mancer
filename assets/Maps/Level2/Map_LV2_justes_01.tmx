@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="167" height="97" tilewidth="128" tileheight="128" infinite="0" nextlayerid="39" nextobjectid="354">
+<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="167" height="97" tilewidth="128" tileheight="128" infinite="0" nextlayerid="39" nextobjectid="372">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="../LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
  <tileset firstgid="4" source="tileset_lv2_general_01.tsx"/>
  <tileset firstgid="1562" source="tileset_lv2_Justes_01.tsx"/>
+ <tileset firstgid="3362" source="tileset_lv2_sky_parallax_1.tsx"/>
+ <tileset firstgid="3363" source="tileset_lv2_sky_parallax_2.tsx"/>
+ <tileset firstgid="3364" source="tileset_lv2_sky_parallax_3.tsx"/>
+ <tileset firstgid="3365" source="tileset_lv2_sky_parallax_4.tsx"/>
+ <tileset firstgid="3366" source="tileset_lv2_sky_parallax_5.tsx"/>
+ <tileset firstgid="3367" source="tileset_lv2_sky_parallax_6.tsx"/>
+ <tileset firstgid="3368" source="fondo castell 6.tsx"/>
+ <tileset firstgid="3369" source="fondo castell 5.tsx"/>
+ <tileset firstgid="3370" source="fondo castell 4.tsx"/>
+ <tileset firstgid="3371" source="fondo castell 3.tsx"/>
+ <tileset firstgid="3372" source="fondo castell 2.tsx"/>
+ <tileset firstgid="3373" source="fondo castell 1.tsx"/>
  <layer id="16" name="Background" width="167" height="97">
   <properties>
    <property name="Draw" type="bool" value="true"/>
@@ -16211,6 +16223,46 @@
    <tile/>
   </data>
  </layer>
+ <group id="31" name="Sky" offsetx="-5566.18" offsety="-8006.42" parallaxx="0.1" parallaxy="0.1">
+  <objectgroup id="33" name="Sky1" parallaxx="0.4" parallaxy="0.4">
+   <object id="354" gid="3362" x="2380" y="9269" width="7000" height="2442"/>
+  </objectgroup>
+  <objectgroup id="34" name="Sky2" parallaxx="0.5" parallaxy="0.5">
+   <object id="355" gid="3363" x="2396" y="9269" width="7000" height="2250"/>
+  </objectgroup>
+  <objectgroup id="35" name="Sky3" parallaxx="0.6" parallaxy="0.6">
+   <object id="356" gid="3364" x="2388" y="9301" width="7000" height="2250"/>
+  </objectgroup>
+  <objectgroup id="36" name="Sky4" parallaxx="0.7" parallaxy="0.7">
+   <object id="357" gid="3365" x="2380" y="9301" width="7000" height="2250"/>
+  </objectgroup>
+  <objectgroup id="37" name="Sky5" parallaxx="0.8" parallaxy="0.8">
+   <object id="359" gid="3366" x="2380" y="9277" width="7000" height="2250"/>
+  </objectgroup>
+  <objectgroup id="38" name="Sky6" parallaxx="0.9" parallaxy="0.9">
+   <object id="360" gid="3367" x="3352" y="9309" width="5360" height="2458"/>
+  </objectgroup>
+ </group>
+ <group id="23" name="Castle" offsetx="-12604" offsety="-5988" parallaxx="0.1" parallaxy="0.1">
+  <objectgroup id="25" name="Castle2" parallaxx="0.3">
+   <object id="369" gid="3372" x="10832" y="7832" width="5000" height="3000"/>
+  </objectgroup>
+  <objectgroup id="24" name="Castle1" parallaxx="0.4">
+   <object id="371" gid="3373" x="10960" y="8116" width="5000" height="3000"/>
+  </objectgroup>
+  <objectgroup id="26" name="Castle3" parallaxx="0.5">
+   <object id="367" gid="3371" x="11248" y="8116" width="5000" height="3000"/>
+  </objectgroup>
+  <objectgroup id="27" name="Castle4" parallaxx="0.7">
+   <object id="363" gid="3370" x="11548" y="8004" width="5000" height="3000"/>
+  </objectgroup>
+  <objectgroup id="28" name="Castle5" parallaxx="0.8">
+   <object id="362" gid="3369" x="11588" y="7940" width="5000" height="3000"/>
+  </objectgroup>
+  <objectgroup id="29" name="Castle6" parallaxx="0.9">
+   <object id="361" gid="3368" x="11708" y="7996" width="5000" height="3000"/>
+  </objectgroup>
+ </group>
  <layer id="21" name="Wall" width="167" height="97" offsetx="-193.212" offsety="3525.7" parallaxx="0.95">
   <data>
    <tile/>
@@ -32414,22 +32466,6 @@
    <tile gid="59"/>
   </data>
  </layer>
- <group id="31" name="Sky">
-  <objectgroup id="33" name="Sky1"/>
-  <objectgroup id="34" name="Sky2"/>
-  <objectgroup id="35" name="Sky3"/>
-  <objectgroup id="36" name="Sky4"/>
-  <objectgroup id="37" name="Sky5"/>
-  <objectgroup id="38" name="Sky6"/>
- </group>
- <group id="23" name="Castle">
-  <objectgroup id="24" name="Castle1"/>
-  <objectgroup id="25" name="Castle2"/>
-  <objectgroup id="26" name="Castle3"/>
-  <objectgroup id="27" name="Castle4"/>
-  <objectgroup id="28" name="Castle5"/>
-  <objectgroup id="29" name="Castle6"/>
- </group>
  <layer id="13" name="AssetsBG" width="167" height="97">
   <properties>
    <property name="Draw" type="bool" value="true"/>
