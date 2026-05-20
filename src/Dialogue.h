@@ -36,7 +36,7 @@ private:
 	
 
 
-private:
+public:
 	//Vector de texturas
 	
 	

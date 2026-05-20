@@ -39,6 +39,7 @@ private:
 
 private:
 	SDL_Texture* texture;
+	SDL_Texture* PopUpImage;
 	SDL_Texture* InteractTexture;
 	PhysBody* pbody;
 	int texW, texH;
@@ -53,4 +54,5 @@ public:
 	int BoolOfPlayer = 0;
 	Player* py;
 	bool isGettingTouched = false;
+	bool PopUpOn = false;
 };

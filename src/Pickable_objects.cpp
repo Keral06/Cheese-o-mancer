@@ -40,18 +40,18 @@ bool Pics::Start() {
 	//here i make them different depending on what it is
 	if (name == "Dawn") {
 	
-		Dialogue paperDialogue("resources/Dialogues/Pickable/Dawn.txt");
-		this->dialogue = paperDialogue;
-		texture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/coin_sprite.png"); //placeholder
+		dialogue = nullptr;
+		PopUpImage = Engine::GetInstance().textures->Load("Assets/UI/UI_Poem_1_.png");
+		texture = Engine::GetInstance().textures->Load("Assets/Textures/Spritesheets/Carta/Carta1.png"); //placeholder
 		BoolOfPlayer = 1;
 	
 	
 	}
 	else if (name == "Day") {
 	
-		Dialogue paperDialogue("resources/Dialogues/Pickable/Day.txt");
-		this->dialogue = paperDialogue;
-		texture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/coin_sprite.png"); //placeholder
+		dialogue = nullptr;
+		PopUpImage = Engine::GetInstance().textures->Load("Assets/UI/UI_Poem_2_.png");
+		texture = Engine::GetInstance().textures->Load("Assets/Textures/Spritesheets/Carta/Carta2.png"); //placeholder
 		BoolOfPlayer = 2;
 
 	
@@ -60,9 +60,9 @@ bool Pics::Start() {
 	}
 	else if (name == "Dusk") {
 
-		Dialogue paperDialogue("resources/Dialogues/Pickable/Dusk.txt");
-		this->dialogue = paperDialogue;
-		texture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/coin_sprite.png"); //placeholder
+		dialogue = nullptr;
+		PopUpImage = Engine::GetInstance().textures->Load("Assets/UI/UI_Poem_3_.png");
+		texture = Engine::GetInstance().textures->Load("Assets/Textures/Spritesheets/Carta/Carta3.png"); //placeholder
 		BoolOfPlayer = 3;
 
 
@@ -71,9 +71,9 @@ bool Pics::Start() {
 	}
 	else if (name == "Night") {
 
-		Dialogue paperDialogue("resources/Dialogues/Pickable/Dusk.txt");
-		this->dialogue = paperDialogue;
-		texture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/coin_sprite.png"); //placeholder
+		dialogue = nullptr;
+		PopUpImage = Engine::GetInstance().textures->Load("Assets/UI/UI_Poem_4_.png");
+		texture = Engine::GetInstance().textures->Load("Assets/Textures/Spritesheets/Carta/Carta4.png"); //placeholder
 
 		BoolOfPlayer = 4;
 
@@ -84,7 +84,6 @@ bool Pics::Start() {
 
 		Dialogue paperDialogue("resources/Dialogues/Pickable/SpringWater.txt");
 		this->dialogue = paperDialogue;
-		texture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/coin_sprite.png"); //placeholder
 
 		BoolOfPlayer = 5;
 
@@ -95,7 +94,7 @@ bool Pics::Start() {
 
 		Dialogue paperDialogue("resources/Dialogues/Pickable/Horsekin.txt");
 		this->dialogue = paperDialogue;
-		texture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/coin_sprite.png"); //placeholder
+	
 
 		BoolOfPlayer = 6;
 
@@ -106,7 +105,7 @@ bool Pics::Start() {
 
 		Dialogue paperDialogue("resources/Dialogues/Pickable/TreeRoot.txt");
 		this->dialogue = paperDialogue;
-		texture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/coin_sprite.png"); //placeholder
+
 
 		BoolOfPlayer = 6;
 
@@ -167,7 +166,11 @@ bool Pics::Start() {
 bool Pics::Update(float dt)
 {
 	if (!active) return true;
+	if (texture) {
 	Draw(dt);
+	
+	
+	}
 	if (isGettingTouched) {
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -175,7 +178,22 @@ bool Pics::Update(float dt)
 
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
-
+			if (dialogue.dialogue.size() <= 0) {
+			
+				if (PopUpOn) {
+					CleanUp();
+				
+				}
+				else {
+				   
+					Engine::GetInstance().render->DrawTextureNoCamera(PopUpImage, 400,400,1,1);
+				
+				}
+			
+			
+			
+			
+			}
 			if (dialogue.hasStarted) {
 
 				dialogue.NextDialogue();
@@ -244,6 +262,7 @@ bool Pics::CleanUp()
 {
 	LOG("Unloading Coin");
 	Engine::GetInstance().textures->UnLoad(texture);
+	Engine::GetInstance().textures->UnLoad(PopUpImage);
 	dialogue.CleanUp();
 	Engine::GetInstance().textures->UnLoad(InteractTexture);
 	if (pbody != nullptr) {

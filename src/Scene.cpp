@@ -353,12 +353,12 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 	}
 	if (uiElement->id == 46) { 
 		currentCardIndex++;
-		if (currentCardIndex >= totalUnlockedCards) currentCardIndex = 0;
+		if (currentCardIndex >= TarotCards.size()) currentCardIndex = 0;
 		return true;
 	}
 	if (uiElement->id == 47) { 
 		currentCardIndex--;
-		if (currentCardIndex < 0) currentCardIndex = totalUnlockedCards - 1;
+		if (currentCardIndex < 0) currentCardIndex = TarotCards.size() -1;
 		return true;
 	}
 	if ((uiElement->id >= 20 && uiElement->id <= 30)|| uiElement->id ==52) {
@@ -1018,15 +1018,13 @@ void  Scene::PostUpdateLevel() {
 					Engine::GetInstance().render->DrawTextureNoCamera(cardsBase, 240, 60, 800, 600);
 				}
 
-				if (currentCardIndex == 0 && cardTheFool != nullptr) {
-					Engine::GetInstance().render->DrawTextureNoCamera(cardTheFool, 730, 162, 200, 400);
+				if (TarotCards.size() > 0) {
+					SDL_Texture* Holder;
+					Holder = TarotCards.at(currentCardIndex);
+					Engine::GetInstance().render->DrawTextureNoCamera(Holder, 730, 162, 200, 400);
 				}
-				else if (currentCardIndex == 1 && cardTheMagician != nullptr) {
-					Engine::GetInstance().render->DrawTextureNoCamera(cardTheMagician, 730, 162, 200, 400);
-				}
-				else if (currentCardIndex == 2 && cardWheelOfFortune != nullptr) {
-					Engine::GetInstance().render->DrawTextureNoCamera(cardWheelOfFortune, 730, 162, 200, 400);
-				}
+
+			
 			}
 		
 		}
@@ -1700,15 +1698,7 @@ void Scene::CreateInventoryUI() {
 
 void Scene::SetInventory(bool inventory) {
 	inventoryOn = inventory;
-	if (!inventoryOn) {
-		cardsInventoryOn = false;
-	}
-	if (hasTalkedMagician) {
-		totalUnlockedCards = 2;
-	}
-	if (cheese) {
-		totalUnlockedCards = 3;
-	}
+	
 	for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
 		if (element->id == 45) {
 			element->visible = inventoryOn;
