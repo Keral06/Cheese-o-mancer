@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="122" height="104" tilewidth="128" tileheight="128" infinite="0" nextlayerid="21" nextobjectid="386">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="122" height="104" tilewidth="128" tileheight="128" infinite="0" nextlayerid="21" nextobjectid="391">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="../LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -50788,7 +50788,53 @@
  </layer>
  <objectgroup id="17" name="Items"/>
  <objectgroup id="18" name="Checkpoint"/>
- <objectgroup id="11" name="Doors" visible="0"/>
+ <objectgroup id="11" name="Doors">
+  <object id="386" name="Door" type="Door" x="1152" y="12672" width="384" height="512">
+   <properties>
+    <property name="name" value="Door_2_4_2"/>
+    <property name="offsetX" type="int" value="-200"/>
+    <property name="offsetY" type="int" value="0"/>
+    <property name="targetMap" value="Map_LV2_justes_01.tmx"/>
+    <property name="targetSpawn" value="Door_2_3_3"/>
+   </properties>
+  </object>
+  <object id="387" name="Door" type="Door" x="13440" y="12672" width="384" height="512">
+   <properties>
+    <property name="name" value="Door_2_4_1"/>
+    <property name="offsetX" type="int" value="-200"/>
+    <property name="offsetY" type="int" value="0"/>
+    <property name="targetMap" value="Map_LV2_justes_01.tmx"/>
+    <property name="targetSpawn" value="Door_2_3_2"/>
+   </properties>
+  </object>
+  <object id="388" name="Door" type="Door" x="14208" y="5888" width="384" height="512">
+   <properties>
+    <property name="name" value="Door_2_4_4"/>
+    <property name="offsetX" type="int" value="200"/>
+    <property name="offsetY" type="int" value="0"/>
+    <property name="targetMap" value="Map_LV2_justes_01.tmx"/>
+    <property name="targetSpawn" value="Door_2_3_5"/>
+   </properties>
+  </object>
+  <object id="389" name="Door" type="Door" x="1024" y="6144" width="384" height="512">
+   <properties>
+    <property name="name" value="Door_2_4_3"/>
+    <property name="offsetX" type="int" value="-200"/>
+    <property name="offsetY" type="int" value="0"/>
+    <property name="targetMap" value="Map_LV2_justes_01.tmx"/>
+    <property name="targetSpawn" value="Door_2_3_4"/>
+   </properties>
+  </object>
+  <object id="390" name="Door" type="Door" x="15488" y="1536" width="128" height="1024">
+   <properties>
+    <property name="name" value="Door_2_4_5"/>
+    <property name="offsetX" type="int" value="-200"/>
+    <property name="offsetY" type="int" value="0"/>
+    <property name="targetMap" value="Map_LV2_towersEncreuada_01.tmx"/>
+    <property name="targetSpawn" value="Door_2_5_6"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup id="7" name="Floor">
   <object id="313" x="768" y="5376" width="12672" height="128"/>
   <object id="314" x="14080" y="4096" width="768" height="128"/>
