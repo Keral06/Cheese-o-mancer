@@ -1722,6 +1722,8 @@ void Scene::SetInventory(bool inventory) {
 
 
 
+
+
 // EL MAIN DE LAS PARTICULAS SEGUN EL TUTO LOL
 
 

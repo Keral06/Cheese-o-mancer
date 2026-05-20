@@ -80,6 +80,9 @@ bool Verdugo::Start()
     currentAnimSet->SetCurrent("ataque1");
     texture = textureA1;
     LOG("Verdugo creado");
+    SDL_Texture* Justice;
+    Justice = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Justice.png");
+    Engine::GetInstance().scene->TarotCards.push_back(Justice);
 
     return true;
 }
