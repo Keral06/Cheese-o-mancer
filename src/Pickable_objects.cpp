@@ -12,10 +12,7 @@
 Pics::Pics(EntityType entityType) : Entity(entityType)
 {
 	
-	this->name = name;
-	this->texture = texture;
-	this->tsxPath = tsxPath;
-	this->dialogue = dialogue;
+
 	pbody = nullptr;
 }
 
@@ -94,18 +91,18 @@ void Pics:: ChooseWhoIs() {
 
 	if (name == "Dawn") {
 
-		dialogue = nullptr;
-		PopUpImage = Engine::GetInstance().textures->Load("Assets/UI/UI_Poem_1_.png");
-		texture = Engine::GetInstance().textures->Load("Assets/Textures/Spritesheets/Carta/Carta1.png"); //placeholder
+	
+		PopUpImage = Engine::GetInstance().textures->Load("assets/UI/UI_Poem/requadre_ajustat/UI_Poem_1_02.png_.png");
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Carta/Carta1.png"); //placeholder
 		BoolOfPlayer = 1;
 
 
 	}
 	else if (name == "Day") {
 
-		dialogue = nullptr;
-		PopUpImage = Engine::GetInstance().textures->Load("Assets/UI/UI_Poem_2_.png");
-		texture = Engine::GetInstance().textures->Load("Assets/Textures/Spritesheets/Carta/Carta2.png"); //placeholder
+	
+		PopUpImage = Engine::GetInstance().textures->Load("assets/UI/UI_Poem/requadre_ajustat/UI_Poem_2_02.png.png");
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Carta/Carta2.png"); //placeholder
 		BoolOfPlayer = 2;
 
 
@@ -114,9 +111,9 @@ void Pics:: ChooseWhoIs() {
 	}
 	else if (name == "Dusk") {
 
-		dialogue = nullptr;
-		PopUpImage = Engine::GetInstance().textures->Load("Assets/UI/UI_Poem_3_.png");
-		texture = Engine::GetInstance().textures->Load("Assets/Textures/Spritesheets/Carta/Carta3.png"); //placeholder
+		
+		PopUpImage = Engine::GetInstance().textures->Load("assets/UI/UI_Poem/requadre_ajustat/UI_Poem_4_04.pngpng");
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Carta/Carta3.png"); //placeholder
 		BoolOfPlayer = 3;
 
 
@@ -125,13 +122,13 @@ void Pics:: ChooseWhoIs() {
 	}
 	else if (name == "Night") {
 
-		dialogue = nullptr;
-		PopUpImage = Engine::GetInstance().textures->Load("Assets/UI/UI_Poem_4_.png");
-		texture = Engine::GetInstance().textures->Load("Assets/Textures/Spritesheets/Carta/Carta4.png"); //placeholder
+		
+		PopUpImage = Engine::GetInstance().textures->Load("assets/UI/UI_Poem/requadre_ajustat/UI_Poem_4_02.png");
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Carta/Carta4.png"); //placeholder
 
 		BoolOfPlayer = 4;
 
-
+		
 
 	}
 	else if (name == "Spring") {
@@ -172,9 +169,16 @@ void Pics:: ChooseWhoIs() {
 bool Pics::Update(float dt)
 {
 	if (!active) return true;
+
 	if (texture) {
 	Draw(dt);
 	
+	
+	}
+	if(PopUpOn){
+		float w, h;
+		SDL_GetTextureSize(PopUpImage, &w, &h);
+		Engine::GetInstance().render->DrawTextureNoCamera(PopUpImage, 100, 100, w, h);
 	
 	}
 	if (isGettingTouched) {
@@ -188,16 +192,17 @@ bool Pics::Update(float dt)
 			
 				if (PopUpOn) {
 					CleanUp();
+					Destroy();
 				
 				}
 				else {
 				   
-					Engine::GetInstance().render->DrawTextureNoCamera(PopUpImage, 400,400,1,1);
+					PopUpOn = true;
 				
 				}
 			
 			
-			
+				return true;
 			
 			}
 			if (dialogue.hasStarted) {
@@ -275,6 +280,7 @@ bool Pics::CleanUp()
 		Engine::GetInstance().physics->DeletePhysBody(pbody);
 		pbody = nullptr;
 	}
+	active = false;
 	return true;
 }
 void Pics::OnCollision(PhysBody* physA, PhysBody* physB) {

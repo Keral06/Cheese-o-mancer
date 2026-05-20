@@ -54,6 +54,7 @@ public:
 	int BoolOfPlayer = 0;
 	Player* py;
 	bool isGettingTouched = false;
+	bool isDrawn = false;
 	bool PopUpOn = false;
 	void ChooseWhoIs();
 };

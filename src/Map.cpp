@@ -900,21 +900,32 @@ MapLayer* Map::GetNavigationLayer() {
                             MILKY->Start();
                             MILKY->mapID = id;
                             }
-                        else if (entityType == "Pics") {
-                            std::shared_ptr<Pics> Picsa = std::dynamic_pointer_cast<Pics>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PICS));
-                            Picsa->position = Vector2D(x, y);
-                            Picsa->xInicial = (int)x;
-                            Picsa->yInicial = (int)y;
-                            Picsa->Start();
-                            Picsa->mapID = id;
-                            if (objectGroupNode.attribute("WhoIs").as_string()) { //add a cattegory called WhoIs, so i can check which one it is via it's name
-                                Picsa->name = objectGroupNode.attribute("WhoIs").as_string();
-                            
-                            
-                            
+                        else if (entityType == "Pics")
+                        {
+                            auto pics = std::dynamic_pointer_cast<Pics>(
+                                Engine::GetInstance().entityManager->CreateEntity(EntityType::PICS)
+                            );
+
+                            pics->position = Vector2D(x, y);
+                            pics->xInicial = (int)x;
+                            pics->yInicial = (int)y;
+                            pics->mapID = id;
+
+                            // Load Tiled custom properties
+                            Properties tempProperties;
+                            LoadProperties(objectNode, tempProperties);
+
+                            auto whoIsProp = tempProperties.GetProperty("WhoIs");
+
+                            if (whoIsProp)
+                            {
+                                pics->name = whoIsProp->valueString;
+                                LOG("WhoIs = %s", pics->name.c_str());
+                                pics->ChooseWhoIs();
                             }
+
+                            pics->Start();
                             }
-                        
                     }
                 }
             }
