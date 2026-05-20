@@ -258,4 +258,7 @@ public:
 	bool GargantuanHermit = false;
 	bool finishedmissionHermit = false;
 
+	//Tarot bools
+	std::vector<SDL_Texture*> TarotCards;
+
 };

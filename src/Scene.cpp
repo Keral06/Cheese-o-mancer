@@ -1670,9 +1670,7 @@ void Scene::CreateInventoryUI() {
 	inventoryBag = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Inventari_Bag_01.png"); 
 	uiCoin = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_coin.png"); 
 	cardsIcon = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Tarot_InventoryItem1_.png");
-	cardTheFool = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Fool.png");
-	cardTheMagician = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Magician.png");
-	cardWheelOfFortune = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_WheelOfFortune.png");
+	
 	arrowRight = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_BurronRight_.png");
 	arrowLeft = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_ButtonLeft_.png");
 	cardsBase = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_Base_.png");

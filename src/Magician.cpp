@@ -86,6 +86,9 @@ bool Magician::Update(float dt)
 	if(firstTime == true) {
 		if (!dialogueMagicianStart.hasStarted && Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN) {
 			dialogueMagicianStart.BeginDialogue();
+			SDL_Texture* TheFool;
+			TheFool = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Fool.png");
+			Engine::GetInstance().scene->TarotCards.push_back(TheFool);
 		}
 		else if (dialogueMagicianStart.hasStarted && !dialogueMagicianStart.hasEnded && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
 
@@ -143,7 +146,9 @@ bool Magician::Update(float dt)
 			}
 			BeforeCheese.BeginDialogue();
 			BeforeCheese.Draw(dt);
-
+			SDL_Texture* Magician;
+			Magician = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Magician.png");
+			Engine::GetInstance().scene->TarotCards.push_back(Magician);
 
 			return true;
 

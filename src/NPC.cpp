@@ -2024,9 +2024,9 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	//PERSONAS SEGUNDO NIVEL
 
 	Nohuely::Nohuely() :NPC(EntityType::NOHUELY) {
-		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! Dialoguenormal
+		Dialogue paperDialogue("assets/Dialogues/Lady_Nohuely/Lady_Nohuely_Regular_Dialogues.txt","assets/Dialogues/Lady_Nohuely/Lady_Nohuely_Regular_Names.txt" ); //change the dialogue lol!!!! Dialoguenormal
 		this->dialogue = paperDialogue;
-		Dialogue secondDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
+		Dialogue secondDialogue("assets/Dialogues/Lady_Nohuely/Lady_Nohuely_AfterRegular_Dialogues.txt", "assets/Dialogues/Lady_Nohuely/Lady_Nohuely_AfterRegular_Names.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
 		this->secondDialogue = secondDialogue;
 	}
 
@@ -2175,9 +2175,9 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 	}
 	milkmaid::milkmaid() :NPC(EntityType::MILKMAID) {
-		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! Dialoguenormal
+		Dialogue paperDialogue("assets/Dialogues/Milkmaid/Milkmaid_Inital_Dialogues.txt", "assets/Dialogues/Milkmaid/Milkmaid_Inital_Names.txt"); //change the dialogue lol!!!! Dialoguenormal
 		this->dialogue = paperDialogue;
-		Dialogue secondDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
+		Dialogue secondDialogue("assets/Dialogues/Milkmaid/Milkmaid_AfterInital_Dialogues.txt", "assets/Dialogues/Milkmaid/Milkmaid_AfterInital_Names.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
 		this->secondDialogue = secondDialogue;
 	}
 
@@ -2327,9 +2327,9 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 
 	TowGuard::TowGuard() :NPC(EntityType::GUARDTOWER) {
-		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! Dialoguenormal
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Tower_Guard_Inital_Dialogues.txt", "assets/Dialogues/Interactuables/Tower_Guard_Inital_Names.txt"); //change the dialogue lol!!!! Dialoguenormal
 		this->dialogue = paperDialogue;
-		Dialogue secondDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
+		Dialogue secondDialogue("assets/Dialogues/Interactuables/Tower_Guard_AfterInital_Dialogues.txt", "assets/Dialogues/Interactuables/Tower_Guard_AfterInital_Names.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
 		this->secondDialogue = secondDialogue;
 	}
 
@@ -2481,12 +2481,12 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 	death::death() :NPC(EntityType::DEATH) {
-		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! Dialoguenormal
+		Dialogue paperDialogue("assets/Dialogues/Horse/Horse_Initial_Dialogues.txt", "assets/Dialogues/Horse/Horse_Initial_Names.txt"); //change the dialogue lol!!!! Dialoguenormal
 		this->dialogue = paperDialogue;
-		Dialogue secondDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
+		Dialogue secondDialogue("assets/Dialogues/Horse/Horse_AfterInitial_Dialogues.txt", "assets/Dialogues/Horse/Horse_AfterInitial_Names.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
 		this->secondDialogue = secondDialogue;
 
-		Dialogue percent("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
+		Dialogue percent("assets/Dialogues/Horse/Horse_AfterInitialLowChance_Dialogues.txt", "assets/Dialogues/Horse/Horse_AfterInitialLowChance_Names.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
 		this->PercentChance = percent;
 	}
 
@@ -2657,21 +2657,23 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 	}
 
-	Hermit::Hermit() :NPC(EntityType::DEATH) {
-		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! Dialoguenormal
+	Hermit::Hermit() :NPC(EntityType::NPC) {
+		Dialogue paperDialogue("assets/Dialogues/Mission_Hermit/Hermit_Initial_Dialogues.txt", "assets/Dialogues/Mission_Hermit/Hermit_Initial_Names.txt"); //change the dialogue lol!!!! Dialoguenormal
 		this->dialogue = paperDialogue;
-		Dialogue secondDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! lvl1
+		Dialogue secondDialogue("assets/Dialogues/Mission_Hermit/Hermit_LVL1_Dialogues.txt", "assets/Dialogues/Mission_Hermit/Hermit_LVL1_Names.txt"); //change the dialogue lol!!!! lvl1
 		this->level1 = secondDialogue;
 
-		Dialogue percent("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
+		Dialogue percent("assets/Dialogues/Mission_Hermit/Hermit_NotAdvanced_Dialogues.txt", "assets/Dialogues/Mission_Hermit/Hermit_NotAdvanced_Names.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
 		this->notAdvanced = percent;
-		Dialogue lvll2("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! lvl2
+		Dialogue lvll2("assets/Dialogues/Mission_Hermit/Hermit_LVL2_Dialogues.txt", "assets/Dialogues/Mission_Hermit/Hermit_LVL2_Names.txt"); //change the dialogue lol!!!! lvl2
 		this->level2 = lvll2;
-		Dialogue third("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! lvl3
+		Dialogue third("assets/Dialogues/Mission_Hermit/Hermit_LVL3_Dialogues.txt", "assets/Dialogues/Mission_Hermit/Hermit_LVL3_Names.txt"); //change the dialogue lol!!!! lvl3
 		this->level3 = third;
 
-		Dialogue hasAll("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! all
+		Dialogue hasAll("assets/Dialogues/Mission_Hermit/Hermit_MissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Hermit/Hermit_MissionCompleted_Names.txt"); //change the dialogue lol!!!! all
 		this->hasAll = hasAll;
+		Dialogue hasAllFinished("assets/Dialogues/Mission_Hermit/Hermit_AfterMissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Hermit/Hermit_AfterMissionCompleted_Names.txt"); //change the dialogue lol!!!! all
+		this->hasAllFinished = hasAllFinished;
 	}
 
 	Hermit::~Hermit()
@@ -2789,7 +2791,294 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			}
 
+			//Dialogo si 2ndo objeto
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level2.hasEnded && level2.hasStarted && py != nullptr && Engine::GetInstance().scene->HorsekinManure == false && Engine::GetInstance().scene->HorsekinManureHermit == true) { //primer dialogo solo sale una vez
+
+
+				if (level2.hasStarted) {
+
+					level2.NextDialogue();
+					level2.Draw(dt);
+					if (level2.hasEnded) { Engine::GetInstance().scene->HorsekinManureHermit = true; }
+					return true;
+				}
+				level2.BeginDialogue();
+				level2.Draw(dt);
+
+
+				return true;
+			}
+			if (level2.hasStarted && !level2.hasEnded) {
+				level2.Draw(dt);
+				return true;
+
+			}
+
 			//Dialogo si tercer objeto
+
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level3.hasEnded && level3.hasStarted && py != nullptr && Engine::GetInstance().scene->Gargantuan == false && Engine::GetInstance().scene->GargantuanHermit == true) { //primer dialogo solo sale una vez
+
+
+				if (level3.hasStarted) {
+
+					level3.NextDialogue();
+					level3.Draw(dt);
+					if (level3.hasEnded) { Engine::GetInstance().scene->GargantuanHermit = true; }
+					return true;
+				}
+				level3.BeginDialogue();
+				level3.Draw(dt);
+
+
+				return true;
+			}
+			if (level3.hasStarted && !level3.hasEnded) {
+				level3.Draw(dt);
+				return true;
+
+			}
+
+			//Dialogo si los tiene todos
+
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !hasAll.hasEnded && hasAll.hasStarted && py != nullptr && Engine::GetInstance().scene->HorsekinManureHermit && Engine::GetInstance().scene->springWaterHermit && Engine::GetInstance().scene->GargantuanHermit && !Engine::GetInstance().scene->finishedmissionHermit) { //primer dialogo solo sale una vez
+
+
+				if (hasAll.hasStarted) {
+
+					hasAll.NextDialogue();
+					hasAll.Draw(dt);
+					if (hasAll.hasEnded) { Engine::GetInstance().scene->finishedmissionHermit = true; }
+					return true;
+				}
+				hasAll.BeginDialogue();
+				hasAll.Draw(dt);
+
+
+				return true;
+			}
+			if (hasAll.hasStarted && !hasAll.hasEnded) {
+				hasAll.Draw(dt);
+				return true;
+
+			}
+
+			//Dialogo si ya ha acabado la mision
+			
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && hasAll.hasEnded && py != nullptr && Engine::GetInstance().scene->finishedmissionHermit) { //primer dialogo solo sale una vez
+
+
+				if (hasAllFinished.hasStarted) {
+
+					hasAllFinished.NextDialogue();
+					hasAllFinished.Draw(dt);
+					if (hasAllFinished.hasEnded) { Engine::GetInstance().scene->finishedmissionHermit = true; }
+					return true;
+				}
+				hasAllFinished.BeginDialogue();
+				hasAllFinished.Draw(dt);
+
+
+				return true;
+			}
+			if (hasAllFinished.hasStarted && !hasAllFinished.hasEnded) {
+				hasAllFinished.Draw(dt);
+				return true;
+
+			}
+			//Dialogo si esta a medias 
+
+			if (level2.hasStarted) {
+
+				level2.NextDialogue();
+				level2.Draw(dt);
+				if (level2.hasEnded) { Engine::GetInstance().scene->HorsekinManureHermit = true; }
+				return true;
+			}
+			else {
+			
+				level2.BeginDialogue();
+				level2.Draw(dt);
+
+
+				return true;
+			}
+		
+			
+			if (level2.hasStarted && !level2.hasEnded) {
+				level2.Draw(dt);
+				return true;
+
+			}
+		}
+		
+
+		return true;
+	}
+	bool Hermit::CleanUp() {
+		LOG("Unloading Coin");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void Hermit::OnCollision(PhysBody* physA, PhysBody* physB) {
+
+		Player* pp = static_cast<Player*>(physB->listener);
+		py = pp;
+		switch (physB->ctype)
+		{
+		case ColliderType::PLAYER:
+			isGettingTouched = true;
+			
+			break;
+		}
+
+
+	}
+	void Hermit::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+		isGettingTouched = false;
+
+
+
+	}
+
+	//Level 3 NPC
+
+	Hermit::Hermit() :NPC(EntityType::DEATH) {
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! Initial dialogue
+		this->dialogue = paperDialogue;
+		Dialogue secondDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! lvl1
+		this->level1 = secondDialogue;
+
+		Dialogue percent("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
+		this->notAdvanced = percent;
+		Dialogue lvll2("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! lvl2
+		this->level2 = lvll2;
+		Dialogue third("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! lvl3
+		this->level3 = third;
+
+		Dialogue hasAll("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!! all
+		this->hasAll = hasAll;
+	}
+
+	Hermit::~Hermit()
+	{
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+	}
+	bool Hermit::Awake() {
+		return true;
+	}
+	bool Hermit::Start() {
+
+		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+
+		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
+		texW = 128;
+		texH = 128;
+
+
+		if (pbody == nullptr) {
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW / 2,
+				texH / 2,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::MAGICIAN;
+
+
+
+
+		}
+
+		if (pbody != nullptr) {
+			pbody = nullptr;
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+
+
+
+
+		}
+
+		return true;
+
+	}
+	bool Hermit::Update(float dt) {
+		if (isGettingTouched) {
+			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+
+
+
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !dialogue.hasEnded && dialogue.hasStarted) { //primer dialogo solo sale una vez
+
+
+				if (dialogue.hasStarted) {
+
+					dialogue.NextDialogue();
+					dialogue.Draw(dt);
+
+					return true;
+				}
+				dialogue.BeginDialogue();
+				dialogue.Draw(dt);
+
+
+				return true;
+			}
+			if (dialogue.hasStarted && !dialogue.hasEnded) {
+				dialogue.Draw(dt);
+				return true;
+
+			}
+
+
+			//dialogo si le ha traido el primer objeto
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level1.hasEnded && level1.hasStarted && py != nullptr && Engine::GetInstance().scene->springWater == true && Engine::GetInstance().scene->springWaterHermit == false) { //primer dialogo solo sale una vez
+
+
+				if (level1.hasStarted) {
+
+					level1.NextDialogue();
+					level1.Draw(dt);
+					if (level1.hasEnded) { Engine::GetInstance().scene->springWaterHermit = true; }
+					return true;
+				}
+				level1.BeginDialogue();
+				level1.Draw(dt);
+
+
+				return true;
+			}
+			if (level1.hasStarted && !level1.hasEnded) {
+				level1.Draw(dt);
+				return true;
+
+			}
+
+			//Dialogo si 2ndo objeto
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level2.hasEnded && level2.hasStarted && py != nullptr && Engine::GetInstance().scene->HorsekinManure == false && Engine::GetInstance().scene->HorsekinManureHermit == true) { //primer dialogo solo sale una vez
 
 
@@ -2862,9 +3151,10 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			//Dialogo si ya ha acabado la mision
 
+
 			//Dialogo si esta a medias 
 		}
-		
+
 
 		return true;
 	}
@@ -2885,7 +3175,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		{
 		case ColliderType::PLAYER:
 			isGettingTouched = true;
-			
+
 			break;
 		}
 

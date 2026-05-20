@@ -42,6 +42,7 @@ private:
 	AnimationSet anims;
 	PhysBody* pbody = nullptr;
 	int texW, texH;
+	int level;
 	const char* tsxPath;
 	
 

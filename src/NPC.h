@@ -923,6 +923,7 @@ private:
 	Dialogue level2;
 	Dialogue level3;
 	Dialogue hasAll;
+	Dialogue hasAllFinished;
 	bool finishedMission = false;
 	
 

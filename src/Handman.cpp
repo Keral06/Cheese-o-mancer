@@ -100,6 +100,11 @@ bool HANDMAN::Update(float dt)
                     dialogueHANDMAN.hasEnded = false;
                     dialogueHANDMAN.BeginDialogue();
                     dialogueHANDMAN.Draw(dt); 
+                    if (this->level == 1) {
+                        SDL_Texture* HangedMan;
+                        HangedMan = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_HangMan.png");
+                        Engine::GetInstance().scene->TarotCards.push_back(HangedMan);
+                    }
                     return true;
                 }
             }
