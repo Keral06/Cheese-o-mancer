@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="180" height="47" tilewidth="128" tileheight="128" infinite="0" nextlayerid="30" nextobjectid="371">
+<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="180" height="47" tilewidth="128" tileheight="128" infinite="0" nextlayerid="37" nextobjectid="389">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="../LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -13,6 +13,12 @@
  <tileset firstgid="2933" source="tileset_lv2_sky_parallax_4.tsx"/>
  <tileset firstgid="2934" source="tileset_lv2_sky_parallax_5.tsx"/>
  <tileset firstgid="2935" source="tileset_lv2_sky_parallax_6.tsx"/>
+ <tileset firstgid="2936" source="fondo castell 6.tsx"/>
+ <tileset firstgid="2937" source="fondo castell 5.tsx"/>
+ <tileset firstgid="2938" source="fondo castell 1.tsx"/>
+ <tileset firstgid="2939" source="fondo castell 2.tsx"/>
+ <tileset firstgid="2940" source="fondo castell 3.tsx"/>
+ <tileset firstgid="2941" source="fondo castell 4.tsx"/>
  <group id="23" name="Sky" offsetx="-11685" offsety="-2207.7" parallaxx="0.1" parallaxy="0.1">
   <objectgroup id="24" name="sky1" parallaxx="0.5" parallaxy="0.5">
    <object id="354" gid="2930" x="8492" y="3309" width="7000" height="2250"/>
@@ -34,6 +40,26 @@
   </objectgroup>
   <objectgroup id="29" name="sky6" parallaxx="0.9" parallaxy="0.9">
    <object id="370" gid="2935" x="10524" y="3295" width="4514" height="2250"/>
+  </objectgroup>
+ </group>
+ <group id="30" name="Castle" offsetx="-10466.1" offsety="-2343.76" parallaxx="0.1" parallaxy="0.1">
+  <objectgroup id="34" name="Castle2" parallaxx="0.3">
+   <object id="387" gid="2939" x="8737" y="4061.4" width="5000" height="3000"/>
+  </objectgroup>
+  <objectgroup id="31" name="Castle1" parallaxx="0.4">
+   <object id="380" gid="2938" x="8653.11" y="3938.05" width="5000" height="3000"/>
+  </objectgroup>
+  <objectgroup id="35" name="Castle3" parallaxx="0.5">
+   <object id="388" gid="2940" x="8529.14" y="4265.4" width="5000" height="3000"/>
+  </objectgroup>
+  <objectgroup id="36" name="Castle4" parallaxx="0.7">
+   <object id="385" gid="2941" x="8698.2" y="3968.2" width="5000" height="3000"/>
+  </objectgroup>
+  <objectgroup id="33" name="Castle5" parallaxx="0.8">
+   <object id="375" gid="2937" x="8968.6" y="4179.4" width="5000" height="3000"/>
+  </objectgroup>
+  <objectgroup id="32" name="Castle6" parallaxx="0.9">
+   <object id="373" gid="2936" x="9228" y="4180" width="5000" height="3000"/>
   </objectgroup>
  </group>
  <layer id="21" name="Wall" width="180" height="47" offsetx="-696" offsety="1376" parallaxx="0.9">

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="167" height="97" tilewidth="128" tileheight="128" infinite="0" nextlayerid="23" nextobjectid="354">
+<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="167" height="97" tilewidth="128" tileheight="128" infinite="0" nextlayerid="39" nextobjectid="354">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="../LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -16211,7 +16211,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="21" name="Wall" width="167" height="97" offsetx="-189.212" offsety="-50.303" parallaxx="0.95">
+ <layer id="21" name="Wall" width="167" height="97" offsetx="-193.212" offsety="3525.7" parallaxx="0.95">
   <data>
    <tile/>
    <tile/>
@@ -32414,6 +32414,22 @@
    <tile gid="59"/>
   </data>
  </layer>
+ <group id="31" name="Sky">
+  <objectgroup id="33" name="Sky1"/>
+  <objectgroup id="34" name="Sky2"/>
+  <objectgroup id="35" name="Sky3"/>
+  <objectgroup id="36" name="Sky4"/>
+  <objectgroup id="37" name="Sky5"/>
+  <objectgroup id="38" name="Sky6"/>
+ </group>
+ <group id="23" name="Castle">
+  <objectgroup id="24" name="Castle1"/>
+  <objectgroup id="25" name="Castle2"/>
+  <objectgroup id="26" name="Castle3"/>
+  <objectgroup id="27" name="Castle4"/>
+  <objectgroup id="28" name="Castle5"/>
+  <objectgroup id="29" name="Castle6"/>
+ </group>
  <layer id="13" name="AssetsBG" width="167" height="97">
   <properties>
    <property name="Draw" type="bool" value="true"/>
