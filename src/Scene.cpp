@@ -1347,7 +1347,20 @@ void Scene::LoadMap(std::string map)
 {
 	UnloadLevel();
 	Engine::GetInstance().entityManager->CleanUp();
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/level2music.wav");
+
+	if (map == "TEST_map_LV1_tortureRoom_02.tmx") {
+		Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/COMBATdowninthedungeons.wav");
+	}
+	else if (map == "TEST_map_LV1_pantryRoom_01.tmx"||"Map_LV2_encreuada_02.tmx"|| "Map_LV2_botanica_02.tmx"|| "Map_LV2_justes_02.tmx") {
+		Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/DOWNTIME_ratmosphere.wav");
+	}
+	else if (map == "TEST_map_LV1_bossRoom_01.tmx" || "Map_LV2_bossTower.tmx") {
+		Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/COMBATdanceofthedungeons.wav");
+	}
+	else {
+		Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/level2music.wav");
+	}
+	
 
 	isPaused = false;
 	CreatePauseUI();
