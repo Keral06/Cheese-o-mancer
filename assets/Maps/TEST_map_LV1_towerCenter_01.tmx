@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="20" nextobjectid="384">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="21" nextobjectid="387">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
  <tileset firstgid="4" name="tileset_LV1_dungeonBase_02" tilewidth="128" tileheight="128" tilecount="810" columns="30">
   <image source="tileset_lv1_dungeon_base_04.png" width="3840" height="3537"/>
  </tileset>
+ <tileset firstgid="814" source="Dungeon Parallax_Torre_Background.tsx"/>
+ <objectgroup id="20" name="BG Parallax" parallaxx="0.7">
+  <object id="386" gid="814" x="122.061" y="14625.2" width="9792" height="14543"/>
+ </objectgroup>
  <layer id="16" name="Background" width="93" height="115">
   <properties>
    <property name="Draw" type="bool" value="true"/>

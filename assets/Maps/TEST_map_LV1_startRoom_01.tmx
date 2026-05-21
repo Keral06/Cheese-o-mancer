@@ -122,7 +122,7 @@
    <property name="Draw" type="bool" value="true"/>
    <property name="Parallax" type="float" value="0.2"/>
   </properties>
-  <object id="413" gid="816" x="-837.001" y="1548" width="4343.92" height="2169.45"/>
+  <object id="413" gid="816" x="7979" y="8028" width="10431.9" height="7353.45"/>
  </objectgroup>
  <objectgroup id="34" name="w"/>
  <objectgroup id="23" name="Jails">
