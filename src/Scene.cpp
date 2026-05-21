@@ -767,6 +767,15 @@ void Scene::UpdateLevel(float dt) {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
 		LoadMap("TEST_map_LV1_bossRoom_01.tmx");
 	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
+		LoadMap("Map_LV2_encreuada_02.tmx");
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_O) == KEY_DOWN) {
+		LoadMap("Map_LV2_justes_02.tmx");
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_V) == KEY_DOWN) {
+		LoadMap("Map_LV2_botanica_02.tmx");
+	}
 
 
 	// Lógica de Checkpoints (Teclas 1-9)
@@ -1044,11 +1053,11 @@ void  Scene::PostUpdateLevel() {
 
 void Scene::LoadGameOver() {
 	LOG("Loading Game Over Screen");
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/losemusic.wav");
+	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/Death_loop.wav");
 	loseTexture = Engine::GetInstance().textures->Load("assets/UI/GameOver/UI_GameOver_.png");
 
 
-	 Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/losemusic.wav");
+	 Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/Death_loop.wav");
 
 	/*SDL_Rect btnPos = { 1000, 650, 250, 50 };
 	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 9, "BACK TO TITLE", btnPos, this);*/
