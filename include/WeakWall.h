@@ -12,6 +12,7 @@ public:
     bool Update(float dt) override;
     bool CleanUp() override;
 
+    bool drawed = true;
     SDL_Texture* texture = nullptr;
     Verdugo* owner = nullptr;
     int width = 0;

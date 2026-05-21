@@ -33,14 +33,14 @@ bool Verdugo::Start()
     std::unordered_map<int, std::string> aliasesAnim4b = { {0,"ataque4b"} };
     std::unordered_map<int, std::string> aliasesAnimDeath = { {0,"muerte"} };
     anims.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/cexecutonerTest.tsx",aliasesAnim);
-    animsAtaque1.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ataque1.tsx", aliasesAnim1);
-    animsAtaque2.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ataque2.tsx", aliasesAnim2);
-    animsAtaque3a.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ataque3a.tsx", aliasesAnim3a);
-    animsAtaque3b.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ataque3b.tsx", aliasesAnim3b);
-    animsAtaque3c.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ataque3c.tsx", aliasesAnim3c);
-    animsAtaque4a.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ataque4a.tsx", aliasesAnim4a);
-    animsAtaque4b.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ataque4b.tsx", aliasesAnim4b);
-    animsDeath.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/death.tsx", aliasesAnimDeath);
+    animsAtaque1.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ce_attack1.tsx", aliasesAnim1);
+    animsAtaque2.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ce_attack2.tsx", aliasesAnim2);
+    animsAtaque3a.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ce_attack3a.tsx", aliasesAnim3a);
+    animsAtaque3b.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ce_attack3b.tsx", aliasesAnim3b);
+    animsAtaque3c.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ce_attack3c.tsx", aliasesAnim3c);
+    animsAtaque4a.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ce_attack4a.tsx", aliasesAnim4a);
+    animsAtaque4b.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ce_attack4b.tsx", aliasesAnim4b);
+    animsDeath.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ce_death.tsx", aliasesAnimDeath);
     texName = "assets/Textures/Spritesheets/Cheese Executoner/transformar.png";
     spriteSheetName = "";
     
@@ -624,6 +624,7 @@ void Verdugo::SpawnWeakWall()
         wall->width = 128;
         wall->height = texH;
         wall->owner = this;
+        wall->drawed = false;
         int offset = 128;
 
         if (facingLeft)

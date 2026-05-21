@@ -13,8 +13,12 @@ bool WeakWall::Start()
 {
     pbody = Engine::GetInstance().physics->CreateRectangle(position.getX() + width/2, position.getY() + height/2, width, height, STATIC);
 
-    texture = Engine::GetInstance().textures->Load("assets/Textures/Columna.png");
-
+    if (drawed) {
+        texture = Engine::GetInstance().textures->Load("assets/Textures/Columna.png");
+    }
+    else {
+        texture = nullptr;
+    }
     pbody->listener = this;
     pbody->ctype = ColliderType::WEAKWALL;
 
