@@ -24,14 +24,14 @@ bool Verdugo::Start()
     offsetAttackHitboxX = 40;
     offsetAttackHitboxY = -texH/2;
     std::unordered_map<int, std::string> aliasesAnim = { {0,"transformar"} };
-    std::unordered_map<int, std::string> aliasesAnim1 = { {0,"ataque1"} };
-    std::unordered_map<int, std::string> aliasesAnim2 = { {0,"ataque2"} };
-    std::unordered_map<int, std::string> aliasesAnim3a = { {0,"ataque3start"}, {12,"ataque3run"} };
-    std::unordered_map<int, std::string> aliasesAnim3b = { {0,"ataque3b"} };
-    std::unordered_map<int, std::string> aliasesAnim3c = { {0,"ataque3c"} };
-    std::unordered_map<int, std::string> aliasesAnim4a = { {0,"ataque4a"} };
-    std::unordered_map<int, std::string> aliasesAnim4b = { {0,"ataque4b"} };
-    std::unordered_map<int, std::string> aliasesAnimDeath = { {0,"muerte"} };
+    std::unordered_map<int, std::string> aliasesAnim1 = { {0,"attack1"} };
+    std::unordered_map<int, std::string> aliasesAnim2 = { {0,"attack2"} };
+    std::unordered_map<int, std::string> aliasesAnim3a = { {0,"attack3_start"}, {12,"attack3_run"} };
+    std::unordered_map<int, std::string> aliasesAnim3b = { {0,"attack3b"} };
+    std::unordered_map<int, std::string> aliasesAnim3c = { {0,"attack3c"} };
+    std::unordered_map<int, std::string> aliasesAnim4a = { {0,"attack4a"} };
+    std::unordered_map<int, std::string> aliasesAnim4b = { {0,"attack4b"} };
+    std::unordered_map<int, std::string> aliasesAnimDeath = { {0,"death"} };
     anims.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/cexecutonerTest.tsx",aliasesAnim);
     animsAtaque1.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ce_attack1.tsx", aliasesAnim1);
     animsAtaque2.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ce_attack2.tsx", aliasesAnim2);
@@ -77,7 +77,7 @@ bool Verdugo::Start()
     state = ATAQUE1;
     lastState = ATAQUE1;
     currentAnimSet = &animsAtaque1;
-    currentAnimSet->SetCurrent("ataque1");
+    currentAnimSet->SetCurrent("attack1");
     texture = textureA1;
     LOG("Verdugo creado");
     SDL_Texture* Justice;
@@ -280,61 +280,61 @@ void Verdugo::ChangeCurrentAnimation() {
     case ATAQUE1:
         currentAnimSet = &animsAtaque1;
         texture = textureA1;
-        currentAnimSet->SetCurrent("ataque1");
+        currentAnimSet->SetCurrent("attack1");
         offset = 0.0f;
         break;
 
     case ATAQUE2:
         currentAnimSet = &animsAtaque2;
         texture = textureA2;
-        currentAnimSet->SetCurrent("ataque2");
+        currentAnimSet->SetCurrent("attack2");
         offset = 0.0f;
         break;
     case ATAQUE3START:
         currentAnimSet = &animsAtaque3a;
         texture = textureA3a;
-        currentAnimSet->SetCurrent("ataque3start");
+        currentAnimSet->SetCurrent("attack3_start");
         offset = texH / 2;
         break;
     case ATAQUE3A:
         currentAnimSet = &animsAtaque3a;
         texture = textureA3a;
-        currentAnimSet->SetCurrent("ataque3run"); 
+        currentAnimSet->SetCurrent("attack3_run"); 
         offset = texH/2;
         break;
 
     case ATAQUE3B:
         currentAnimSet = &animsAtaque3b;
         texture = textureA3b;
-        currentAnimSet->SetCurrent("ataque3b");
+        currentAnimSet->SetCurrent("attack3b");
         offset = texH/2;
         break;
 
     case ATAQUE3C:
         currentAnimSet = &animsAtaque3c;
         texture = textureA3c;
-        currentAnimSet->SetCurrent("ataque3c");
+        currentAnimSet->SetCurrent("attack3c");
         offset = texH/2;
         break;
 
     case ATAQUE4A:
         currentAnimSet = &animsAtaque4a;
         texture = textureA4a;
-        currentAnimSet->SetCurrent("ataque4a");
+        currentAnimSet->SetCurrent("attack4a");
         offset = texH/2;
         break;
 
     case ATAQUE4B:
         currentAnimSet = &animsAtaque4b;
         texture = textureA4b;
-        currentAnimSet->SetCurrent("ataque4b");
+        currentAnimSet->SetCurrent("attack4b");
         offset = texH/2;
         break;
 
     case MUERTO:
         currentAnimSet = &animsDeath;
         texture = textureDeath;
-        currentAnimSet->SetCurrent("muerte");
+        currentAnimSet->SetCurrent("death");
         offset = 0.0f;
         break;
 
