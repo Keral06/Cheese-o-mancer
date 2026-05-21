@@ -16225,22 +16225,22 @@
  </layer>
  <group id="31" name="Sky" offsetx="-5566.18" offsety="-8006.42" parallaxx="0.1" parallaxy="0.1">
   <objectgroup id="33" name="Sky1" parallaxx="0.4" parallaxy="0.4">
-   <object id="354" gid="3362" x="2380" y="9269" width="7000" height="2442"/>
+   <object id="354" gid="3362" x="339.05" y="9981" width="11081.9" height="3866"/>
   </objectgroup>
   <objectgroup id="34" name="Sky2" parallaxx="0.5" parallaxy="0.5">
-   <object id="355" gid="3363" x="2396" y="9269" width="7000" height="2250"/>
+   <object id="355" gid="3363" x="-92.8889" y="10069" width="11977.8" height="3850"/>
   </objectgroup>
   <objectgroup id="35" name="Sky3" parallaxx="0.6" parallaxy="0.6">
-   <object id="356" gid="3364" x="2388" y="9301" width="7000" height="2250"/>
+   <object id="356" gid="3364" x="-1.33333" y="10109" width="11778.7" height="3786"/>
   </objectgroup>
   <objectgroup id="36" name="Sky4" parallaxx="0.7" parallaxy="0.7">
-   <object id="357" gid="3365" x="2380" y="9301" width="7000" height="2250"/>
+   <object id="357" gid="3365" x="-308" y="10165" width="12376" height="3978"/>
   </objectgroup>
   <objectgroup id="37" name="Sky5" parallaxx="0.8" parallaxy="0.8">
-   <object id="359" gid="3366" x="2380" y="9277" width="7000" height="2250"/>
+   <object id="359" gid="3366" x="488.444" y="9885" width="10783.1" height="3466"/>
   </objectgroup>
   <objectgroup id="38" name="Sky6" parallaxx="0.9" parallaxy="0.9">
-   <object id="360" gid="3367" x="3352" y="9309" width="5360" height="2458"/>
+   <object id="360" gid="3367" x="388.557" y="10325" width="11430.9" height="5242"/>
   </objectgroup>
  </group>
  <group id="23" name="Castle" offsetx="-12604" offsety="-5988" parallaxx="0.1" parallaxy="0.1">
