@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="59" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="26" nextobjectid="358">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="59" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="26" nextobjectid="358">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
-  <image source="../LV1_test_tileset.png" width="384" height="128"/>
+  <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
- <tileset firstgid="4" source="tileset_lv3_general_01.tsx"/>
+ <tileset firstgid="4" name="tileset_lv3_General_01" tilewidth="128" tileheight="128" tilecount="1260" columns="42">
+  <image source="tileset_lv3_General_01.png" width="5466" height="3840"/>
+ </tileset>
  <layer id="21" name="Church Background" width="59" height="63" offsetx="-184" offsety="-8" parallaxx="0.95">
   <data>
    <tile/>
@@ -18560,24 +18562,24 @@
    <tile gid="712"/>
    <tile gid="711"/>
    <tile gid="712"/>
-   <tile gid="751"/>
-   <tile gid="751"/>
-   <tile gid="753"/>
-   <tile gid="753"/>
-   <tile gid="753"/>
-   <tile gid="751"/>
-   <tile gid="751"/>
-   <tile gid="751"/>
-   <tile gid="751"/>
-   <tile gid="753"/>
-   <tile gid="753"/>
-   <tile gid="753"/>
-   <tile gid="751"/>
-   <tile gid="753"/>
-   <tile gid="753"/>
-   <tile gid="753"/>
-   <tile gid="751"/>
-   <tile gid="751"/>
+   <tile gid="728"/>
+   <tile gid="728"/>
+   <tile gid="728"/>
+   <tile gid="728"/>
+   <tile gid="728"/>
+   <tile gid="728"/>
+   <tile gid="728"/>
+   <tile gid="728"/>
+   <tile gid="728"/>
+   <tile gid="728"/>
+   <tile gid="728"/>
+   <tile gid="728"/>
+   <tile gid="728"/>
+   <tile gid="728"/>
+   <tile gid="728"/>
+   <tile gid="728"/>
+   <tile gid="728"/>
+   <tile gid="729"/>
    <tile gid="751"/>
    <tile gid="753"/>
    <tile gid="751"/>
@@ -18624,7 +18626,7 @@
  <objectgroup id="17" name="Items"/>
  <objectgroup id="18" name="Checkpoint"/>
  <objectgroup id="11" name="Doors"/>
- <objectgroup id="7" name="Floor" visible="0">
+ <objectgroup id="7" name="Floor">
   <object id="313" x="0" y="7808" width="7552" height="128"/>
   <object id="314" x="0" y="4992" width="7552" height="112"/>
   <object id="315" x="0" y="2944" width="7552" height="128"/>

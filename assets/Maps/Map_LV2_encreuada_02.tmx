@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="180" height="47" tilewidth="128" tileheight="128" infinite="0" nextlayerid="48" nextobjectid="412">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="180" height="47" tilewidth="128" tileheight="128" infinite="0" nextlayerid="48" nextobjectid="413">
  <tileset firstgid="1" name="tileset_lv2_general_02" tilewidth="128" tileheight="128" tilecount="1558" columns="38">
   <image source="tileset_lv2_general_02.png" width="4864" height="5367"/>
  </tileset>
@@ -41,7 +41,7 @@
   </properties>
   <object id="411" gid="2929" x="8084" y="2853" width="7000" height="3194"/>
  </objectgroup>
- <layer id="43" name="WallD" width="180" height="47">
+ <layer id="43" name="WallD" width="180" height="47" offsetx="-696" offsety="1376" parallaxx="0.9">
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>
@@ -42378,7 +42378,9 @@
  </layer>
  <objectgroup id="17" name="Items"/>
  <objectgroup id="18" name="Checkpoint"/>
- <objectgroup id="11" name="Doors"/>
+ <objectgroup id="11" name="Doors">
+  <object id="412" name="Door" type="Door" x="13952" y="5248" width="128" height="640"/>
+ </objectgroup>
  <objectgroup id="7" name="Floor">
   <object id="313" x="4864" y="5888" width="18176" height="128"/>
   <object id="314" x="1664" y="5248" width="1920" height="128"/>
@@ -42403,7 +42405,6 @@
  </objectgroup>
  <objectgroup id="19" name="spikes"/>
  <objectgroup id="9" name="Walls">
-  <object id="342" x="13952" y="5248" width="128" height="640"/>
   <object id="353" x="5504" y="3328" width="2176" height="128"/>
   <object id="399" x="12416" y="4864" width="128" height="256"/>
   <object id="400" x="14080" y="5120" width="128" height="768"/>

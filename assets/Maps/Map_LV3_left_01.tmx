@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="75" height="64" tilewidth="128" tileheight="128" infinite="0" nextlayerid="21" nextobjectid="409">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="75" height="64" tilewidth="128" tileheight="128" infinite="0" nextlayerid="21" nextobjectid="410">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
-  <image source="../LV1_test_tileset.png" width="384" height="128"/>
+  <image source="LV1_test_tileset.png" width="384" height="128"/>
+ </tileset>
+ <tileset firstgid="4" name="tileset_lv3_General_01" tilewidth="128" tileheight="128" tilecount="1260" columns="42">
+  <image source="tileset_lv3_General_01.png" width="5466" height="3840"/>
  </tileset>
  <layer id="16" name="Background" width="75" height="64">
   <properties>
@@ -17177,7 +17180,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="101"/>
    <tile/>
    <tile/>
    <tile/>
@@ -17252,7 +17255,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="101"/>
    <tile/>
    <tile/>
    <tile/>
@@ -17327,7 +17330,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="101"/>
    <tile/>
    <tile/>
    <tile/>
@@ -17402,7 +17405,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="101"/>
    <tile/>
    <tile/>
    <tile/>
@@ -17469,22 +17472,22 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
@@ -19132,24 +19135,24 @@
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
@@ -19284,5 +19287,9 @@
   <object id="407" x="7552" y="2304" width="2048" height="128"/>
   <object id="408" x="12016" y="1696"/>
  </objectgroup>
- <objectgroup id="8" name="Entities"/>
+ <objectgroup id="8" name="Entities">
+  <object id="409" name="Player" type="Player" x="5955.76" y="4819.76">
+   <point/>
+  </object>
+ </objectgroup>
 </map>

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="84" height="109" tilewidth="128" tileheight="128" infinite="0" nextlayerid="21" nextobjectid="414">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="84" height="109" tilewidth="128" tileheight="128" infinite="0" nextlayerid="21" nextobjectid="415">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
-  <image source="../LV1_test_tileset.png" width="384" height="128"/>
+  <image source="LV1_test_tileset.png" width="384" height="128"/>
+ </tileset>
+ <tileset firstgid="4" name="tileset_lv3_General_01" tilewidth="128" tileheight="128" tilecount="1260" columns="42">
+  <image source="tileset_lv3_General_01.png" width="5466" height="3840"/>
  </tileset>
  <layer id="16" name="Background" width="84" height="109">
   <properties>
@@ -32009,6 +32012,22 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
+   <tile gid="47"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
@@ -32034,22 +32053,6 @@
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
    <tile/>
    <tile/>
    <tile/>
@@ -32927,10 +32930,10 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
+   <tile gid="47"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
@@ -36715,5 +36718,9 @@
   <object id="411" x="2048" y="4352" width="128" height="3200"/>
   <object id="413" x="2176" y="4224" width="256" height="128"/>
  </objectgroup>
- <objectgroup id="8" name="Entities"/>
+ <objectgroup id="8" name="Entities">
+  <object id="414" name="Player" type="Player" x="8056" y="6456">
+   <point/>
+  </object>
+ </objectgroup>
 </map>

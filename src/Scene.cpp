@@ -772,13 +772,13 @@ void Scene::UpdateLevel(float dt) {
 		LoadMap("Map_LV2_bossTower.tmx");
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
-		LoadMap("Map_LV2_encreuada_02.tmx");
+		LoadMap("Map_LV3_left_01.tmx");
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_O) == KEY_DOWN) {
-		LoadMap("Map_LV2_justes_02.tmx");
+		LoadMap("Map_LV3_temple_01.tmx");
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_V) == KEY_DOWN) {
-		LoadMap("Map_LV2_botanica_02.tmx");
+		LoadMap("Map_LV3_right_02.tmx");
 	}
 
 
