@@ -84,10 +84,10 @@ bool BossFightPrincessKnight::Update(float dt)
 
     if (!fightStarted && debugStartFight)
     {
-        if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
+        /*if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
         {
             StartFight();
-        }
+        }*/
     }
 
     // ===============================
