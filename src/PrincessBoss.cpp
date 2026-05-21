@@ -348,7 +348,7 @@ void PrincessBoss::UpdateSpikeAttack(float dt)
 
         actionFinished = true;
 
-        fightController->OnBossFinishedAttack(BossTurn::PRINCESS);
+       /* fightController->OnBossFinishedAttack(BossTurn::PRINCESS);*/
 
         SetPrincessState(PrincessState::IDLE);
     }
@@ -602,6 +602,6 @@ void PrincessBoss::FinishAction()
     actionFinished = true;
     busy = false;
 
-    if (fightController)
-        fightController->OnBossFinishedAttack(BossTurn::PRINCESS);
+    /*if (fightController)
+        fightController->OnBossFinishedAttack(BossTurn::PRINCESS);*/
 }

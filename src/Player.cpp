@@ -120,6 +120,7 @@ bool Player::Update(float dt)
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
 		beatBoss = true;
+		Engine::GetInstance().scene->cheese = true;
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_N) == KEY_DOWN) {
 		AddPoints(100);
