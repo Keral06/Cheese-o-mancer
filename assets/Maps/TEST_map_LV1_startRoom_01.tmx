@@ -24756,7 +24756,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -24931,7 +24931,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -25106,7 +25106,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -25281,7 +25281,7 @@
    <tile gid="204"/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -25631,7 +25631,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -28966,7 +28966,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -29316,7 +29316,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -29666,7 +29666,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -30016,7 +30016,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -30366,7 +30366,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -31401,7 +31401,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -31576,7 +31576,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -31751,7 +31751,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -32101,7 +32101,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -55357,7 +55357,7 @@
   </object>
  </objectgroup>
  <objectgroup id="20" name="Checkpoint"/>
- <layer id="14" name="Navigation" width="175" height="63">
+ <layer id="14" name="Navigation" width="175" height="63" visible="0">
   <properties>
    <property name="Draw" type="bool" value="false"/>
    <property name="Navigation" type="bool" value="true"/>

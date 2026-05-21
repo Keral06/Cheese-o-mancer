@@ -6,7 +6,7 @@
  <tileset firstgid="1559" name="tileset_lv2_botanic_02" tilewidth="128" tileheight="128" tilecount="1368" columns="38">
   <image source="tileset_lv2_botanic_02.png" width="4864" height="4608"/>
  </tileset>
- <group id="44" name="wha"/>
+ <tileset firstgid="2927" source="Level2/tileset_lv2_sky_parallax_1.tsx"/>
  <layer id="43" name="WallD" width="180" height="47">
   <properties>
    <property name="Draw" type="bool" value="true"/>
