@@ -66,5 +66,7 @@ public:
 	bool isGettingTouched = false;
 	Player* py;
 	int moneyPlayer = 0;
+	bool isWaitingForAnimation = false;
+	Dialogue* pendingDialogue = nullptr;
 	
 };

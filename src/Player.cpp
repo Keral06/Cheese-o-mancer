@@ -226,7 +226,7 @@ void Player::Move() {
 	if (velocity.y == 0) {
 		isCollidedFloor = true;
 	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT && isOnSpecialWall)
 	{
 		isWallWalking = true;
 		isJumping = false;

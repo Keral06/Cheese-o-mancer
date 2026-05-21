@@ -47,12 +47,14 @@ bool HANDMAN::Awake() {
 bool HANDMAN::Start() {
 
 
-    std::unordered_map<int, std::string> aliases = { {0, "idle"}, { 36, "selling"}, {36 + 35, "talking"} };
-    anims.LoadFromTSX("resources/spritesheets/Hangman/sprite_hangedman_01.tsx", aliases);
+    std::unordered_map<int, std::string> aliases = {
+           {70, "selling"}
+    };
+    anims.LoadFromTSX("assets/Textures/Spritesheets/Hangman/sprite_hangedman_01.tsx", aliases);
     /*coinPickupFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/coin-collision-sound-342335.wav");*/
     anims.SetCurrent("idle");
 
-    texture = Engine::GetInstance().textures->Load("resources/spritesheets/Wizard/sprite_hangedman_01.png");
+    texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hangman/sprite_hangedman_01.png");
     InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
     //32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
@@ -67,7 +69,7 @@ bool HANDMAN::Start() {
             (int)position.getX(),
             (int)position.getY() + 300,
             texW,
-            texH,
+            texH + 280,
             bodyType::DYNAMIC
         );
         b2Body_SetGravityScale(pbody->body, 0.0f);
@@ -90,7 +92,19 @@ bool HANDMAN::Update(float dt)
 	Draw(dt);
     if (isGettingTouched) {
         if (!isStoreOn) {
-            Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - 32, (int)position.getY() - (texH / 2) - 64);
+            Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - 32, (int)position.getY() + (texH / 2) + 96);
+        }
+        if (isWaitingForAnimation) {
+            if (anims.HasFinished()) {
+                isWaitingForAnimation = false;
+
+                if (pendingDialogue != nullptr) {
+                    pendingDialogue->hasEnded = false;
+                    pendingDialogue->BeginDialogue();
+                    pendingDialogue->Draw(dt);
+                }
+            }
+            return true;
         }
         if (firstTime && dialogue.hasStarted && !dialogue.hasEnded) {
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
@@ -99,10 +113,9 @@ bool HANDMAN::Update(float dt)
                     firstTime = false;
                     dialogueHANDMAN.hasEnded = false;
                     dialogueHANDMAN.BeginDialogue();
-                    dialogueHANDMAN.Draw(dt); 
+                    dialogueHANDMAN.Draw(dt);
                     if (this->level == 1) {
-                        SDL_Texture* HangedMan;
-                        HangedMan = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_HangMan.png");
+                        SDL_Texture* HangedMan = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_HangMan.png");
                         Engine::GetInstance().scene->TarotCards.push_back(HangedMan);
                     }
                     return true;
@@ -111,6 +124,7 @@ bool HANDMAN::Update(float dt)
             if (!dialogue.hasEnded) dialogue.Draw(dt);
             return true;
         }
+
         if (!py->beatBoss && dialogueHANDMAN.hasStarted && !dialogueHANDMAN.hasEnded) {
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
                 dialogueHANDMAN.NextDialogue();
@@ -118,6 +132,7 @@ bool HANDMAN::Update(float dt)
             if (!dialogueHANDMAN.hasEnded) dialogueHANDMAN.Draw(dt);
             return true;
         }
+
         if (py->beatBoss && BeatBoss.hasStarted && !BeatBoss.hasEnded) {
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
                 BeatBoss.NextDialogue();
@@ -132,6 +147,7 @@ bool HANDMAN::Update(float dt)
             if (!BeatBoss.hasEnded) BeatBoss.Draw(dt);
             return true;
         }
+
         if (hasBeenSold.hasStarted && !hasBeenSold.hasEnded) {
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
                 hasBeenSold.NextDialogue();
@@ -139,6 +155,7 @@ bool HANDMAN::Update(float dt)
             if (!hasBeenSold.hasEnded) hasBeenSold.Draw(dt);
             return true;
         }
+
         if (hasNoMoney.hasStarted && !hasNoMoney.hasEnded) {
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
                 hasNoMoney.NextDialogue();
@@ -146,6 +163,7 @@ bool HANDMAN::Update(float dt)
             if (!hasNoMoney.hasEnded) hasNoMoney.Draw(dt);
             return true;
         }
+
         if (hasBought.hasStarted && !hasBought.hasEnded) {
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
                 hasBought.NextDialogue();
@@ -153,6 +171,7 @@ bool HANDMAN::Update(float dt)
             if (!hasBought.hasEnded) hasBought.Draw(dt);
             return true;
         }
+
         if (hasNotBought.hasStarted && !hasNotBought.hasEnded) {
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
                 hasNotBought.NextDialogue();
@@ -160,25 +179,23 @@ bool HANDMAN::Update(float dt)
             if (!hasNotBought.hasEnded) hasNotBought.Draw(dt);
             return true;
         }
-        if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
+        if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+            bool necesitaAnimacion = false;
             if (!py->beatBoss) {
                 if (firstTime) {
-                    dialogue.hasEnded = false;
-                    dialogue.BeginDialogue();
-                    dialogue.Draw(dt);
+                    pendingDialogue = &dialogue;
+                    necesitaAnimacion = true;
                 }
                 else {
-                    dialogueHANDMAN.hasEnded = false;
-                    dialogueHANDMAN.BeginDialogue();
-                    dialogueHANDMAN.Draw(dt);
+                    pendingDialogue = &dialogueHANDMAN;
+                    necesitaAnimacion = true;
                 }
             }
             else {
                 if (firstTimeBossKill) {
-                    BeatBoss.hasEnded = false;
-                    BeatBoss.BeginDialogue();
-                    BeatBoss.Draw(dt);
+                    pendingDialogue = &BeatBoss;
+                    necesitaAnimacion = true;
                 }
                 else {
                     isStoreOn = !isStoreOn;
@@ -186,24 +203,36 @@ bool HANDMAN::Update(float dt)
 
                     if (isStoreOn) {
                         moneyPlayer = py->score;
+                        pendingDialogue = nullptr;
+                        necesitaAnimacion = true;
                     }
                     else {
-                        
-
                         if (py->score < moneyPlayer) {
-                            hasBought.hasEnded = false;
-                            hasBought.BeginDialogue();
-                            hasBought.Draw(dt);
+                            pendingDialogue = &hasBought;
                         }
                         else {
-                            hasNotBought.hasEnded = false;
-                            hasNotBought.BeginDialogue();
-                            hasNotBought.Draw(dt);
+                            pendingDialogue = &hasNotBought;
                         }
+                        necesitaAnimacion = false;
                     }
                 }
             }
+
+            if (pendingDialogue != nullptr) {
+                if (necesitaAnimacion) {
+                    anims.SetCurrent("selling");
+                    anims.Resets();
+                    isWaitingForAnimation = true;
+                }
+                else {
+                    pendingDialogue->hasEnded = false;
+                    pendingDialogue->BeginDialogue();
+                    pendingDialogue->Draw(dt);
+                }
+            }
         }
+
+            
     }
     return true;
 }
@@ -292,16 +321,22 @@ bool HANDMAN::Update(float dt)
 //}
 void HANDMAN::Draw(float dt) {
 
-	anims.Update(dt);
-	const SDL_Rect& animFrame = anims.GetCurrentFrame();
+    int x, y;
+    pbody->GetPosition(x, y);
+    position.setX((float)x);
+    position.setY((float)y);
 
-	int x, y;
-	pbody->GetPosition(x, y);
-	position.setX((float)x);
-	position.setY((float)y);
+    SDL_Rect frameToDraw;
 
+    if (isWaitingForAnimation) {
+        anims.Update(dt);
+        frameToDraw = anims.GetCurrentFrame();
+    }
+    else {
+        frameToDraw = { 0, 1280, texW, texH };
+    }
 
-	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
+	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &frameToDraw);
 
 }
 bool HANDMAN::CleanUp()
