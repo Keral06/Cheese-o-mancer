@@ -55337,7 +55337,7 @@
   <object id="356" name="Rat" type="Rat" x="17672" y="5840">
    <point/>
   </object>
-  <object id="357" name="Rat" type="Rat" x="8376" y="2744">
+  <object id="357" name="Jailer" type="Jailer" x="8376" y="2744">
    <point/>
   </object>
   <object id="358" name="Rat" type="Rat" x="5152" y="2712">

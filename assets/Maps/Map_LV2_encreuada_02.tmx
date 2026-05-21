@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="180" height="47" tilewidth="128" tileheight="128" infinite="0" nextlayerid="48" nextobjectid="413">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="180" height="47" tilewidth="128" tileheight="128" infinite="0" nextlayerid="51" nextobjectid="428">
  <tileset firstgid="1" name="tileset_lv2_general_02" tilewidth="128" tileheight="128" tilecount="1558" columns="38">
   <image source="tileset_lv2_general_02.png" width="4864" height="5367"/>
  </tileset>
@@ -15,11 +15,14 @@
  <tileset firstgid="2929" name="tileset_lv2_sky_parallax_3" tilewidth="7000" tileheight="2250" tilecount="1" columns="1">
   <image source="Level2/Sky Parts/3.png" width="7000" height="2250"/>
  </tileset>
+ <tileset firstgid="2930" source="Level2/tileset_lv2_sky_parallax_4.tsx"/>
+ <tileset firstgid="2931" source="Level2/tileset_lv2_sky_parallax_5.tsx"/>
+ <tileset firstgid="2932" source="Level2/tileset_lv2_sky_parallax_6.tsx"/>
  <objectgroup id="45" name="sky1" parallaxx="0.5" parallaxy="0.5">
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>
-  <object id="408" gid="2927" x="6289.33" y="4017" width="11405.3" height="3666">
+  <object id="408" gid="2927" x="5745.33" y="4593" width="11405.3" height="3666">
    <properties>
     <property name="Draw" type="bool" value="true"/>
    </properties>
@@ -29,17 +32,39 @@
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>
-  <object id="410" gid="2928" x="8532" y="3621" width="7000" height="2250">
+  <object id="410" gid="2928" x="8516" y="4437" width="7000" height="2250">
    <properties>
     <property name="Draw" type="bool" value="true"/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="47" name="sky3" parallaxx="0.6" parallaxy="0.6">
+ <objectgroup id="47" name="sky3" visible="0" parallaxx="0.6" parallaxy="0.6">
   <properties>
-   <property name="Draw" type="bool" value="true"/>
+   <property name="Draw" type="bool" value="false"/>
   </properties>
   <object id="411" gid="2929" x="8084" y="2853" width="7000" height="3194"/>
+ </objectgroup>
+ <objectgroup id="48" name="sky4" visible="0" parallaxx="0.7" parallaxy="0.7">
+  <properties>
+   <property name="Draw" type="bool" value="false"/>
+  </properties>
+  <object id="413" gid="2930" x="6989.78" y="3837" width="10036.4" height="3226">
+   <properties>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="49" name="sky5" visible="0" parallaxx="0.8" parallaxy="0.8">
+  <properties>
+   <property name="Draw" type="bool" value="false"/>
+  </properties>
+  <object id="414" gid="2931" x="7840.44" y="3629" width="8991.11" height="2890"/>
+ </objectgroup>
+ <objectgroup id="50" name="sky6" visible="0" parallaxx="0.9" parallaxy="0.9">
+  <properties>
+   <property name="Draw" type="bool" value="false"/>
+  </properties>
+  <object id="415" gid="2932" x="8799.77" y="3999" width="7242.46" height="3610"/>
  </objectgroup>
  <layer id="43" name="WallD" width="180" height="47" offsetx="-696" offsety="1376" parallaxx="0.9">
   <properties>
@@ -24289,8 +24314,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile gid="533"/>
+   <tile gid="495"/>
+   <tile gid="534"/>
    <tile gid="420"/>
    <tile gid="539"/>
    <tile/>
@@ -24470,7 +24495,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="533"/>
+   <tile gid="495"/>
    <tile gid="420"/>
    <tile gid="420"/>
    <tile gid="423"/>
@@ -42379,7 +42404,87 @@
  <objectgroup id="17" name="Items"/>
  <objectgroup id="18" name="Checkpoint"/>
  <objectgroup id="11" name="Doors">
-  <object id="412" name="Door" type="Door" x="13952" y="5248" width="128" height="640"/>
+  <object id="416" name="Door" type="Door" x="2432" y="1536" width="256" height="512">
+   <properties>
+    <property name="name" value="Door_2_2_7"/>
+    <property name="offsetX" type="int" value="200"/>
+    <property name="offsetY" type="int" value="0"/>
+    <property name="targetMap" value="Map_LV2_towersEncreuada_02.tmx"/>
+    <property name="targetSpawn" value="Door_2_5_4"/>
+   </properties>
+  </object>
+  <object id="418" name="Door" type="Door" x="0" y="4608" width="128" height="1280">
+   <properties>
+    <property name="name" value="Door_2_2_2"/>
+    <property name="offsetX" type="int" value="200"/>
+    <property name="offsetY" type="int" value="0"/>
+    <property name="targetMap" value="Map_LV2_justes_02.tmx"/>
+    <property name="targetSpawn" value="Door_2_3_1"/>
+   </properties>
+  </object>
+  <object id="419" name="Door" type="Door" x="6528" y="1536" width="256" height="512">
+   <properties>
+    <property name="name" value="Door_2_2_8"/>
+    <property name="offsetX" type="int" value="200"/>
+    <property name="offsetY" type="int" value="0"/>
+    <property name="targetMap" value="Map_LV2_towersEncreuada_02.tmx"/>
+    <property name="targetSpawn" value="Door_2_5_5"/>
+   </properties>
+  </object>
+  <object id="420" name="Door" type="Door" x="6528" y="2816" width="256" height="512">
+   <properties>
+    <property name="name" value="Door_2_2_6"/>
+    <property name="offsetX" type="int" value="200"/>
+    <property name="offsetY" type="int" value="0"/>
+    <property name="targetMap" value="Map_LV2_towersEncreuada_02.tmx"/>
+    <property name="targetSpawn" value="Door_2_5_3"/>
+   </properties>
+  </object>
+  <object id="421" name="Door" type="Door" x="6528" y="5376" width="256" height="512">
+   <properties>
+    <property name="name" value="Door_2_2_4"/>
+    <property name="offsetX" type="int" value="200"/>
+    <property name="offsetY" type="int" value="0"/>
+    <property name="targetMap" value="Map_LV2_towersEncreuada_02.tmx"/>
+    <property name="targetSpawn" value="Door_2_5_1"/>
+   </properties>
+  </object>
+  <object id="422" name="Door" type="Door" x="17792" y="1536" width="256" height="512">
+   <properties>
+    <property name="name" value="Door_2_2_9"/>
+    <property name="offsetX" type="int" value="200"/>
+    <property name="offsetY" type="int" value="0"/>
+    <property name="targetMap" value="Map_LV2_towersEncreuada_02.tmx"/>
+    <property name="targetSpawn" value="Door_2_5_7"/>
+   </properties>
+  </object>
+  <object id="424" name="Door" type="Door" x="2432" y="4736" width="256" height="512">
+   <properties>
+    <property name="name" value="Door_2_2_5"/>
+    <property name="offsetX" type="int" value="200"/>
+    <property name="offsetY" type="int" value="0"/>
+    <property name="targetMap" value="Map_LV2_towersEncreuada_02.tmx"/>
+    <property name="targetSpawn" value="Door_2_5_2"/>
+   </properties>
+  </object>
+  <object id="425" name="Door" type="Door" x="22912" y="4992" width="128" height="896">
+   <properties>
+    <property name="name" value="Door_2_2_3"/>
+    <property name="offsetX" type="int" value="-300"/>
+    <property name="offsetY" type="int" value="0"/>
+    <property name="targetMap" value="Map_LV2_botanica_02.tmx"/>
+    <property name="targetSpawn" value="Door_2_9_1"/>
+   </properties>
+  </object>
+  <object id="427" name="Door" type="Door" x="13952" y="5248" width="128" height="640">
+   <properties>
+    <property name="name" value="Door_2_2_1"/>
+    <property name="offsetX" type="int" value="-300"/>
+    <property name="offsetY" type="int" value="0"/>
+    <property name="targetMap" value="Map_LV2_transition_02.tmx"/>
+    <property name="targetSpawn" value="Door_2_1_2"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="7" name="Floor">
   <object id="313" x="4864" y="5888" width="18176" height="128"/>
@@ -42428,9 +42533,6 @@
    <point/>
   </object>
   <object id="395" name="Bee" type="Bee" x="7856" y="4656">
-   <point/>
-  </object>
-  <object id="396" name="Bee" type="Bee" x="4304" y="1344">
    <point/>
   </object>
   <object id="397" name="Bee" type="Bee" x="14448" y="4080">

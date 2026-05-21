@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="107" height="104" tilewidth="128" tileheight="128" infinite="0" nextlayerid="23" nextobjectid="410">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="107" height="104" tilewidth="128" tileheight="128" infinite="0" nextlayerid="23" nextobjectid="416">
  <tileset firstgid="1" name="tileset_lv1_torture_02" tilewidth="128" tileheight="128" tilecount="810" columns="30">
   <image source="tileset_lv1_torture_02.png" width="3840" height="3537"/>
  </tileset>
@@ -44687,6 +44687,24 @@
    <point/>
   </object>
   <object id="364" name="Hung sword" x="10496" y="6688">
+   <point/>
+  </object>
+  <object id="410" name="Jailer" type="Jailer" x="3308" y="1704">
+   <point/>
+  </object>
+  <object id="411" name="Rat" type="Rat" x="7996" y="3116">
+   <point/>
+  </object>
+  <object id="412" name="Rat" type="Rat" x="2136" y="4776">
+   <point/>
+  </object>
+  <object id="413" name="Rat" type="Rat" x="11872" y="12280">
+   <point/>
+  </object>
+  <object id="414" name="Jailer" type="Jailer" x="5624" y="3696">
+   <point/>
+  </object>
+  <object id="415" name="Jailer" type="Jailer" x="4216" y="7056">
    <point/>
   </object>
  </objectgroup>

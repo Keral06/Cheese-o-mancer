@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="145" height="70" tilewidth="128" tileheight="128" infinite="0" nextlayerid="25" nextobjectid="439">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="145" height="70" tilewidth="128" tileheight="128" infinite="0" nextlayerid="25" nextobjectid="442">
  <tileset firstgid="1" name="tileset_lv2_general_01" tilewidth="128" tileheight="128" tilecount="1558" columns="38">
   <image source="tileset_lv2_general_02.png" width="4864" height="5367"/>
  </tileset>
@@ -30482,7 +30482,7 @@
     <property name="name" value="Door_2_5_1"/>
     <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
-    <property name="targetMap" value="Map_LV2_encreuada_01.tmx"/>
+    <property name="targetMap" value="Map_LV2_encreuada_02.tmx"/>
     <property name="targetSpawn" value="Door_2_2_4"/>
    </properties>
   </object>
@@ -30491,7 +30491,7 @@
     <property name="name" value="Door_2_5_2"/>
     <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
-    <property name="targetMap" value="Map_LV2_encreuada_01.tmx"/>
+    <property name="targetMap" value="Map_LV2_encreuada_02.tmx"/>
     <property name="targetSpawn" value="Door_2_2_5"/>
    </properties>
   </object>
@@ -30500,7 +30500,7 @@
     <property name="name" value="Door_2_5_3"/>
     <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
-    <property name="targetMap" value="Map_LV2_encreuada_01.tmx"/>
+    <property name="targetMap" value="Map_LV2_encreuada_02.tmx"/>
     <property name="targetSpawn" value="Door_2_2_6"/>
    </properties>
   </object>
@@ -30509,7 +30509,7 @@
     <property name="name" value="Door_2_5_4"/>
     <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
-    <property name="targetMap" value="Map_LV2_encreuada_01.tmx"/>
+    <property name="targetMap" value="Map_LV2_encreuada_02.tmx"/>
     <property name="targetSpawn" value="Door_2_2_7"/>
    </properties>
   </object>
@@ -30518,7 +30518,7 @@
     <property name="name" value="Door_2_5_5"/>
     <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
-    <property name="targetMap" value="Map_LV2_encreuada_01.tmx"/>
+    <property name="targetMap" value="Map_LV2_encreuada_02.tmx"/>
     <property name="targetSpawn" value="Door_2_2_8"/>
    </properties>
   </object>
@@ -30527,7 +30527,7 @@
     <property name="name" value="Door_2_5_6"/>
     <property name="offsetX" type="int" value="200"/>
     <property name="offsetY" type="int" value="0"/>
-    <property name="targetMap" value="Map_LV2_towersJustes_01.tmx"/>
+    <property name="targetMap" value="Map_LV2_towersJustes_02.tmx"/>
     <property name="targetSpawn" value="Door_2_4_5"/>
    </properties>
   </object>
@@ -30536,7 +30536,7 @@
     <property name="name" value="Door_2_5_7"/>
     <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
-    <property name="targetMap" value="Map_LV2_encreuada_01.tmx"/>
+    <property name="targetMap" value="Map_LV2_encreuada_02.tmx"/>
     <property name="targetSpawn" value="Door_2_2_9"/>
    </properties>
   </object>
@@ -30545,7 +30545,7 @@
     <property name="name" value="Door_2_5_8"/>
     <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
-    <property name="targetMap" value="Map_LV2_towersBotanica_01.tmx"/>
+    <property name="targetMap" value="Map_LV2_towersBotanica_02.tmx"/>
     <property name="targetSpawn" value="Door_2_7_1"/>
    </properties>
   </object>
@@ -30627,7 +30627,16 @@
   <object id="438" x="384" y="3328" width="2432" height="128"/>
  </objectgroup>
  <objectgroup id="8" name="Entities">
-  <object id="437" name="Player" type="Player" x="4232" y="1008">
+  <object id="437" name="Player" type="Player" x="2120" y="8080">
+   <point/>
+  </object>
+  <object id="439" name="Horse" type="Horse" x="2816" y="880">
+   <point/>
+  </object>
+  <object id="440" name="Horse" type="Horse" x="12784" y="1056">
+   <point/>
+  </object>
+  <object id="441" name="Bee" type="Bee" x="2336" y="5552">
    <point/>
   </object>
  </objectgroup>
