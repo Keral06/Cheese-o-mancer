@@ -268,8 +268,8 @@ void KnightBoss::UpdateLunge(float dt)
 
         SetKnightState(KnightState::RECOVER);
 
-        if (fightController)
-            FinishAction();
+        /*if (fightController)
+            FinishAction();*/
     }
 }
 
@@ -338,7 +338,7 @@ void KnightBoss::UpdateBounce(float dt)
 
         SetKnightState(KnightState::RECOVER);
 
-        FinishAction();
+        /*FinishAction();*/
     }
 }
 
