@@ -95,24 +95,26 @@ void CheeseBall::OnCollision(PhysBody* physA, PhysBody* physB)
 
         if (enemy)
         {
-            // Bola en smash
-            if (canSmash)
-            {
-                enemy->toDelete = true;
-                return;
-            }
+            if (!enemy->isboss) {
+                // Bola en smash
+                if (canSmash)
+                {
+                    enemy->toDelete = true;
+                    return;
+                }
 
-            // Bola lanzada
-            if (!ismounted)
-            {
-                enemy->toDelete = true;
-                toDelete = true;
-                return;
-            }
+                // Bola lanzada
+                if (!ismounted)
+                {
+                    enemy->toDelete = true;
+                    toDelete = true;
+                    return;
+                }
 
-            // Bola montada
-            LOG("CheeseBall touched enemy");
-            launch = true;
+                // Bola montada
+                LOG("CheeseBall touched enemy");
+                launch = true;
+            }
         }
 
         return;
