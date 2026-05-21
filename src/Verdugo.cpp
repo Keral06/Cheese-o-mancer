@@ -78,6 +78,7 @@ bool Verdugo::Start()
     lastState = ATAQUE1;
     currentAnimSet = &animsAtaque1;
     currentAnimSet->SetCurrent("attack1");
+    isboss = true;
     texture = textureA1;
     LOG("Verdugo creado");
     SDL_Texture* Justice;
@@ -624,7 +625,6 @@ void Verdugo::SpawnWeakWall()
         wall->width = 128;
         wall->height = texH;
         wall->owner = this;
-        wall->drawed = false;
         int offset = 128;
 
         if (facingLeft)
