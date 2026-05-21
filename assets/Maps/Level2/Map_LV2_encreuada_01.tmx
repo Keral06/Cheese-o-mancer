@@ -20,22 +20,22 @@
  <tileset firstgid="2940" source="fondo castell 3.tsx"/>
  <tileset firstgid="2941" source="fondo castell 4.tsx"/>
  <group id="23" name="Sky" offsetx="-11549" offsety="-2239.7" parallaxx="0.1" parallaxy="0.1">
-  <objectgroup id="24" name="sky1" parallaxx="0.5" parallaxy="0.5">
+  <objectgroup id="24" name="sky1" visible="0" parallaxx="0.5" parallaxy="0.5">
    <object id="354" gid="2930" x="6289.33" y="4017" width="11405.3" height="3666"/>
   </objectgroup>
   <objectgroup id="25" name="sky2" parallaxx="0.5" parallaxy="0.5">
    <object id="390" gid="2931" x="6379.27" y="4046.8" width="10584" height="3402"/>
   </objectgroup>
-  <objectgroup id="28" name="sky3" parallaxx="0.6" parallaxy="0.6">
+  <objectgroup id="28" name="sky3" visible="0" parallaxx="0.6" parallaxy="0.6">
    <object id="391" gid="2932" x="6479.93" y="3941.22" width="9936.89" height="3194"/>
   </objectgroup>
-  <objectgroup id="27" name="sky4" parallaxx="0.7" parallaxy="0.7">
+  <objectgroup id="27" name="sky4" visible="0" parallaxx="0.7" parallaxy="0.7">
    <object id="364" gid="2933" x="6989.78" y="3837" width="10036.4" height="3226"/>
   </objectgroup>
-  <objectgroup id="26" name="sky5" parallaxx="0.8" parallaxy="0.8">
+  <objectgroup id="26" name="sky5" visible="0" parallaxx="0.8" parallaxy="0.8">
    <object id="368" gid="2934" x="7840.44" y="3629" width="8991.11" height="2890"/>
   </objectgroup>
-  <objectgroup id="29" name="sky6" parallaxx="0.9" parallaxy="0.9">
+  <objectgroup id="29" name="sky6" visible="0" parallaxx="0.9" parallaxy="0.9">
    <object id="370" gid="2935" x="8799.77" y="3999" width="7242.46" height="3610"/>
   </objectgroup>
  </group>
