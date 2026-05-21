@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="19" nextobjectid="382">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="20" nextobjectid="384">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -53561,6 +53561,10 @@
    </properties>
   </object>
   <object id="379" x="12740" y="6696" width="16" height="8"/>
+ </objectgroup>
+ <objectgroup id="19" name="WeakWalls">
+  <object id="382" x="8832" y="6528" width="128" height="1024"/>
+  <object id="383" x="2432" y="6272" width="128" height="1024"/>
  </objectgroup>
  <objectgroup id="18" name="Checkpoint">
   <object id="363" name="Flag" type="Flag" x="10757.6" y="4684.85">

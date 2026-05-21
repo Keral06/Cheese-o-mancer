@@ -607,6 +607,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		LOG("Main Menu: MyButton clicked!");
 		continueGame = false;
 		ChangeScene(SceneID::IN_GAME);
+		
 		break;
 	case 2: 
 		if (uiElement->type == UIElementType::SLIDER) {
@@ -1342,7 +1343,7 @@ void Scene::HandleFinalWinUIEvents(UIElement* uiElement) {
 void Scene::LoadMap(std::string map)
 {
 	UnloadLevel();
-	
+	Engine::GetInstance().entityManager->CleanUp();
 	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/level2music.wav");
 
 	isPaused = false;

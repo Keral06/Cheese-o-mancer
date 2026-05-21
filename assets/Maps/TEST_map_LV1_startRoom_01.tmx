@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="175" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="35" nextobjectid="415">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="175" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="35" nextobjectid="415">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -117,7 +117,7 @@
   </tile>
  </tileset>
  <objectgroup id="13" name="fons"/>
- <objectgroup id="24" name="BG Parallax" parallaxx="0.1" parallaxy="0.1">
+ <objectgroup id="24" name="BG Parallax">
   <properties>
    <property name="Draw" type="bool" value="true"/>
    <property name="Parallax" type="float" value="0.2"/>
@@ -125,7 +125,7 @@
   <object id="413" gid="816" x="-837.001" y="1548" width="4343.92" height="2169.45"/>
  </objectgroup>
  <objectgroup id="34" name="w"/>
- <objectgroup id="23" name="Jails" parallaxx="0.2" parallaxy="0.2">
+ <objectgroup id="23" name="Jails">
   <properties>
    <property name="Draw" type="bool" value="true"/>
    <property name="Parallax" type="float" value="0.3"/>
@@ -55347,12 +55347,6 @@
    <point/>
   </object>
   <object id="382" name="Horse" type="Horse" x="14488" y="7248">
-   <point/>
-  </object>
-  <object id="414" name="Pics" type="Pics" x="16328" y="-724">
-   <properties>
-    <property name="WhoIs" value="Night"/>
-   </properties>
    <point/>
   </object>
  </objectgroup>
