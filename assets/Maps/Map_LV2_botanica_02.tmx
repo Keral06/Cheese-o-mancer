@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="306" height="153" tilewidth="128" tileheight="128" infinite="0" nextlayerid="42" nextobjectid="420">
+<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="306" height="153" tilewidth="128" tileheight="128" infinite="0" nextlayerid="42" nextobjectid="421">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -21,7 +21,7 @@
  <tileset firstgid="20576" source="tileset_lv2_sky_parallax_5.tsx"/>
  <tileset firstgid="20577" source="tileset_lv2_sky_parallax_6.tsx"/>
  <tileset firstgid="20578" source="tileset_lv2_sky_parallax_2.tsx"/>
- <group id="35" name="Sky" offsetx="-2524" offsety="824" parallaxx="0.1" parallaxy="0.1">
+ <group id="35" name="Sky" offsetx="202.061" offsety="1299.76" parallaxx="0.1" parallaxy="0.1">
   <objectgroup id="36" name="Sky1" parallaxx="0.4" parallaxy="0.4">
    <object id="414" gid="20575" x="-8191.11" y="2120.47" width="17437.3" height="5604.83"/>
   </objectgroup>
@@ -327953,6 +327953,12 @@
    <point/>
   </object>
   <object id="381" name="Bee" type="Bee" x="33648" y="6720">
+   <point/>
+  </object>
+  <object id="420" x="20416" y="16048">
+   <properties>
+    <property name="WhoIs" value="Night"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

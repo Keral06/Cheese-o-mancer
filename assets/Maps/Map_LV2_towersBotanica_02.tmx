@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" class=" " orientation="orthogonal" renderorder="right-down" width="145" height="120" tilewidth="128" tileheight="128" infinite="0" nextlayerid="38" nextobjectid="439">
+<map version="1.10" tiledversion="1.12.0" class=" " orientation="orthogonal" renderorder="right-down" width="145" height="120" tilewidth="128" tileheight="128" infinite="0" nextlayerid="38" nextobjectid="439">
  <tileset firstgid="1" name="tileset_lv2_general_01" tilewidth="128" tileheight="128" tilecount="1558" columns="38">
   <image source="tileset_lv2_general_02.png" width="4864" height="5367"/>
+ </tileset>
+ <tileset firstgid="1559" name="tileset_lv2_sky_parallax_6" tilewidth="4000" tileheight="2250" tilecount="1" columns="1">
+  <image source="Level2/Sky Parts/6.png" width="4000" height="2250"/>
  </tileset>
  <layer id="22" name="Wall Parallax" width="145" height="120" parallaxx="0.9">
   <data>
