@@ -148,6 +148,8 @@ private:
 
 	//Funciones Store
 	void CreateStoreLevel1();
+	void CreateStoreLevel2();
+
 
 	//Funciones para el inventario
 	void CreateInventoryUI();
@@ -215,7 +217,7 @@ private:
 
 
 public:
-	void SetStore(bool store);
+	void SetStore(bool store, int storeID = 1);
 	void SetInventory(bool inventory);
 	SDL_Rect rectInvMap = { 0, 0, 0, 0 };
 	std::string nextMap = "";
@@ -238,7 +240,6 @@ public:
 
 	
 	bool beatBoss = false;
-	
 	bool extralife = false;
 
 	//BOOLS OF THE PAPERS

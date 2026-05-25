@@ -704,8 +704,16 @@ MapLayer* Map::GetNavigationLayer() {
                             std::shared_ptr<HANDMAN> Handman = std::dynamic_pointer_cast<HANDMAN>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HANDMAN));
                             //if (objectGroupNode.attribute("levelAt").as_int()) { //add a cattegory called WhoIs, so i can check which one it is via it's name
                             //    Handman->level = objectGroupNode.attribute("levelAt").as_int();
+                            Properties handman;
+                            LoadProperties(objectNode, handman);
 
-
+                            auto storeIdProp = handman.GetProperty("storeID");
+                            if (storeIdProp) {
+                                Handman->storeID = storeIdProp->valueInt; 
+                            }
+                            else {
+                                Handman->storeID = 1; 
+                            }
 
                             //}
                             Handman->position = Vector2D(x, y);

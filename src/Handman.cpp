@@ -15,21 +15,7 @@ HANDMAN::HANDMAN() : NPC(EntityType::HANDMAN)
 	this->name = name;
 	this->texture = texture;
 	this->tsxPath = tsxPath;
-	Dialogue firstStime("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_FirstMeeting.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_FirstMeeting.txt");
-	this->dialogue = firstStime; //dialogo al descubrirlo por primera vez
-	pbody = nullptr;
-	Dialogue dialogueHandman("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_SalesPitch_BeforeBoss.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_SalesPitch_BeforeBoss.txt");
-	dialogueHANDMAN = dialogueHandman; //dialogo antes de beat el boss
-	Dialogue hasbeensold("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_Buying.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_Buying.txt");
-	this->hasBeenSold = hasbeensold; //dialogo has comprado algo
-	Dialogue hasNoMoney("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_NoMoney.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_NoMoney.txt");
-	this->hasNoMoney = hasNoMoney; //dialogo no tiene dinero
-	Dialogue hasBeatBoss("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_SalesPitch_AfterBoss.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_SalesPitch_AfterBoss.txt");
-	this->BeatBoss = hasBeatBoss; //dialogo has beat al boss
-    Dialogue notbought("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_Leaving_WithoutBuying.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_Leaving_WithoutBuying.txt");
-    this->hasNotBought = notbought; //dialogo salir sin haber comprado
-    Dialogue yesbought("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_Leaving_AfterBuying.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_Leaving_AfterBuying.txt");
-    this->hasBought = yesbought; //dialogo salir habiendo comprado
+    pbody = nullptr;
 }
 
 
@@ -45,7 +31,39 @@ bool HANDMAN::Awake() {
 }
 
 bool HANDMAN::Start() {
-
+    //Dialogos
+    if (storeID == 1) {
+        Dialogue firstStime("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_FirstMeeting.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_FirstMeeting.txt");
+        this->dialogue = firstStime; //dialogo al descubrirlo por primera vez
+        Dialogue dialogueHandman("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_SalesPitch_BeforeBoss.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_SalesPitch_BeforeBoss.txt");
+        dialogueHANDMAN = dialogueHandman; //dialogo antes de beat el boss
+        Dialogue hasbeensold("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_Buying.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_Buying.txt");
+        this->hasBeenSold = hasbeensold; //dialogo has comprado algo
+        Dialogue hasNoMoney("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_NoMoney.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_NoMoney.txt");
+        this->hasNoMoney = hasNoMoney; //dialogo no tiene dinero
+        Dialogue hasBeatBoss("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_SalesPitch_AfterBoss.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_SalesPitch_AfterBoss.txt");
+        this->BeatBoss = hasBeatBoss; //dialogo has beat al boss
+        Dialogue notbought("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_Leaving_WithoutBuying.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_Leaving_WithoutBuying.txt");
+        this->hasNotBought = notbought; //dialogo salir sin haber comprado
+        Dialogue yesbought("resources/Dialogues/HangedMan/Hanged_Man_Dialogues_Leaving_AfterBuying.txt", "resources/Dialogues/HangedMan/Hanged_Man_Names_Leaving_AfterBuying.txt");
+        this->hasBought = yesbought; //dialogo salir habiendo comprado
+    }
+    else if (storeID == 2) {
+        Dialogue firstStime("assets/Dialogues/Hanged_Man_LVL2/HangedMan_FirstInteraction_Dialogues.txt", "assets/Dialogues/Hanged_Man_LVL2/HangedMan_FirstInteraction_Names.txt");
+        this->dialogue = firstStime; //dialogo al descubrirlo por primera vez en el nivel 2
+        Dialogue dialogueHandman("assets/Dialogues/Hanged_Man_LVL2/HangedMan_SalesBeforeBoss_Dialogues.txt", "assets/Dialogues/Hanged_Man_LVL2/HangedMan_SalesBeforeBoss_Names.txt");
+        dialogueHANDMAN = dialogueHandman; //dialogo antes de beat el boss2
+        Dialogue hasbeensold("assets/Dialogues/Hanged_Man_LVL2/Hanged_Man_Dialogues_Buying.txt", "assets/Dialogues/Hanged_Man_LVL2/Hanged_Man_Names_Buying.txt");
+        this->hasBeenSold = hasbeensold; //dialogo has comprado algo
+        Dialogue hasNoMoney("assets/Dialogues/Hanged_Man_LVL2/HangedMan_NoMoney_Dialogues.txt", "assets/Dialogues/Hanged_Man_LVL2/HangedMan_NoMoney_Names.txt");
+        this->hasNoMoney = hasNoMoney; //dialogo no tiene dinero
+        Dialogue hasBeatBoss("assets/Dialogues/Hanged_Man_LVL2/HangedMan_SalesAfterBoss_Dialogues.txt", "assets/Dialogues/Hanged_Man_LVL2/HangedMan_SalesAfterBoss_Names.txt");
+        this->BeatBoss = hasBeatBoss; //dialogo has beat al boss
+        Dialogue notbought("assets/Dialogues/Hanged_Man_LVL2/HangedMan_LeavingNoBuying_Dialogues.txt", "assets/Dialogues/Hanged_Man_LVL2/HangedMan_LeavingNoBuying_Names.txt");
+        this->hasNotBought = notbought; //dialogo salir sin haber comprado
+        Dialogue yesbought("assets/Dialogues/Hanged_Man_LVL2/HangedMan_LeavingBuying_Dialogues.txt", "assets/Dialogues/Hanged_Man_LVL2/HangedMan_LeavingBuying_Names.txt");
+        this->hasBought = yesbought; //dialogo salir habiendo comprado
+    }
 
     std::unordered_map<int, std::string> aliases = {
            {70, "selling"}
@@ -94,6 +112,13 @@ bool HANDMAN::Update(float dt)
         if (!isStoreOn) {
             Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - 32, (int)position.getY() + (texH / 2) + 96);
         }
+        bool bossDefeated = false;
+        if (storeID == 1) {
+            bossDefeated = py->beatBoss;
+        }
+        else if (storeID == 2) {
+            bossDefeated = py->beatPrincess;
+        }
         if (isWaitingForAnimation) {
             if (anims.HasFinished()) {
                 isWaitingForAnimation = false;
@@ -125,7 +150,7 @@ bool HANDMAN::Update(float dt)
             return true;
         }
 
-        if (!py->beatBoss && dialogueHANDMAN.hasStarted && !dialogueHANDMAN.hasEnded) {
+        if (!bossDefeated && dialogueHANDMAN.hasStarted && !dialogueHANDMAN.hasEnded) {
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
                 dialogueHANDMAN.NextDialogue();
             }
@@ -133,14 +158,14 @@ bool HANDMAN::Update(float dt)
             return true;
         }
 
-        if (py->beatBoss && BeatBoss.hasStarted && !BeatBoss.hasEnded) {
+        if (!bossDefeated && BeatBoss.hasStarted && !BeatBoss.hasEnded) {
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
                 BeatBoss.NextDialogue();
                 if (BeatBoss.hasEnded) {
                     firstTimeBossKill = false;
                     isStoreOn = true;
                     moneyPlayer = py->score;
-                    Engine::GetInstance().scene->SetStore(isStoreOn);
+                    Engine::GetInstance().scene->SetStore(isStoreOn, storeID);
                     return true;
                 }
             }
@@ -182,7 +207,7 @@ bool HANDMAN::Update(float dt)
 
         if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
             bool necesitaAnimacion = false;
-            if (!py->beatBoss) {
+            if (!bossDefeated){
                 if (firstTime) {
                     pendingDialogue = &dialogue;
                     necesitaAnimacion = true;
@@ -199,7 +224,7 @@ bool HANDMAN::Update(float dt)
                 }
                 else {
                     isStoreOn = !isStoreOn;
-                    Engine::GetInstance().scene->SetStore(isStoreOn);
+                    Engine::GetInstance().scene->SetStore(isStoreOn, storeID);
 
                     if (isStoreOn) {
                         moneyPlayer = py->score;

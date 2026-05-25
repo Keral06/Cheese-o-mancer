@@ -119,6 +119,7 @@ public:
 
 	bool hasCheese = false;
 	bool beatBoss = false;
+	bool beatPrincess = false;
 	bool hasTalkedWithMagician = false; //abrir puerta para poder seguir / desbloquea la vida UI
 	bool extralife = false;
 

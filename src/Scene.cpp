@@ -652,10 +652,12 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		else {
 			ChangeScene(SceneID::LEVEL2);
 		}*/
-		if (storeOn == false)SetStore(true);
-		else
-		SetStore(false);
-	
+		if (storeOn == false) {
+			SetStore(true, 2); 
+		}
+		else {
+			SetStore(false, 2); 
+		}
 		break;
 	case 6: 
 		exitGame = true; 
@@ -779,6 +781,9 @@ void Scene::UpdateLevel(float dt) {
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_V) == KEY_DOWN) {
 		LoadMap("Map_LV3_right_02.tmx");
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_C) == KEY_DOWN) {
+		LoadMap("Map_LV2_towersBotanica_02.tmx");
 	}
 
 
@@ -1364,7 +1369,12 @@ void Scene::LoadMap(std::string map)
 
 	isPaused = false;
 	CreatePauseUI();
-	CreateStoreLevel1();
+	if (map.find("LV2") != std::string::npos) {
+		CreateStoreLevel2(); 
+	}
+	else {
+		CreateStoreLevel1(); 
+	}
 	CreateInventoryUI();
 	helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_TutorialControls.png");
 	map1Texture = Engine::GetInstance().textures->Load("assets/UI/Map/UI_Map_Level1.png");
@@ -1510,19 +1520,104 @@ void Scene::CreateStoreLevel1() {
 	storePaperKey = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Key.png");
 }
 
-void Scene::SetStore(bool store) {
+void Scene::CreateStoreLevel2() {
+
+	int x = 200;
+	int y = 120;
+
+	// MAP
+	SDL_Texture* MapNormal;
+	SDL_Texture* MapClicked;
+	MapClicked = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemMap1_01.png");
+	MapNormal = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemMap2_01.png");
+	auto btnMAP = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 35, "MAP", { 350, y, 170, 170 }, this, SDL_Rect{ 0,0,0,0 }, MapNormal, MapClicked);
+	btnMAP->visible = false;
+
+	// KEY
+	SDL_Texture* KeyNormal;
+	SDL_Texture* KeyClicked;
+	KeyNormal = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemKey2_01.png");
+	KeyClicked = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemKey1_01.png");
+	auto btnKEY = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 36, "KEY", { x, y + 150, 170, 170 }, this, SDL_Rect{ 0,0,0,0 }, KeyNormal, KeyClicked);
+	btnKEY->visible = false;
+
+	//LIFE
+	SDL_Texture* LifeNormal;
+	SDL_Texture* LifeClicked;
+	LifeNormal = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemLife2_01.png");
+	LifeClicked = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemLife1_01.png");
+	auto btnLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 37, "TEMPORARY LIFE", { 350, y + 250, 170, 170 }, this, SDL_Rect{ 0,0,0,0 }, LifeNormal, LifeClicked);
+	btnLIFE->visible = false;
+
+	//MILLORA MAL
+	SDL_Texture* Damageplus;
+	SDL_Texture* DamageplusClicked;
+	Damageplus = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemDamage1_.png");
+	DamageplusClicked = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemDamage2_.png");
+	auto btnDAMAGE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 43, "DAMAGE PLUS", { 350, y + 350, 170, 170 }, this, SDL_Rect{ 0,0,0,0 }, Damageplus, DamageplusClicked);
+	btnDAMAGE->visible = false;
+
+	//// LLANTERN
+	//auto btnLLANTERN = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 38, "LLANTERN", { x, y + 210, 200, 50 }, this);
+	//btnLLANTERN->visible = false;
+
+	// BUYMAP
+	SDL_Texture* BuyNormal;
+	SDL_Texture* BuyClicked;
+	BuyNormal = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ButtonBuy1_01.png");
+	BuyClicked = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ButtonBuy2_01.png");
+	auto btnBUYMAP = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 39, "BUYMAP", { 750, y + 280, 300, 150 }, this, SDL_Rect{ 0,0,0,0 }, BuyNormal, BuyClicked);
+	btnBUYMAP->visible = false;
+
+	//BUYKEY
+	auto btnBUYKEY = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 40, "BUYKEY", { 750, y + 280, 300, 150 }, this, SDL_Rect{ 0,0,0,0 }, BuyNormal, BuyClicked);
+	btnBUYKEY->visible = false;
+
+	//BUYLIFE
+
+	auto btnBUYLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 41, "BUYLIFE", { 750, y + 280, 300, 150 }, this, SDL_Rect{ 0,0,0,0 }, BuyNormal, BuyClicked);
+	btnBUYLIFE->visible = false;
+
+	////BUYLLANTERN
+	//auto btnBUYLLANTERN = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 42, "BUYLLANTERN", { x + 70, y, 200, 50 }, this);
+	//btnBUYLLANTERN->visible = false;
+
+	//texturas decoracion
+	storeBag = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Bag_02.png");
+	storePaperMap = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Map.png");
+	storePaperLife = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Life.png");
+	storePaperKey = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Key.png");
+}
+
+void Scene::SetStore(bool store, int storeID) {
 	storeOn = store;
-	for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
-		if (element->id == 35 || element->id==36 || element->id == 37) {
-			element->visible = storeOn;
+	if (storeOn) {
+		if (storeID == 1) {
+			for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
+				if (element->id == 35 || element->id == 36 || element->id == 37) {
+					element->visible = storeOn;
+				}
+			}
 		}
-		if (!storeOn && element->id >= 39 && element->id <= 41) {
-			element->visible = false;
+		else if (storeID == 2) {
+			for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
+				if (element->id == 35 || element->id == 36 || element->id == 37 || element->id == 43) {
+					element->visible = storeOn;
+				}
+			}
+		}
+	}
+	else {
+		for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
+			if (element->id >= 35 && element->id <= 44) {
+				element->visible = false;
+			}
 		}
 	}
 	if (!storeOn) {
 		selectedStoreItem = 0;
 	}
+	
 		
 }
 
@@ -1672,10 +1767,47 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 			}
 
 		}
+		break;
 	
-	/*case 42:
-		
-		break;*/
+	case 43: 
+		for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
+			if (el->id == 44) el->visible = true;
+			if (el->id >= 39 && el->id <= 42) el->visible = false;
+		}
+		selectedStoreItem = 4; 
+		break;
+
+	case 44:
+		if (player->score >= 40) { 
+			player->score -= 40;
+
+			for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
+				if (el->id == 44) el->Destroy();
+				if (el->id == 43) {
+					SDL_Texture* BeenBought = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_SoldOut_01.png");
+					el->SetTexture(BeenBought);
+				}
+			}
+
+			for (auto& entity : Engine::GetInstance().entityManager->entities) {
+				if (entity->type == EntityType::HANDMAN) {
+					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
+					handman->hasBeenSold.hasEnded = false;
+					handman->hasBeenSold.BeginDialogue();
+					break;
+				}
+			}
+		}
+		else {
+			for (auto& entity : Engine::GetInstance().entityManager->entities) {
+				if (entity->type == EntityType::HANDMAN) {
+					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
+					handman->hasNoMoney.hasEnded = false;
+					handman->hasNoMoney.BeginDialogue();
+					break;
+				}
+			}
+		}
 		break;
 	}
 }

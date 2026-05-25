@@ -53695,6 +53695,7 @@
   <object id="373" name="Handman" type="Handman" x="10149.7" y="3860.73">
    <properties>
     <property name="LevelAt" type="int" value="1"/>
+    <property name="storeID" type="int" value="1"/>
    </properties>
    <point/>
   </object>

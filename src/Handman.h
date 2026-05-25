@@ -13,7 +13,6 @@ class HANDMAN : public NPC
 {
 public:
 	HANDMAN();
-	
 	virtual ~HANDMAN();
 
 	bool Awake();
@@ -49,6 +48,7 @@ private:
 public:
 	SDL_Texture* InteractTexture = nullptr;
 	int coinFx;
+	int storeID = 1;
 	int coinPickupFx;
 	int xInicial;
 	int yInicial;	
@@ -68,5 +68,4 @@ public:
 	int moneyPlayer = 0;
 	bool isWaitingForAnimation = false;
 	Dialogue* pendingDialogue = nullptr;
-	
 };

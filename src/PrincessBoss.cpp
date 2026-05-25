@@ -377,6 +377,13 @@ void PrincessBoss::SetPrincessState(PrincessState newState)
     if (princessState == newState)
         return;
 
+    if(newState == PrincessState::DEATH) {
+        Player* p = Engine::GetInstance().scene->GetPlayer();
+        if (p != nullptr) {
+            p->beatPrincess = true;
+        }
+    }
+
     lastPrincessState = princessState;
     princessState = newState;
 
