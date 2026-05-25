@@ -262,4 +262,8 @@ public:
 	//Tarot bools
 	std::vector<SDL_Texture*> TarotCards;
 
+	//dialogue movement restriction
+
+	bool someoneIsTalking = false;
+
 };

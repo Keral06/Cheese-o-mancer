@@ -2044,6 +2044,11 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
+		std::unordered_map<int, std::string> aliases = { {70, "idle"} };
+
+		anims.LoadFromTSX("assets/Textures/Spritesheets/Lady Nohely NPC/ladyNohuely_sit.tsx", aliases);
+		anims.SetCurrent("sit");
+
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -2194,6 +2199,11 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	bool milkmaid::Start() {
 
 		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+
+		std::unordered_map<int, std::string> aliases = {{70, "idle"}};
+
+		anims.LoadFromTSX("assets/Textures/Spritesheets/Milkmaid_NPC/milkmaid_idle.tsx", aliases);
+		anims.SetCurrent("idle");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
@@ -2691,6 +2701,35 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool Hermit::Start() {
 
+		std::unordered_map<int, std::string> aliases = {
+		  {70, "idle"}
+		};
+		anims.LoadFromTSX("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.tsx", aliases);
+		anims.SetCurrent("idle");
+
+		if (isGettingTouched && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) 
+		{
+			anims.SetCurrent("start");
+			
+			while (!dialogue.hasEnded)
+			{
+				anims.SetCurrent("talk");
+			}
+
+			if (dialogue.hasEnded)
+			{
+				anims.SetCurrent("end");
+			}
+
+		}
+
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hangman/sprite_hangedman_01.png");
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
+
+		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
+		texW = 256;
+		texH = 640;
+
 		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
@@ -2918,7 +2957,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		return true;
 	}
 	bool Hermit::CleanUp() {
-		LOG("Unloading Coin");
+		LOG("Unloading Hermit");
 		Engine::GetInstance().textures->UnLoad(texture);
 		if (pbody != nullptr) {
 			Engine::GetInstance().physics->DeletePhysBody(pbody);
