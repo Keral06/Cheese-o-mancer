@@ -212,4 +212,8 @@ private:
     MapData mapData;
     //L15 TODO 2: make the mapFileXML an attribute of the Map class
     pugi::xml_document mapFileXML;
+
+    // Helper functions para procesar grupos anidados de Tiled
+    void ParseLayersRecursive(pugi::xml_node parentNode);
+    void ParseObjectGroupsRecursive(pugi::xml_node parentNode);
 };

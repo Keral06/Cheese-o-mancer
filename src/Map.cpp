@@ -207,28 +207,9 @@ bool Map::Load(std::string path, std::string fileName)//
             mapData.tilesets.push_back(tileSet); // Esto tiene que estar SIEMPRE al final del bucle
 		}
 
-        // L07: TODO 3: Iterate all layers in the TMX and load each of them
-        for (pugi::xml_node layerNode = mapFileXML.child("map").child("layer"); layerNode != NULL; layerNode = layerNode.next_sibling("layer")) {
+        // L07: TODO 3: Iterate all layers in the TMX and load each of them (incluyendo grupos anidados)
+        ParseLayersRecursive(mapFileXML.child("map"));
 
-            // L07: TODO 4: Implement the load of a single layer 
-            //Load the attributes and saved in a new MapLayer
-            MapLayer* mapLayer = new MapLayer();
-            mapLayer->id = layerNode.attribute("id").as_int();
-            mapLayer->name = layerNode.attribute("name").as_string();
-            mapLayer->width = layerNode.attribute("width").as_int();
-            mapLayer->height = layerNode.attribute("height").as_int();
-
-            //L09: TODO 6 Call Load Layer Properties
-            LoadProperties(layerNode, mapLayer->properties);
-
-            //Iterate over all the tiles and assign the values in the data array
-            for (pugi::xml_node tileNode = layerNode.child("data").child("tile"); tileNode != NULL; tileNode = tileNode.next_sibling("tile")) {
-                mapLayer->tiles.push_back(tileNode.attribute("gid").as_int());
-            }
-
-            //add the layer to the map
-            mapData.layers.push_back(mapLayer);
-        }
 
         for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
 
@@ -1136,3 +1117,62 @@ MapLayer* Map::GetNavigationLayer() {
             //LOG("PARALLAX DEBUG: ERROR FATAL - La capa '%s' no existe en el mapa.", layerName.c_str());
         }
     }
+
+void Map::ParseLayersRecursive(pugi::xml_node parentNode)
+{
+    for (pugi::xml_node node = parentNode.first_child(); node; node = node.next_sibling()) {
+        std::string nodeName = node.name();
+        
+        if (nodeName == "layer") {
+            MapLayer* mapLayer = new MapLayer();
+            mapLayer->id = node.attribute("id").as_int();
+            mapLayer->name = node.attribute("name").as_string();
+            mapLayer->width = node.attribute("width").as_int();
+            mapLayer->height = node.attribute("height").as_int();
+
+            LoadProperties(node, mapLayer->properties);
+
+            for (pugi::xml_node tileNode = node.child("data").child("tile"); tileNode != NULL; tileNode = tileNode.next_sibling("tile")) {
+                mapLayer->tiles.push_back(tileNode.attribute("gid").as_int());
+            }
+
+            mapData.layers.push_back(mapLayer);
+        }
+        else if (nodeName == "group") {
+            ParseLayersRecursive(node);
+        }
+    }
+}
+
+void Map::ParseObjectGroupsRecursive(pugi::xml_node parentNode)
+{
+    for (pugi::xml_node node = parentNode.first_child(); node; node = node.next_sibling()) {
+        std::string nodeName = node.name();
+        
+        if (nodeName == "objectgroup") {
+            ObjectGroup* objectGroup = new ObjectGroup();
+            objectGroup->id = node.attribute("id").as_int();
+            objectGroup->name = node.attribute("name").as_string();
+            LoadProperties(node, objectGroup->properties);
+
+            for (pugi::xml_node objectNode = node.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
+                ObjectGroup::Object* object = new ObjectGroup::Object();
+                object->id = objectNode.attribute("id").as_int();
+                object->name = objectNode.attribute("name").as_string();
+                object->x = objectNode.attribute("x").as_int();
+                object->y = objectNode.attribute("y").as_int();
+                object->width = objectNode.attribute("width").as_int();
+                object->height = objectNode.attribute("height").as_int();
+                object->gid = objectNode.attribute("gid").as_int(0);
+                LoadProperties(objectNode, object->properties);
+
+                objectGroup->objects.push_back(object);
+            }
+
+            mapData.objectgroups.push_back(objectGroup);
+        }
+        else if (nodeName == "group") {
+            ParseObjectGroupsRecursive(node);
+        }
+    }
+}
