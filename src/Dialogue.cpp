@@ -100,7 +100,7 @@ void Dialogue::Draw(float dt) {
 
 		
 	Engine::GetInstance().render->DrawTextureNoCamera(textureDialogue,250, 420, w / 1.5, h / 1.5);
-	Engine::GetInstance().render->DrawText(dialogueHelper[lenghtHelper ].c_str(), 310, 580, 0, 0, { 0,0,0 });
+	Engine::GetInstance().render->DrawText(dialogueHelper[lenghtHelper ].c_str(), 330, 550, 0, 0, { 0,0,0 });
 	if (nameHelper.size() != 0) {
 	
 	Engine::GetInstance().render->DrawText(nameHelper[lenghtHelper].c_str(), 312, 520, 0, 0, { 0,0,0 });
@@ -127,7 +127,7 @@ void Dialogue::BeginDialogue() {
 	hasStarted = true;
 	hasEnded = false;
 	printf("%s", dialogueHelper[lenghtHelper].c_str());
-	
+	Engine::GetInstance().scene->someoneIsTalking = true;
 	
 	
 
@@ -149,7 +149,7 @@ void Dialogue:: NextDialogue() {
 	}
 	else {
 		hasStarted = false;
-		
+		Engine::GetInstance().scene->someoneIsTalking = false;
 	}
 	HasEnded(hasStarted);
 }
