@@ -348,7 +348,7 @@ bool Render::DrawText(const char* text, int x, int y, int w, int h, SDL_Color co
 
 	// Render the text to a surface
 	// SDL3_ttf: length can be 0 for null-terminated strings
-	SDL_Surface* surface = TTF_RenderText_Solid(font, text, 0, color);
+	SDL_Surface* surface = TTF_RenderText_Blended_Wrapped(font, text, 0, color,540);
 	if (!surface) {
 		LOG("DrawText: TTF_RenderText_Solid failed: %s", SDL_GetError());
 		return false;
