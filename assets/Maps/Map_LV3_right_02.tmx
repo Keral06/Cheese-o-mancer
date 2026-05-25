@@ -3,8 +3,8 @@
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
- <tileset firstgid="4" name="tileset_lv3_General_01" tilewidth="128" tileheight="128" tilecount="1260" columns="42">
-  <image source="tileset_lv3_General_01.png" width="5466" height="3840"/>
+ <tileset firstgid="4" name="tileset_lv3_General_01" tilewidth="128" tileheight="128" tilecount="1677" columns="43">
+  <image source="tileset_lv3_General_01.png" width="5588" height="4992"/>
  </tileset>
  <layer id="16" name="Background" width="84" height="109">
   <properties>
@@ -32012,22 +32012,22 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
-   <tile gid="47"/>
+   <tile gid="48"/>
+   <tile gid="48"/>
+   <tile gid="48"/>
+   <tile gid="48"/>
+   <tile gid="48"/>
+   <tile gid="48"/>
+   <tile gid="48"/>
+   <tile gid="48"/>
+   <tile gid="48"/>
+   <tile gid="48"/>
+   <tile gid="48"/>
+   <tile gid="48"/>
+   <tile gid="48"/>
+   <tile gid="48"/>
+   <tile gid="48"/>
+   <tile gid="48"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
@@ -32933,7 +32933,7 @@
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
-   <tile gid="47"/>
+   <tile gid="48"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>

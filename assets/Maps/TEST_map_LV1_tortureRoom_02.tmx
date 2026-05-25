@@ -44570,7 +44570,7 @@
     <property name="name" value="Door_1_4_2"/>
     <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="-50"/>
-    <property name="targetMap" value="Level2/Map_LV2_transition_01.tmx"/>
+    <property name="targetMap" value="Map_LV2_transition_02.tmx"/>
     <property name="targetSpawn" value="Door_2_1_1"/>
    </properties>
   </object>
