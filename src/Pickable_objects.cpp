@@ -95,7 +95,7 @@ void Pics:: ChooseWhoIs() {
 		PopUpImage = Engine::GetInstance().textures->Load("assets/UI/UI_Poem/requadre_ajustat/UI_Poem_1_02.png_.png");
 		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Carta/Carta1.png"); //placeholder
 		BoolOfPlayer = 1;
-
+		bool objectDeleteIs = true;
 
 	}
 	else if (name == "Day") {
@@ -105,7 +105,7 @@ void Pics:: ChooseWhoIs() {
 		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Carta/Carta2.png"); //placeholder
 		BoolOfPlayer = 2;
 
-
+		bool objectDeleteIs = true;
 
 
 	}
@@ -116,7 +116,7 @@ void Pics:: ChooseWhoIs() {
 		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Carta/Carta3.png"); //placeholder
 		BoolOfPlayer = 3;
 
-
+		 objectDeleteIs = true;
 
 
 	}
@@ -127,7 +127,7 @@ void Pics:: ChooseWhoIs() {
 		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Carta/Carta4.png"); //placeholder
 
 		BoolOfPlayer = 4;
-
+		 objectDeleteIs = true;
 		
 
 	}
@@ -138,7 +138,7 @@ void Pics:: ChooseWhoIs() {
 
 		BoolOfPlayer = 5;
 
-
+		 objectDeleteIs = true;
 
 	}
 	else if (name == "Horsekin") {
@@ -149,7 +149,7 @@ void Pics:: ChooseWhoIs() {
 
 		BoolOfPlayer = 6;
 
-
+		 objectDeleteIs = true;
 
 	}
 	else if (name == "TreeRoot") {
@@ -160,7 +160,7 @@ void Pics:: ChooseWhoIs() {
 
 		BoolOfPlayer = 6;
 
-
+		 objectDeleteIs = true;
 
 	}
 
@@ -169,8 +169,16 @@ void Pics:: ChooseWhoIs() {
 bool Pics::Update(float dt)
 {
 	if (!active) return true;
-
-	if (texture) {
+	if (hasPbody ==false) return true;
+	if (beenPicked && PopUpOn==false){
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		hasPbody = false;
+		return true;
+	}
+	if (texture && PopUpOn==false) {
 	Draw(dt);
 	
 	
@@ -191,14 +199,22 @@ bool Pics::Update(float dt)
 			if (dialogue.dialogue.size() <= 0) {
 			
 				if (PopUpOn) {
-					CleanUp();
-					Destroy();
-				
+					if (objectDeleteIs) {
+					
+						beenPicked = true;
+					
+					}
+					PopUpOn = false;
+					Engine::GetInstance().scene->ObjectObserved = false;
 				}
 				else {
-				   
+					if (objectDeleteIs) {
+
+						beenPicked = true;
+
+					}
 					PopUpOn = true;
-				
+					Engine::GetInstance().scene->ObjectObserved = true;
 				}
 			
 			

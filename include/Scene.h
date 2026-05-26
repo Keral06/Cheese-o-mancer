@@ -265,5 +265,6 @@ public:
 	//dialogue movement restriction
 
 	bool someoneIsTalking = false;
+	bool ObjectObserved = false;
 
 };

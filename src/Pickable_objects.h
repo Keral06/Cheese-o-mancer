@@ -44,6 +44,9 @@ private:
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
+	bool beenPicked = false;
+	bool objectDeleteIs = false;
+	bool hasPbody = true;
 
 public:
 	int coinFx;

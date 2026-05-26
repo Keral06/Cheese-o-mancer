@@ -150,8 +150,15 @@ bool Player::Update(float dt)
 		}
 		else
 		{
-			Move();
-			Jump();
+			if (Engine::GetInstance().scene->someoneIsTalking == false) {
+				Move();
+				Jump();
+				
+			}
+			else {
+			
+				currentAnimSet->SetCurrent("idle");
+			}
 		}
 		if (isMounted && Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
 		{
@@ -167,7 +174,11 @@ bool Player::Update(float dt)
 		ChangeCurrentAnimation();
 		ApplyPhysics();
 	}
+	if (Engine::GetInstance().scene->ObjectObserved == false) {
+	
 	Draw(dt);
+	
+	}
 
 	CameraRender(dt);
 	if (!isPaused) {

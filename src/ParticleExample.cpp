@@ -197,7 +197,7 @@ void ParticleExample::setStyle(PatticleStyle style)
     //    _posVar = { 0, 0 };
     //    break;
     //}
-   
+
     //case ParticleExample::METEOR:
     //{
     //    initWithTotalParticles(150);
@@ -572,4 +572,5 @@ void ParticleExample::setStyle(PatticleStyle style)
     //default:
     //    break;
     //}
+    }
 }
