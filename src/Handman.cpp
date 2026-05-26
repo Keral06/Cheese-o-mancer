@@ -136,9 +136,17 @@ bool HANDMAN::Update(float dt)
                 dialogue.NextDialogue();
                 if (dialogue.hasEnded) {
                     firstTime = false;
-                    dialogueHANDMAN.hasEnded = false;
-                    dialogueHANDMAN.BeginDialogue();
-                    dialogueHANDMAN.Draw(dt);
+                    if (!bossDefeated) {
+                        dialogueHANDMAN.hasEnded = false;
+                        dialogueHANDMAN.BeginDialogue();
+                        dialogueHANDMAN.Draw(dt);
+                    }
+                    else {
+                        BeatBoss.hasEnded = false;
+                        BeatBoss.BeginDialogue();
+                        BeatBoss.Draw(dt);
+                    }
+
                     if (this->level == 1) {
                         SDL_Texture* HangedMan = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_HangMan.png");
                         Engine::GetInstance().scene->TarotCards.push_back(HangedMan);
@@ -158,11 +166,11 @@ bool HANDMAN::Update(float dt)
             return true;
         }
 
-        if (!bossDefeated && BeatBoss.hasStarted && !BeatBoss.hasEnded) {
+        if (bossDefeated && BeatBoss.hasStarted && !BeatBoss.hasEnded) {
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
                 BeatBoss.NextDialogue();
                 if (BeatBoss.hasEnded) {
-                    firstTimeBossKill = false;
+                    /*firstTimeBossKill = false;*/
                     isStoreOn = true;
                     moneyPlayer = py->score;
                     Engine::GetInstance().scene->SetStore(isStoreOn, storeID);
@@ -207,39 +215,30 @@ bool HANDMAN::Update(float dt)
 
         if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
             bool necesitaAnimacion = false;
-            if (!bossDefeated){
-                if (firstTime) {
-                    pendingDialogue = &dialogue;
-                    necesitaAnimacion = true;
-                }
-                else {
-                    pendingDialogue = &dialogueHANDMAN;
-                    necesitaAnimacion = true;
-                }
+            if (firstTime) {
+                pendingDialogue = &dialogue;
+                necesitaAnimacion = true;
+            }
+            else if (!bossDefeated) {
+                pendingDialogue = &dialogueHANDMAN;
+                necesitaAnimacion = true;
             }
             else {
-                if (firstTimeBossKill) {
+                if (!isStoreOn) {
                     pendingDialogue = &BeatBoss;
                     necesitaAnimacion = true;
                 }
                 else {
-                    isStoreOn = !isStoreOn;
+                    isStoreOn = false;
                     Engine::GetInstance().scene->SetStore(isStoreOn, storeID);
 
-                    if (isStoreOn) {
-                        moneyPlayer = py->score;
-                        pendingDialogue = nullptr;
-                        necesitaAnimacion = true;
+                    if (py->score < moneyPlayer) {
+                        pendingDialogue = &hasBought;
                     }
                     else {
-                        if (py->score < moneyPlayer) {
-                            pendingDialogue = &hasBought;
-                        }
-                        else {
-                            pendingDialogue = &hasNotBought;
-                        }
-                        necesitaAnimacion = false;
+                        pendingDialogue = &hasNotBought;
                     }
+                    necesitaAnimacion = false;
                 }
             }
 

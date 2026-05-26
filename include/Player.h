@@ -137,6 +137,8 @@ public:
 	bool hasCheeseDownJump = true;
 	bool cheeseDownJumpUsed = false;
 	/*SDL_Rect& lastFrame;*/
+         
+	bool hasDamagePlus = false;
 private: 
 	b2Vec2 velocity;
 	AnimationSet anims2x3;

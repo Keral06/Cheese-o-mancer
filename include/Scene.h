@@ -213,6 +213,7 @@ private:
 	SDL_Texture* storePaperMap = nullptr;
 	SDL_Texture* storePaperLife = nullptr;
 	SDL_Texture* storePaperKey = nullptr;
+	SDL_Texture* storePaperDamage = nullptr;
 	int selectedStoreItem = 0;
 
 

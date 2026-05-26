@@ -200,24 +200,7 @@ bool Scene::PostUpdate()
 
 		}
 		Engine::GetInstance().uiManager->PostUpdate();
-		//STORE IS IN LEVEL 2
-		if (storeOn) {
-			float w, h;
-			SDL_GetTextureSize(storeBag, &w, &h);
-			Engine::GetInstance().render->DrawTextureNoCamera(storeBag, 80, -250, w / 1.5, h / 1.5);
-			if (selectedStoreItem == 1) {
-				SDL_GetTextureSize(storePaperMap, &w, &h);
-				Engine::GetInstance().render->DrawTextureNoCamera(storePaperMap, 550, -150, w / 1.5, h / 1.5);
-			}
-			else if (selectedStoreItem == 2) {
-				SDL_GetTextureSize(storePaperKey, &w, &h);
-				Engine::GetInstance().render->DrawTextureNoCamera(storePaperKey, 550, -150, w / 1.5, h / 1.5);
-			}
-			else if (selectedStoreItem == 3) {
-				SDL_GetTextureSize(storePaperLife, &w, &h);
-				Engine::GetInstance().render->DrawTextureNoCamera(storePaperLife, 550, -150, w / 1.5, h / 1.5);
-			}
-		}
+		
 		break;
 
 	case SceneID::IN_GAME:
@@ -365,7 +348,7 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 		HandlePauseUIEvents(uiElement);
 		return true;
 	}
-	if(uiElement->id>=35 && uiElement->id <= 42) {
+	if(uiElement->id>=35 && uiElement->id <= 44) {
 		HandleStoreUIEvents(uiElement);
 		return true;
 	}
@@ -782,8 +765,8 @@ void Scene::UpdateLevel(float dt) {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_V) == KEY_DOWN) {
 		LoadMap("Map_LV3_right_02.tmx");
 	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_C) == KEY_DOWN) {
-		LoadMap("Map_LV2_botanica_02.tmx");
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN) {
+		LoadMap("Map_LV2_towersBotanica_02.tmx");
 	}
 
 
@@ -981,6 +964,10 @@ void  Scene::PostUpdateLevel() {
 		else if (selectedStoreItem == 3) {
 			SDL_GetTextureSize(storePaperLife, &w, &h);
 			Engine::GetInstance().render->DrawTextureNoCamera(storePaperLife, 550, -50, w / 1.5, h / 1.5);
+		}
+		else if (selectedStoreItem == 4) {
+			SDL_GetTextureSize(storePaperDamage, &w, &h);
+			Engine::GetInstance().render->DrawTextureNoCamera(storePaperDamage, 550, -50, w / 1.5, h / 1.5);
 		}
 	}
 
@@ -1554,7 +1541,7 @@ void Scene::CreateStoreLevel2() {
 	SDL_Texture* DamageplusClicked;
 	Damageplus = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemDamage1_.png");
 	DamageplusClicked = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemDamage2_.png");
-	auto btnDAMAGE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 43, "DAMAGE PLUS", { 350, y + 350, 170, 170 }, this, SDL_Rect{ 0,0,0,0 }, Damageplus, DamageplusClicked);
+	auto btnDAMAGE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 43, "DAMAGE PLUS", { 450, y + 150, 170, 170 }, this, SDL_Rect{ 0,0,0,0 }, Damageplus, DamageplusClicked);
 	btnDAMAGE->visible = false;
 
 	//// LLANTERN
@@ -1578,6 +1565,11 @@ void Scene::CreateStoreLevel2() {
 	auto btnBUYLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 41, "BUYLIFE", { 750, y + 280, 300, 150 }, this, SDL_Rect{ 0,0,0,0 }, BuyNormal, BuyClicked);
 	btnBUYLIFE->visible = false;
 
+	//BUYDAMAGE
+
+	auto btnBUYDAMAGE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 44, "BUYLIFE", { 750, y + 280, 300, 150 }, this, SDL_Rect{ 0,0,0,0 }, BuyNormal, BuyClicked);
+	btnBUYDAMAGE->visible = false;
+
 	////BUYLLANTERN
 	//auto btnBUYLLANTERN = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 42, "BUYLLANTERN", { x + 70, y, 200, 50 }, this);
 	//btnBUYLLANTERN->visible = false;
@@ -1587,6 +1579,7 @@ void Scene::CreateStoreLevel2() {
 	storePaperMap = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Map.png");
 	storePaperLife = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Life.png");
 	storePaperKey = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Key.png");
+	storePaperDamage = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Damage_.png");
 }
 
 void Scene::SetStore(bool store, int storeID) {
@@ -1627,7 +1620,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 	case 35:
 		for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
 			if (el->id == 39) el->visible = true;
-			if (el->id > 39 && el->id <= 42) el->visible = false;
+			if (el->id > 39 && el->id <= 42 || el->id == 44) el->visible = false;
 
 		}
 		selectedStoreItem = 1;
@@ -1635,7 +1628,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 	case 36:
 		for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
 			if (el->id == 40) el->visible = true;
-			if (el->id == 39 || el->id >= 41 && el->id <= 42) el->visible = false;
+			if (el->id == 39 || el->id >= 41 && el->id <= 42 || el->id == 44) el->visible = false;
 
 		}
 		selectedStoreItem = 2;
@@ -1643,7 +1636,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 	case 37:
 		for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
 			if (el->id == 41) el->visible = true;
-			if (el->id == 39 || el->id == 40 || el->id == 42) el->visible = false;
+			if (el->id == 39 || el->id == 40 || el->id == 42 || el->id == 44) el->visible = false;
 
 		}
 
@@ -1778,9 +1771,8 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 		break;
 
 	case 44:
-		if (player->score >= 40) { 
-			player->score -= 40;
-
+		if (player->score >= 80) {        
+			player->hasDamagePlus = true;
 			for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
 				if (el->id == 44) el->Destroy();
 				if (el->id == 43) {

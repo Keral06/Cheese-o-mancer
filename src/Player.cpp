@@ -122,7 +122,7 @@ bool Player::Update(float dt)
 		beatBoss = true;
 		Engine::GetInstance().scene->cheese = true;
 	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_J) == KEY_DOWN) {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 		beatPrincess = true;
 		Engine::GetInstance().scene->cheese = true;
 	}
@@ -529,7 +529,8 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 			Enemy* e = static_cast<Enemy*>(physB->listener);
 			if (e)
 			{
-				e->DecreaseHealth(34);
+				int damageAmount = hasDamagePlus ? 68 : 34;
+				e->DecreaseHealth(damageAmount);
 				LOG("Enemy hit by player attack");
 			}
 
