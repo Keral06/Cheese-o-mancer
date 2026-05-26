@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="38" height="40" tilewidth="128" tileheight="128" infinite="0" nextlayerid="21" nextobjectid="319">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="38" height="40" tilewidth="128" tileheight="128" infinite="0" nextlayerid="21" nextobjectid="320">
  <tileset firstgid="1" name="tileset_lv2_general_02" tilewidth="128" tileheight="128" tilecount="1558" columns="38">
   <image source="tileset_lv2_general_02.png" width="4864" height="5367"/>
  </tileset>
@@ -4947,7 +4947,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="192"/>
+   <tile/>
    <tile gid="192"/>
    <tile gid="192"/>
    <tile gid="192"/>
@@ -4985,7 +4985,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="192"/>
    <tile/>
    <tile/>
    <tile/>
@@ -6147,7 +6147,8 @@
   <object id="292" x="640" y="2688" width="384" height="128"/>
   <object id="293" x="128" y="2176" width="512" height="128"/>
   <object id="294" x="2560" y="1024" width="1408" height="128"/>
-  <object id="317" x="2048" y="1152" width="640" height="128"/>
+  <object id="317" x="2176" y="1152" width="512" height="128"/>
+  <object id="319" x="2048" y="1280" width="128" height="32"/>
  </objectgroup>
  <objectgroup id="19" name="spikes"/>
  <objectgroup id="9" name="Walls">
