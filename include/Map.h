@@ -3,6 +3,7 @@
 #include "Module.h"
 #include <list>
 #include <vector>
+#include <map>
 #include "Player.h"
 #include "Checkpoint.h"
 #include <memory>
@@ -91,6 +92,19 @@ struct ObjectGroup
 
 };
 
+
+// Sprites animados
+struct TileFrame {
+    int tileId;
+    int duration;
+};
+
+struct TileAnimation {
+    std::vector<TileFrame> frames;
+    int currentFrame = 0;
+    float timer = 0.0f;
+};
+
 // L06: TODO 2: Create a struct to hold information for a TileSet
 // Ignore Terrain Types and Tile Types for now, but we want the image!
 
@@ -106,9 +120,15 @@ struct TileSet
     int columns;
     SDL_Texture* texture;
 
+    //animaciones (clave: ID local, valor: animacion)
+    std::map<int, TileAnimation> animations;
+
     // L07: TODO 7: Implement the method that receives the gid and returns a Rect
     SDL_Rect GetRect(unsigned int gid) {
-        SDL_Rect rect = { 0 };
+        SDL_Rect rect = { 0, 0, 0, 0 };
+
+        //evita la división por cero si columns es 0
+        if (columns <= 0) return rect;
 
         int relativeIndex = gid - firstGid;
         rect.w = tileWidth;

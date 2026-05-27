@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="175" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="35" nextobjectid="416">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="175" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="35" nextobjectid="416">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -116,6 +116,7 @@
    </animation>
   </tile>
  </tileset>
+ <tileset firstgid="878" source="Thumbnails_Weight of the Waking.tsx"/>
  <objectgroup id="13" name="fons"/>
  <objectgroup id="24" name="BG Parallax">
   <properties>
@@ -54364,7 +54365,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="878"/>
    <tile/>
    <tile/>
    <tile/>
