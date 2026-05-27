@@ -2182,7 +2182,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	milkmaid::milkmaid() :NPC(EntityType::MILKMAID) {
 		Dialogue paperDialogue("assets/Dialogues/Milkmaid/Milkmaid_Inital_Dialogues.txt", "assets/Dialogues/Milkmaid/Milkmaid_Inital_Names.txt"); //change the dialogue lol!!!! Dialoguenormal
 		this->dialogue = paperDialogue;
-		Dialogue secondDialogue("assets/Dialogues/Milkmaid/Milkmaid_AfterInital_Dialogues.txt", "assets/Dialogues/Milkmaid/Milkmaid_AfterInital_Names.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
+		Dialogue secondDialogue("assets/Dialogues/Milkmaid/Milkmaid_AfterInitial_Dialogues.txt", "assets/Dialogues/Milkmaid/Milkmaid_AfterInitial_Names.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
 		this->secondDialogue = secondDialogue;
 	}
 
@@ -2667,20 +2667,20 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 	}
 
-	Hermit::Hermit() :NPC(EntityType::NPC) {
+	Hermit::Hermit() :NPC(EntityType::HERMIT) {
 
 
 
 		Dialogue paperDialogue("assets/Dialogues/Mission_Hermit/Hermit_Initial_Dialogues.txt", "assets/Dialogues/Mission_Hermit/Hermit_Initial_Names.txt"); //change the dialogue lol!!!! Dialoguenormal
 		this->dialogue = paperDialogue;
-		Dialogue secondDialogue("assets/Dialogues/Mission_Hermit/Hermit_LVL1_Dialogues.txt", "assets/Dialogues/Mission_Hermit/Hermit_LVL1_Names.txt"); //change the dialogue lol!!!! lvl1
+		Dialogue secondDialogue("assets/Dialogues/Mission_Hermit/HermitMission_LVL1_Dialogues.txt", "assets/Dialogues/Mission_Hermit/HermitMission_LVL1_Names.txt"); //change the dialogue lol!!!! lvl1
 		this->level1 = secondDialogue;
 
 		Dialogue percent("assets/Dialogues/Mission_Hermit/Hermit_NotAdvanced_Dialogues.txt", "assets/Dialogues/Mission_Hermit/Hermit_NotAdvanced_Names.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
 		this->notAdvanced = percent;
-		Dialogue lvll2("assets/Dialogues/Mission_Hermit/Hermit_LVL2_Dialogues.txt", "assets/Dialogues/Mission_Hermit/Hermit_LVL2_Names.txt"); //change the dialogue lol!!!! lvl2
+		Dialogue lvll2("assets/Dialogues/Mission_Hermit/HermitMission_LVL2_Dialogues.txt", "assets/Dialogues/Mission_Hermit/HermitMission_LVL2_Names.txt"); //change the dialogue lol!!!! lvl2
 		this->level2 = lvll2;
-		Dialogue third("assets/Dialogues/Mission_Hermit/Hermit_LVL3_Dialogues.txt", "assets/Dialogues/Mission_Hermit/Hermit_LVL3_Names.txt"); //change the dialogue lol!!!! lvl3
+		Dialogue third("assets/Dialogues/Mission_Hermit/HermitMission_LVL3_Dialogues.txt", "assets/Dialogues/Mission_Hermit/HermitMission_LVL3_Names.txt"); //change the dialogue lol!!!! lvl3
 		this->level3 = third;
 
 		Dialogue hasAll("assets/Dialogues/Mission_Hermit/Hermit_MissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Hermit/Hermit_MissionCompleted_Names.txt"); //change the dialogue lol!!!! all
@@ -2702,41 +2702,28 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	bool Hermit::Start() {
 
 		std::unordered_map<int, std::string> aliases = {
-		  {70, "idle"}
+		  {0, "idle"},{15, "out"}, {30, "talk"},{45, "end"}
 		};
 		anims.LoadFromTSX("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.tsx", aliases);
 		anims.SetCurrent("idle");
 
-		if (isGettingTouched && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) 
-		{
-			anims.SetCurrent("start");
-			
-			while (!dialogue.hasEnded)
-			{
-				anims.SetCurrent("talk");
-			}
+	
 
-			if (dialogue.hasEnded)
-			{
-				anims.SetCurrent("end");
-			}
-
-		}
-
-		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hangman/sprite_hangedman_01.png");
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.png");
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 256;
 		texH = 640;
 
-		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+	
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
 
 
+	
 		if (pbody == nullptr) {
 			position.setX(xInicial);
 			position.setY(yInicial);
@@ -2782,6 +2769,21 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 	}
 	bool Hermit::Update(float dt) {
+		if (isGettingTouched && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+		{
+			anims.SetCurrent("start");
+
+			if (Engine::GetInstance().scene->someoneIsTalking)
+			{
+				anims.SetCurrent("talk");
+			}
+
+			else 
+			{
+				anims.SetCurrent("end");
+			}
+
+		}
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 

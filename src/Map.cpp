@@ -889,6 +889,14 @@ MapLayer* Map::GetNavigationLayer() {
                             MILKY->Start();
                             MILKY->mapID = id;
                             }
+                        else if (entityType == "Hermit") {
+                            std::shared_ptr<Hermit> MILKY = std::dynamic_pointer_cast<Hermit>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HERMIT));
+                            MILKY->position = Vector2D(x, y);
+                            MILKY->xInicial = (int)x;
+                            MILKY->yInicial = (int)y;
+                            MILKY->Start();
+                            MILKY->mapID = id;
+                            }
                         else if (entityType == "Pics")
                         {
                             auto pics = std::dynamic_pointer_cast<Pics>(

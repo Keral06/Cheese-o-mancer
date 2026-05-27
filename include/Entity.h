@@ -51,7 +51,8 @@ enum class EntityType
 	PRINCESS,
 	KNIGHT,
 	FLOWERBOMB,
-	SPIKEHAZARD
+	SPIKEHAZARD,
+	HERMIT
 };
 
 class PhysBody;
