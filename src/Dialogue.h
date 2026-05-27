@@ -54,6 +54,7 @@ public:
 public:
 	
 	std::string GetCurrentDialogue();
+	bool WhatChoice();
 	
 	SDL_Texture* textureDialogue;
 	void BeginDialogue();
@@ -61,4 +62,10 @@ public:
 
 	bool hasEnded = false;
 	bool hasStarted = false;
+
+	//Choices logic
+
+	bool choicesBeingMade = false;
+
+	bool choice = false;
 };

@@ -100,6 +100,23 @@ void Dialogue::Draw(float dt) {
 
 		
 	Engine::GetInstance().render->DrawTextureNoCamera(textureDialogue,250, 420, w / 1.5, h / 1.5);
+	if (choicesBeingMade) {
+		Engine::GetInstance().render->DrawText(dialogueHelper[lenghtHelper-1].c_str(), 330, 550, 0, 0, { 0,0,0 });
+		Engine::GetInstance().render->DrawText(dialogueHelper[lenghtHelper].c_str(), 330, 580, 0, 0, { 0,0,0 });
+	
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN) {
+		
+			NextDialogue();
+		
+		}
+	
+		if (nameHelper.size() != 0) {
+
+			Engine::GetInstance().render->DrawText(nameHelper[lenghtHelper].c_str(), 312, 520, 0, 0, { 0,0,0 });
+
+		}
+		return;
+	}
 	Engine::GetInstance().render->DrawText(dialogueHelper[lenghtHelper ].c_str(), 330, 550, 0, 0, { 0,0,0 });
 	if (nameHelper.size() != 0) {
 	
@@ -133,12 +150,63 @@ void Dialogue::BeginDialogue() {
 
 
 }
+bool Dialogue::WhatChoice() {
 
+	return choice;
+
+}
 void Dialogue:: NextDialogue() {
+	if (choicesBeingMade) {
+	
+		if (choice) {
+			if (lenghtHelper < lenght - 1) {
+
+				while (dialogueHelper[lenghtHelper] != "CHOICE 1:") {
+				
+					lenghtHelper++;
+				
+				}
+				lenghtHelper++;
+
+				printf("%s\n", dialogueHelper[lenghtHelper].c_str());
+				if (nameHelper.size() != 0) {
+
+					printf("%s\n", nameHelper[lenghtHelper].c_str());
+
+				}
+			}
+		
+		
+		
+		}
+		else {
+		
+			while (dialogueHelper[lenghtHelper] != "CHOICE 2:") {
+
+				lenghtHelper++;
+
+			}
+			lenghtHelper++;
+		
+		}
+	
+	
+		choicesBeingMade = false;
+	
+		return;
+	
+	
+	}
 	
 	if (lenghtHelper < lenght-1) {
 	
 		lenghtHelper++;
+		if (dialogueHelper[lenghtHelper] == "CHOICE") {
+		
+			choicesBeingMade = true;
+			lenghtHelper += 2;
+		
+		}
 
 		printf("%s\n",dialogueHelper[lenghtHelper].c_str());
 		if (nameHelper.size() != 0) {
