@@ -206,7 +206,32 @@ bool Player::Update(float dt)
 		UpdateFireballs(dt);
 	}
 		
-	
+	if (pendingDismount && mountedBall)
+	{
+		pendingDismount = false;
+
+		int bx, by;
+		mountedBall->pbody->GetPosition(bx, by);
+
+		mountedBall->ismounted = false;
+		mountedBall = nullptr;
+		isMounted = false;
+
+		SetPosition(Vector2D(bx, by - texH));
+
+		Engine::GetInstance().physics->SetLinearVelocity(pbody, { 0, 0 });
+
+		if (doVerticalJump)
+		{
+			doVerticalJump = false;
+
+			b2Body_SetAwake(pbody->body, true);
+			b2Body_SetLinearVelocity(pbody->body, { 0.0f, -35.0f });
+
+			state = JUMPING;
+			isJumping = true;
+		}
+	}
 	return true;
 }
 
@@ -970,7 +995,7 @@ void Player::SpawnCheeseBall()
 {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_C) == KEY_DOWN && !isMounted && Engine::GetInstance().scene->cheese == true)
 	{
-
+			ResetCheeseState();
 			auto entity = Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEESEBALL);
 			auto cb = std::dynamic_pointer_cast<CheeseBall>(entity);
 
@@ -994,21 +1019,40 @@ void Player::SpawnCheeseBall()
 
 			mountedBall = cb;
 			isMounted = true;
+			mountedBall->firstjump = true;
 			state = ONCHEESE;
 			cheeseTime = 300.0f;
 			Engine::GetInstance().physics->SetLinearVelocity(pbody, { 0,0 });
-		
+			
 	}
 }
 
 void Player::HandleMountedMovement()
 {
+	if (!isMounted || !mountedBall)
+	{
+		ResetCheeseState();
+		return;
+	}
+
 	if (mountedBall->launch == true) {
 		DismountAndLaunch();
 		return;
 	}
 	cheeseTime--;
 	
+	if (waitingAttackAnimEnd)
+	{
+		int currentFrame = currentAnimSet->GetCurrentFrameIndex();
+		if (currentFrame >= jumpTriggerOffset)
+		{
+			waitingAttackAnimEnd = false;
+			currentAnimSet->SetSpeed(1.0f);
+			pendingDismount = true;
+			doVerticalJump = true;
+		}
+	}
+
 	b2Vec2 vel = b2Body_GetLinearVelocity(mountedBall->pbody->body);
 	movingBall = false;
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT){
@@ -1065,22 +1109,11 @@ void Player::HandleMountedMovement()
 
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		if (hasCheeseDownJump && !cheeseDownJumpUsed)
+		// =========================
+		// PRIMER SALTO
+		// =========================
+		if (mountedBall->firstjump)
 		{
-			
-			Engine::GetInstance().physics->ApplyLinearImpulseToCenter(
-				mountedBall->pbody,
-				0.0f,
-				jumpForce * 2.0f, // hacia abajo (positivo)
-				true
-			);
-
-			cheeseDownJumpUsed = true;
-			DismountAndLaunch(); // opcional: o crea un nuevo estado
-		}
-		else
-		{
-			// comportamiento normal
 			Engine::GetInstance().physics->ApplyLinearImpulseToCenter(
 				mountedBall->pbody,
 				0.0f,
@@ -1088,10 +1121,24 @@ void Player::HandleMountedMovement()
 				true
 			);
 
-			cheeseDownJumpUsed = false;
+			mountedBall->firstjump = false;
 		}
+		// =========================
+		// DOBLE SALTO
+		// =========================
+		else
+		{
+			waitingAttackAnimEnd = true;
 
-		//b2Body_SetAwake(mountedBall->pbody->body, true);
+			// forzar animación attack3
+			currentAnimSet = &anims3x4;
+			texture = texture3x4;
+			currentAnimSet->SetCurrent("attack3");
+			currentAnimSet->SetSpeed(2.0f);
+			currentAnimSet->Resets();
+
+			return;
+		}
 	}
 }
 
@@ -1126,6 +1173,82 @@ void Player::DismountAndLaunch()
 	cheeseSpeed = 10.0f;
 	state = DEFAULT;
 
+	ResetCheeseState();
 	
-	
+}
+
+void Player::DismountVerticalJump()
+{
+	if (!isMounted || !mountedBall) return;
+
+	// =========================
+	// DATOS DE LA BOLA
+	// =========================
+
+	int bx, by;
+	mountedBall->pbody->GetPosition(bx, by);
+
+	// =========================
+	// HACER CAER LA BOLA VERTICAL
+	// =========================
+
+	b2Vec2 ballVel = b2Body_GetLinearVelocity(mountedBall->pbody->body);
+
+	ballVel.x = 0.0f;
+	ballVel.y = 50.0f;
+
+	b2Body_SetLinearVelocity(mountedBall->pbody->body, ballVel);
+
+	mountedBall->ismounted = false;
+	mountedBall->canSmash = false;
+
+	// =========================
+	// DESMONTAR ANTES DEL IMPULSO
+	// =========================
+
+	mountedBall = nullptr;
+	isMounted = false;
+
+	// =========================
+	// POSICIONAR PLAYER ARRIBA
+	// =========================
+
+	SetPosition(Vector2D(
+		bx,
+		by - texH
+	));
+
+	// =========================
+	// RESET VELOCIDAD PLAYER
+	// =========================
+
+	Engine::GetInstance().physics->SetLinearVelocity(
+		pbody,
+		{ 0.0f, 0.0f }
+	);
+
+	// =========================
+	// IMPULSO HACIA ARRIBA
+	// =========================
+
+	b2Body_SetAwake(pbody->body, true);
+
+	b2Vec2 playerVel = { 0.0f, -18.0f };
+
+	b2Body_SetLinearVelocity(pbody->body, playerVel);
+
+	state = JUMPING;
+
+	cheeseSpeed = 10.0f;
+	ResetCheeseState();
+}
+
+void Player::ResetCheeseState()
+{
+	waitingAttackAnimEnd = false;
+	pendingDismount = false;
+	doVerticalJump = false;
+	if (mountedBall) {
+		mountedBall->firstjump = false;
+	}
 }

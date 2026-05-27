@@ -58,6 +58,9 @@ public:
 
 	void DismountAndLaunch();
 
+	void DismountVerticalJump();
+
+	void ResetCheeseState();
 private:
 
 	void GetPhysicsValues();
@@ -191,6 +194,11 @@ private:
 	bool isOnSpecialWall = false;
 	float wallNormal = 0.0f;
 
+	bool cheeseFirstJumpDone = false;
+	bool pendingDismount = false;
+	bool doVerticalJump = false;
 
-	
+	bool pendingCheeseJump = false;
+	bool waitingAttackAnimEnd = false;
+	int jumpTriggerOffset = 7;
 };
