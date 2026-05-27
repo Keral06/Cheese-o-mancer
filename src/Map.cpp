@@ -200,7 +200,7 @@ bool Map::Load(std::string path, std::string fileName)//
             pugi::xml_document tsxDoc;
 
             if (sourcePath != "") {
-                // ¡Bingo! Es un TSX. Lo abrimos para leer los datos reales.
+                // Es un TSX. Lo abrimos para leer los datos reales.
                 std::string fullTsxPath = mapPath + sourcePath;
                 pugi::xml_parse_result result = tsxDoc.load_file(fullTsxPath.c_str());
                 if (result) {
@@ -1046,7 +1046,7 @@ MapLayer* Map::GetNavigationLayer() {
             for (int i = 0; i < mapData.width; i++) {
                 for (int j = 0; j < mapData.height; j++) {
 
-                    // --- AÑADE ESTO PARA EVITAR BUGS SI VOLTEAN TILES ---
+                    // --- EVITAR BUGS SI VOLTEAN TILES ---
                     int rawGid = mapLayer->Get(i, j);
                     int gid = rawGid & 0x1FFFFFFF;
 
@@ -1068,6 +1068,10 @@ MapLayer* Map::GetNavigationLayer() {
 
                             SDL_Rect tileRect = tileSet->GetRect(gid);
                             Vector2D mapCoord = MapToWorld(i, j);
+                            int drawY = (int)mapCoord.getY() + mapData.tileHeight - tileSet->tileHeight;
+
+                            // 2. Alineación X: Anclamos a la izquierda por defecto
+                            int drawX = (int)mapCoord.getX();
                             Engine::GetInstance().render->DrawTexture(tileSet->texture, (int)mapCoord.getX(), (int)mapCoord.getY(), &tileRect);
                         }
                     }

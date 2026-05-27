@@ -116,7 +116,6 @@
    </animation>
   </tile>
  </tileset>
- <tileset firstgid="878" source="Thumbnails_Weight of the Waking.tsx"/>
  <objectgroup id="13" name="fons"/>
  <objectgroup id="24" name="BG Parallax">
   <properties>
@@ -54365,7 +54364,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="878"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
