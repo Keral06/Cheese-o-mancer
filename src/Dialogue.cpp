@@ -78,6 +78,7 @@ Dialogue :: Dialogue(const char	*tsxPath, const char* name) {
 
 Dialogue::Dialogue()
 {
+	textureDialogue = Engine::GetInstance().textures->Load("resources/UI/UI_Dialogue/UI_Dialogue_Base_01.png");
 }
 
 Dialogue::~Dialogue() {
@@ -265,3 +266,80 @@ bool Dialogue::PostUpdate() {
 	return true;
 }
 
+void Dialogue::AddDialogue(const char* tsxPath) {
+
+
+	this->tsxPath = tsxPath;
+
+	std::ifstream fich(tsxPath);
+	std::string helper;
+	char a;
+	hasStarted = false;
+	fich.get(a);
+	while (a != '+') { //this is what ends the txt document
+		while (a != '\n') {
+
+			helper.push_back(a);
+			fich.get(a);
+
+
+		}
+		lenght++;
+		dialogue.push_back(helper);
+		while (!helper.empty()) {
+
+			helper.pop_back();
+
+		}
+		fich.get(a);
+
+
+
+
+	}
+
+
+
+
+
+
+}
+
+void Dialogue::AddName(const char* tsxPath) {
+
+
+	this->tsxPath = tsxPath;
+
+	std::ifstream fich(tsxPath);
+	std::string helper;
+	char a;
+	hasStarted = false;
+	fich.get(a);
+	while (a != '+') { //this is what ends the txt document
+		while (a != '\n') {
+
+			helper.push_back(a);
+			fich.get(a);
+
+
+		}
+	
+		name.push_back(helper);
+		while (!helper.empty()) {
+
+			helper.pop_back();
+
+		}
+		fich.get(a);
+
+
+
+
+	}
+
+
+
+
+
+
+}

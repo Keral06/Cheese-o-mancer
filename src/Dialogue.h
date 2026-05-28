@@ -27,7 +27,8 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void NextDialogue();
 	bool PostUpdate();
-	
+	void AddDialogue(const char* tsxPath);
+	void AddName(const char* tsxPath);
 
 	void Draw(float dt);
 

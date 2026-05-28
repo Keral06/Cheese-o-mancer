@@ -3594,35 +3594,39 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		switch (i) {
 		
 		case 0:
-			 Placeholder =("assets/Dialogues/Mission_Finley/Finley_Initial_Dialogues.txt", "assets/Dialogues/Mission_Finley/Finley_Initial_Names.txt"); //Primer Diálogo
-			dialogue = Placeholder;
+			
+			dialogue .AddDialogue("assets/Dialogues/Mission_Finley/Finley_Initial_Dialogues.txt");
+			dialogue.AddName("assets/Dialogues/Mission_Finley/Finley_Initial_Names.txt");
 
 			
-			Placeholder = ("assets/Dialogues/Mission_Finley/Finley_MissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Finley/Finley_MissionCompleted_Names.txt");
-			AfterBoss = Placeholder;
-			Placeholder = ("assets/Dialogues/Mission_Finley/Third_FirstTimeFound_Dialogues.txt", "assets/Dialogues/Mission_Finley/Finley_FirstTimeFound_Names.txt");
-			hasFinished = Placeholder;
-			Placeholder = ("assets/Dialogues/Mission_Finley/Finley_AfterMissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Finley//Finley_AfterMissionCompleted_Names.txt");
-
-			hasAllFinished = Placeholder;
+	
+			AfterBoss.AddDialogue("assets/Dialogues/Mission_Finley/Finley_MissionCompleted_Dialogues.txt");
+			AfterBoss.AddName("assets/Dialogues/Mission_Finley/Finley_MissionCompleted_Names.txt");
+		
+			
+			hasFinished.AddDialogue("assets/Dialogues/Mission_Finley/Finley_MissionCompleted_Dialogues.txt");
+			hasFinished.AddName("assets/Dialogues/Mission_Finley/Finley_MissionCompleted_Names.txt");
+		
+			hasAllFinished.AddDialogue("assets/Dialogues/Mission_Finley/Finley_AfterMissionCompleted_Dialogues.txt");
+			hasAllFinished.AddName("assets/Dialogues/Mission_Finley/Finley_AfterMissionCompleted_Names.txt");
 			break;
 
-		case1:
-			 Placeholder=("assets/Dialogues/Mission_Finley/Finley_FirstTimeFound_Dialogues.txt", "assets/Dialogues/Mission_Finley//Finley_FirstTimeFound_Names.txt"); //Primer Diálogo
-			dialogue = Placeholder;
+		case 1:
+			
+			dialogue.AddDialogue("assets/Dialogues/Mission_Finley/Finley_FirstTimeFound_Dialogues.txt");
+			dialogue.AddName("assets/Dialogues/Mission_Finley//Finley_FirstTimeFound_Names.txt");
 
 			break;
 
 		case 2:
-			Placeholder = ("assets/Dialogues/Mission_Finley_SecondTimeFound_Dialogues.txt", "assets/Dialogues/Mission_Finley//Finley_SecondTimeFound_Names.txt"); //Primer Diálogo
-			dialogue = Placeholder;
+			
+			dialogue.AddDialogue("assets/Dialogues/Mission_Finley/Finley_SecondTimeFound_Dialogues.txt");
+			dialogue.AddName("assets/Dialogues/Mission_Finley/Finley_SecondTimeFound_Names.txt");
 			break;
 		case 3:
-			/*Dialogue AfterBoss;
-			Dialogue hasAllFinished;
-			Dialogue hasFinished;*/
-			Placeholder = ("assets/Dialogues/Mission_Finley/Finley_ThirdTimeFound_Dialogues.txt", "assets/Dialogues/Mission_Finley/Finley_ThirdTimeFound_Dialogues.txt");
-			dialogue = Placeholder;
+			
+			dialogue.AddName("assets/Dialogues/Mission_Finley/Finley_ThirdTimeFound_Names.txt");
+			dialogue.AddDialogue("assets/Dialogues/Mission_Finley/Finley_ThirdTimeFound_Dialogues.txt");
 
 			break;
 
@@ -3651,13 +3655,13 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	}
 	bool Timmy::Start() {
 
-		/*std::unordered_map<int, std::string> aliases = {
+		std::unordered_map<int, std::string> aliases = {
 				  {0, "idle"},{15, "start"}, {30, "talk"},{45, "end"}
 		};
 		anims.LoadFromTSX("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.tsx", aliases);
 		anims.SetCurrent("idle");
 
-		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.png");*/
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.png");
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
@@ -3703,6 +3707,35 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		
 			return true;
 		
+		}
+		if (!isGettingTouched) {
+			// Solo si no estaba ya en idle
+			if (currentAnimName != "idle") {
+				anims.SetCurrent("idle");
+				currentAnimName = "idle";
+			}
+		}
+		else {
+			// Si tocamos la E estando en idle, "start"
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && currentAnimName == "idle") {
+				anims.SetCurrent("start");
+				currentAnimName = "start";
+			}
+			// Si ya no estamos hablando, "end"
+			else if (currentAnimName == "talk" && !Engine::GetInstance().scene->someoneIsTalking) {
+				anims.SetCurrent("end");
+				currentAnimName = "end";
+			}
+
+			// Transiciones cuando terminan los fotogramas
+			if (currentAnimName == "start" && anims.HasFinished()) {
+				anims.SetCurrent("talk");
+				currentAnimName = "talk";
+			}
+			else if (currentAnimName == "end" && anims.HasFinished()) {
+				anims.SetCurrent("idle");
+				currentAnimName = "idle";
+			}
 		}
 		Draw(dt);
 
@@ -3860,6 +3893,33 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 			case 2:
 				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hidingPlaceATM == 2) {
+
+
+					if (dialogue.hasStarted) {
+
+						dialogue.NextDialogue();
+						dialogue.Draw(dt);
+						if (dialogue.hasEnded) {
+
+							Engine::GetInstance().scene->hidingPlaceATM = 3;
+							
+						}
+						return true;
+					}
+					dialogue.BeginDialogue();
+					dialogue.Draw(dt);
+
+
+					return true;
+				}
+				if (dialogue.hasStarted && !dialogue.hasEnded) {
+					dialogue.Draw(dt);
+					return true;
+
+				}
+				break;
+			case 3:
+				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hidingPlaceATM == 3) {
 
 
 					if (dialogue.hasStarted) {
