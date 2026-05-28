@@ -3311,16 +3311,18 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	}
 	bool Hierophant::Start() {
 
-		/*std::unordered_map<int, std::string> aliases = {
-				  {0, "idle"},{15, "start"}, {30, "talk"},{45, "end"}
+
+		std::unordered_map<int, std::string> aliases = {
+				  {0, "idle"},{10, "talk"}
 		};
-		anims.LoadFromTSX("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.tsx", aliases);
+
+
+		anims.LoadFromTSX("assets/Textures/Spritesheets/Hierophant/spritesheet_hierophant.tsx", aliases);
 		anims.SetCurrent("idle");
 
-		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.png");*/
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hierophant/sprite_hierophant_01.png");
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
-		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
 		pbody = nullptr;
@@ -3340,7 +3342,6 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			pbody->ctype = ColliderType::NPC;
 		}
 
-
 		return true;
 	}
 	void Hierophant::Draw(float dt) {
@@ -3358,20 +3359,32 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 	}
 	bool Hierophant::Update(float dt) {
-		Draw(dt);
 
-
-		//draw
-		anims.Update(dt);
-		if (texture != nullptr) {
-			SDL_Rect rect = anims.GetCurrentFrame();
-			int drawX = (int)position.getX() - (texW / 2);
-			int drawY = (int)position.getY() - (texH / 2);
-			Engine::GetInstance().render->DrawTexture(texture, drawX, drawY, &rect);
+		if (!isGettingTouched) {
+			// Siempre en idle
+			if (currentAnimName != "idle") {
+				anims.SetCurrent("idle");
+				currentAnimName = "idle";
+			}
 		}
+		else {
+			// Si pulsamos E para hablar, cambiamos directamente a "talk"
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && currentAnimName == "idle") {
+				anims.SetCurrent("talk");
+				currentAnimName = "talk";
+			}
+			// Si estabamos hablando pero el dialogo general de la escena ha terminado, volvemos a "idle"
+			else if (currentAnimName == "talk" && !Engine::GetInstance().scene->someoneIsTalking) {
+				anims.SetCurrent("idle");
+				currentAnimName = "idle";
+			}
+		}
+
+		Draw(dt);
 
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->talkedTiredPreacher == false) { //primer dialogo solo sale una vez
 
 

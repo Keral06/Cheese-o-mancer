@@ -21,7 +21,7 @@
  </tile>
  <tile id="10">
   <properties>
-   <property name="loop" type="bool" value="false"/>
+   <property name="loop" type="bool" value="true"/>
    <property name="name" value="talk"/>
   </properties>
   <animation>
