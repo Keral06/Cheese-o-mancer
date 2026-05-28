@@ -1035,26 +1035,18 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                 // CENTRAMOS LA PARTÍCULA EXACTAMENTE EN MEDIO DEL RECUADRO
                 p->setPosition((int)(x + (w / 2.0f)), (int)(y + (h / 2.0f)));
 
-
-
                 // Asignamos el estilo segun nombre en Tiled
-
                 if (pType == "Fire" || pType == "FIRE") p->setStyle(ParticleExample::FIRE);
-
                 else if (pType == "Smoke" || pType == "SMOKE") p->setStyle(ParticleExample::SMOKE);
-
                 else if (pType == "Rain" || pType == "RAIN") p->setStyle(ParticleExample::RAIN);
-
                 else if (pType == "Meteor" || pType == "METEOR") p->setStyle(ParticleExample::METEOR);
-
                 else if (pType == "Explosion" || pType == "EXPLOSION") p->setStyle(ParticleExample::EXPLOSION);
 
-                // Si hay mas estilos en el enum PatticleStyle, añadir aquí
-
-
+                // NUEVO: Sobrescribimos el área de esparcimiento (posVar) de la partícula
+                // para que obligatoriamente ocupe el ancho y alto del rectángulo de Tiled.
+                p->setPosVar(Vec2(w / 2.0f, h / 2.0f));
 
                 mapParticles.push_back(p);
-
             }
 
         }

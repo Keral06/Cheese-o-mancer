@@ -20,7 +20,7 @@ void ParticleExample::setStyle(PatticleStyle style)
 
     case ParticleExample::FIRE:
     {
-        initWithTotalParticles(250);
+        initWithTotalParticles(600);
 
         // duration
         _duration = DURATION_INFINITY;

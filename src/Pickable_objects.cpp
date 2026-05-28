@@ -163,6 +163,39 @@ void Pics:: ChooseWhoIs() {
 		 objectDeleteIs = true;
 
 	}
+	else if (name == "Psalm1") {
+
+		PopUpImage = Engine::GetInstance().textures->Load("assets/UI/UI_Poem/requadre_ajustat/UI_Poem_4_02.png");
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Carta/Carta4.png"); //placeholder
+
+
+		BoolOfPlayer = 8;
+
+		objectDeleteIs = false;
+
+	}
+	else if (name == "Psalm2") {
+
+		PopUpImage = Engine::GetInstance().textures->Load("assets/UI/UI_Poem/requadre_ajustat/UI_Poem_4_02.png");
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Carta/Carta4.png"); //placeholder
+
+
+		BoolOfPlayer = 9;
+
+		objectDeleteIs = false;
+
+	}
+	else if (name == "Psalm3") {
+
+		PopUpImage = Engine::GetInstance().textures->Load("assets/UI/UI_Poem/requadre_ajustat/UI_Poem_4_02.png");
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Carta/Carta4.png"); //placeholder
+
+
+		BoolOfPlayer = 10;
+
+		objectDeleteIs = false;
+
+	}
 
 
 }
@@ -240,15 +273,31 @@ bool Pics::Update(float dt)
 				break;
 			case 1:
 				Engine::GetInstance().scene->dawn = true;
+				if (Engine::GetInstance().scene->dawn == true && Engine::GetInstance().scene->day == true && Engine::GetInstance().scene->dusk == true && Engine::GetInstance().scene->night == true) {
+					Engine::GetInstance().scene->hasAllPoems = true;
+				
+				}
 				break;
 			case 2:
 				Engine::GetInstance().scene->day = true;
+				if (Engine::GetInstance().scene->dawn == true && Engine::GetInstance().scene->day == true && Engine::GetInstance().scene->dusk == true && Engine::GetInstance().scene->night == true) {
+					Engine::GetInstance().scene->hasAllPoems = true;
+
+				}
 				break;
 			case 3:
 				Engine::GetInstance().scene->dusk = true;
+				if (Engine::GetInstance().scene->dawn == true && Engine::GetInstance().scene->day == true && Engine::GetInstance().scene->dusk == true && Engine::GetInstance().scene->night == true) {
+					Engine::GetInstance().scene->hasAllPoems = true;
+
+				}
 				break;
 			case 4:
 				Engine::GetInstance().scene->night = true;
+				if (Engine::GetInstance().scene->dawn == true && Engine::GetInstance().scene->day == true && Engine::GetInstance().scene->dusk == true && Engine::GetInstance().scene->night == true) {
+					Engine::GetInstance().scene->hasAllPoems = true;
+
+				}
 				break;
 			case 5:
 				Engine::GetInstance().scene->springWater = true;
@@ -264,6 +313,28 @@ bool Pics::Update(float dt)
 				Engine::GetInstance().scene->Gargantuan = true;
 				help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
 				Engine::GetInstance().scene->inventario.push("Gargantuan", help, nullptr);
+				break;
+			case 8:
+				Engine::GetInstance().scene->psalm1 = true;
+				if (Engine::GetInstance().scene->psalm1==true && Engine::GetInstance().scene->psalm2 == true&& Engine::GetInstance().scene->psalm3 == true) {
+					Engine::GetInstance().scene->hasReadAllPsalms = true;
+				
+				}
+				
+				break;
+			case 9:
+				Engine::GetInstance().scene->psalm2 = true;
+				if (Engine::GetInstance().scene->psalm1 == true && Engine::GetInstance().scene->psalm2 == true && Engine::GetInstance().scene->psalm3 == true) {
+					Engine::GetInstance().scene->hasReadAllPsalms = true;
+
+				}
+				break;
+			case 10:
+				Engine::GetInstance().scene->psalm3 = true;
+				if (Engine::GetInstance().scene->psalm1 == true && Engine::GetInstance().scene->psalm2 == true && Engine::GetInstance().scene->psalm3 == true) {
+					Engine::GetInstance().scene->hasReadAllPsalms = true;
+
+				}
 				break;
 			default: break;
 
