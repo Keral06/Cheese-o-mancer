@@ -196,7 +196,51 @@ void Pics:: ChooseWhoIs() {
 		objectDeleteIs = false;
 
 	}
+	else if (name == "Bloody") {
 
+		PopUpImage = Engine::GetInstance().textures->Load("assets/UI/UI_Poem/requadre_ajustat/UI_Poem_4_02.png");
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Carta/Carta4.png"); //placeholder
+
+
+		BoolOfPlayer = 11;
+
+		objectDeleteIs = false;
+		 EmpressSpecial = true;
+
+		}
+	else if (name == "Rusty") {
+
+			PopUpImage = Engine::GetInstance().textures->Load("assets/UI/UI_Poem/requadre_ajustat/UI_Poem_4_02.png");
+			texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Carta/Carta4.png"); //placeholder
+
+
+			BoolOfPlayer = 12;
+			EmpressSpecial = true;
+			objectDeleteIs = false;
+
+			}
+	else if (name == "Moldy") {
+
+				PopUpImage = Engine::GetInstance().textures->Load("assets/UI/UI_Poem/requadre_ajustat/UI_Poem_4_02.png");
+				texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Carta/Carta4.png"); //placeholder
+
+
+				BoolOfPlayer = 13;
+				EmpressSpecial = true;
+				objectDeleteIs = false;
+
+				}
+	else if (name == "Core") {
+
+					PopUpImage = Engine::GetInstance().textures->Load("assets/UI/UI_Poem/requadre_ajustat/UI_Poem_4_02.png");
+					texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Carta/Carta4.png"); //placeholder
+
+
+					BoolOfPlayer = 14;
+					EmpressSpecial = true;
+					objectDeleteIs = false;
+
+					}
 
 }
 void Pics::CheckBoolOfPlayer() {
@@ -270,6 +314,44 @@ void Pics::CheckBoolOfPlayer() {
 
 		}
 		break;
+		//Artifact
+	case 11:
+		help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
+		Engine::GetInstance().scene->inventario.push("Bloody", help, nullptr);
+		
+		//bloody
+		if (Engine::GetInstance().scene->inventario.tieneObjeto("Bloody") && Engine::GetInstance().scene->inventario.tieneObjeto("Rusty") && Engine::GetInstance().scene->inventario.tieneObjeto("Moldy") && Engine::GetInstance().scene->inventario.tieneObjeto("Core")) {
+			Engine::GetInstance().scene->hasAllFragments = true;
+
+		}
+		break;
+	case 12:
+		help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
+		Engine::GetInstance().scene->inventario.push("Rusty", help, nullptr); //rusty
+		if (Engine::GetInstance().scene->inventario.tieneObjeto("Bloody") && Engine::GetInstance().scene->inventario.tieneObjeto("Rusty") && Engine::GetInstance().scene->inventario.tieneObjeto("Moldy") && Engine::GetInstance().scene->inventario.tieneObjeto("Core")) {
+			Engine::GetInstance().scene->hasAllFragments = true;
+
+		}
+			break; 
+	case 13:
+		Engine::GetInstance().scene->psalm3 = true; //moldy
+		help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
+		Engine::GetInstance().scene->inventario.push("Moldy", help, nullptr);
+		if (Engine::GetInstance().scene->inventario.tieneObjeto("Bloody") && Engine::GetInstance().scene->inventario.tieneObjeto("Rusty") && Engine::GetInstance().scene->inventario.tieneObjeto("Moldy") && Engine::GetInstance().scene->inventario.tieneObjeto("Core")) {
+			Engine::GetInstance().scene->hasAllFragments = true;
+
+		}
+				break;
+	
+	case 14:
+		help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
+		Engine::GetInstance().scene->inventario.push("Core", help, nullptr);//core
+		if (Engine::GetInstance().scene->inventario.tieneObjeto("Bloody") && Engine::GetInstance().scene->inventario.tieneObjeto("Rusty") && Engine::GetInstance().scene->inventario.tieneObjeto("Moldy") && Engine::GetInstance().scene->inventario.tieneObjeto("Core")) {
+			Engine::GetInstance().scene->hasAllFragments = true;
+
+		}
+					break;
+
 	default: break;
 
 
@@ -285,6 +367,12 @@ void Pics::CheckBoolOfPlayer() {
 bool Pics::Update(float dt)
 {
 	if (!active) return true;
+	if (EmpressSpecial) {
+	
+		if (Engine::GetInstance().scene->EmpressTrustedDialogue == false) { return true; }
+	
+	
+	}
 	if (hasPbody ==false) return true;
 	if (beenPicked && PopUpOn==false){
 		if (pbody != nullptr) {

@@ -61,4 +61,5 @@ public:
 	bool isDrawn = false;
 	bool PopUpOn = false;
 	void ChooseWhoIs();
+	bool EmpressSpecial = false;
 };

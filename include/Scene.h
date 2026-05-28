@@ -307,5 +307,9 @@ public:
 		bool hasTalkedToTimmyOnce = false;
 		bool talkedOnceAfterDefeatBoss = false;
 
+		//Empress
+
+		bool EmpressTrustedDialogue = false;
+		bool hasAllFragments = false;
 
 };
