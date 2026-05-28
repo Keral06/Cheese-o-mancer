@@ -255,6 +255,8 @@ public:
 	bool dusk = false;
 	bool dawn = false;
 
+	bool hasAllPoems = false;
+
 	//Hermit bools for player
 	bool springWater = false;
 	bool HorsekinManure = false;
@@ -275,5 +277,20 @@ public:
 
 	bool someoneIsTalking = false;
 	bool ObjectObserved = false;
+
+	//psalms
+
+	bool psalm1 = false;
+	bool psalm2 = false;
+	bool psalm3 = false;
+	bool hasReadAllPsalms = false;
+	bool hasTalkedAboutPsalmsB4 = false;
+	bool DefeatedHighPrietest = false;
+	bool hasBeenWhistledblowed = false;
+
+	//level 3 bools
+
+	bool talkedTiredPreacher = false;
+	
 
 };
