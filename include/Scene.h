@@ -311,5 +311,8 @@ public:
 
 		bool EmpressTrustedDialogue = false;
 		bool hasAllFragments = false;
+		bool hasSparedPrincessAndKnight = false;
+		bool hasTalkedOnceEmpress = false;
+		bool talkedTwiceEmpress = false;
 
 };

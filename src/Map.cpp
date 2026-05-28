@@ -969,6 +969,14 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                     well->Start();
                     well->mapID = id;
                 }
+                else if (entityType == "Empress") {
+                    std::shared_ptr<Empress> well = std::dynamic_pointer_cast<Empress>(Engine::GetInstance().entityManager->CreateEntity(EntityType::EMPRESS));
+                    well->position = Vector2D(x, y);
+                    well->xInicial = (int)x;
+                    well->yInicial = (int)y;
+                    well->Start();
+                    well->mapID = id;
+                    }
                 else if (entityType == "Pics") {
                     auto pics = std::dynamic_pointer_cast<Pics>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PICS));
                     pics->position = Vector2D(x, y);

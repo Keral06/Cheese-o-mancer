@@ -204,7 +204,7 @@ void Pics:: ChooseWhoIs() {
 
 		BoolOfPlayer = 11;
 
-		objectDeleteIs = false;
+		objectDeleteIs = true;
 		 EmpressSpecial = true;
 
 		}
@@ -216,7 +216,7 @@ void Pics:: ChooseWhoIs() {
 
 			BoolOfPlayer = 12;
 			EmpressSpecial = true;
-			objectDeleteIs = false;
+			objectDeleteIs = true;
 
 			}
 	else if (name == "Moldy") {
@@ -227,7 +227,7 @@ void Pics:: ChooseWhoIs() {
 
 				BoolOfPlayer = 13;
 				EmpressSpecial = true;
-				objectDeleteIs = false;
+				objectDeleteIs = true;
 
 				}
 	else if (name == "Core") {
@@ -238,7 +238,7 @@ void Pics:: ChooseWhoIs() {
 
 					BoolOfPlayer = 14;
 					EmpressSpecial = true;
-					objectDeleteIs = false;
+					objectDeleteIs = true;
 
 					}
 
@@ -316,6 +316,7 @@ void Pics::CheckBoolOfPlayer() {
 		break;
 		//Artifact
 	case 11:
+		if (Engine::GetInstance().scene->inventario.tieneObjeto("Bloody"))return;
 		help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
 		Engine::GetInstance().scene->inventario.push("Bloody", help, nullptr);
 		
@@ -326,6 +327,7 @@ void Pics::CheckBoolOfPlayer() {
 		}
 		break;
 	case 12:
+		if (Engine::GetInstance().scene->inventario.tieneObjeto("Rusty"))return;
 		help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
 		Engine::GetInstance().scene->inventario.push("Rusty", help, nullptr); //rusty
 		if (Engine::GetInstance().scene->inventario.tieneObjeto("Bloody") && Engine::GetInstance().scene->inventario.tieneObjeto("Rusty") && Engine::GetInstance().scene->inventario.tieneObjeto("Moldy") && Engine::GetInstance().scene->inventario.tieneObjeto("Core")) {
@@ -334,7 +336,7 @@ void Pics::CheckBoolOfPlayer() {
 		}
 			break; 
 	case 13:
-		Engine::GetInstance().scene->psalm3 = true; //moldy
+		if (Engine::GetInstance().scene->inventario.tieneObjeto("Moldy"))return;
 		help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
 		Engine::GetInstance().scene->inventario.push("Moldy", help, nullptr);
 		if (Engine::GetInstance().scene->inventario.tieneObjeto("Bloody") && Engine::GetInstance().scene->inventario.tieneObjeto("Rusty") && Engine::GetInstance().scene->inventario.tieneObjeto("Moldy") && Engine::GetInstance().scene->inventario.tieneObjeto("Core")) {
@@ -344,6 +346,7 @@ void Pics::CheckBoolOfPlayer() {
 				break;
 	
 	case 14:
+		if (Engine::GetInstance().scene->inventario.tieneObjeto("Core"))return;
 		help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
 		Engine::GetInstance().scene->inventario.push("Core", help, nullptr);//core
 		if (Engine::GetInstance().scene->inventario.tieneObjeto("Bloody") && Engine::GetInstance().scene->inventario.tieneObjeto("Rusty") && Engine::GetInstance().scene->inventario.tieneObjeto("Moldy") && Engine::GetInstance().scene->inventario.tieneObjeto("Core")) {

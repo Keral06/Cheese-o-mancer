@@ -240,6 +240,9 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 	case EntityType::TIMMY:
 		entity = std::make_shared<Timmy>();
 		break;
+	case EntityType::EMPRESS:
+		entity = std::make_shared<Empress>();
+		break;
 	default:
 		break;
 	}

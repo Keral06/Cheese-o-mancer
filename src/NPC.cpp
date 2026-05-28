@@ -3999,3 +3999,284 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 
 	}
+
+	//EMpress
+	Empress::Empress() :NPC(EntityType::NPC) {
+
+		/*Dialogue regular;
+		Dialogue trusted;
+		Dialogue scolding;
+		Dialogue GivesArticact;
+		Dialogue AfterMission;*/
+
+		Dialogue paperDialogue("assets/Dialogues/Hierophant/Hierophant_Inital_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_Inital_Names.txt"); //Primer Diálogo
+		this->regular = paperDialogue;
+		Dialogue secondDialogue("assets/Dialogues/Hierophant/Hierophant_AllPsalms_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AllPsalms_Names.txt"); //Dialogo All psalms
+		this->trusted = secondDialogue;
+
+		Dialogue percent("assets/Dialogues/Hierophant/Hierophant_AfterInital_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AfterInital_Names.txt"); //Dialogo despues de segunda interaccion
+		this->scolding = percent;
+		Dialogue lvll2("assets/Dialogues/Hierophant/Hierophant_AllPsalms_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AllPsalms_Names.txt"); //Whistleblower has read all psalms
+		this->GivesArtifact = lvll2;
+		Dialogue third("assets/Dialogues/Hierophant/Hierophant_BeforeBoss_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_BeforeBoss_Names.txt"); //Has not defeated 
+		this->AfterMission = third;
+
+	
+
+
+	}
+	Empress::~Empress()
+	{
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+	}
+
+	
+	bool Empress::Awake() {
+		return true;
+	}
+	bool Empress::Start() {
+
+		std::unordered_map<int, std::string> aliases = {
+				  {0, "idle"},{15, "start"}, {30, "talk"},{45, "end"}
+		};
+		anims.LoadFromTSX("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.tsx", aliases);
+		anims.SetCurrent("idle");
+
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.png");
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
+
+		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
+		texW = 128;
+		texH = 128;
+		pbody = nullptr;
+		if (pbody == nullptr) {
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+		}
+
+
+		return true;
+	}
+	void Empress::Draw(float dt) {
+		if (texture == nullptr) { return; }
+		anims.Update(dt);
+		const SDL_Rect& animFrame = anims.GetCurrentFrame();
+
+		int x, y;
+		pbody->GetPosition(x, y);
+		position.setX((float)x);
+		position.setY((float)y);
+
+
+		Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
+
+	}
+	bool Empress::Update(float dt) {
+
+		if (Engine::GetInstance().scene->hasSparedPrincessAndKnight==false) {
+
+			return true;
+
+		}
+		if (!isGettingTouched) {
+			// Solo si no estaba ya en idle
+			if (currentAnimName != "idle") {
+				anims.SetCurrent("idle");
+				currentAnimName = "idle";
+			}
+		}
+		else {
+			// Si tocamos la E estando en idle, "start"
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && currentAnimName == "idle") {
+				anims.SetCurrent("start");
+				currentAnimName = "start";
+			}
+			// Si ya no estamos hablando, "end"
+			else if (currentAnimName == "talk" && !Engine::GetInstance().scene->someoneIsTalking) {
+				anims.SetCurrent("end");
+				currentAnimName = "end";
+			}
+
+			// Transiciones cuando terminan los fotogramas
+			if (currentAnimName == "start" && anims.HasFinished()) {
+				anims.SetCurrent("talk");
+				currentAnimName = "talk";
+			}
+			else if (currentAnimName == "end" && anims.HasFinished()) {
+				anims.SetCurrent("idle");
+				currentAnimName = "idle";
+			}
+		}
+		Draw(dt);
+
+
+		//draw
+		anims.Update(dt);
+		if (texture != nullptr) {
+			SDL_Rect rect = anims.GetCurrentFrame();
+			int drawX = (int)position.getX() - (texW / 2);
+			int drawY = (int)position.getY() - (texH / 2);
+			Engine::GetInstance().render->DrawTexture(texture, drawX, drawY, &rect);
+		}
+
+		if (isGettingTouched) {
+			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+
+			
+
+			//trusted dialogue
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasShownPoemToWell == true && Engine::GetInstance().scene->talkedTwiceEmpress == false) {
+
+				if (trusted.hasStarted) {
+
+					trusted.NextDialogue();
+					trusted.Draw(dt);
+					if (trusted.hasEnded) {
+
+
+						Engine::GetInstance().scene->talkedTwiceEmpress = true;
+						Engine::GetInstance().scene->EmpressTrustedDialogue = true;
+					}
+					return true;
+				}
+				trusted.BeginDialogue();
+				trusted.Draw(dt);
+
+
+				return true;
+			}
+			if (trusted.hasStarted && !trusted.hasEnded) {
+				trusted.Draw(dt);
+				return true;
+
+			}
+			//has artifact
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasShownPoemToWell == true && Engine::GetInstance().scene->hasAllFragments == true && !Engine::GetInstance().scene->inventario.tieneObjeto("Artifact") && Engine::GetInstance().scene->talkedTwiceEmpress == true) {
+
+				if (GivesArtifact.hasStarted) {
+
+					GivesArtifact.NextDialogue();
+					GivesArtifact.Draw(dt);
+					if (GivesArtifact.hasEnded) {
+
+
+						SDL_Texture* help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
+						Engine::GetInstance().scene->inventario.push("Artifact", help, nullptr);
+						Engine::GetInstance().scene->inventario.eliminarObjeto("Bloody");
+						Engine::GetInstance().scene->inventario.eliminarObjeto("Moldy");
+						Engine::GetInstance().scene->inventario.eliminarObjeto("Core");
+						Engine::GetInstance().scene->inventario.eliminarObjeto("Rusty");
+					}
+					return true;
+				}
+				GivesArtifact.BeginDialogue();
+				GivesArtifact.Draw(dt);
+
+
+				return true;
+			}
+			if (GivesArtifact.hasStarted && !GivesArtifact.hasEnded) {
+				GivesArtifact.Draw(dt);
+				return true;
+
+			}
+		
+
+		//After Mission
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN  && Engine::GetInstance().scene->hasAllFragments == true && Engine::GetInstance().scene->inventario.tieneObjeto("Artifact")) {
+
+			if (AfterMission.hasStarted) {
+
+				AfterMission.NextDialogue();
+				AfterMission.Draw(dt);
+				if (AfterMission.hasEnded) {
+
+
+				}
+				return true;
+			}
+			AfterMission.BeginDialogue();
+			AfterMission.Draw(dt);
+
+
+			return true;
+		}
+		if (AfterMission.hasStarted && !AfterMission.hasEnded) {
+			AfterMission.Draw(dt);
+			return true;
+
+		}
+		//regular
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasShownPoemToWell == false) {
+
+			if (regular.hasStarted) {
+
+				regular.NextDialogue();
+				regular.Draw(dt);
+				if (regular.hasEnded) {
+
+
+					Engine::GetInstance().scene->hasTalkedOnceEmpress = true;
+				}
+				return true;
+			}
+			regular.BeginDialogue();
+			regular.Draw(dt);
+
+
+			return true;
+		}
+		if (regular.hasStarted && !regular.hasEnded) {
+			regular.Draw(dt);
+			return true;
+
+		}
+		}
+
+
+
+		return true;
+	}
+	bool Empress::CleanUp() {
+		LOG("Unloading Hermit");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void Empress::OnCollision(PhysBody* physA, PhysBody* physB) {
+
+		Player* pp = static_cast<Player*>(physB->listener);
+		py = pp;
+		switch (physB->ctype)
+		{
+		case ColliderType::PLAYER:
+			isGettingTouched = true;
+
+			break;
+		}
+
+
+	}
+	void Empress::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+		isGettingTouched = false;
+
+
+
+	}
