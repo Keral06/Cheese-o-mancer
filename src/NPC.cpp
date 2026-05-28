@@ -3167,6 +3167,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 					notAdvanced.Draw(dt);
 					if (notAdvanced.hasEnded) {
 						Engine::GetInstance().scene->hasShownPoemToWell = true;
+						
+						Engine::GetInstance().scene->inventario.push("EmpressKey", Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemSacredSpringWater1_.png"), nullptr); //PLACEHOLDER
 
 					}
 					return true;
@@ -3185,7 +3187,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 			//Ha completado el poema y ya ha hablado con el well una vez
 
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasAllPoems == true && Engine::GetInstance().scene->hasShownPoemToWell == true) { //primer dialogo solo sale una vez
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasAllPoems == true && Engine::GetInstance().scene->hasShownPoemToWell == true) { 
 
 
 				if (level2.hasStarted) {
@@ -3212,7 +3214,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 			//Else (tiene algunas piezas del poema)
 
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) { //primer dialogo solo sale una vez
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) { 
 
 
 				if (level3.hasStarted) {
