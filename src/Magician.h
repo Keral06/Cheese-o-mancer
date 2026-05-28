@@ -42,6 +42,7 @@ private:
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
+	std::string currentAnimName = "idle";
 
 public:
 	SDL_Texture* InteractTexture = nullptr;

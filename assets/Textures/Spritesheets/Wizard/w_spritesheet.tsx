@@ -44,6 +44,15 @@
    <frame tileid="27" duration="100"/>
   </animation>
  </tile>
+ <tile id="27">
+  <properties>
+   <property name="loop" type="bool" value="true"/>
+   <property name="name" value="stay"/>
+  </properties>
+  <animation>
+   <frame tileid="27" duration="130"/>
+  </animation>
+ </tile>
  <tile id="36">
   <properties>
    <property name="loop" type="bool" value="false"/>

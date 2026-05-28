@@ -41,13 +41,19 @@ bool Magician::Awake() {
 
 bool Magician::Start() {
 
+		std::unordered_map<int, std::string> aliases = {
+			{0, "idle"},
+			{18, "down"},
+			{27, "stay"},
+			{28, "up"}
+		};
 
-	//std::unordered_map<int, std::string> aliases = { {0, "idle"}, { 19, "talking"} };
-	//anims.LoadFromTSX("assets/spritesheets/Wizard/sprite_mage_01.tsx", aliases);
-	///*coinPickupFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/coin-collision-sound-342335.wav");*/
-	//anims.SetCurrent("idle");
+		anims.LoadFromTSX("assets/Textures/Spritesheets/Wizard/w_spritesheet.tsx", aliases);
+		anims.SetCurrent("idle");
+		currentAnimName = "idle";
 
-	texture = Engine::GetInstance().textures->Load("resources/spritesheets/Wizard/sprite_ph_mage_01.png");
+
+	texture = Engine::GetInstance().textures->Load("resources/spritesheets/Wizard/sprite_mage_02.png");
 	InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
 	//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
@@ -80,133 +86,109 @@ bool Magician::Start() {
 	return true;
 }
 
-bool Magician::Update(float dt)
-{
+bool Magician::Update(float dt) {
+
+
+	if (!isGettingTouched) {
+		// Si el jugador se aleja, idle 
+		if (currentAnimName != "idle" && currentAnimName != "up") {
+			anims.SetCurrent("idle");
+			currentAnimName = "idle";
+		}
+	}
+	else {
+		// Al pulsar E para hablar estando quietos -> down
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && currentAnimName == "idle") {
+			anims.SetCurrent("down");
+			currentAnimName = "down";
+		}
+		// Si stay pero el diálogo ya ha terminado -> up
+		else if (currentAnimName == "stay" && !Engine::GetInstance().scene->someoneIsTalking) {
+			anims.SetCurrent("up");
+			currentAnimName = "up";
+		}
+
+		// HasFinished
+		if (currentAnimName == "down" && anims.HasFinished()) {
+			anims.SetCurrent("stay");
+			currentAnimName = "stay";
+		}
+		else if (currentAnimName == "up" && anims.HasFinished()) {
+			anims.SetCurrent("idle");
+			currentAnimName = "idle";
+		}
+	}
+
 	Draw(dt);
-	if(firstTime == true) {
-		if (!dialogueMagicianStart.hasStarted && Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN) {
-			dialogueMagicianStart.BeginDialogue();
-			SDL_Texture* TheFool;
-			TheFool = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Fool.png");
-			Engine::GetInstance().scene->TarotCards.push_back(TheFool);
-		}
-		else if (dialogueMagicianStart.hasStarted && !dialogueMagicianStart.hasEnded && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
 
-			dialogueMagicianStart.NextDialogue();
+	if (isGettingTouched) {
+		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
-			if (dialogueMagicianStart.hasEnded) {
-				firstTime = false;
-				
-			}
-		}
-	}
-	if (dialogueMagicianStart.hasStarted && !dialogueMagicianStart.hasEnded) {
-		dialogueMagicianStart.Draw(dt);
-		return true;
-	}
-	if(isGettingTouched){
-		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() -texW/2, (int)position.getY() + texH / 2 );
-		
-		
-		
-		if (py->beatBoss && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
-			
-			if (BeatBoss.hasStarted) {
-
-				BeatBoss.NextDialogue();
-				BeatBoss.Draw(dt);
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedMagician == false) {
+			if (dialogueMagicianStart.hasStarted) {
+				dialogueMagicianStart.NextDialogue();
+				dialogueMagicianStart.Draw(dt);
+				if (dialogueMagicianStart.hasEnded) {
+					Engine::GetInstance().scene->hasTalkedMagician = true;
+				}
 				return true;
 			}
-			BeatBoss.BeginDialogue();
-			BeatBoss.Draw(dt);
-
-
+			dialogueMagicianStart.BeginDialogue();
+			dialogueMagicianStart.Draw(dt);
 			return true;
 		}
-		if (BeatBoss.hasStarted && !BeatBoss.hasEnded) {
-			BeatBoss.Draw(dt);
+		if (dialogueMagicianStart.hasStarted && !dialogueMagicianStart.hasEnded) {
+			dialogueMagicianStart.Draw(dt);
 			return true;
-
 		}
-		if (Engine::GetInstance().scene->cheese==false && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
+
+		if (Engine::GetInstance().scene->cheese == false && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedMagician == true) {
 			if (BeforeCheese.hasStarted) {
-				
-
 				BeforeCheese.NextDialogue();
 				BeforeCheese.Draw(dt);
-				if (BeforeCheese.GetCurrentDialogue() == "There! You did so well!") {
-
-
-					Engine::GetInstance().scene->hasTalkedMagician = true;
-					py->lives = 4;
-				}
 				return true;
 			}
 			BeforeCheese.BeginDialogue();
 			BeforeCheese.Draw(dt);
-			SDL_Texture* Magician;
-			Magician = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Magician.png");
-			Engine::GetInstance().scene->TarotCards.push_back(Magician);
-
 			return true;
-
-
-
-		}if (BeforeCheese.hasStarted && !BeforeCheese.hasEnded) {
+		}
+		if (BeforeCheese.hasStarted && !BeforeCheese.hasEnded) {
 			BeforeCheese.Draw(dt);
 			return true;
-
 		}
 
 		if (Engine::GetInstance().scene->cheese == true && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-
 			if (AfterCheese.hasStarted) {
-
 				AfterCheese.NextDialogue();
 				AfterCheese.Draw(dt);
 				return true;
 			}
 			AfterCheese.BeginDialogue();
 			AfterCheese.Draw(dt);
-
-
 			return true;
-
-
-
-		}if (AfterCheese.hasStarted && !AfterCheese.hasEnded) {
+		}
+		if (AfterCheese.hasStarted && !AfterCheese.hasEnded) {
 			AfterCheese.Draw(dt);
 			return true;
-
 		}
-
-
-
-
-
-		
-
 	}
-
-	
-
 
 	return true;
 }
+
 void Magician::Draw(float dt) {
 
-	//anims.Update(dt);
-	//const SDL_Rect& animFrame = anims.GetCurrentFrame();
+	anims.Update(dt);
+	const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 	int x, y;
 	pbody->GetPosition(x, y);
 	position.setX((float)x);
 	position.setY((float)y);
 
-
-	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2/*, &animFrame*/);
+	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
 
 }
 bool Magician::CleanUp()
