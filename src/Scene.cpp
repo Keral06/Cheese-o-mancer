@@ -418,7 +418,18 @@ void Scene::LoadScene(SceneID newScene)
 		break;
 
 	case SceneID::IN_GAME:
-		LoadMap("TEST_map_LV1_startRoom_01.tmx");
+		if (continueGame) {
+			std::ifstream file("Assets/savegame.txt");
+			std::string savedMap = "TEST_map_LV1_startRoom_01.tmx"; 
+			if (file.is_open()) {
+				file >> savedMap;
+				file.close();
+			}
+			LoadMap(savedMap); 
+		}
+		else {
+			LoadMap("TEST_map_LV1_startRoom_01.tmx");
+		}
 		break;
 
 	case SceneID::GAME_OVER:
@@ -636,19 +647,10 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 	
 		break;
 	case 5:
-		/*continueGame = true; 
-		if (savedLevel == 1) {
-			ChangeScene(SceneID::LEVEL1);
-		}
-		else {
-			ChangeScene(SceneID::LEVEL2);
-		}*/
-		if (storeOn == false) {
-			SetStore(true, 2); 
-		}
-		else {
-			SetStore(false, 2); 
-		}
+		continueGame = true;
+
+		ChangeScene(SceneID::IN_GAME);
+
 		break;
 	case 6: 
 		exitGame = true; 
@@ -869,7 +871,8 @@ void Scene::UnloadLevel() {
 	// Clean up map and entities
 	Engine::GetInstance().map->CleanUp();
 	Engine::GetInstance().entityManager->CleanUp();
-
+	Engine::GetInstance().physics->CleanUp();
+	Engine::GetInstance().physics->Start();
 	//tendria que hacer unload de las texturas del panel y corazones...
 
 }
@@ -1342,7 +1345,9 @@ void Scene::SaveLevel()
 	std::ofstream file("Assets/savegame.txt");
 	if (!file.is_open()) return;
 
-	file << savedLevel << std::endl;
+	if (Engine::GetInstance().map != nullptr) {
+		file << Engine::GetInstance().map->mapFileName << std::endl;
+	}
 
 	file.close();
 }
@@ -1427,15 +1432,17 @@ void Scene::LoadMap(std::string map)
 
 		levelTimer = 0.0f;
 		Player::score = 0;
-
+		showHelp = true;
+		showMap = false;
+		inventoryOn = false;
 		//firstDoor = true;       
-		//cheese = false;         
-		//showMap = false;
-		//showHelp = true;       
+		//cheese = false;     
 		//nextSpawnPoint = "";
 		//nextMap = "";
 		if (player) {
-			player->lives = 4;/*
+			player->lives = 4;
+
+			/*
 			player->extralife = false;
 			player->hasCheese = false;
 			player->hasMap1 = false;
@@ -1449,6 +1456,11 @@ void Scene::LoadMap(std::string map)
 			player->SetPosition(startPos);
 			player->respawnPosition = { PIXEL_TO_METERS(startPos.getX()), PIXEL_TO_METERS(startPos.getY()) };
 		}*/
+	}
+	else {
+		showHelp = false;
+		showMap = false;
+		inventoryOn = false;
 	}
 }
 

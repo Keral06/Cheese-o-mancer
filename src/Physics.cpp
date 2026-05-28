@@ -250,6 +250,7 @@ bool Physics::PostUpdate()
     // Process bodies to delete after the world step
     for (PhysBody* physBody : bodiesToDelete) {
         b2DestroyBody(physBody->body);
+        delete physBody;
     }
     bodiesToDelete.clear();
 
@@ -260,6 +261,11 @@ bool Physics::PostUpdate()
 bool Physics::CleanUp()
 {
     LOG("Destroying physics world");
+
+    for (PhysBody* physBody : bodiesToDelete) {
+        delete physBody;
+    }
+    bodiesToDelete.clear();
 
     if (!B2_IS_NULL(world))
     {

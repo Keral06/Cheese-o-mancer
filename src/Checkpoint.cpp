@@ -3,6 +3,7 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "Render.h"
+#include "Scene.h"
 #include "Physics.h"
 
 Checkpoint::Checkpoint() : Entity(EntityType::CHECKPOINT)
@@ -90,6 +91,14 @@ void Checkpoint::OnCollision(PhysBody* physA, PhysBody* physB)
 		/*currentAnim = &activateAnim;
 		currentAnim->Reset();*/
 		Engine::GetInstance().audio->PlayFx(fxId);
+		Player* rawPlayer = Engine::GetInstance().scene->GetPlayer();
+
+		if (rawPlayer != nullptr) {
+			std::shared_ptr<Player> playerPtr(rawPlayer, [](Player*) {});
+
+			Engine::GetInstance().map->SaveEntities(playerPtr);
+
+		}
 	}
 }
 

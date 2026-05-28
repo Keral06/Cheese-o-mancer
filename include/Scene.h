@@ -36,6 +36,8 @@ enum Areas1 {
 class Scene : public Module
 {
 public:
+
+	bool continueGame = false;
 	int savedLevel = 1;
 	bool isPaused = false;
 	bool showHelp = true;
@@ -201,7 +203,6 @@ private:
 
 	std::shared_ptr<UIButton> uiBt;
 	float volume = 1.0;
-	bool continueGame = false;
 	bool exitGame = false;
 	bool showCredits = false;
 	SceneID currentScene = SceneID::MAIN_MENU;

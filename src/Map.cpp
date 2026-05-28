@@ -574,50 +574,40 @@ MapLayer* Map::GetNavigationLayer() {
                         // Create entity based on type
                         if (entityType == "Player") {
                             // Create Player entity
+                            if (Engine::GetInstance().scene->continueGame == true) {
+                                if (objectNode.attribute("cpX")) x = objectNode.attribute("cpX").as_float();
+                                if (objectNode.attribute("cpY")) y = objectNode.attribute("cpY").as_float();
+                            }
+                            else {
+                                killedEnemies.clear();
+                            }
+
                             if (player == nullptr) {
                                 player = std::dynamic_pointer_cast<Player>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER));
                                 player->position = Vector2D(x, y);
                                 player->Start();
-                                LOG("Player created.");
-                            }
-                            //If the player already exists, just set its position
-                            if (Engine::GetInstance().scene->GetLastScene() != SceneID::INTRO_SCREEN && Engine::GetInstance().scene->firstDoor == false) {
-                            
-                            
-                                auto obj = Engine::GetInstance().map->GetObjectByProperty(
-                                    "Doors",
-                                    "name",
-                                    Engine::GetInstance().scene->nextSpawnPoint
-                            );
-
-                            Vector2D spawn(0, 0);
-
-                            if (obj != nullptr)
-                            {
-                                int offsetX = 0;
-                                int offsetY = 0;
-
-                                // si has guardado como atributos XML
-                                offsetX = obj->properties.GetProperty("offsetX") ? obj->properties.GetProperty("offsetX")->valueInt : 0;
-                                offsetY = obj->properties.GetProperty("offsetY") ? obj->properties.GetProperty("offsetY")->valueInt : 0;
-
-                                spawn.setX(obj->x + offsetX);
-                                spawn.setY(obj->y + offsetY);
                             }
 
+                            if (Engine::GetInstance().scene->GetLastScene() != SceneID::INTRO_SCREEN &&
+                                Engine::GetInstance().scene->GetLastScene() != SceneID::MAIN_MENU &&
+                                Engine::GetInstance().scene->firstDoor == false) {
 
-                            player->SetPosition(spawn);
+                                auto obj = Engine::GetInstance().map->GetObjectByProperty("Doors", "name", Engine::GetInstance().scene->nextSpawnPoint);
+
+                                if (obj != nullptr) {
+                                    int offsetX = obj->properties.GetProperty("offsetX") ? obj->properties.GetProperty("offsetX")->valueInt : 0;
+                                    int offsetY = obj->properties.GetProperty("offsetY") ? obj->properties.GetProperty("offsetY")->valueInt : 0;
+                                    Vector2D spawn(obj->x + offsetX, obj->y + offsetY);
+                                    player->SetPosition(spawn);
+                                }
                             }
+
                             if (objectNode.attribute("score")) {
                                 Player::score = objectNode.attribute("score").as_int();
-                                LOG("Score cargado desde XML: %d", Player::score);
                             }
-
                             if (objectNode.attribute("timer")) {
                                 Engine::GetInstance().scene->levelTimer = objectNode.attribute("timer").as_float();
-                                LOG("Timer cargado desde XML: %f", Engine::GetInstance().scene->levelTimer);
                             }
-
                         }
                         else if (entityType == "Enemy") {
                             std::shared_ptr<Enemy> enemy = std::dynamic_pointer_cast<Enemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY));
@@ -945,8 +935,13 @@ MapLayer* Map::GetNavigationLayer() {
                     if (entityType == "Player") {
                         // Modify the Player entity values
                         Vector2D playerPos = player->GetPosition();
-                        objectNode.attribute("x").set_value(playerPos.getX());
-                        objectNode.attribute("y").set_value(playerPos.getY());
+                        pugi::xml_attribute cpXAttr = objectNode.attribute("cpX");
+                        if (!cpXAttr) cpXAttr = objectNode.append_attribute("cpX");
+                        cpXAttr.set_value(playerPos.getX());
+
+                        pugi::xml_attribute cpYAttr = objectNode.attribute("cpY");
+                        if (!cpYAttr) cpYAttr = objectNode.append_attribute("cpY");
+                        cpYAttr.set_value(playerPos.getY());
 
                         pugi::xml_attribute scoreAttr = objectNode.attribute("score");
                         if (!scoreAttr) scoreAttr = objectNode.append_attribute("score");
