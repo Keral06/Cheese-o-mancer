@@ -2713,7 +2713,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
-	
+		pbody = nullptr;
 		if (pbody == nullptr) {
 			position.setX(xInicial);
 			position.setY(yInicial);
@@ -2730,10 +2730,25 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 			pbody->ctype = ColliderType::NPC;
 		}
 
+
 		return true;
 	}
+	void Hermit ::Draw(float dt) {
+		
+		anims.Update(dt);
+const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
+		int x, y;
+		pbody->GetPosition(x, y);
+		position.setX((float)x);
+		position.setY((float)y);
+
+
+		Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
+		
+	}
 	bool Hermit::Update(float dt) {
+		Draw(dt);
 		if (!isGettingTouched) {
 			// Solo si no estaba ya en idle
 			if (currentAnimName != "idle") {
@@ -2776,17 +2791,23 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+				int i = 3383;
+			
+			}
 			
 
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !dialogue.hasEnded && dialogue.hasStarted) { //primer dialogo solo sale una vez
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedHermit == false) { //primer dialogo solo sale una vez
 
 
 				if (dialogue.hasStarted) {
 
 					dialogue.NextDialogue();
 					dialogue.Draw(dt);
-				
+					if (dialogue.hasEnded) {
+					
+						Engine::GetInstance().scene->hasTalkedHermit = true;
+					}
 					return true;
 				}
 				dialogue.BeginDialogue();
@@ -2803,7 +2824,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 			//dialogo si le ha traido el primer objeto
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level1.hasEnded && level1.hasStarted && py!=nullptr && py->inventario.tieneObjeto("SpringWater") && Engine::GetInstance().scene->springWaterHermit == false) { //primer dialogo solo sale una vez
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && py!=nullptr && Engine::GetInstance().scene->inventario.tieneObjeto("SpringWater") && Engine::GetInstance().scene->springWaterHermit == false) { //primer dialogo solo sale una vez
 
 
 				if (level1.hasStarted) {
@@ -2812,7 +2833,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 					level1.Draw(dt);
 					if (level1.hasEnded) { 
 						Engine::GetInstance().scene->springWaterHermit = true;
-						py->inventario.eliminarObjeto("Spring");
+						Engine::GetInstance().scene->inventario.eliminarObjeto("SpringWater");
 					}
 					return true;
 				}
@@ -2829,7 +2850,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 			}
 
 			//Dialogo si 2ndo objeto
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level2.hasEnded && level2.hasStarted && py != nullptr && py->inventario.tieneObjeto("HorseskinManure") == false && Engine::GetInstance().scene->HorsekinManureHermit == true) { //primer dialogo solo sale una vez
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN  && py != nullptr && Engine::GetInstance().scene->inventario.tieneObjeto("HorseskinManure") == true && Engine::GetInstance().scene->HorsekinManureHermit == false) { //primer dialogo solo sale una vez
 
 
 				if (level2.hasStarted) {
@@ -2837,8 +2858,8 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 					level2.NextDialogue();
 					level2.Draw(dt);
 					if (level2.hasEnded) {
-						Engine::GetInstance().scene->springWaterHermit = true;
-						py->inventario.eliminarObjeto("HorseskinManure");
+						Engine::GetInstance().scene->HorsekinManureHermit = true;
+						Engine::GetInstance().scene->inventario.eliminarObjeto("HorseskinManure");
 					}
 					return true;
 				}
@@ -2856,7 +2877,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			//Dialogo si tercer objeto
 
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level3.hasEnded && level3.hasStarted && py != nullptr && py->inventario.tieneObjeto("Gargantuan") && Engine::GetInstance().scene->GargantuanHermit == true) { //primer dialogo solo sale una vez
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN  && py != nullptr && Engine::GetInstance().scene->inventario.tieneObjeto("Gargantuan") && Engine::GetInstance().scene->GargantuanHermit == false) { //primer dialogo solo sale una vez
 
 
 				if (level3.hasStarted) {
@@ -2865,7 +2886,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 					level3.Draw(dt);
 					if (level3.hasEnded) { 
 						Engine::GetInstance().scene->GargantuanHermit = true;
-						py->inventario.eliminarObjeto("Gargantuan");
+						Engine::GetInstance().scene->inventario.eliminarObjeto("Gargantuan");
 					}
 					return true;
 				}
@@ -2883,7 +2904,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			//Dialogo si los tiene todos
 
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !hasAll.hasEnded && hasAll.hasStarted && py != nullptr && Engine::GetInstance().scene->HorsekinManureHermit && Engine::GetInstance().scene->springWaterHermit && Engine::GetInstance().scene->GargantuanHermit && !Engine::GetInstance().scene->finishedmissionHermit) { //primer dialogo solo sale una vez
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN  && py != nullptr && Engine::GetInstance().scene->HorsekinManureHermit && Engine::GetInstance().scene->springWaterHermit && Engine::GetInstance().scene->GargantuanHermit && !Engine::GetInstance().scene->finishedmissionHermit) { //primer dialogo solo sale una vez
 
 
 				if (hasAll.hasStarted) {
@@ -2929,29 +2950,30 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			}
 			//Dialogo si esta a medias 
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedHermit == true) {
+				if (notAdvanced.hasStarted) {
 
-			if (level2.hasStarted) {
+					notAdvanced.NextDialogue();
+					notAdvanced.Draw(dt);
+					if (notAdvanced.hasEnded) { return true; }
+					return true;
+				}
+				
 
-				level2.NextDialogue();
-				level2.Draw(dt);
-				if (level2.hasEnded) { Engine::GetInstance().scene->HorsekinManureHermit = true; }
-				return true;
-			}
-			else {
-			
-				level2.BeginDialogue();
-				level2.Draw(dt);
+				notAdvanced.BeginDialogue();
+				notAdvanced.Draw(dt);
 
 
-				return true;
-			}
-		
-			
-			if (level2.hasStarted && !level2.hasEnded) {
-				level2.Draw(dt);
-				return true;
+					return true;
+				
 
 			}
+			if (notAdvanced.hasStarted && !notAdvanced.hasEnded) {
+				notAdvanced.Draw(dt);
+				return true;
+
+			}
+
 		}
 		
 
