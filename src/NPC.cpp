@@ -3596,6 +3596,15 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		case 0:
 			 Placeholder =("assets/Dialogues/Mission_Finley/Finley_Initial_Dialogues.txt", "assets/Dialogues/Mission_Well/Finley_Initial_Names.txt"); //Primer Diálogo
 			dialogue = Placeholder;
+
+
+			Placeholder = ("assets/Dialogues/Mission_Finley/Finley_MissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Well/Finley_MissionCompleted_Names.txt");
+			AfterBoss = Placeholder;
+			Placeholder = ("assets/Dialogues/Mission_Finley/Third_FirstTimeFound_Dialogues.txt", "assets/Dialogues/Mission_Well/Third_FirstTimeFound_Names.txt");
+			hasFinished = Placeholder;
+			Placeholder = ("assets/Dialogues/Mission_Finley/Finley_AfterMissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Well/Finley_AfterMissionCompleted_Names.txt");
+
+			hasAllFinished = Placeholder;
 			break;
 
 		case1:
@@ -3615,13 +3624,6 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			Placeholder = ("assets/Dialogues/Mission_Finley/Finley_ThirdTimeFound_Dialogues.txt", "assets/Dialogues/Mission_Well/Finley_ThirdTimeFound_Dialogues.txt");
 			dialogue = Placeholder;
 
-			Placeholder = ("assets/Dialogues/Mission_Finley/Finley_MissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Well/Finley_MissionCompleted_Names.txt");
-			AfterBoss = Placeholder;
-			Placeholder = ("assets/Dialogues/Mission_Finley/Third_FirstTimeFound_Dialogues.txt", "assets/Dialogues/Mission_Well/Third_FirstTimeFound_Names.txt");
-			hasFinished = Placeholder;
-			Placeholder = ("assets/Dialogues/Mission_Finley/Finley_AfterMissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Well/Finley_AfterMissionCompleted_Names.txt");
-
-			hasAllFinished = Placeholder;
 			break;
 
 		
@@ -3720,7 +3722,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			
 			case 0:
 
-				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hidingPlaceATM == 0) {
+				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hidingPlaceATM == 0 && Engine::GetInstance().scene->hasFoundTimmyThreeTimes == false) {
 
 
 					if (dialogue.hasStarted) {
@@ -3744,10 +3746,93 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 					return true;
 
 				}
+				//AfterMission
+				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hidingPlaceATM == 0 && Engine::GetInstance().scene->hasFoundTimmyThreeTimes == true && Engine::GetInstance().scene->hasTalkedToTimmyOnce == false) {
+
+
+					if (hasFinished.hasStarted) {
+
+						hasFinished.NextDialogue();
+						hasFinished.Draw(dt);
+						if (hasFinished.hasEnded) {
+
+							Engine::GetInstance().scene->hasTalkedToTimmyOnce = true;
+						}
+						return true;
+					}
+					hasFinished.BeginDialogue();
+					hasFinished.Draw(dt);
+
+
+					return true;
+				}
+				if (hasFinished.hasStarted && !hasFinished.hasEnded) {
+					hasFinished.Draw(dt);
+					return true;
+
+				}
+				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hidingPlaceATM == 0 && Engine::GetInstance().scene->hasFoundTimmyThreeTimes == true && Engine::GetInstance().scene->hasTalkedToTimmyOnce == true && Engine::GetInstance().scene->DefeatedHighPrietest == true && Engine::GetInstance().scene->talkedOnceAfterDefeatBoss == false) {
+
+
+					if (AfterBoss.hasStarted) {
+
+						AfterBoss.NextDialogue();
+						AfterBoss.Draw(dt);
+						if (AfterBoss.hasEnded) {
+
+							Engine::GetInstance().scene->talkedOnceAfterDefeatBoss = true;
+						}
+						return true;
+					}
+					AfterBoss.BeginDialogue();
+					AfterBoss.Draw(dt);
+
+
+					return true;
+				}
+				if (AfterBoss.hasStarted && !AfterBoss.hasEnded) {
+					AfterBoss.Draw(dt);
+					return true;
+
+				}
+
+				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hidingPlaceATM == 0 && Engine::GetInstance().scene->hasFoundTimmyThreeTimes == true && Engine::GetInstance().scene->hasTalkedToTimmyOnce == true) {
+
+
+					if (hasAllFinished.hasStarted) {
+
+						hasAllFinished.NextDialogue();
+						hasAllFinished.Draw(dt);
+						if (hasAllFinished.hasEnded) {
+
+							Engine::GetInstance().scene->hasTalkedToTimmyOnce = true;
+						}
+						return true;
+					}
+					hasAllFinished.BeginDialogue();
+					hasAllFinished.Draw(dt);
+
+
+					return true;
+				}
+				if (hasAllFinished.hasStarted && !hasAllFinished.hasEnded) {
+					hasAllFinished.Draw(dt);
+					return true;
+
+				}
+
+
+
+
+
+
+
+
+
 				break;
 
 			case 1:
-				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hidingPlaceATM == 0) {
+				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hidingPlaceATM == 1) {
 
 
 					if (dialogue.hasStarted) {
@@ -3774,7 +3859,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 				break;
 
 			case 2:
-				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hidingPlaceATM == 0) {
+				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hidingPlaceATM == 2) {
 
 
 					if (dialogue.hasStarted) {
@@ -3783,7 +3868,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 						dialogue.Draw(dt);
 						if (dialogue.hasEnded) {
 
-							Engine::GetInstance().scene->hidingPlaceATM = 2;
+							Engine::GetInstance().scene->hidingPlaceATM = 0;
+							Engine::GetInstance().scene->hasFoundTimmyThreeTimes = true;
 						}
 						return true;
 					}

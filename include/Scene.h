@@ -303,6 +303,9 @@ public:
 		
 
 		int hidingPlaceATM = 0;
+		bool hasFoundTimmyThreeTimes = false;
+		bool hasTalkedToTimmyOnce = false;
+		bool talkedOnceAfterDefeatBoss = false;
 
 
 };
