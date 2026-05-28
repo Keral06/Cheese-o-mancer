@@ -133,7 +133,7 @@ void Pics:: ChooseWhoIs() {
 	}
 	else if (name == "Spring") {
 
-		Dialogue paperDialogue("resources/Dialogues/Pickable/SpringWater.txt");
+		Dialogue paperDialogue("assets/Dialogues/Pickable/SpringWater.txt");
 		this->dialogue = paperDialogue;
 
 		BoolOfPlayer = 5;
@@ -143,7 +143,7 @@ void Pics:: ChooseWhoIs() {
 	}
 	else if (name == "Horsekin") {
 
-		Dialogue paperDialogue("resources/Dialogues/Pickable/Horsekin.txt");
+		Dialogue paperDialogue("assets/Dialogues/Pickable/Horsekin.txt");
 		this->dialogue = paperDialogue;
 
 
@@ -154,11 +154,11 @@ void Pics:: ChooseWhoIs() {
 	}
 	else if (name == "TreeRoot") {
 
-		Dialogue paperDialogue("resources/Dialogues/Pickable/TreeRoot.txt");
+		Dialogue paperDialogue("assets/Dialogues/Pickable/TreeRoot.txt");
 		this->dialogue = paperDialogue;
 
 
-		BoolOfPlayer = 6;
+		BoolOfPlayer = 7;
 
 		 objectDeleteIs = true;
 
@@ -233,8 +233,9 @@ bool Pics::Update(float dt)
 			}
 			dialogue.BeginDialogue();
 			dialogue.Draw(dt);
+			SDL_Texture* help = nullptr;
 			switch (BoolOfPlayer) {
-
+				
 			case 0:
 				break;
 			case 1:
@@ -248,6 +249,21 @@ bool Pics::Update(float dt)
 				break;
 			case 4:
 				Engine::GetInstance().scene->night = true;
+				break;
+			case 5:
+				Engine::GetInstance().scene->springWater = true;
+				help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemSacredSpringWater1_.png");
+				Engine::GetInstance().scene->inventario.push("SpringWater", help, nullptr);
+				break;
+			case 6:
+				Engine::GetInstance().scene->HorsekinManure = true;
+				help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemHorsekinManure1_.png");
+				Engine::GetInstance().scene->inventario.push("HorseskinManure", help, nullptr);
+				break;
+			case 7:
+				Engine::GetInstance().scene->Gargantuan = true;
+				help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
+				Engine::GetInstance().scene->inventario.push("Gargantuan", help, nullptr);
 				break;
 			default: break;
 

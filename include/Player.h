@@ -6,7 +6,7 @@
 #include <SDL3/SDL.h>
 #include "FireBall.h"
 #include "CheeseBall.h"
-#include "Inventario.h"
+
 
 enum PlayerState {
 	JUMPING,
@@ -146,7 +146,7 @@ public:
          
 	bool hasDamagePlus = false;
 
-	Inventario inventario;
+
 private: 
 	b2Vec2 velocity;
 	AnimationSet anims2x3;

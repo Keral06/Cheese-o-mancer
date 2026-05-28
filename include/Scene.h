@@ -5,6 +5,7 @@
 #include "Enemy.h"
 #include "UIButton.h"
 #include "Animation.h"
+#include "Inventario.h"
 
 struct SDL_Texture;
 
@@ -240,7 +241,8 @@ public:
 	int lives = 4;
 	bool hasTalkedMagician = false;
 
-
+	//inventario
+	Inventario inventario;
 	//MARC ESTOS SON LOS BOOLS DE EL PLAYER PARA CONVERSACIONES
 
 	
@@ -263,6 +265,8 @@ public:
 	bool HorsekinManureHermit = false;
 	bool GargantuanHermit = false;
 	bool finishedmissionHermit = false;
+
+	bool hasTalkedHermit = false;
 
 	//Tarot bools
 	std::vector<SDL_Texture*> TarotCards;

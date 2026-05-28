@@ -719,18 +719,18 @@ void Scene::UpdateLevel(float dt) {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_G) == KEY_DOWN) {
 		if (player != nullptr) {
 
-			player->inventario.push("Spring", iconSpring, nullptr);
-			player->inventario.push("HorseMacure", iconHorseMacure, nullptr);
-			player->inventario.push("Gargantuan", iconGargantuan, nullptr);
-			player->inventario.push("Map", iconMap, nullptr);
-			player->inventario.push("Lamp", iconLamp, nullptr);
-			player->inventario.push("Key", iconKey, nullptr);
+			inventario.push("Spring", iconSpring, nullptr);
+			inventario.push("HorseMacure", iconHorseMacure, nullptr);
+			inventario.push("Gargantuan", iconGargantuan, nullptr);
+			inventario.push("Map", iconMap, nullptr);
+			inventario.push("Lamp", iconLamp, nullptr);
+			inventario.push("Key", iconKey, nullptr);
 
 		}
 	}
 	
 	if (inventoryOn && player != nullptr) {
-		int totalItems = player->inventario.objetos.size();
+		int totalItems = inventario.objetos.size();
 
 		for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
 			if (el->id == 48) { 
@@ -742,7 +742,7 @@ void Scene::UpdateLevel(float dt) {
 		}
 	}
 
-	if (inventoryOn && player->inventario.tieneObjeto("Map")) {
+	if (inventoryOn && inventario.tieneObjeto("Map")) {
 		if (Engine::GetInstance().input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
 			Vector2D mousePos = Engine::GetInstance().input->GetMousePosition();
 			int mx = mousePos.getX();
@@ -757,7 +757,7 @@ void Scene::UpdateLevel(float dt) {
 		return;
 	}
 	//logica de mapa
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_M) == KEY_DOWN && player->inventario.tieneObjeto("Map"))
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_M) == KEY_DOWN && inventario.tieneObjeto("Map"))
 	{
 		showMap = !showMap;
 	}
@@ -1025,20 +1025,20 @@ void  Scene::PostUpdateLevel() {
 				int inicio = currentInvPage * itemsPorPagina;
 
 				int fin = inicio + itemsPorPagina;
-				if (fin > player->inventario.objetos.size()) {
-					fin = player->inventario.objetos.size();
+				if (fin > inventario.objetos.size()) {
+					fin = inventario.objetos.size();
 				}
 
 				for (int j = inicio; j < fin; j++) {
 
-					SDL_Texture* tex = player->inventario.objetos[j].imagen;
+					SDL_Texture* tex = inventario.objetos[j].imagen;
 
 					if (tex != nullptr) {
 						
 						int posEnPantalla = j - inicio;
 						Engine::GetInstance().render->DrawTextureNoCamera(tex, startX + (posEnPantalla * offsetX), startY, 160, 160);
 
-						if (player->inventario.objetos[j].nombre == "Map") {
+						if (inventario.objetos[j].nombre == "Map") {
 							rectInvMap = { startX + (posEnPantalla * offsetX), startY, 160, 160 };
 						}
 					}
@@ -1713,7 +1713,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 					el->SetTexture(BeenBought);
 				}
 			}
-			player->inventario.push("Map", iconMap, nullptr);
+			inventario.push("Map", iconMap, nullptr);
 			for (auto& entity : Engine::GetInstance().entityManager->entities) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
@@ -1748,7 +1748,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				}
 
 			}
-			player->inventario.push("Key", iconKey, nullptr);
+			Engine::GetInstance().scene->inventario.push("Key", iconKey, nullptr);
 
 			//FUNCION DE QUE PLAYER TIENE LA LLAVE
 			for (auto& entity : Engine::GetInstance().entityManager->entities) {
