@@ -940,7 +940,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                            
                                 pics->hidingPlace = where->valueInt;
                            
-                                LOG("WhoIs = %s", pics->hidingPlace);
+                                LOG("WhoIs = %i", pics->hidingPlace);
                             
                                 pics->WhatPositionIsIt(pics->hidingPlace);
                            

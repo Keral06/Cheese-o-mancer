@@ -63,6 +63,7 @@ bool CheeseBallInteract::Start() {
 bool CheeseBallInteract::Update(float dt)
 {
 	if (!active) return true;
+	if (Engine::GetInstance().scene->cheese)return true;
 
 	Draw(dt);
 	CheeseBallTexture = Engine::GetInstance().textures->Load("resources/spritesheets/Jester/Cheese_wheel/Cheese_flat_asset.png");

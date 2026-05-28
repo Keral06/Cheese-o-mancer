@@ -3594,34 +3594,34 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		switch (i) {
 		
 		case 0:
-			 Placeholder =("assets/Dialogues/Mission_Finley/Finley_Initial_Dialogues.txt", "assets/Dialogues/Mission_Well/Finley_Initial_Names.txt"); //Primer Diálogo
+			 Placeholder =("assets/Dialogues/Mission_Finley/Finley_Initial_Dialogues.txt", "assets/Dialogues/Mission_Finley/Finley_Initial_Names.txt"); //Primer Diálogo
 			dialogue = Placeholder;
 
-
-			Placeholder = ("assets/Dialogues/Mission_Finley/Finley_MissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Well/Finley_MissionCompleted_Names.txt");
+			
+			Placeholder = ("assets/Dialogues/Mission_Finley/Finley_MissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Finley/Finley_MissionCompleted_Names.txt");
 			AfterBoss = Placeholder;
-			Placeholder = ("assets/Dialogues/Mission_Finley/Third_FirstTimeFound_Dialogues.txt", "assets/Dialogues/Mission_Well/Third_FirstTimeFound_Names.txt");
+			Placeholder = ("assets/Dialogues/Mission_Finley/Third_FirstTimeFound_Dialogues.txt", "assets/Dialogues/Mission_Finley/Finley_FirstTimeFound_Names.txt");
 			hasFinished = Placeholder;
-			Placeholder = ("assets/Dialogues/Mission_Finley/Finley_AfterMissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Well/Finley_AfterMissionCompleted_Names.txt");
+			Placeholder = ("assets/Dialogues/Mission_Finley/Finley_AfterMissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Finley//Finley_AfterMissionCompleted_Names.txt");
 
 			hasAllFinished = Placeholder;
 			break;
 
 		case1:
-			 Placeholder=("assets/Dialogues/Mission_Finley/Finley_FirstTimeFound_Dialogues.txt", "assets/Dialogues/Mission_Well/Finley_FirstTimeFound_Names.txt"); //Primer Diálogo
+			 Placeholder=("assets/Dialogues/Mission_Finley/Finley_FirstTimeFound_Dialogues.txt", "assets/Dialogues/Mission_Finley//Finley_FirstTimeFound_Names.txt"); //Primer Diálogo
 			dialogue = Placeholder;
 
 			break;
 
 		case 2:
-			Placeholder = ("assets/Dialogues/Mission_FinleySFinley_SecondTimeFound_Dialogues.txt", "assets/Dialogues/Mission_Well/Finley_SecondTimeFound_Names.txt"); //Primer Diálogo
+			Placeholder = ("assets/Dialogues/Mission_Finley_SecondTimeFound_Dialogues.txt", "assets/Dialogues/Mission_Finley//Finley_SecondTimeFound_Names.txt"); //Primer Diálogo
 			dialogue = Placeholder;
 			break;
 		case 3:
 			/*Dialogue AfterBoss;
 			Dialogue hasAllFinished;
 			Dialogue hasFinished;*/
-			Placeholder = ("assets/Dialogues/Mission_Finley/Finley_ThirdTimeFound_Dialogues.txt", "assets/Dialogues/Mission_Well/Finley_ThirdTimeFound_Dialogues.txt");
+			Placeholder = ("assets/Dialogues/Mission_Finley/Finley_ThirdTimeFound_Dialogues.txt", "assets/Dialogues/Mission_Finley/Finley_ThirdTimeFound_Dialogues.txt");
 			dialogue = Placeholder;
 
 			break;
