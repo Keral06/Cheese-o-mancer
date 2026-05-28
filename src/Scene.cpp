@@ -46,7 +46,7 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-
+	srand(time(NULL));
 	LoadScene(currentScene);
 
 	return true;
@@ -1340,7 +1340,10 @@ void Scene::LoadMap(std::string map)
 	UnloadLevel();
 	Engine::GetInstance().entityManager->CleanUp();
 
-	if (map == "TEST_map_LV1_tortureRoom_02.tmx") {
+	if (map == "TEST_map_LV1_startRoom_01.tmx") {
+		Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/level2music.wav");
+	}
+	else if (map == "TEST_map_LV1_tortureRoom_02.tmx") {
 		Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/COMBATdowninthedungeons.wav");
 	}
 	else if (map == "TEST_map_LV1_pantryRoom_01.tmx"||"Map_LV2_encreuada_02.tmx"|| "Map_LV2_botanica_02.tmx"|| "Map_LV2_justes_02.tmx") {

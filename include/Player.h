@@ -86,10 +86,15 @@ public:
 	b2Vec2 respawnPosition;
 	//fx
 	int lastStepTime = 0;
+	
+	//FX 
 	int movefx;
 	int jumpfx;	
 	int checkpointfx;
 	int deathfx;
+	int healfx;
+	int attackfx;
+
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
 	float jumpForce = 950.0f; // The force to apply when jumping
