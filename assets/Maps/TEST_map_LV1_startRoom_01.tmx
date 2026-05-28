@@ -66491,7 +66491,7 @@
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>
-  <object id="416" type="Fire" x="12914" y="4832" width="122" height="182">
+  <object id="416" type="Fire" x="13736.1" y="5224.82" width="51.9394" height="86.5455">
    <properties>
     <property name="loop" type="bool" value="true"/>
    </properties>

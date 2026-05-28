@@ -4,6 +4,7 @@
 #include <string>
 #include "Engine.h"
 #include "Render.h"
+#include "Window.h"
 
 inline float Deg2Rad(float a)
 {
@@ -436,6 +437,8 @@ void ParticleSystem::draw()
     // Posicion cam
     float camX = Engine::GetInstance().render->camera.x;
     float camY = Engine::GetInstance().render->camera.y;
+    float zoom = Engine::GetInstance().render->zoom;
+    int scale = Engine::GetInstance().window->GetScale();
 
     for (int i = 0; i < _particleCount; i++)
     {
@@ -445,12 +448,16 @@ void ParticleSystem::draw()
             continue;
         }
 
-        // APLICAMOS LA RESTA EXACTA PARA CLAVARLO AL MAPA
+        // Pos mapa
+        float world_x = p.posx + p.startPosX - (p.size / 2.0f);
+        float world_y = p.posy + p.startPosY - (p.size / 2.0f);
+
+        // Lo mismo q en el render
         SDL_FRect r = {
-            p.posx + p.startPosX - (p.size / 2.0f) + camX,
-            p.posy + p.startPosY - (p.size / 2.0f) + camY,
-            p.size,
-            p.size
+            (float)floor((camX + world_x * scale) * zoom),
+            (float)floor((camY + world_y * scale) * zoom),
+            p.size * scale * zoom,
+            p.size * scale * zoom
         };
 
         SDL_Color c = { Uint8(p.colorR * 255), Uint8(p.colorG * 255), Uint8(p.colorB * 255), Uint8(p.colorA * 255) };
