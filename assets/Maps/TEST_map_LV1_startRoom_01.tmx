@@ -55314,12 +55314,6 @@
   <object id="378" name="Live" type="Live" x="12802.7" y="1824" width="256" height="384"/>
  </objectgroup>
  <objectgroup id="8" name="Entities">
-  <object id="12" name="Timmy" type="Timmy" x="13369.4" y="7141.21">
-   <properties>
-    <property name="Where" type="int" value="0"/>
-   </properties>
-   <point/>
-  </object>
   <object id="328" name="Rat" type="Rat" x="13916" y="864">
    <point/>
   </object>
@@ -55356,24 +55350,6 @@
   <object id="418" name="Pics" type="Pics" x="14242.4" y="5942.42">
    <properties>
     <property name="WhoIs" value="Night"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="419" name="Timmy" type="Timmy" x="13848.5" y="7233.33">
-   <properties>
-    <property name="Where" type="int" value="1"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="420" name="Timmy" type="Timmy" x="14445.5" y="7263.64">
-   <properties>
-    <property name="Where" type="int" value="2"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="421" name="Timmy" type="Timmy" x="15109.1" y="7254.55">
-   <properties>
-    <property name="Where" type="int" value="3"/>
    </properties>
    <point/>
   </object>
