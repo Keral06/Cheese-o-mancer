@@ -3359,7 +3359,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	}
 	bool Hierophant::Update(float dt) {
 		Draw(dt);
-		
+
 
 		//draw
 		anims.Update(dt);
@@ -3426,7 +3426,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 			//No se ha leido los psalmos
 
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasReadAllPsalms == false) { 
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasReadAllPsalms == false) {
 
 
 				if (notAdvanced.hasStarted) {
@@ -3435,7 +3435,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 					notAdvanced.Draw(dt);
 					if (notAdvanced.hasEnded) {
 
-						
+
 					}
 					return true;
 				}
@@ -3450,17 +3450,17 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 				return true;
 
 			}
+
+
+
+
 		
-		
-		
-		
-		}
 
 		//WhistleBlower dialogue
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedAboutPsalmsB4 == true && Engine::GetInstance().scene->hasBeenWhistledblowed == false) {
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedAboutPsalmsB4 == true && Engine::GetInstance().scene->hasBeenWhistledblowed == false) {
 
 
-			if (level2.hasStarted) {
+				if (level2.hasStarted) {
 
 				level2.NextDialogue();
 				level2.Draw(dt);
@@ -3475,17 +3475,17 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 
 			return true;
-		}
-		if (level2.hasStarted && !level2.hasEnded) {
+			}
+			if (level2.hasStarted && !level2.hasEnded) {
 			level2.Draw(dt);
 			return true;
 
-		}
+			}
 
 		//Has he been whistleblown and has the high prietest been defeates?
 
 		//NO
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasBeenWhistledblowed == true && Engine::GetInstance().scene->DefeatedHighPrietest == false) {
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasBeenWhistledblowed == true && Engine::GetInstance().scene->DefeatedHighPrietest == false) {
 
 
 			if (level3.hasStarted) {
@@ -3503,15 +3503,15 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 
 			return true;
-		}
-		if (level3.hasStarted && !level3.hasEnded) {
+			}
+			if (level3.hasStarted && !level3.hasEnded) {
 			level3.Draw(dt);
 			return true;
 
-		}
+			}
 
 		//SÍ
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasBeenWhistledblowed == true && Engine::GetInstance().scene->DefeatedHighPrietest == true) {
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasBeenWhistledblowed == true && Engine::GetInstance().scene->DefeatedHighPrietest == true) {
 
 
 			if (hasAll.hasStarted) {
@@ -3530,14 +3530,14 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 
 			return true;
-		}
-		if (hasAll.hasStarted && !hasAll.hasEnded) {
+			}
+			if (hasAll.hasStarted && !hasAll.hasEnded) {
 			hasAll.Draw(dt);
 			return true;
+	
+			}
 
 		}
-
-
 
 	
 
@@ -3568,6 +3568,273 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 	}
 	void Hierophant::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+		isGettingTouched = false;
+
+
+
+	}
+
+	//Little timmy mission
+	Timmy::Timmy() :NPC(EntityType::NPC) {
+
+
+
+
+	}
+	Timmy::~Timmy()
+	{
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+	}
+
+	void Timmy::WhatPositionIsIt(int i) {
+		Dialogue Placeholder;
+		switch (i) {
+		
+		case 0:
+			 Placeholder =("assets/Dialogues/Mission_Finley/Finley_Initial_Dialogues.txt", "assets/Dialogues/Mission_Well/Finley_Initial_Names.txt"); //Primer Diálogo
+			dialogue = Placeholder;
+			break;
+
+		case1:
+			 Placeholder=("assets/Dialogues/Mission_Finley/Finley_FirstTimeFound_Dialogues.txt", "assets/Dialogues/Mission_Well/Finley_FirstTimeFound_Names.txt"); //Primer Diálogo
+			dialogue = Placeholder;
+
+			break;
+
+		case 2:
+			Placeholder = ("assets/Dialogues/Mission_FinleySFinley_SecondTimeFound_Dialogues.txt", "assets/Dialogues/Mission_Well/Finley_SecondTimeFound_Names.txt"); //Primer Diálogo
+			dialogue = Placeholder;
+			break;
+		case 3:
+			/*Dialogue AfterBoss;
+			Dialogue hasAllFinished;
+			Dialogue hasFinished;*/
+			Placeholder = ("assets/Dialogues/Mission_Finley/Finley_ThirdTimeFound_Dialogues.txt", "assets/Dialogues/Mission_Well/Finley_ThirdTimeFound_Dialogues.txt");
+			dialogue = Placeholder;
+
+			Placeholder = ("assets/Dialogues/Mission_Finley/Finley_MissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Well/Finley_MissionCompleted_Names.txt");
+			AfterBoss = Placeholder;
+			Placeholder = ("assets/Dialogues/Mission_Finley/Third_FirstTimeFound_Dialogues.txt", "assets/Dialogues/Mission_Well/Third_FirstTimeFound_Names.txt");
+			hasFinished = Placeholder;
+			Placeholder = ("assets/Dialogues/Mission_Finley/Finley_AfterMissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Well/Finley_AfterMissionCompleted_Names.txt");
+
+			hasAllFinished = Placeholder;
+			break;
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		}
+	
+	
+	
+	}
+	bool Timmy::Awake() {
+		return true;
+	}
+	bool Timmy::Start() {
+
+		/*std::unordered_map<int, std::string> aliases = {
+				  {0, "idle"},{15, "start"}, {30, "talk"},{45, "end"}
+		};
+		anims.LoadFromTSX("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.tsx", aliases);
+		anims.SetCurrent("idle");
+
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.png");*/
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
+
+		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
+		texW = 128;
+		texH = 128;
+		pbody = nullptr;
+		if (pbody == nullptr) {
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+		}
+
+
+		return true;
+	}
+	void Timmy::Draw(float dt) {
+		if (texture == nullptr) { return; }
+		anims.Update(dt);
+		const SDL_Rect& animFrame = anims.GetCurrentFrame();
+
+		int x, y;
+		pbody->GetPosition(x, y);
+		position.setX((float)x);
+		position.setY((float)y);
+
+
+		Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
+
+	}
+	bool Timmy::Update(float dt) {
+
+		if (hidingPlace != Engine::GetInstance().scene->hidingPlaceATM) {
+		
+			return true;
+		
+		}
+		Draw(dt);
+
+
+		//draw
+		anims.Update(dt);
+		if (texture != nullptr) {
+			SDL_Rect rect = anims.GetCurrentFrame();
+			int drawX = (int)position.getX() - (texW / 2);
+			int drawY = (int)position.getY() - (texH / 2);
+			Engine::GetInstance().render->DrawTexture(texture, drawX, drawY, &rect);
+		}
+
+		if (isGettingTouched) {
+			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+			switch (hidingPlace) {
+			
+			case 0:
+
+				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hidingPlaceATM == 0) {
+
+
+					if (dialogue.hasStarted) {
+
+						dialogue.NextDialogue();
+						dialogue.Draw(dt);
+						if (dialogue.hasEnded) {
+
+							Engine::GetInstance().scene->hidingPlaceATM = 1;
+						}
+						return true;
+					}
+					dialogue.BeginDialogue();
+					dialogue.Draw(dt);
+
+
+					return true;
+				}
+				if (dialogue.hasStarted && !dialogue.hasEnded) {
+					dialogue.Draw(dt);
+					return true;
+
+				}
+				break;
+
+			case 1:
+				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hidingPlaceATM == 0) {
+
+
+					if (dialogue.hasStarted) {
+
+						dialogue.NextDialogue();
+						dialogue.Draw(dt);
+						if (dialogue.hasEnded) {
+
+							Engine::GetInstance().scene->hidingPlaceATM = 2;
+						}
+						return true;
+					}
+					dialogue.BeginDialogue();
+					dialogue.Draw(dt);
+
+
+					return true;
+				}
+				if (dialogue.hasStarted && !dialogue.hasEnded) {
+					dialogue.Draw(dt);
+					return true;
+
+				}
+				break;
+
+			case 2:
+				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hidingPlaceATM == 0) {
+
+
+					if (dialogue.hasStarted) {
+
+						dialogue.NextDialogue();
+						dialogue.Draw(dt);
+						if (dialogue.hasEnded) {
+
+							Engine::GetInstance().scene->hidingPlaceATM = 2;
+						}
+						return true;
+					}
+					dialogue.BeginDialogue();
+					dialogue.Draw(dt);
+
+
+					return true;
+				}
+				if (dialogue.hasStarted && !dialogue.hasEnded) {
+					dialogue.Draw(dt);
+					return true;
+
+				}
+				break;
+
+
+			
+			
+			}
+		}
+
+
+
+
+		return true;
+	}
+	bool Timmy::CleanUp() {
+		LOG("Unloading Hermit");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void Timmy::OnCollision(PhysBody* physA, PhysBody* physB) {
+
+		Player* pp = static_cast<Player*>(physB->listener);
+		py = pp;
+		switch (physB->ctype)
+		{
+		case ColliderType::PLAYER:
+			isGettingTouched = true;
+
+			break;
+		}
+
+
+	}
+	void Timmy::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
 

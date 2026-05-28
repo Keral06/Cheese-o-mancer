@@ -297,6 +297,12 @@ public:
 	//level 3 bools
 
 	bool talkedTiredPreacher = false;
-	
+
+
+		//Little Finley
+		
+
+		int hidingPlaceATM = 0;
+
 
 };

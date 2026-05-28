@@ -54,7 +54,8 @@ enum class EntityType
 	SPIKEHAZARD,
 	HERMIT,
 	WELL,
-	HIEROPHANT
+	HIEROPHANT,
+	TIMMY
 };
 
 class PhysBody;

@@ -1071,3 +1071,69 @@ public:
 
 	SDL_Texture* InteractTexture = nullptr;
 };
+
+//Little Timmy
+
+class Timmy : public NPC
+{
+public:
+	Timmy();
+
+	virtual ~Timmy();
+	bool Awake();
+	bool Start();
+	bool Update(float dt);
+	bool CleanUp();
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+	void Draw(float dt);
+	void WhatPositionIsIt(int i);
+
+public:
+
+
+private:
+
+
+
+
+
+
+
+
+private:
+	SDL_Texture* texture;
+	AnimationSet anims;
+	PhysBody* pbody;
+	int texW, texH;
+	const char* tsxPath;
+	std::string currentAnimName = "idle";
+
+	Dialogue notAdvanced;
+	Dialogue hiding1;
+	Dialogue hiding2;
+	Dialogue hiding3;
+	Dialogue AfterBoss;
+	Dialogue hasAllFinished;
+	Dialogue hasFinished;
+	bool finishedMission = false;
+	int isThereATM = false;
+
+
+	//Hermit bools
+	bool springWater = false;
+	bool HorsekinManure = false;
+	bool Gargantuan = false;
+
+public:
+	int coinFx;
+	int coinPickupFx;
+	int xInicial;
+	int yInicial;
+	int hidingPlace = 0;
+
+	bool isGettingTouched = false;
+	Player* py;
+
+	SDL_Texture* InteractTexture = nullptr;
+};

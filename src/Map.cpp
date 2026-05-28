@@ -903,6 +903,56 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                     hermit->Start();
                     hermit->mapID = id;
                 }
+                else if (entityType == "Timmy") {
+                   
+                        auto pics = std::dynamic_pointer_cast<Timmy>(
+                           
+                            Engine::GetInstance().entityManager->CreateEntity(EntityType::TIMMY)
+                           
+                            
+                        );
+                   
+
+
+                        
+                        pics->position = Vector2D(x, y);
+                   
+                        pics->xInicial = (int)x;
+                    
+                        pics->yInicial = (int)y;
+                   
+                        pics->mapID = id;
+                
+
+                        // Load Tiled custom properties
+                       
+                        Properties tempProperties;
+                    
+                        LoadProperties(objectNode, tempProperties);
+                  
+
+
+                        auto where = tempProperties.GetProperty("Where");
+                
+                        if (where)
+                          
+                        {
+                           
+                                pics->hidingPlace = where->valueInt;
+                           
+                                LOG("WhoIs = %s", pics->hidingPlace);
+                            
+                                pics->WhatPositionIsIt(pics->hidingPlace);
+                           
+                        }
+                   
+
+
+                        pics->Start();
+                    
+      
+                        }
+
                 else if (entityType == "Hierophant") {
                     std::shared_ptr<Hierophant> hierophant = std::dynamic_pointer_cast<Hierophant>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HIEROPHANT));
                     hierophant->position = Vector2D(x, y);
