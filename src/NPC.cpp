@@ -3008,6 +3008,271 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 
 	}
+	//Empress in disguise, wells echo
+
+	Well::Well() :NPC(EntityType::NPC) {
+
+
+
+		Dialogue paperDialogue("assets/Dialogues/Mission_Well/Well_Initial_Dialogues.txt", "assets/Dialogues/Mission_Well/Well_Initial_Names.txt"); //Primer Diálogo
+		this->dialogue = paperDialogue;
+		Dialogue secondDialogue("assets/Dialogues/Mission_Well/Well_NotAdvanced_Dialogues.txt", "assets/Dialogues/Mission_Well/Well_NotAdvanced_Names.txt"); //Dialogo All psalms
+		this->level1 = secondDialogue;
+
+		Dialogue percent("assets/Dialogues/Mission_Well/Well_MissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Well/Well_MissionCompleted_Names.txt"); //Tiene todos los poemas
+		this->notAdvanced = percent;
+		Dialogue lvll2("assets/Dialogues/Mission_Well/Well_AfterMissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Well/Well_AfterMissionCompleted_Names.txt"); //ya ha completado la mision
+		this->level2 = lvll2;
+		Dialogue third("assets/Dialogues/Mission_Well/Well_MissingPages_Dialogues.txt", "assets/Dialogues/Mission_Well/Well_MissingPages_Names.txt"); //Algunas piuezas del poema
+		this->level3 = third;
+
+	
+
+	}
+
+	Well::~Well()
+	{
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+	}
+	bool Well::Awake() {
+		return true;
+	}
+	bool Well::Start() {
+
+		std::unordered_map<int, std::string> aliases = {
+				  {0, "idle"},{15, "start"}, {30, "talk"},{45, "end"}
+		};
+		anims.LoadFromTSX("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.tsx", aliases);
+		anims.SetCurrent("idle");
+
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.png");
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
+
+		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
+		texW = 128;
+		texH = 128;
+		pbody = nullptr;
+		if (pbody == nullptr) {
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+		}
+
+
+		return true;
+	}
+	void Well::Draw(float dt) {
+		if (texture == nullptr) { return; }
+		anims.Update(dt);
+		const SDL_Rect& animFrame = anims.GetCurrentFrame();
+
+		int x, y;
+		pbody->GetPosition(x, y);
+		position.setX((float)x);
+		position.setY((float)y);
+
+
+		Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
+
+	}
+	bool Well::Update(float dt) {
+		Draw(dt);
+
+
+		//draw
+		anims.Update(dt);
+		if (texture != nullptr) {
+			SDL_Rect rect = anims.GetCurrentFrame();
+			int drawX = (int)position.getX() - (texW / 2);
+			int drawY = (int)position.getY() - (texH / 2);
+			Engine::GetInstance().render->DrawTexture(texture, drawX, drawY, &rect);
+		}
+
+		if (isGettingTouched) {
+			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+			
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedWell == false) { //primer dialogo solo sale una vez
+
+
+				if (dialogue.hasStarted) {
+
+					dialogue.NextDialogue();
+					dialogue.Draw(dt);
+					if (dialogue.hasEnded) {
+
+						Engine::GetInstance().scene->hasTalkedWell = true;
+					}
+					return true;
+				}
+				dialogue.BeginDialogue();
+				dialogue.Draw(dt);
+
+
+				return true;
+			}
+			if (dialogue.hasStarted && !dialogue.hasEnded) {
+				dialogue.Draw(dt);
+				return true;
+
+			}
+
+			// No tiene ninguna pieza del poema
+
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->dawn == false && Engine::GetInstance().scene->night == false && Engine::GetInstance().scene->day == false && Engine::GetInstance().scene->dusk == false) { //primer dialogo solo sale una vez
+
+
+				if (level1.hasStarted) {
+
+					level1.NextDialogue();
+					level1.Draw(dt);
+					if (level1.hasEnded) {
+
+						
+					}
+					return true;
+				}
+				level1.BeginDialogue();
+				level1.Draw(dt);
+
+
+				return true;
+			}
+			if (level1.hasStarted && !level1.hasEnded) {
+				level1.Draw(dt);
+				return true;
+
+			}
+
+			//ha completado el poema
+
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasAllPoems == true && Engine::GetInstance().scene->hasShownPoemToWell == false) { //primer dialogo solo sale una vez
+
+
+				if (notAdvanced.hasStarted) {
+
+					notAdvanced.NextDialogue();
+					notAdvanced.Draw(dt);
+					if (notAdvanced.hasEnded) {
+						Engine::GetInstance().scene->hasShownPoemToWell = true;
+
+					}
+					return true;
+				}
+				notAdvanced.BeginDialogue();
+				notAdvanced.Draw(dt);
+
+
+				return true;
+			}
+			if (notAdvanced.hasStarted && !notAdvanced.hasEnded) {
+				notAdvanced.Draw(dt);
+				return true;
+
+			}
+
+			//Ha completado el poema y ya ha hablado con el well una vez
+
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasAllPoems == true && Engine::GetInstance().scene->hasShownPoemToWell == true) { //primer dialogo solo sale una vez
+
+
+				if (level2.hasStarted) {
+
+					level2.NextDialogue();
+					level2.Draw(dt);
+					if (level2.hasEnded) {
+						
+
+					}
+					return true;
+				}
+				level2.BeginDialogue();
+				level2.Draw(dt);
+
+
+				return true;
+			}
+			if (level2.hasStarted && !level2.hasEnded) {
+				level2.Draw(dt);
+				return true;
+
+			}
+
+			//Else (tiene algunas piezas del poema)
+
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) { //primer dialogo solo sale una vez
+
+
+				if (level3.hasStarted) {
+
+					level3.NextDialogue();
+					level3.Draw(dt);
+					if (level3.hasEnded) {
+
+
+					}
+					return true;
+				}
+				level3.BeginDialogue();
+				level3.Draw(dt);
+
+
+				return true;
+			}
+			if (level3.hasStarted && !level3.hasEnded) {
+				level3.Draw(dt);
+				return true;
+
+			}
+		}
+
+
+
+
+
+		return true;
+	}
+	bool Well::CleanUp() {
+		LOG("Unloading Hermit");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void Well::OnCollision(PhysBody* physA, PhysBody* physB) {
+
+		Player* pp = static_cast<Player*>(physB->listener);
+		py = pp;
+		switch (physB->ctype)
+		{
+		case ColliderType::PLAYER:
+			isGettingTouched = true;
+
+			break;
+		}
+
+
+	}
+	void Well::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+		isGettingTouched = false;
+
+
+
+	}
 
 	//Level 3 NPC
 
@@ -3104,7 +3369,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		}
 
 		if (isGettingTouched) {
-		
+			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->talkedTiredPreacher == false) { //primer dialogo solo sale una vez
 
 

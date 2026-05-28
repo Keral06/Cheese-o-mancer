@@ -197,9 +197,13 @@ void Dialogue:: NextDialogue() {
 	
 	
 	}
+	if (choice) {
+	
 	if (dialogueHelper[lenghtHelper + 1] == "CHOICE 2:" && choice) {
 	
 		lenghtHelper == lenght;
+	
+	}
 	
 	}
 	if (lenghtHelper < lenght-1) {

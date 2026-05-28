@@ -22,6 +22,7 @@ public:
 	bool CleanUp();
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+	void CheckBoolOfPlayer();
 
 
 public:

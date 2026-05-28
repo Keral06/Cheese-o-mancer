@@ -52,7 +52,9 @@ enum class EntityType
 	KNIGHT,
 	FLOWERBOMB,
 	SPIKEHAZARD,
-	HERMIT
+	HERMIT,
+	WELL,
+	HIEROPHANT
 };
 
 class PhysBody;

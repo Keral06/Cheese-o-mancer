@@ -972,6 +972,22 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                     MILKY->Start();
                     MILKY->mapID = id;
                 }
+                else if (entityType == "Hierophant") {
+                    std::shared_ptr<Hierophant> MILKY = std::dynamic_pointer_cast<Hierophant>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HIEROPHANT));
+                    MILKY->position = Vector2D(x, y);
+                    MILKY->xInicial = (int)x;
+                    MILKY->yInicial = (int)y;
+                    MILKY->Start();
+                    MILKY->mapID = id;
+                    }
+                else if (entityType == "Well") {
+                        std::shared_ptr<Well> MILKY = std::dynamic_pointer_cast<Well>(Engine::GetInstance().entityManager->CreateEntity(EntityType::WELL));
+                        MILKY->position = Vector2D(x, y);
+                        MILKY->xInicial = (int)x;
+                        MILKY->yInicial = (int)y;
+                        MILKY->Start();
+                        MILKY->mapID = id;
+                        }
                 else if (entityType == "Pics")
                 {
                     auto pics = std::dynamic_pointer_cast<Pics>(

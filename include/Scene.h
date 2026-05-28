@@ -288,6 +288,11 @@ public:
 	bool DefeatedHighPrietest = false;
 	bool hasBeenWhistledblowed = false;
 
+	//Well's echo bools
+
+	bool hasTalkedWell = false;
+	bool hasShownPoemToWell = false;
+
 	//level 3 bools
 
 	bool talkedTiredPreacher = false;
