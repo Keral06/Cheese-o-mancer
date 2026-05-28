@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Checkpoint.h"
 #include <memory>
+#include "ParticleExample.h"
 
 class Enemy;
 class Player;
@@ -223,6 +224,7 @@ public:
     ObjectGroup::Object* GetObjectByProperty(std::string layerName, std::string propName, std::string value);
     std::vector<int> killedEnemies;
     std::vector<PhysBody*> mapBodies;
+    std::vector<ParticleExample*> mapParticles;
 public: 
     std::string mapFileName;
     std::string mapPath;

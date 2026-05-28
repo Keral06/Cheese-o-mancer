@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <assert.h>
 #include <string>
+#include "Engine.h"
+#include "Render.h"
 
 inline float Deg2Rad(float a)
 {
@@ -430,18 +432,34 @@ void ParticleSystem::draw()
     {
         return;
     }
+
+    // Posicion cam
+    float camX = Engine::GetInstance().render->camera.x;
+    float camY = Engine::GetInstance().render->camera.y;
+
     for (int i = 0; i < _particleCount; i++)
     {
         auto& p = particle_data_[i];
-        if (p.size <=0 || p.colorA <= 0)
+        if (p.size <= 0 || p.colorA <= 0)
         {
             continue;
         }
-        SDL_FRect r = { p.posx + p.startPosX - p.size / 2.0f, p.posy + p.startPosY - p.size / 2.0f, p.size, p.size };
+
+        // APLICAMOS LA RESTA EXACTA PARA CLAVARLO AL MAPA
+        SDL_FRect r = {
+            p.posx + p.startPosX - (p.size / 2.0f) + camX,
+            p.posy + p.startPosY - (p.size / 2.0f) + camY,
+            p.size,
+            p.size
+        };
+
         SDL_Color c = { Uint8(p.colorR * 255), Uint8(p.colorG * 255), Uint8(p.colorB * 255), Uint8(p.colorA * 255) };
         SDL_SetTextureColorMod(_texture, c.r, c.g, c.b);
         SDL_SetTextureAlphaMod(_texture, c.a);
-        SDL_SetTextureBlendMode(_texture, SDL_BLENDMODE_BLEND);
+
+        // Efecto aditivo para que el fuego brille
+        SDL_SetTextureBlendMode(_texture, SDL_BLENDMODE_ADD);
+
         SDL_RenderTextureRotated(_renderer, _texture, nullptr, &r, p.rotation, nullptr, SDL_FLIP_NONE);
     }
     update();

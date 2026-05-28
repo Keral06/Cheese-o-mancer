@@ -26,10 +26,15 @@ public:
 
     PatticleStyle style_ = NONE;
     void setStyle(PatticleStyle style);
+
     SDL_Texture* getDefaultTexture()
     {
-        static SDL_Texture* t = IMG_LoadTexture(_renderer, "fire.png");
-        //printf(SDL_GetError());
+        static SDL_Texture* t = IMG_LoadTexture(_renderer, "assets/Textures/fire.png");
+
+        if (t == nullptr) {
+            // Esto imprimirá un error en la consola si no encuentra la imagen
+            printf("Error cargando textura de particulas: %s\n", SDL_GetError());
+        }
         return t;
     }
 };
