@@ -55,10 +55,6 @@ bool Player::Start() {
 	state = RUNNING;
 	lastState = RUNNING;
 	// load
-	movefx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/player_walk.wav");
-	//jumpfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/salto.wav");
-	checkpointfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/checkpoint.wav");
-	deathfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/player_death.wav");
 	std::unordered_map<int, std::string> aliases2x3 = { {2,"run"},{16,"jump"},{28,"hoponcheese"}};
 	std::unordered_map<int, std::string> aliases3x3 = { {0,"idle"},{17,"idleOnCheese"}};
 	std::unordered_map<int, std::string> aliases3x4 = { {0,"attack2"},{6,"attack3"},{16,"attack1"}};
@@ -106,7 +102,12 @@ bool Player::Start() {
 	hitboxActive = false;
 
 	//initialize audio effect
+	
+	//jumpfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/salto.wav");
+	checkpointfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/checkpoint.wav");
+	deathfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/player_death.wav");
 	pickCoinFxId = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/coin-collision-sound-342335.wav");
+	healfx= Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Heal_plant.wav");
 
 	respawnPosition = { PIXEL_TO_METERS(position.getX()), PIXEL_TO_METERS(position.getY()) };
 	
@@ -373,10 +374,26 @@ void Player::Move() {
 	// =====================
 	// SONIDO PASOS
 	// =====================
-	if (isWalking)
+	if (isWalking && isJumping==false)
 	{
+		int randNum = rand() % 4;
+		switch (randNum) {
+		case 0:
+			movefx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Jester/Jester_paso1.wav");
+			break;
+		case 1:
+			movefx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Jester/Jester_paso2.wav");
+			break;
+		case 2:
+			movefx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Jester/Jester_paso3.wav");
+			break;
+		case 3:
+			movefx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Jester/Jester_paso4.wav");
+			break;
+		}
+
 		int currentTime = (int)SDL_GetTicks();
-		if (currentTime - lastStepTime > 350)
+		if (currentTime - lastStepTime > 600)
 		{
 			Engine::GetInstance().audio->PlayFx(movefx);
 			lastStepTime = currentTime;
@@ -668,6 +685,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 	{
 		if (hasHealed == false) {
 			if (lives < 4) {
+				Engine::GetInstance().audio->PlayFx(healfx);
 				lives++;
 				LOG("Player healed.");
 			}
@@ -952,14 +970,20 @@ void Player::StartAttack(int combo)
 	case 1:
 		currentAnimSet->SetCurrent("attack1");
 		currentAnimSet->Resets();
+		attackfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Jester/Jester_ataque1.wav");
+		Engine::GetInstance().audio->PlayFx(attackfx);
 		break;
 	case 2:
 		currentAnimSet->SetCurrent("attack2");
 		currentAnimSet->Resets();
+		attackfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Jester/Jester_ataque2.wav");
+		Engine::GetInstance().audio->PlayFx(attackfx);
 		break;
 	case 3:
 		currentAnimSet->SetCurrent("attack3");
 		currentAnimSet->Resets();
+		attackfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Jester/Jester_ataque3.wav"); //NECESSITA DELAY EN EL AUDIO (audio especific per aquest atac)
+		Engine::GetInstance().audio->PlayFx(attackfx);
 		break;
 	}
 

@@ -6,7 +6,7 @@
 #include <SDL3/SDL.h>
 #include "FireBall.h"
 #include "CheeseBall.h"
-#include "Inventario.h"
+
 
 enum PlayerState {
 	JUMPING,
@@ -87,10 +87,15 @@ public:
 	b2Vec2 respawnPosition;
 	//fx
 	int lastStepTime = 0;
+	
+	//FX 
 	int movefx;
 	int jumpfx;	
 	int checkpointfx;
 	int deathfx;
+	int healfx;
+	int attackfx;
+
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
 	float jumpForce = 950.0f; // The force to apply when jumping
@@ -141,7 +146,7 @@ public:
          
 	bool hasDamagePlus = false;
 
-	Inventario inventario;
+
 private: 
 	b2Vec2 velocity;
 	AnimationSet anims2x3;

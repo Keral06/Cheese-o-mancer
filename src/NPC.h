@@ -898,6 +898,7 @@ public:
 	bool CleanUp();
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+	void Draw(float dt);
 
 public:
 
@@ -917,6 +918,132 @@ private:
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
+	std::string currentAnimName = "idle";
+
+	Dialogue notAdvanced;
+	Dialogue level1;
+	Dialogue level2;
+	Dialogue level3;
+	Dialogue hasAll;
+	Dialogue hasAllFinished;
+	bool finishedMission = false;
+	
+
+
+	//Hermit bools
+	bool springWater = false;
+	bool HorsekinManure = false;
+	bool Gargantuan = false;
+
+public:
+	int coinFx;
+	int coinPickupFx;
+	int xInicial;
+	int yInicial;
+
+	bool isGettingTouched = false;
+	Player* py;
+
+	SDL_Texture* InteractTexture = nullptr;
+};
+//Empress in disguise wells echo
+
+class Well : public NPC
+{
+public:
+	Well();
+
+	virtual ~Well();
+	bool Awake();
+	bool Start();
+	bool Update(float dt);
+	bool CleanUp();
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+	void Draw(float dt);
+
+public:
+
+
+private:
+
+
+
+
+
+
+
+
+private:
+	SDL_Texture* texture;
+	AnimationSet anims;
+	PhysBody* pbody;
+	int texW, texH;
+	const char* tsxPath;
+	std::string currentAnimName = "idle";
+
+	Dialogue notAdvanced;
+	Dialogue level1;
+	Dialogue level2;
+	Dialogue level3;
+	Dialogue hasAll;
+	Dialogue hasAllFinished;
+	bool finishedMission = false;
+
+
+
+	//Hermit bools
+	bool springWater = false;
+	bool HorsekinManure = false;
+	bool Gargantuan = false;
+
+public:
+	int coinFx;
+	int coinPickupFx;
+	int xInicial;
+	int yInicial;
+
+	bool isGettingTouched = false;
+	Player* py;
+
+	SDL_Texture* InteractTexture = nullptr;
+};
+
+//Level 3 NPCs
+
+class Hierophant : public NPC
+{
+public:
+	Hierophant();
+
+	virtual ~Hierophant();
+	bool Awake();
+	bool Start();
+	bool Update(float dt);
+	bool CleanUp();
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+	void Draw(float dt);
+
+public:
+
+
+private:
+
+
+
+
+
+
+
+
+private:
+	SDL_Texture* texture;
+	AnimationSet anims;
+	PhysBody* pbody;
+	int texW, texH;
+	const char* tsxPath;
+	std::string currentAnimName = "idle";
 
 	Dialogue notAdvanced;
 	Dialogue level1;

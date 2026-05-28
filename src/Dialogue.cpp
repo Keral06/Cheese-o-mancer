@@ -197,7 +197,15 @@ void Dialogue:: NextDialogue() {
 	
 	
 	}
+	if (choice) {
 	
+	if (dialogueHelper[lenghtHelper + 1] == "CHOICE 2:" && choice) {
+	
+		lenghtHelper == lenght;
+	
+	}
+	
+	}
 	if (lenghtHelper < lenght-1) {
 	
 		lenghtHelper++;
@@ -207,6 +215,8 @@ void Dialogue:: NextDialogue() {
 			lenghtHelper += 2;
 		
 		}
+
+		
 
 		printf("%s\n",dialogueHelper[lenghtHelper].c_str());
 		if (nameHelper.size() != 0) {

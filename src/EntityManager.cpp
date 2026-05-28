@@ -231,6 +231,12 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 	case EntityType::HERMIT:
 		entity = std::make_shared<Hermit>();
 		break;
+	case EntityType::WELL:
+		entity = std::make_shared<Well>();
+		break;
+	case EntityType::HIEROPHANT:
+		entity = std::make_shared<Hierophant>();
+		break;
 	default:
 		break;
 	}
