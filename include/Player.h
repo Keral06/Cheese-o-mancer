@@ -6,6 +6,7 @@
 #include <SDL3/SDL.h>
 #include "FireBall.h"
 #include "CheeseBall.h"
+#include "Inventario.h"
 
 enum PlayerState {
 	JUMPING,
@@ -58,6 +59,9 @@ public:
 
 	void DismountAndLaunch();
 
+	void DismountVerticalJump();
+
+	void ResetCheeseState();
 private:
 
 	void GetPhysicsValues();
@@ -72,9 +76,6 @@ private:
 public:
 	PlayerState state;
 	PlayerState lastState;
-	bool hasMap1 = false;
-	bool hasLamp = false;  
-	bool hasKey = false;
 	//Declare player parameters
 	float speed = 15.0f;
 	float godmodeSpeed = 40.0f;
@@ -144,6 +145,8 @@ public:
 	/*SDL_Rect& lastFrame;*/
          
 	bool hasDamagePlus = false;
+
+	Inventario inventario;
 private: 
 	b2Vec2 velocity;
 	AnimationSet anims2x3;
@@ -196,6 +199,11 @@ private:
 	bool isOnSpecialWall = false;
 	float wallNormal = 0.0f;
 
+	bool cheeseFirstJumpDone = false;
+	bool pendingDismount = false;
+	bool doVerticalJump = false;
 
-	
+	bool pendingCheeseJump = false;
+	bool waitingAttackAnimEnd = false;
+	int jumpTriggerOffset = 7;
 };

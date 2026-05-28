@@ -344,6 +344,14 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 		if (currentCardIndex < 0) currentCardIndex = TarotCards.size() -1;
 		return true;
 	}
+	if (uiElement->id == 48) {
+		if (currentInvPage > 0) currentInvPage--;
+		return true;
+	}
+	if (uiElement->id == 49) {
+		currentInvPage++;
+		return true;
+	}
 	if ((uiElement->id >= 20 && uiElement->id <= 30)|| uiElement->id ==52) {
 		HandlePauseUIEvents(uiElement);
 		return true;
@@ -707,8 +715,34 @@ void Scene::UpdateLevel(float dt) {
 	{
 		SetInventory(!inventoryOn);
 	}
+	//DEBUG INVENTARIO
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_G) == KEY_DOWN) {
+		if (player != nullptr) {
 
-	if (inventoryOn && player->hasMap1) {
+			player->inventario.push("Spring", iconSpring, nullptr);
+			player->inventario.push("HorseMacure", iconHorseMacure, nullptr);
+			player->inventario.push("Gargantuan", iconGargantuan, nullptr);
+			player->inventario.push("Map", iconMap, nullptr);
+			player->inventario.push("Lamp", iconLamp, nullptr);
+			player->inventario.push("Key", iconKey, nullptr);
+
+		}
+	}
+	
+	if (inventoryOn && player != nullptr) {
+		int totalItems = player->inventario.objetos.size();
+
+		for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
+			if (el->id == 48) { 
+				el->visible = (currentInvPage > 0);
+			}
+			if (el->id == 49) { 
+				el->visible = ((currentInvPage + 1) * 3 < totalItems);
+			}
+		}
+	}
+
+	if (inventoryOn && player->inventario.tieneObjeto("Map")) {
 		if (Engine::GetInstance().input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
 			Vector2D mousePos = Engine::GetInstance().input->GetMousePosition();
 			int mx = mousePos.getX();
@@ -723,7 +757,7 @@ void Scene::UpdateLevel(float dt) {
 		return;
 	}
 	//logica de mapa
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_M) == KEY_DOWN && player->hasMap1)
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_M) == KEY_DOWN && player->inventario.tieneObjeto("Map"))
 	{
 		showMap = !showMap;
 	}
@@ -820,6 +854,9 @@ void Scene::UnloadLevel() {
 	iconMap = nullptr;
 	iconKey = nullptr;
 	iconLamp = nullptr;
+	iconSpring = nullptr;
+	iconHorseMacure = nullptr;
+	iconGargantuan = nullptr;
 	inventoryBag = nullptr;
 	uiCoin = nullptr;
 	cardsBase = nullptr;
@@ -979,25 +1016,34 @@ void  Scene::PostUpdateLevel() {
 			Engine::GetInstance().render->DrawTextureNoCamera(invPaperCombined, 490, 60, 800, 600);
 
 			if (player != nullptr) {
+				int startX = 700; 
+				int startY = 230; 
+				int offsetX = 160; 
 
-				if (player->hasMap1 && iconMap != nullptr) {
-					Engine::GetInstance().render->DrawTextureNoCamera(iconMap, 990, 200, 160, 160);
+				int itemsPorPagina = 3;
 
+				int inicio = currentInvPage * itemsPorPagina;
+
+				int fin = inicio + itemsPorPagina;
+				if (fin > player->inventario.objetos.size()) {
+					fin = player->inventario.objetos.size();
 				}
-				if (player->hasKey && iconKey != nullptr) {
-					Engine::GetInstance().render->DrawTextureNoCamera(iconKey, 820, 240, 160, 160);
-				}
 
-				if (player->hasLamp && iconLamp != nullptr) {
-					Engine::GetInstance().render->DrawTextureNoCamera(iconLamp, 680, 250, 160, 160);
-				}
-				if (player->hasMap1 && iconMap != nullptr) {
+				for (int j = inicio; j < fin; j++) {
 
-					rectInvMap = { 990, 200, 160, 160 };
-					Engine::GetInstance().render->DrawTextureNoCamera(iconMap, 990, 200, 160, 160);
+					SDL_Texture* tex = player->inventario.objetos[j].imagen;
+
+					if (tex != nullptr) {
+						
+						int posEnPantalla = j - inicio;
+						Engine::GetInstance().render->DrawTextureNoCamera(tex, startX + (posEnPantalla * offsetX), startY, 160, 160);
+
+						if (player->inventario.objetos[j].nombre == "Map") {
+							rectInvMap = { startX + (posEnPantalla * offsetX), startY, 160, 160 };
+						}
+					}
 				}
 			}
-
 			if (inventoryBag != nullptr) {
 				Engine::GetInstance().render->DrawTextureNoCamera(inventoryBag, 90, 30, 800, 800);
 			}
@@ -1667,7 +1713,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 					el->SetTexture(BeenBought);
 				}
 			}
-			player->hasMap1 = true;
+			player->inventario.push("Map", iconMap, nullptr);
 			for (auto& entity : Engine::GetInstance().entityManager->entities) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
@@ -1702,7 +1748,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				}
 
 			}
-			player->hasKey = true;
+			player->inventario.push("Key", iconKey, nullptr);
 
 			//FUNCION DE QUE PLAYER TIENE LA LLAVE
 			for (auto& entity : Engine::GetInstance().entityManager->entities) {
@@ -1818,6 +1864,9 @@ void Scene::CreateInventoryUI() {
 	iconMap = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemMap1_01.png"); 
 	iconKey = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemKey1_01.png");
 	iconLamp = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemLamp1_01.png"); 
+	iconSpring = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemSacredSpringWater1_.png"); 
+	iconHorseMacure = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemHorsekinManure1_.png"); 
+	iconGargantuan = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png"); 
 	inventoryBag = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Inventari_Bag_01.png"); 
 	uiCoin = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_coin.png"); 
 	cardsIcon = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Tarot_InventoryItem1_.png");
@@ -1825,6 +1874,22 @@ void Scene::CreateInventoryUI() {
 	arrowRight = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_BurronRight_.png");
 	arrowLeft = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_ButtonLeft_.png");
 	cardsBase = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_Base_.png");
+
+	auto invPrevPage = Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 48, "",
+		{ 610, 295, 50, 50 },
+		this, SDL_Rect{ 0,0,0,0 },
+		arrowLeft, arrowLeft
+	);
+	if (invPrevPage) invPrevPage->visible = false;
+
+	auto invNextPage = Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 49, "",
+		{ 1170, 295, 50, 50 }, 
+		this, SDL_Rect{ 0,0,0,0 },
+		arrowRight, arrowRight
+	);
+	if (invNextPage) invNextPage->visible = false;
 
 	auto cardButton = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 45, "",

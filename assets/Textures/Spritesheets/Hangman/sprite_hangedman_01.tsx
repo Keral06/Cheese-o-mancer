@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="sprite_hangedman_01" tilewidth="256" tileheight="640" tilecount="105" columns="35">
+<tileset version="1.10" tiledversion="1.12.1" name="sprite_hangedman_01" tilewidth="256" tileheight="640" tilecount="105" columns="35">
  <image source="sprite_hangedman_01.png" width="8960" height="1920"/>
  <tile id="0">
   <animation>
@@ -41,6 +41,10 @@
   </animation>
  </tile>
  <tile id="35">
+  <properties>
+   <property name="loop" type="bool" value="false"/>
+   <property name="name" value="shop"/>
+  </properties>
   <animation>
    <frame tileid="35" duration="100"/>
    <frame tileid="36" duration="100"/>
@@ -79,10 +83,11 @@
    <frame tileid="69" duration="100"/>
   </animation>
  </tile>
-        <tile id="70">
-            <properties>
-                <property name="loop" type="bool" value="false" />
-            </properties>
+ <tile id="70">
+  <properties>
+   <property name="loop" type="bool" value="true"/>
+   <property name="name" value="idle"/>
+  </properties>
   <animation>
    <frame tileid="70" duration="100"/>
    <frame tileid="71" duration="100"/>
@@ -114,11 +119,6 @@
    <frame tileid="97" duration="100"/>
    <frame tileid="98" duration="100"/>
    <frame tileid="99" duration="100"/>
-   <frame tileid="100" duration="100"/>
-   <frame tileid="101" duration="100"/>
-   <frame tileid="102" duration="100"/>
-   <frame tileid="103" duration="100"/>
-   <frame tileid="104" duration="100"/>
   </animation>
  </tile>
 </tileset>

@@ -2182,7 +2182,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	milkmaid::milkmaid() :NPC(EntityType::MILKMAID) {
 		Dialogue paperDialogue("assets/Dialogues/Milkmaid/Milkmaid_Inital_Dialogues.txt", "assets/Dialogues/Milkmaid/Milkmaid_Inital_Names.txt"); //change the dialogue lol!!!! Dialoguenormal
 		this->dialogue = paperDialogue;
-		Dialogue secondDialogue("assets/Dialogues/Milkmaid/Milkmaid_AfterInital_Dialogues.txt", "assets/Dialogues/Milkmaid/Milkmaid_AfterInital_Names.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
+		Dialogue secondDialogue("assets/Dialogues/Milkmaid/Milkmaid_AfterInitial_Dialogues.txt", "assets/Dialogues/Milkmaid/Milkmaid_AfterInitial_Names.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
 		this->secondDialogue = secondDialogue;
 	}
 
@@ -2667,20 +2667,20 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 	}
 
-	Hermit::Hermit() :NPC(EntityType::NPC) {
+	Hermit::Hermit() :NPC(EntityType::HERMIT) {
 
 
 
 		Dialogue paperDialogue("assets/Dialogues/Mission_Hermit/Hermit_Initial_Dialogues.txt", "assets/Dialogues/Mission_Hermit/Hermit_Initial_Names.txt"); //change the dialogue lol!!!! Dialoguenormal
 		this->dialogue = paperDialogue;
-		Dialogue secondDialogue("assets/Dialogues/Mission_Hermit/Hermit_LVL1_Dialogues.txt", "assets/Dialogues/Mission_Hermit/Hermit_LVL1_Names.txt"); //change the dialogue lol!!!! lvl1
+		Dialogue secondDialogue("assets/Dialogues/Mission_Hermit/HermitMission_LVL1_Dialogues.txt", "assets/Dialogues/Mission_Hermit/HermitMission_LVL1_Names.txt"); //change the dialogue lol!!!! lvl1
 		this->level1 = secondDialogue;
 
 		Dialogue percent("assets/Dialogues/Mission_Hermit/Hermit_NotAdvanced_Dialogues.txt", "assets/Dialogues/Mission_Hermit/Hermit_NotAdvanced_Names.txt"); //change the dialogue lol!!!! DialogueAfterOnceTalked
 		this->notAdvanced = percent;
-		Dialogue lvll2("assets/Dialogues/Mission_Hermit/Hermit_LVL2_Dialogues.txt", "assets/Dialogues/Mission_Hermit/Hermit_LVL2_Names.txt"); //change the dialogue lol!!!! lvl2
+		Dialogue lvll2("assets/Dialogues/Mission_Hermit/HermitMission_LVL2_Dialogues.txt", "assets/Dialogues/Mission_Hermit/HermitMission_LVL2_Names.txt"); //change the dialogue lol!!!! lvl2
 		this->level2 = lvll2;
-		Dialogue third("assets/Dialogues/Mission_Hermit/Hermit_LVL3_Dialogues.txt", "assets/Dialogues/Mission_Hermit/Hermit_LVL3_Names.txt"); //change the dialogue lol!!!! lvl3
+		Dialogue third("assets/Dialogues/Mission_Hermit/HermitMission_LVL3_Dialogues.txt", "assets/Dialogues/Mission_Hermit/HermitMission_LVL3_Names.txt"); //change the dialogue lol!!!! lvl3
 		this->level3 = third;
 
 		Dialogue hasAll("assets/Dialogues/Mission_Hermit/Hermit_MissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Hermit/Hermit_MissionCompleted_Names.txt"); //change the dialogue lol!!!! all
@@ -2702,63 +2702,19 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	bool Hermit::Start() {
 
 		std::unordered_map<int, std::string> aliases = {
-		  {70, "idle"}
+				  {0, "idle"},{15, "start"}, {30, "talk"},{45, "end"}
 		};
 		anims.LoadFromTSX("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.tsx", aliases);
 		anims.SetCurrent("idle");
 
-		if (isGettingTouched && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) 
-		{
-			anims.SetCurrent("start");
-			
-			while (!dialogue.hasEnded)
-			{
-				anims.SetCurrent("talk");
-			}
-
-			if (dialogue.hasEnded)
-			{
-				anims.SetCurrent("end");
-			}
-
-		}
-
-		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hangman/sprite_hangedman_01.png");
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.png");
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
-
-		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
-		texW = 256;
-		texH = 640;
-
-		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
-
-
+	
 		if (pbody == nullptr) {
-			position.setX(xInicial);
-			position.setY(yInicial);
-			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
-				(int)position.getX(),
-				(int)position.getY(),
-				texW / 2,
-				texH / 2,
-				bodyType::DYNAMIC
-			);
-			b2Body_SetGravityScale(pbody->body, 0.0f);
-
-			pbody->listener = this;
-			pbody->ctype = ColliderType::MAGICIAN;
-
-
-
-
-		}
-
-		if (pbody != nullptr) {
-			pbody = nullptr;
 			position.setX(xInicial);
 			position.setY(yInicial);
 			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
@@ -2772,16 +2728,52 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			pbody->listener = this;
 			pbody->ctype = ColliderType::NPC;
-
-
-
-
 		}
 
 		return true;
-
 	}
+
 	bool Hermit::Update(float dt) {
+		if (!isGettingTouched) {
+			// Solo si no estaba ya en idle
+			if (currentAnimName != "idle") {
+				anims.SetCurrent("idle");
+				currentAnimName = "idle";
+			}
+		}
+		else {
+			// Si tocamos la E estando en idle, "start"
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && currentAnimName == "idle") {
+				anims.SetCurrent("start");
+				currentAnimName = "start";
+			}
+			// Si ya no estamos hablando, "end"
+			else if (currentAnimName == "talk" && !Engine::GetInstance().scene->someoneIsTalking) {
+				anims.SetCurrent("end");
+				currentAnimName = "end";
+			}
+
+			// Transiciones cuando terminan los fotogramas
+			if (currentAnimName == "start" && anims.HasFinished()) {
+				anims.SetCurrent("talk");
+				currentAnimName = "talk";
+			}
+			else if (currentAnimName == "end" && anims.HasFinished()) {
+				anims.SetCurrent("idle");
+				currentAnimName = "idle";
+			}
+		}
+
+		//draw
+		anims.Update(dt);
+		if (texture != nullptr) {
+			SDL_Rect rect = anims.GetCurrentFrame();
+			int drawX = (int)position.getX() - (texW / 2);
+			int drawY = (int)position.getY() - (texH / 2);
+			Engine::GetInstance().render->DrawTexture(texture, drawX, drawY, &rect);
+		}
+
+
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
@@ -2811,14 +2803,17 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 			//dialogo si le ha traido el primer objeto
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level1.hasEnded && level1.hasStarted && py!=nullptr && Engine::GetInstance().scene->springWater==true && Engine::GetInstance().scene->springWaterHermit == false) { //primer dialogo solo sale una vez
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level1.hasEnded && level1.hasStarted && py!=nullptr && py->inventario.tieneObjeto("SpringWater") && Engine::GetInstance().scene->springWaterHermit == false) { //primer dialogo solo sale una vez
 
 
 				if (level1.hasStarted) {
 
 					level1.NextDialogue();
 					level1.Draw(dt);
-					if (level1.hasEnded) { Engine::GetInstance().scene->springWaterHermit = true; }
+					if (level1.hasEnded) { 
+						Engine::GetInstance().scene->springWaterHermit = true;
+						py->inventario.eliminarObjeto("Spring");
+					}
 					return true;
 				}
 				level1.BeginDialogue();
@@ -2834,14 +2829,17 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 			}
 
 			//Dialogo si 2ndo objeto
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level2.hasEnded && level2.hasStarted && py != nullptr && Engine::GetInstance().scene->HorsekinManure == false && Engine::GetInstance().scene->HorsekinManureHermit == true) { //primer dialogo solo sale una vez
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level2.hasEnded && level2.hasStarted && py != nullptr && py->inventario.tieneObjeto("HorseskinManure") == false && Engine::GetInstance().scene->HorsekinManureHermit == true) { //primer dialogo solo sale una vez
 
 
 				if (level2.hasStarted) {
 
 					level2.NextDialogue();
 					level2.Draw(dt);
-					if (level2.hasEnded) { Engine::GetInstance().scene->HorsekinManureHermit = true; }
+					if (level2.hasEnded) {
+						Engine::GetInstance().scene->springWaterHermit = true;
+						py->inventario.eliminarObjeto("HorseskinManure");
+					}
 					return true;
 				}
 				level2.BeginDialogue();
@@ -2858,14 +2856,17 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			//Dialogo si tercer objeto
 
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level3.hasEnded && level3.hasStarted && py != nullptr && Engine::GetInstance().scene->Gargantuan == false && Engine::GetInstance().scene->GargantuanHermit == true) { //primer dialogo solo sale una vez
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !level3.hasEnded && level3.hasStarted && py != nullptr && py->inventario.tieneObjeto("Gargantuan") && Engine::GetInstance().scene->GargantuanHermit == true) { //primer dialogo solo sale una vez
 
 
 				if (level3.hasStarted) {
 
 					level3.NextDialogue();
 					level3.Draw(dt);
-					if (level3.hasEnded) { Engine::GetInstance().scene->GargantuanHermit = true; }
+					if (level3.hasEnded) { 
+						Engine::GetInstance().scene->GargantuanHermit = true;
+						py->inventario.eliminarObjeto("Gargantuan");
+					}
 					return true;
 				}
 				level3.BeginDialogue();

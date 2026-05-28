@@ -40,7 +40,7 @@ void Animation::Update(float dt) {
     if (frames_.empty())
         return;
 
-    timeInFrameMs_ += static_cast<int>(dt);
+    timeInFrameMs_ += static_cast<int>(dt) * speed_;
 
     while (timeInFrameMs_ >= frames_[currentIndex_].durationMs)
     {
@@ -270,4 +270,10 @@ void AnimationSet::ResetsReverse()
 {
     if (Has(currentName_))
         clips_[currentName_].ResetReverse();
+}
+
+void AnimationSet::SetSpeed(float s)
+{
+    if (clips_.count(currentName_))
+        clips_[currentName_].SetSpeed(s);
 }

@@ -41,6 +41,7 @@ public:
 	bool showHelp = true;
 	bool storeOn = false;
 	bool inventoryOn = false;
+	int currentInvPage = 0;
 	bool cardsInventoryOn = false;
 	int currentCardIndex = 0;
 	int totalUnlockedCards = 1;
@@ -159,6 +160,9 @@ private:
 	SDL_Texture* iconMap = nullptr;
 	SDL_Texture* iconKey = nullptr;
 	SDL_Texture* iconLamp = nullptr;
+	SDL_Texture* iconSpring = nullptr;
+	SDL_Texture* iconHorseMacure = nullptr;
+	SDL_Texture* iconGargantuan = nullptr;
 	SDL_Texture* inventoryBag = nullptr;
 	SDL_Texture* uiCoin = nullptr;
 

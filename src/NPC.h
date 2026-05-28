@@ -917,6 +917,7 @@ private:
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
+	std::string currentAnimName = "idle";
 
 	Dialogue notAdvanced;
 	Dialogue level1;

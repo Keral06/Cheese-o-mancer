@@ -89,6 +89,12 @@ void CheeseBall::OnCollision(PhysBody* physA, PhysBody* physB)
         toDelete = true;
         return;
     }
+    if (physB->ctype == ColliderType::PLATFORM && ismounted)
+    {
+       
+        firstjump = true;
+        return;
+    }
     if (physB->ctype == ColliderType::ENEMY)
     {
         Enemy* enemy = dynamic_cast<Enemy*>(physB->listener);

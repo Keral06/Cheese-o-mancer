@@ -59,6 +59,22 @@ bool Map::Update(float dt)
 {
     bool ret = true;
     if (mapLoaded) {
+        // actualizar temporizador animaciones
+        for (auto& tileset : mapData.tilesets) {
+            for (auto& animPair : tileset->animations) {
+                TileAnimation& anim = animPair.second;
+
+                // Sumamos el tiempo. NOTA: Si tu 'dt' está en segundos en vez de milisegundos, 
+                // usa 'anim.timer += (dt * 1000.0f);'
+                anim.timer += dt;
+
+                // Si superamos la duración del frame actual, pasamos al siguiente
+                if (anim.timer >= anim.frames[anim.currentFrame].duration) {
+                    anim.timer = 0.0f; // Reiniciamos el reloj
+                    anim.currentFrame = (anim.currentFrame + 1) % anim.frames.size(); // Bucle infinito
+                }
+            }
+        }
         // L07 TODO 5: Prepare the loop to draw all tiles in a layer + DrawTexture()
         // iterate all tiles in a layer
         for (const auto& group : mapData.objectgroups) {
@@ -177,33 +193,76 @@ bool Map::Load(std::string path, std::string fileName)//
         //Iterate the Tileset
         for(pugi::xml_node tilesetNode = mapFileXML.child("map").child("tileset"); tilesetNode!=NULL; tilesetNode = tilesetNode.next_sibling("tileset"))
 		{
-            //Load Tileset attributes
-			TileSet* tileSet = new TileSet();
-            tileSet->firstGid = tilesetNode.attribute("firstgid").as_int();
-            tileSet->name = tilesetNode.attribute("name").as_string();
-            tileSet->tileWidth = tilesetNode.attribute("tilewidth").as_int();
-            tileSet->tileHeight = tilesetNode.attribute("tileheight").as_int();
-            tileSet->spacing = tilesetNode.attribute("spacing").as_int();
-            tileSet->margin = tilesetNode.attribute("margin").as_int();
-            tileSet->tileCount = tilesetNode.attribute("tilecount").as_int();
-            tileSet->columns = tilesetNode.attribute("columns").as_int();
 
-			//Load the tileset image
-			std::string imgName = tilesetNode.child("image").attribute("source").as_string();
+            // 1. Miramos si es un TSX externo
+            std::string sourcePath = tilesetNode.attribute("source").as_string();
+            pugi::xml_node dataNode = tilesetNode; // Por defecto leemos los datos de aquí
+            pugi::xml_document tsxDoc;
 
-            if (imgName == "") {
-                imgName = tilesetNode.child("tile").child("image").attribute("source").as_string();
+            if (sourcePath != "") {
+                // Es un TSX. Lo abrimos para leer los datos reales.
+                std::string fullTsxPath = mapPath + sourcePath;
+                pugi::xml_parse_result result = tsxDoc.load_file(fullTsxPath.c_str());
+                if (result) {
+                    dataNode = tsxDoc.child("tileset"); // Cambiamos el nodo objetivo al del archivo externo
+                    LOG("TSX cargado correctamente: %s", fullTsxPath.c_str());
+                }
             }
 
-            // 2. SOLO cargamos si hay una imagen. Si no, lo dejamos en nullptr pero guardamos el Tileset
+            //Load Tileset attributes
+            TileSet* tileSet = new TileSet();
+            tileSet->firstGid = tilesetNode.attribute("firstgid").as_int();
+
+            tileSet->name = dataNode.attribute("name").as_string();
+            tileSet->tileWidth = dataNode.attribute("tilewidth").as_int();
+            tileSet->tileHeight = dataNode.attribute("tileheight").as_int();
+            tileSet->spacing = dataNode.attribute("spacing").as_int();
+            tileSet->margin = dataNode.attribute("margin").as_int();
+            tileSet->tileCount = dataNode.attribute("tilecount").as_int();
+            tileSet->columns = dataNode.attribute("columns").as_int(1);
+
+			//Load the tileset image
+            std::string imgName = dataNode.child("image").attribute("source").as_string();
+
+            if (imgName == "") {
+                imgName = dataNode.child("tile").child("image").attribute("source").as_string();
+            }
+
+            // 2. SOLO cargamos si hay una imagen.
             if (imgName != "") {
                 std::string fullPath = mapPath + imgName;
                 tileSet->texture = Engine::GetInstance().textures->Load(fullPath.c_str());
             }
             else {
-                tileSet->texture = nullptr; // Lo dejamos vacío para que no explote
+                tileSet->texture = nullptr;
             }
             LOG("Cargando imagen de tileset '%s'. Ruta completa: %s", tileSet->name.c_str(), (mapPath + imgName).c_str());
+
+            // Sprites animados - Iteramos usando dataNode
+            for (pugi::xml_node tileNode = dataNode.child("tile"); tileNode != NULL; tileNode = tileNode.next_sibling("tile")) {
+
+                // Comprobamos si este tile en concreto tiene una animación dentro
+                pugi::xml_node animNode = tileNode.child("animation");
+
+                if (animNode != NULL) {
+                    TileAnimation anim; // Tu struct de animación
+                    int localId = tileNode.attribute("id").as_int(); // El ID de este tile animado
+
+                    // Iteramos por todos los fotogramas (frames) de esta animación
+                    for (pugi::xml_node frameNode = animNode.child("frame"); frameNode != NULL; frameNode = frameNode.next_sibling("frame")) {
+                        TileFrame frame;
+                        frame.tileId = frameNode.attribute("tileid").as_int();
+                        frame.duration = frameNode.attribute("duration").as_int();
+
+                        anim.frames.push_back(frame);
+                    }
+
+                    // Guardamos la animación completa en el diccionario del tileset
+                    tileSet->animations[localId] = anim;
+                }
+            }
+
+
             mapData.tilesets.push_back(tileSet); // Esto tiene que estar SIEMPRE al final del bucle
 		}
 
@@ -889,6 +948,14 @@ MapLayer* Map::GetNavigationLayer() {
                             MILKY->Start();
                             MILKY->mapID = id;
                             }
+                        else if (entityType == "Hermit") {
+                            std::shared_ptr<Hermit> MILKY = std::dynamic_pointer_cast<Hermit>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HERMIT));
+                            MILKY->position = Vector2D(x, y);
+                            MILKY->xInicial = (int)x;
+                            MILKY->yInicial = (int)y;
+                            MILKY->Start();
+                            MILKY->mapID = id;
+                            }
                         else if (entityType == "Pics")
                         {
                             auto pics = std::dynamic_pointer_cast<Pics>(
@@ -978,12 +1045,33 @@ MapLayer* Map::GetNavigationLayer() {
 
             for (int i = 0; i < mapData.width; i++) {
                 for (int j = 0; j < mapData.height; j++) {
-                    int gid = mapLayer->Get(i, j);
+
+                    // --- EVITAR BUGS SI VOLTEAN TILES ---
+                    int rawGid = mapLayer->Get(i, j);
+                    int gid = rawGid & 0x1FFFFFFF;
+
                     if (gid != 0) {
                         TileSet* tileSet = GetTilesetFromTileId(gid);
                         if (tileSet != nullptr) {
+
+                            // --- 2. INTERCAMBIO DE GID ANIMADO ---
+                            int relativeId = gid - tileSet->firstGid;
+
+                            // Comprobamos si este tile tiene una animación guardada
+                            if (tileSet->animations.find(relativeId) != tileSet->animations.end()) {
+                                TileAnimation& anim = tileSet->animations[relativeId];
+                                int frameLocalId = anim.frames[anim.currentFrame].tileId;
+
+                                // Sobrescribimos el gid original por el gid del fotograma actual
+                                gid = tileSet->firstGid + frameLocalId;
+                            }
+
                             SDL_Rect tileRect = tileSet->GetRect(gid);
                             Vector2D mapCoord = MapToWorld(i, j);
+                            int drawY = (int)mapCoord.getY() + mapData.tileHeight - tileSet->tileHeight;
+
+                            // 2. Alineación X: Anclamos a la izquierda por defecto
+                            int drawX = (int)mapCoord.getX();
                             Engine::GetInstance().render->DrawTexture(tileSet->texture, (int)mapCoord.getX(), (int)mapCoord.getY(), &tileRect);
                         }
                     }

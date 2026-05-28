@@ -26,6 +26,7 @@ public:
     bool ismounted = false;
     bool launch = false;
     bool canSmash = false;
+    bool firstjump = true;
 private:
     
 
