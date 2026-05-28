@@ -3010,3 +3010,299 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	}
 
 	//Level 3 NPC
+
+	Hierophant::Hierophant() :NPC(EntityType::HERMIT) {
+
+
+
+		Dialogue paperDialogue("assets/Dialogues/Hierophant/Hierophant_Inital_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_Inital_Names.txt"); //Primer Diálogo
+		this->dialogue = paperDialogue;
+		Dialogue secondDialogue("assets/Dialogues/Hierophant/Hierophant_AllPsalms_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AllPsalms_Names.txt"); //Dialogo All psalms
+		this->level1 = secondDialogue;
+
+		Dialogue percent("assets/Dialogues/Hierophant/Hierophant_AfterInital_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AfterInital_Names.txt"); //Dialogo despues de segunda interaccion
+		this->notAdvanced = percent;
+		Dialogue lvll2("assets/Dialogues/Hierophant/Hierophant_AllPsalms_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AllPsalms_Names.txt"); //Whistleblower has read all psalms
+		this->level2 = lvll2;
+		Dialogue third("assets/Dialogues/Hierophant/Hierophant_BeforeBoss_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_BeforeBoss_Names.txt"); //Has not defeated 
+		this->level3 = third;
+
+		Dialogue hasAll("assets/Dialogues/Hierophant/Hierophant_AfterBoss_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AfterBoss_Names.txt"); //Has defeated
+		this->hasAll = hasAll;
+	
+	}
+
+	Hierophant::~Hierophant()
+	{
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+	}
+	bool Hierophant::Awake() {
+		return true;
+	}
+	bool Hierophant::Start() {
+
+		/*std::unordered_map<int, std::string> aliases = {
+				  {0, "idle"},{15, "start"}, {30, "talk"},{45, "end"}
+		};
+		anims.LoadFromTSX("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.tsx", aliases);
+		anims.SetCurrent("idle");
+
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.png");*/
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
+
+		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
+		texW = 128;
+		texH = 128;
+		pbody = nullptr;
+		if (pbody == nullptr) {
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+		}
+
+
+		return true;
+	}
+	void Hierophant::Draw(float dt) {
+		if (texture==nullptr) { return; }
+		anims.Update(dt);
+		const SDL_Rect& animFrame = anims.GetCurrentFrame();
+
+		int x, y;
+		pbody->GetPosition(x, y);
+		position.setX((float)x);
+		position.setY((float)y);
+
+
+		Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
+
+	}
+	bool Hierophant::Update(float dt) {
+		Draw(dt);
+		
+
+		//draw
+		anims.Update(dt);
+		if (texture != nullptr) {
+			SDL_Rect rect = anims.GetCurrentFrame();
+			int drawX = (int)position.getX() - (texW / 2);
+			int drawY = (int)position.getY() - (texH / 2);
+			Engine::GetInstance().render->DrawTexture(texture, drawX, drawY, &rect);
+		}
+
+		if (isGettingTouched) {
+		
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->talkedTiredPreacher == false) { //primer dialogo solo sale una vez
+
+
+				if (dialogue.hasStarted) {
+
+					dialogue.NextDialogue();
+					dialogue.Draw(dt);
+					if (dialogue.hasEnded) {
+
+						Engine::GetInstance().scene->talkedTiredPreacher = true;
+					}
+					return true;
+				}
+				dialogue.BeginDialogue();
+				dialogue.Draw(dt);
+
+
+				return true;
+			}
+			if (dialogue.hasStarted && !dialogue.hasEnded) {
+				dialogue.Draw(dt);
+				return true;
+
+			}
+
+			//se ha leido todos los psalmos
+
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasReadAllPsalms == true && Engine::GetInstance().scene->hasTalkedAboutPsalmsB4 == false) { //primer dialogo solo sale una vez
+
+
+				if (level1.hasStarted) {
+
+					level1.NextDialogue();
+					level1.Draw(dt);
+					if (level1.hasEnded) {
+
+						Engine::GetInstance().scene->hasTalkedAboutPsalmsB4 = true;
+					}
+					return true;
+				}
+				level1.BeginDialogue();
+				level1.Draw(dt);
+
+
+				return true;
+			}
+			if (level1.hasStarted && !level1.hasEnded) {
+				level1.Draw(dt);
+				return true;
+
+			}
+
+			//No se ha leido los psalmos
+
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasReadAllPsalms == false) { 
+
+
+				if (notAdvanced.hasStarted) {
+
+					notAdvanced.NextDialogue();
+					notAdvanced.Draw(dt);
+					if (notAdvanced.hasEnded) {
+
+						
+					}
+					return true;
+				}
+				notAdvanced.BeginDialogue();
+				notAdvanced.Draw(dt);
+
+
+				return true;
+			}
+			if (notAdvanced.hasStarted && !notAdvanced.hasEnded) {
+				notAdvanced.Draw(dt);
+				return true;
+
+			}
+		
+		
+		
+		
+		}
+
+		//WhistleBlower dialogue
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedAboutPsalmsB4 == true && Engine::GetInstance().scene->hasBeenWhistledblowed == false) {
+
+
+			if (level2.hasStarted) {
+
+				level2.NextDialogue();
+				level2.Draw(dt);
+				if (level2.hasEnded) {
+
+					Engine::GetInstance().scene->hasBeenWhistledblowed = true;
+				}
+				return true;
+			}
+			level2.BeginDialogue();
+			level2.Draw(dt);
+
+
+			return true;
+		}
+		if (level2.hasStarted && !level2.hasEnded) {
+			level2.Draw(dt);
+			return true;
+
+		}
+
+		//Has he been whistleblown and has the high prietest been defeates?
+
+		//NO
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasBeenWhistledblowed == true && Engine::GetInstance().scene->DefeatedHighPrietest == false) {
+
+
+			if (level3.hasStarted) {
+
+				level3.NextDialogue();
+				level3.Draw(dt);
+				if (level3.hasEnded) {
+
+					Engine::GetInstance().scene->hasBeenWhistledblowed = true;
+				}
+				return true;
+			}
+			level3.BeginDialogue();
+			level3.Draw(dt);
+
+
+			return true;
+		}
+		if (level3.hasStarted && !level3.hasEnded) {
+			level3.Draw(dt);
+			return true;
+
+		}
+
+		//SÍ
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasBeenWhistledblowed == true && Engine::GetInstance().scene->DefeatedHighPrietest == true) {
+
+
+			if (hasAll.hasStarted) {
+
+				hasAll.NextDialogue();
+				hasAll.Draw(dt);
+				if (hasAll.hasEnded) {
+
+					SDL_Texture* help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
+					Engine::GetInstance().scene->inventario.push("EmpressKey1", help, nullptr);
+				}
+				return true;
+			}
+			hasAll.BeginDialogue();
+			hasAll.Draw(dt);
+
+
+			return true;
+		}
+		if (hasAll.hasStarted && !hasAll.hasEnded) {
+			hasAll.Draw(dt);
+			return true;
+
+		}
+
+
+
+	
+
+
+		return true;
+	}
+	bool Hierophant::CleanUp() {
+		LOG("Unloading Hermit");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void Hierophant::OnCollision(PhysBody* physA, PhysBody* physB) {
+
+		Player* pp = static_cast<Player*>(physB->listener);
+		py = pp;
+		switch (physB->ctype)
+		{
+		case ColliderType::PLAYER:
+			isGettingTouched = true;
+
+			break;
+		}
+
+
+	}
+	void Hierophant::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+		isGettingTouched = false;
+
+
+
+	}
