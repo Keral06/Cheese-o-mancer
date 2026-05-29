@@ -807,6 +807,14 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                     cheeseFlag->Start();
                     cheeseFlag->mapID = id;
                 }
+                else if (entityType == "RatKing") {
+                    std::shared_ptr<RatKing> cheeseFlag = std::dynamic_pointer_cast<RatKing>(Engine::GetInstance().entityManager->CreateEntity(EntityType::TELEPORT));
+                    cheeseFlag->position = Vector2D(x, y);
+                    cheeseFlag->xInicial = (int)x;
+                    cheeseFlag->yInicial = (int)y;
+                    cheeseFlag->Start();
+                    cheeseFlag->mapID = id;
+                    }
                 else if (entityType == "interactball") {
                     std::shared_ptr<CheeseBallInteract> cheeseBallInteract = std::dynamic_pointer_cast<CheeseBallInteract>(Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEESEBALLINTERACT));
                     cheeseBallInteract->position = Vector2D(x, y);

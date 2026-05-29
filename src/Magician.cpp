@@ -120,7 +120,25 @@ bool Magician::Update(float dt) {
 	}
 
 	Draw(dt);
+	if (firstTime == true) {
+		if (!dialogueMagicianStart.hasStarted && Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN) {
+			dialogueMagicianStart.BeginDialogue();
+			SDL_Texture* TheFool;
+			TheFool = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Fool.png");
+			Engine::GetInstance().scene->TarotCards.push_back(TheFool);
+		}
+		else if (dialogueMagicianStart.hasStarted && !dialogueMagicianStart.hasEnded && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
+			dialogueMagicianStart.NextDialogue();
 
+			if (dialogueMagicianStart.hasEnded) {
+				firstTime = false;
+
+			}if (dialogueMagicianStart.hasStarted && !dialogueMagicianStart.hasEnded) {
+				dialogueMagicianStart.Draw(dt);
+				return true;
+			}
+		}
+	}
 	if (isGettingTouched) {
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 

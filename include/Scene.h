@@ -315,4 +315,10 @@ public:
 		bool hasTalkedOnceEmpress = false;
 		bool talkedTwiceEmpress = false;
 
+		//teleport bools
+
+		bool teleportUnlocked = false;
+		bool ratTalkedOnce = false;
+		bool ratmissionfinished = false;
+
 };

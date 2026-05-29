@@ -11,6 +11,7 @@ enum class EntityType
 	UNKNOWN,
 	ENEMY,
 	COIN,
+	TELEPORT,
 	ENEMYFLYING,
 	VERDUGO,
 	FIREBALL,

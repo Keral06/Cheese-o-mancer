@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="175" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="36" nextobjectid="423">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="175" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="36" nextobjectid="424">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -55346,13 +55346,16 @@
   <object id="359" name="DestructDoor" type="DestructDoor" x="22280" y="5920">
    <point/>
   </object>
-  <object id="415" name="Player" type="Player" x="14608" y="5376">
+  <object id="415" name="RatKing" type="RatKing" x="13948" y="7164">
    <point/>
   </object>
   <object id="418" name="Pics" type="Pics" x="14242.4" y="5942.42">
    <properties>
     <property name="WhoIs" value="Night"/>
    </properties>
+   <point/>
+  </object>
+  <object id="423" name="Player" type="Player" x="14592" y="5340">
    <point/>
   </object>
  </objectgroup>
