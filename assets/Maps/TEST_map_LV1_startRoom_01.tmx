@@ -123,7 +123,7 @@
    <property name="Draw" type="bool" value="true"/>
    <property name="Parallax" type="float" value="0.2"/>
   </properties>
-  <object id="413" gid="816" x="2220.84" y="2927.77" width="3537.18" height="1934.57"/>
+  <object id="413" gid="816" x="100.844" y="3959.77" width="7809.18" height="4886.57"/>
  </objectgroup>
  <objectgroup id="34" name="w"/>
  <objectgroup id="23" name="Jails" parallaxx="0.4">
@@ -132,8 +132,8 @@
    <property name="Draw" type="bool" value="true"/>
    <property name="Parallax" type="float" value="0.3"/>
   </properties>
-  <object id="355" gid="817" x="897.186" y="1762" width="4600.83" height="2052"/>
-  <object id="417" gid="817" x="4036" y="5086" width="6392" height="3452"/>
+  <object id="355" gid="817" x="-814.814" y="1898" width="3960.83" height="1732"/>
+  <object id="417" gid="817" x="-1804" y="3654" width="5848" height="2980"/>
  </objectgroup>
  <layer id="32" name="Jailbars background" width="175" height="63">
   <data>

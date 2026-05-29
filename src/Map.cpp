@@ -79,9 +79,10 @@ bool Map::Update(float dt)
 
         // L07 TODO 5: Prepare the loop to draw all tiles in a layer + DrawTexture()
         // iterate all tiles in a layer
-// 1. PRIMERO DIBUJAMOS LOS TILES (FONDO)
-// 1. PRIMERA PASADA: OBJETOS DE FONDO (Background == true)
+
+        // 1 OBJETOS DE FONDO (Background == true)
         for (const auto& group : mapData.objectgroups) {
+
             auto drawProp = group->properties.GetProperty("Draw");
             auto bgProp = group->properties.GetProperty("Background");
 
@@ -95,14 +96,14 @@ bool Map::Update(float dt)
             }
         }
 
-        // 2. SEGUNDA PASADA: LOS TILES (El suelo y las paredes)
+        // 2 LOS TILES (El suelo y las paredes)
         for (const auto& mapLayer : mapData.layers) {
             if (mapLayer->properties.GetProperty("Draw") != NULL && mapLayer->properties.GetProperty("Draw")->value == true) {
                 DrawLayer(mapLayer->name);
             }
         }
 
-        // 3. TERCERA PASADA: OBJETOS FRONTALES (Background == false o no existe)
+        // 3 OBJETOS FRONTALES (Background == false o no existe)
         for (const auto& group : mapData.objectgroups) {
             auto drawProp = group->properties.GetProperty("Draw");
             auto bgProp = group->properties.GetProperty("Background");
@@ -294,33 +295,6 @@ bool Map::Load(std::string path, std::string fileName)//
 
         // L07: TODO 3: Iterate all layers in the TMX and load each of them (incluyendo grupos anidados)
         ParseLayersRecursive(mapFileXML.child("map"));
-
-
-        //for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
-
-        //    ObjectGroup* objectGroup = new ObjectGroup();
-        //    objectGroup->id = objectGroupNode.attribute("id").as_int();
-        //    objectGroup->name = objectGroupNode.attribute("name").as_string();
-        //    LoadProperties(objectGroupNode, objectGroup->properties);
-
-        //    // Itera sobre todos los objetos y asigna los valores en el array de datos
-        //    for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
-        //        ObjectGroup::Object* object = new ObjectGroup::Object();
-        //        object->id = objectNode.attribute("id").as_int();
-        //        object->name = objectNode.attribute("name").as_string();
-        //        object->x = objectNode.attribute("x").as_int();
-        //        object->y = objectNode.attribute("y").as_int();
-        //        object->width = objectNode.attribute("width").as_int();
-        //        object->height = objectNode.attribute("height").as_int();
-        //        object->gid = objectNode.attribute("gid").as_int(0);
-        //        LoadProperties(objectNode, object->properties);
-
-        //        objectGroup->objects.push_back(object);
-
-        //    }
-
-        //    mapData.objectgroups.push_back(objectGroup);
-        //}
 
         ParseObjectGroupsRecursive(mapFileXML.child("map"));
 
