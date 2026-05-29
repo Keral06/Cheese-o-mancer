@@ -808,13 +808,21 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                     cheeseFlag->mapID = id;
                 }
                 else if (entityType == "RatKing") {
-                    std::shared_ptr<RatKing> cheeseFlag = std::dynamic_pointer_cast<RatKing>(Engine::GetInstance().entityManager->CreateEntity(EntityType::TELEPORT));
-                    cheeseFlag->position = Vector2D(x, y);
-                    cheeseFlag->xInicial = (int)x;
-                    cheeseFlag->yInicial = (int)y;
-                    cheeseFlag->Start();
-                    cheeseFlag->mapID = id;
+                    Properties ratProps;
+                    LoadProperties(objectNode, ratProps);
+                    auto levelProp = ratProps.GetProperty("Level");
+                    int ratLevel = levelProp ? levelProp->valueInt : 1;
+                    LOG("RATRKING FOUND! ratLevel=%d, whereIsRat=%d", ratLevel, Engine::GetInstance().scene->whereIsRat);
+                    if (ratLevel == Engine::GetInstance().scene->whereIsRat) {
+                        LOG("CREATING RATKING!");
+                        std::shared_ptr<RatKing> ratking = std::dynamic_pointer_cast<RatKing>(Engine::GetInstance().entityManager->CreateEntity(EntityType::TELEPORT));
+                        ratking->position = Vector2D(x, y);
+                        ratking->xInicial = (int)x;
+                        ratking->yInicial = (int)y;
+                        ratking->Start();
+                        ratking->mapID = id;
                     }
+                }
                 else if (entityType == "interactball") {
                     std::shared_ptr<CheeseBallInteract> cheeseBallInteract = std::dynamic_pointer_cast<CheeseBallInteract>(Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEESEBALLINTERACT));
                     cheeseBallInteract->position = Vector2D(x, y);

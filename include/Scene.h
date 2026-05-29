@@ -181,9 +181,12 @@ private:
 	SDL_Texture* arrowRight = nullptr;
 	SDL_Texture* arrowLeft = nullptr;
 
+	//Texturas
+
 	void UpdatePauseMenu(float dt);
 	void HandleStoreUIEvents(UIElement* uiElement);
 
+public:
 	//Funciones para el teletransporte
 	void CreateTeleportUI();
 	void SetTeleport(bool teleport);
@@ -322,10 +325,11 @@ public:
 		bool hasTalkedOnceEmpress = false;
 		bool talkedTwiceEmpress = false;
 
-		//teleport bools
+		//teleport variables
 
 		bool teleportUnlocked = false;
 		bool ratTalkedOnce = false;
 		bool ratmissionfinished = false;
+		int whereIsRat = 1;
 
 };

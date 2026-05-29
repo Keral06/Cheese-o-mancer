@@ -4501,16 +4501,13 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 					teleport.NextDialogue();
 					teleport.Draw(dt);
 					if (teleport.hasEnded) {
-
-
-						//teleport logic
-
+						// Abrir el menú de teletransporte después del diálogo
+						Engine::GetInstance().scene->SetTeleport(true);
 					}
 					return true;
 				}
 				teleport.BeginDialogue();
 				teleport.Draw(dt);
-
 
 				return true;
 			}

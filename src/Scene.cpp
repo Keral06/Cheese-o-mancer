@@ -2024,8 +2024,8 @@ void Scene::CreateTeleportUI() {
 	);
 	btnExit->visible = false;
 
-	// Cargar textura de fondo (opcional)
-	teleportBg = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Background.png");
+	// Ejemplo para textura, no he probado asi que no se si funciona.
+	// teleportBg = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Background.png");
 }
 
 
@@ -2039,42 +2039,65 @@ void Scene::SetTeleport(bool teleport) {
 	}
 
 	if (!teleportOn) {
-		selectedTeleportingLevel = 0;  // ← Variable correcta
+		selectedTeleportingLevel = 0;
 	}
 }
 
 void Scene::HandleTeleportUIEvents(UIElement* uiElement) {
-	switch (uiElement->id) {
+	int targetLevel = 0;
+	std::string targetMap;
+
+	switch (uiElement->id) { // CAMBIAR targetMap por el mapa donde esté el object KingRat final con la propiedad int Level = targetLevel para cada caso
 	case 60:  // LEVEL 1
-		selectedTeleportingLevel = 1;  // ← Variable correcta
-		LoadMap("TEST_map_LV1_startRoom_01.tmx");
-		SetTeleport(false);
+		targetLevel = 1;
+		targetMap = "TEST_map_LV1_startRoom_01.tmx";
 		break;
 
 	case 61:  // LEVEL 2
-		selectedTeleportingLevel = 2;  // ← Variable correcta
-		LoadMap("Map_LV2_bossTower.tmx");
-		SetTeleport(false);
+		targetLevel = 2;
+		targetMap = "Map_LV2_bossTower.tmx";
 		break;
 
 	case 62:  // LEVEL 3
-		selectedTeleportingLevel = 3;  // ← Variable correcta
-		LoadMap("Map_LV3_left_01.tmx");
-		SetTeleport(false);
+		targetLevel = 3;
+		targetMap = "Map_LV3_left_01.tmx";
 		break;
 
 	case 63:  // LEVEL 4
-		selectedTeleportingLevel = 4;  // ← Variable correcta
-		LoadMap("Map_LV3_temple_01.tmx");
-		SetTeleport(false);
+		targetLevel = 4;
+		targetMap = "Map_LV3_temple_01.tmx";
 		break;
 
 	case 64:  // EXIT
 		SetTeleport(false);
-		break;
-	}
-}
+		return;
 
+	default:
+		return;
+	}
+
+	// Cargar el mapa
+	whereIsRat = targetLevel;
+	LoadMap(targetMap);
+
+	// Buscar el objeto RatKing con la propiedad Level = targetLevel
+	auto ratKingSpawn = Engine::GetInstance().map->GetObjectByProperty("Entities", "Level", std::to_string(targetLevel));
+
+	// Si encuentra el objeto, posicionar el jugador ahí
+	if (ratKingSpawn != nullptr && player) {
+		Vector2D spawnPos(ratKingSpawn->x, ratKingSpawn->y);
+		player->SetPosition(spawnPos);
+		player->pbody->SetPosition((int)spawnPos.getX(), (int)spawnPos.getY());
+		player->respawnPosition = { PIXEL_TO_METERS(spawnPos.getX()), PIXEL_TO_METERS(spawnPos.getY()) };
+		LOG("Jugador teletransportado a Level %d en posición (%.0f, %.0f)", targetLevel, spawnPos.getX(), spawnPos.getY());
+	}
+	else {
+		LOG("ADVERTENCIA: No se encontró objeto RatKing con Level = %d", targetLevel);
+	}
+
+	selectedTeleportingLevel = targetLevel;
+	SetTeleport(false);
+}
 
 // EL MAIN DE LAS PARTICULAS SEGUN EL TUTO LOL
 
