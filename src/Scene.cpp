@@ -1,4 +1,4 @@
-#include "Engine.h"
+Ôªø#include "Engine.h"
 #include "Input.h"
 #include "Textures.h"
 #include "Audio.h"
@@ -326,13 +326,19 @@ void Scene::LoadGame()
 bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 {
 	if (uiElement->id == 45) {
-		cardsInventoryOn = !cardsInventoryOn; 
+		cardsInventoryOn = !cardsInventoryOn;
 		for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
 			if (element->id == 46 || element->id == 47) {
 				element->visible = cardsInventoryOn;
 			}
 		}
 		return true;
+	}
+
+	if ((uiElement->id >= 60 && uiElement->id <= 64)) {
+		HandleTeleportUIEvents(uiElement);
+		return true;
+	
 	}
 	if (uiElement->id == 46) { 
 		currentCardIndex++;
@@ -418,7 +424,13 @@ void Scene::LoadScene(SceneID newScene)
 		break;
 
 	case SceneID::IN_GAME:
-		if (continueGame) {
+		if (lastscene != SceneID::IN_GAME)
+		{
+			firstMapLoad = true;
+		}
+
+		if (continueGame)
+		{
 			std::ifstream file("Assets/savegame.txt");
 			std::string savedMap = "TEST_map_LV1_startRoom_01.tmx"; 
 			if (file.is_open()) {
@@ -500,7 +512,7 @@ void Scene::LoadMainMenu() {
 	introTexture = Engine::GetInstance().textures->Load("assets/UI/MainMenu/UI_Start_Background_01.png");
 	// Instantiate a UIButton in the Scene
 	
-	//BotÛn START
+	//Bot√≥n START
 	SDL_Rect btPos = { 520, 370, 200, 50 };
 	SDL_Texture* buttonStartPressed;
 	SDL_Texture* buttonStartNormal;
@@ -509,7 +521,7 @@ void Scene::LoadMainMenu() {
 	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "START", btPos, this, SDL_Rect{0,0,0,0}, buttonStartNormal, buttonStartPressed);
 
 	
-	////BotÛn CONTINUE
+	////Bot√≥n CONTINUE
 	
 	SDL_Rect continuePos = { 520, 420, 200, 50 };
 	SDL_Texture* buttonContinuePressed;
@@ -519,7 +531,7 @@ void Scene::LoadMainMenu() {
 	
 	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "CONTINUE", continuePos, this, SDL_Rect{0,0,0,0}, buttonContinueNormal, buttonContinuePressed);
 
-	// BotÛn OPTIONS
+	// Bot√≥n OPTIONS
 	SDL_Rect optionsBtnRect = { 520, 470, 200, 50 };
 	SDL_Texture* buttonOptionsPressed;
 	SDL_Texture* buttonOptionsNormal;
@@ -552,7 +564,7 @@ void Scene::LoadMainMenu() {
 	auto fullscreen = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::CHECKBOX, 12, "FULL SCREEN", Fullscreen, this, SDL_Rect{0,0,0,0}, buttonPressed, buttonNormal);
 	if (fullscreen) fullscreen->visible = false;
 
-	// BotÛn BACK 
+	// Bot√≥n BACK 
 	SDL_Texture* buttonBackPressed;
 	SDL_Texture* buttonBackNormal;
 	buttonBackPressed = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextBackPressed_01.png");
@@ -561,7 +573,7 @@ void Scene::LoadMainMenu() {
 	auto backBtn = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, "BACK", backBtnRect, this, SDL_Rect{0,0,0,0}, buttonBackNormal,buttonBackPressed);
 	if (backBtn) backBtn->visible = false; 
 
-	//BotÛn EXIT
+	//Bot√≥n EXIT
 	SDL_Texture* buttonExitPressed;
 	SDL_Texture* buttonExitNormal;
 	buttonExitPressed = Engine::GetInstance().textures->Load("assets/UI/MainMenu/UI_Start_ButtonExitPressed_01.png");
@@ -569,11 +581,11 @@ void Scene::LoadMainMenu() {
 	SDL_Rect exitPosRect = { 520, 560, 200, 50 };
 	auto exitPos = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "EXIT", exitPosRect, this, SDL_Rect{0,0,0,0}, buttonExitNormal, buttonExitPressed);
 
-	////BotÛn CREDITS
+	////Bot√≥n CREDITS
 	//SDL_Rect creditsPosRect = { 520, 490, 200, 50 };
 	//auto creditsPos = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "CREDITS", creditsPosRect, this);
 
-	////BotÛn BACK CREDITS
+	////Bot√≥n BACK CREDITS
 	//SDL_Rect backCreditPosRect = { 520, 560, 200, 50 };
 	//auto backCreditsBtn = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, "BACK", backCreditPosRect, this);
 	//if (backCreditsBtn) backCreditsBtn->visible = false;
@@ -707,7 +719,7 @@ void Scene::UpdateLevel(float dt) {
 	}
 	
 
-	// LÛgica de Ayuda (H)
+	// L√≥gica de Ayuda (H)
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
 	{
 		showHelp = !showHelp;
@@ -773,7 +785,7 @@ void Scene::UpdateLevel(float dt) {
 		return;
 	}
 
-	//LÛgica de cambio de mapa (F1-F4)
+	//L√≥gica de cambio de mapa (F1-F4)
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
 		LoadMap("TEST_map_LV1_startRoom_01.tmx"); 
 	}
@@ -806,7 +818,7 @@ void Scene::UpdateLevel(float dt) {
 	}
 
 
-	// LÛgica de Checkpoints (Teclas 1-9)
+	// L√≥gica de Checkpoints (Teclas 1-9)
 	for (int i = 0; i < 9; ++i) {
 		if (Engine::GetInstance().input->GetKey((SDL_Scancode)(SDL_SCANCODE_1 + i)) == KEY_DOWN) {
 			if (i < Engine::GetInstance().map->checkpoints.size()) {
@@ -825,7 +837,7 @@ void Scene::UpdateLevel(float dt) {
 		}
 	}
 
-	// LÛgica de gestiÛn de enemigos muertos
+	// L√≥gica de gesti√≥n de enemigos muertos
 	if (player && player->isDead()) {
 		for (auto it = enemies.begin(); it != enemies.end(); ) {
 			if ((*it)->toDelete) { // si se tiene que borrar la destruye
@@ -836,6 +848,11 @@ void Scene::UpdateLevel(float dt) {
 				++it;
 			}*/
 		}
+	}
+
+	//DEBUG TELEPORT
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN && !inventoryOn) {
+		SetTeleport(!teleportOn);
 	}
 	
 }
@@ -1407,14 +1424,14 @@ void Scene::LoadMap(std::string map)
 		Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/level2music.wav");
 	}
 	
-
 	isPaused = false;
 	CreatePauseUI();
+	CreateTeleportUI();
 	if (map.find("LV2") != std::string::npos) {
-		CreateStoreLevel2(); 
+		CreateStoreLevel2();
 	}
 	else {
-		CreateStoreLevel1(); 
+		CreateStoreLevel1();
 	}
 	CreateInventoryUI();
 	helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_TutorialControls.png");
@@ -1431,11 +1448,21 @@ void Scene::LoadMap(std::string map)
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, enemies);
+
+	if (firstMapLoad)
+	{
+		showHelp = true;
+		firstMapLoad = false;
+	}
+	else
+	{
+		showHelp = false;
+	}
+
 	if (continueGame == false) {
 
 		levelTimer = 0.0f;
 		Player::score = 0;
-		showHelp = true;
 		showMap = false;
 		inventoryOn = false;
 		//firstDoor = true;       
@@ -1461,10 +1488,11 @@ void Scene::LoadMap(std::string map)
 		}*/
 	}
 	else {
-		showHelp = false;
+		//showHelp = false;
 		showMap = false;
 		inventoryOn = false;
 	}
+
 }
 
 // *********************************************
@@ -1939,9 +1967,113 @@ void Scene::SetInventory(bool inventory) {
 	}
 }
 
+void Scene::CreateTeleportUI() {
+	int x = 450;
+	int y = 200;
+	int buttonWidth = 250;
+	int buttonHeight = 60;
+	int spacing = 80;
+
+	// LEVEL 1
+	SDL_Texture* levelNormal = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level1_Normal.png");
+	SDL_Texture* levelClicked = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level1_Clicked.png");
+	auto btnLevel1 = Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 60, "LEVEL 1",
+		{ x, y, buttonWidth, buttonHeight },
+		this, SDL_Rect{ 0,0,0,0 }, levelNormal, levelClicked
+	);
+	btnLevel1->visible = false;
+
+	// LEVEL 2
+	levelNormal = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level2_Normal.png");
+	levelClicked = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level2_Clicked.png");
+	auto btnLevel2 = Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 61, "LEVEL 2",
+		{ x, y + spacing, buttonWidth, buttonHeight },
+		this, SDL_Rect{ 0,0,0,0 }, levelNormal, levelClicked
+	);
+	btnLevel2->visible = false;
+
+	// LEVEL 3
+	levelNormal = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level3_Normal.png");
+	levelClicked = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level3_Clicked.png");
+	auto btnLevel3 = Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 62, "LEVEL 3",
+		{ x, y + (spacing * 2), buttonWidth, buttonHeight },
+		this, SDL_Rect{ 0,0,0,0 }, levelNormal, levelClicked
+	);
+	btnLevel3->visible = false;
+
+	// LEVEL 4
+	levelNormal = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level4_Normal.png");
+	levelClicked = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level4_Clicked.png");
+	auto btnLevel4 = Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 63, "LEVEL 4",
+		{ x, y + (spacing * 3), buttonWidth, buttonHeight },
+		this, SDL_Rect{ 0,0,0,0 }, levelNormal, levelClicked
+	);
+	btnLevel4->visible = false;
+
+	// EXIT
+	SDL_Texture* exitNormal = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Exit_Normal.png");
+	SDL_Texture* exitClicked = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Exit_Clicked.png");
+	auto btnExit = Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 64, "EXIT",
+		{ x, y + (spacing * 4), buttonWidth, buttonHeight },
+		this, SDL_Rect{ 0,0,0,0 }, exitNormal, exitClicked
+	);
+	btnExit->visible = false;
+
+	// Cargar textura de fondo (opcional)
+	teleportBg = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Background.png");
+}
 
 
+void Scene::SetTeleport(bool teleport) {
+	teleportOn = teleport;
 
+	for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
+		if (element->id >= 60 && element->id <= 64) {
+			element->visible = teleportOn;
+		}
+	}
+
+	if (!teleportOn) {
+		selectedTeleportingLevel = 0;  // ‚Üê Variable correcta
+	}
+}
+
+void Scene::HandleTeleportUIEvents(UIElement* uiElement) {
+	switch (uiElement->id) {
+	case 60:  // LEVEL 1
+		selectedTeleportingLevel = 1;  // ‚Üê Variable correcta
+		LoadMap("TEST_map_LV1_startRoom_01.tmx");
+		SetTeleport(false);
+		break;
+
+	case 61:  // LEVEL 2
+		selectedTeleportingLevel = 2;  // ‚Üê Variable correcta
+		LoadMap("Map_LV2_bossTower.tmx");
+		SetTeleport(false);
+		break;
+
+	case 62:  // LEVEL 3
+		selectedTeleportingLevel = 3;  // ‚Üê Variable correcta
+		LoadMap("Map_LV3_left_01.tmx");
+		SetTeleport(false);
+		break;
+
+	case 63:  // LEVEL 4
+		selectedTeleportingLevel = 4;  // ‚Üê Variable correcta
+		LoadMap("Map_LV3_temple_01.tmx");
+		SetTeleport(false);
+		break;
+
+	case 64:  // EXIT
+		SetTeleport(false);
+		break;
+	}
+}
 
 
 // EL MAIN DE LAS PARTICULAS SEGUN EL TUTO LOL

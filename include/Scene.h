@@ -42,6 +42,7 @@ public:
 	int savedLevel = 1;
 	bool isPaused = false;
 	bool showHelp = true;
+	bool firstMapLoad = true;
 	bool storeOn = false;
 	bool inventoryOn = false;
 	int currentInvPage = 0;
@@ -49,6 +50,9 @@ public:
 	int currentCardIndex = 0;
 	int totalUnlockedCards = 1;
 	bool showUIDebug = false;
+	bool teleportOn = false;
+	int selectedTeleportingLevel = 0;
+	SDL_Texture* teleportBg = nullptr;
 	Scene();
 
 	// Destructor
@@ -154,7 +158,6 @@ private:
 	void CreateStoreLevel1();
 	void CreateStoreLevel2();
 
-
 	//Funciones para el inventario
 	void CreateInventoryUI();
 
@@ -181,6 +184,10 @@ private:
 	void UpdatePauseMenu(float dt);
 	void HandleStoreUIEvents(UIElement* uiElement);
 
+	//Funciones para el teletransporte
+	void CreateTeleportUI();
+	void SetTeleport(bool teleport);
+	void HandleTeleportUIEvents(UIElement* uiElement);
 	
 private:
 
