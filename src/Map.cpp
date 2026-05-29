@@ -75,32 +75,47 @@ bool Map::Update(float dt)
                 }
             }
         }
+
+
         // L07 TODO 5: Prepare the loop to draw all tiles in a layer + DrawTexture()
         // iterate all tiles in a layer
+// 1. PRIMERO DIBUJAMOS LOS TILES (FONDO)
+// 1. PRIMERA PASADA: OBJETOS DE FONDO (Background == true)
         for (const auto& group : mapData.objectgroups) {
-
             auto drawProp = group->properties.GetProperty("Draw");
+            auto bgProp = group->properties.GetProperty("Background");
 
-            if (drawProp && drawProp->value == true) {
-
+            // Solo dibuja si tiene la propiedad Background y está activada
+            if (drawProp && drawProp->value == true && bgProp != NULL && bgProp->value == true) {
                 float parallax = 1.0f;
                 auto parallaxProp = group->properties.GetProperty("Parallax");
-
-                if (parallaxProp) {
-                    parallax = parallaxProp->valueFloat;
-                }
+                if (parallaxProp) parallax = parallaxProp->valueFloat;
 
                 DrawObjectLayerParallax(group->name, parallax);
             }
         }
+
+        // 2. SEGUNDA PASADA: LOS TILES (El suelo y las paredes)
         for (const auto& mapLayer : mapData.layers) {
-            
             if (mapLayer->properties.GetProperty("Draw") != NULL && mapLayer->properties.GetProperty("Draw")->value == true) {
-                
                 DrawLayer(mapLayer->name);
             }
         }
-        
+
+        // 3. TERCERA PASADA: OBJETOS FRONTALES (Background == false o no existe)
+        for (const auto& group : mapData.objectgroups) {
+            auto drawProp = group->properties.GetProperty("Draw");
+            auto bgProp = group->properties.GetProperty("Background");
+
+            // Solo dibuja si NO tiene la propiedad Background, o si la tiene pero es falsa
+            if (drawProp && drawProp->value == true && (bgProp == NULL || bgProp->value == false)) {
+                float parallax = 1.0f;
+                auto parallaxProp = group->properties.GetProperty("Parallax");
+                if (parallaxProp) parallax = parallaxProp->valueFloat;
+
+                DrawObjectLayerParallax(group->name, parallax);
+            }
+        }
     }
 
     // DRAW PARTÍCULAS
@@ -281,31 +296,34 @@ bool Map::Load(std::string path, std::string fileName)//
         ParseLayersRecursive(mapFileXML.child("map"));
 
 
-        for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
+        //for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
 
-            ObjectGroup* objectGroup = new ObjectGroup();
-            objectGroup->id = objectGroupNode.attribute("id").as_int();
-            objectGroup->name = objectGroupNode.attribute("name").as_string();
-            LoadProperties(objectGroupNode, objectGroup->properties);
+        //    ObjectGroup* objectGroup = new ObjectGroup();
+        //    objectGroup->id = objectGroupNode.attribute("id").as_int();
+        //    objectGroup->name = objectGroupNode.attribute("name").as_string();
+        //    LoadProperties(objectGroupNode, objectGroup->properties);
 
-            // Itera sobre todos los objetos y asigna los valores en el array de datos
-            for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
-                ObjectGroup::Object* object = new ObjectGroup::Object();
-                object->id = objectNode.attribute("id").as_int();
-                object->name = objectNode.attribute("name").as_string();
-                object->x = objectNode.attribute("x").as_int();
-                object->y = objectNode.attribute("y").as_int();
-                object->width = objectNode.attribute("width").as_int();
-                object->height = objectNode.attribute("height").as_int();
-                object->gid = objectNode.attribute("gid").as_int(0);
-                LoadProperties(objectNode, object->properties);
+        //    // Itera sobre todos los objetos y asigna los valores en el array de datos
+        //    for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
+        //        ObjectGroup::Object* object = new ObjectGroup::Object();
+        //        object->id = objectNode.attribute("id").as_int();
+        //        object->name = objectNode.attribute("name").as_string();
+        //        object->x = objectNode.attribute("x").as_int();
+        //        object->y = objectNode.attribute("y").as_int();
+        //        object->width = objectNode.attribute("width").as_int();
+        //        object->height = objectNode.attribute("height").as_int();
+        //        object->gid = objectNode.attribute("gid").as_int(0);
+        //        LoadProperties(objectNode, object->properties);
 
-                objectGroup->objects.push_back(object);
+        //        objectGroup->objects.push_back(object);
 
-            }
+        //    }
 
-            mapData.objectgroups.push_back(objectGroup);
-        }
+        //    mapData.objectgroups.push_back(objectGroup);
+        //}
+
+        ParseObjectGroupsRecursive(mapFileXML.child("map"));
+
         checkpoints.clear();
             
 
@@ -1095,7 +1113,7 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
             for (int i = 0; i < mapData.width; i++) {
                 for (int j = 0; j < mapData.height; j++) {
 
-                    // --- EVITAR BUGS SI VOLTEAN TILES ---
+                    // evitar bugs si voltean tiles
                     int rawGid = mapLayer->Get(i, j);
                     int gid = rawGid & 0x1FFFFFFF;
 
@@ -1103,10 +1121,9 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
                         TileSet* tileSet = GetTilesetFromTileId(gid);
                         if (tileSet != nullptr) {
 
-                            // --- 2. INTERCAMBIO DE GID ANIMADO ---
                             int relativeId = gid - tileSet->firstGid;
 
-                            // Comprobamos si este tile tiene una animación guardada
+                            // Comprobamos si este tile tiene una animacion guardada
                             if (tileSet->animations.find(relativeId) != tileSet->animations.end()) {
                                 TileAnimation& anim = tileSet->animations[relativeId];
                                 int frameLocalId = anim.frames[anim.currentFrame].tileId;
@@ -1117,11 +1134,19 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
 
                             SDL_Rect tileRect = tileSet->GetRect(gid);
                             Vector2D mapCoord = MapToWorld(i, j);
+
+                            // Calculamos la posicion exacta (Y ajustado por si el tile es mas alto)
+                            int drawX = (int)mapCoord.getX();
                             int drawY = (int)mapCoord.getY() + mapData.tileHeight - tileSet->tileHeight;
 
-                            // 2. Alineación X: Anclamos a la izquierda por defecto
-                            int drawX = (int)mapCoord.getX();
-                            Engine::GetInstance().render->DrawTexture(tileSet->texture, (int)mapCoord.getX(), (int)mapCoord.getY(), &tileRect);
+                            // Le pasamos mapLayer->parallaxX como 5º parametro (speed)
+                            Engine::GetInstance().render->DrawTexture(
+                                tileSet->texture,
+                                drawX,
+                                drawY,
+                                &tileRect,
+                                mapLayer->parallaxX
+                            );
                         }
                     }
                 }
@@ -1255,31 +1280,34 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
         }
     }
 
-void Map::ParseLayersRecursive(pugi::xml_node parentNode)
-{
-    for (pugi::xml_node node = parentNode.first_child(); node; node = node.next_sibling()) {
-        std::string nodeName = node.name();
-        
-        if (nodeName == "layer") {
-            MapLayer* mapLayer = new MapLayer();
-            mapLayer->id = node.attribute("id").as_int();
-            mapLayer->name = node.attribute("name").as_string();
-            mapLayer->width = node.attribute("width").as_int();
-            mapLayer->height = node.attribute("height").as_int();
+    void Map::ParseLayersRecursive(pugi::xml_node parentNode)
+    {
+        for (pugi::xml_node node = parentNode.first_child(); node; node = node.next_sibling()) {
+            std::string nodeName = node.name();
 
-            LoadProperties(node, mapLayer->properties);
+            if (nodeName == "layer") {
+                MapLayer* mapLayer = new MapLayer();
+                mapLayer->id = node.attribute("id").as_int();
+                mapLayer->name = node.attribute("name").as_string();
+                mapLayer->width = node.attribute("width").as_int();
+                mapLayer->height = node.attribute("height").as_int();
 
-            for (pugi::xml_node tileNode = node.child("data").child("tile"); tileNode != NULL; tileNode = tileNode.next_sibling("tile")) {
-                mapLayer->tiles.push_back(tileNode.attribute("gid").as_int());
+                mapLayer->parallaxX = node.attribute("parallaxx").as_float(1.0f);
+                mapLayer->parallaxY = node.attribute("parallaxy").as_float(1.0f);
+
+                LoadProperties(node, mapLayer->properties);
+
+                for (pugi::xml_node tileNode = node.child("data").child("tile"); tileNode != NULL; tileNode = tileNode.next_sibling("tile")) {
+                    mapLayer->tiles.push_back(tileNode.attribute("gid").as_int());
+                }
+
+                mapData.layers.push_back(mapLayer);
             }
-
-            mapData.layers.push_back(mapLayer);
-        }
-        else if (nodeName == "group") {
-            ParseLayersRecursive(node);
+            else if (nodeName == "group") {
+                ParseLayersRecursive(node);
+            }
         }
     }
-}
 
 void Map::ParseObjectGroupsRecursive(pugi::xml_node parentNode)
 {

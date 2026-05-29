@@ -119,14 +119,16 @@
  <objectgroup id="13" name="fons"/>
  <objectgroup id="24" name="BG Parallax" parallaxx="0.1" parallaxy="0.1">
   <properties>
+   <property name="Background" type="bool" value="true"/>
    <property name="Draw" type="bool" value="true"/>
    <property name="Parallax" type="float" value="0.2"/>
   </properties>
-  <object id="413" gid="816" x="140.844" y="1359.77" width="3537.18" height="1934.57"/>
+  <object id="413" gid="816" x="2220.84" y="2927.77" width="3537.18" height="1934.57"/>
  </objectgroup>
  <objectgroup id="34" name="w"/>
  <objectgroup id="23" name="Jails" parallaxx="0.4">
   <properties>
+   <property name="Background" type="bool" value="true"/>
    <property name="Draw" type="bool" value="true"/>
    <property name="Parallax" type="float" value="0.3"/>
   </properties>

@@ -60,20 +60,20 @@ bool Render::Awake()
 		
 	}
 
-	if (!TTF_Init())
-	{
-		LOG("TTF_Init failed: %s", SDL_GetError());
-		ret = false;
-	}
-	else
-	{
-		font = TTF_OpenFont("resources/UI/UI_Fonts/CheesomancerText2.ttf", 24);
+	//if (!TTF_Init())
+	//{
+	//	LOG("TTF_Init failed: %s", SDL_GetError());
+	//	ret = false;
+	//}
+	//else
+	//{
+	//	font = TTF_OpenFont("resources/UI/UI_Fonts/CheesomancerText2.ttf", 24);
 
-		if (font == nullptr)
-		{
-			LOG("Failed to load font! SDL_ttf Error: %s", SDL_GetError());
-		}
-	}
+	//	if (font == nullptr)
+	//	{
+	//		LOG("Failed to load font! SDL_ttf Error: %s", SDL_GetError());
+	//	}
+	//}
 
 
 	return ret;
@@ -219,16 +219,20 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 
 bool Render::DrawParallax(SDL_Texture* texture, int x, int y, int width, int height, const SDL_Rect* section, float speed, double angle, int pivotX, int pivotY, SDL_FlipMode flip) const
 {
+	int scale = Engine::GetInstance().window->GetScale();
 	SDL_FRect rect;
 
-	float world_x = (camera.x + x * speed) * zoom;
-	float world_y = (camera.y + y) * zoom;
+	// Aplicamos la velocidad de Parallax (speed) SOLO a la cámara. 
+	// Así, si speed = 1.0, se mueve igual que el suelo. Si es 0.2, se mueve más lento.
+	float world_x = (camera.x * speed + x * scale) * zoom;
+	float world_y = (camera.y * speed + y * scale) * zoom;
 
-	rect.x = floor(world_x * zoom);
+	rect.x = floor(world_x);
 	rect.y = floor(world_y);
 
-	rect.w = width * zoom;
-	rect.h = height * zoom;
+	// A los objetos también hay que aplicarles la escala y el zoom para que cuadren con el mapa
+	rect.w = width * scale * zoom;
+	rect.h = height * scale * zoom;
 
 	SDL_FPoint* p = nullptr;
 	SDL_FPoint pivot;
@@ -236,8 +240,8 @@ bool Render::DrawParallax(SDL_Texture* texture, int x, int y, int width, int hei
 	if (pivotX != INT_MAX && pivotY != INT_MAX)
 	{
 		pivot = {
-			pivotX * zoom,
-			pivotY * zoom
+			(float)(pivotX * scale * zoom),
+			(float)(pivotY * scale * zoom)
 		};
 
 		p = &pivot;
@@ -268,6 +272,7 @@ bool Render::DrawParallax(SDL_Texture* texture, int x, int y, int width, int hei
 		flip
 	);
 }
+
 bool Render::DrawTextureNoCamera(SDL_Texture* texture, int x, int y, int w, int h, float speed, double angle, int pivotX, int pivotY, SDL_FlipMode flip) const
 {
 	bool ret = true;
@@ -341,44 +346,44 @@ bool Render::DrawRectangle(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint
 
 bool Render::DrawText(const char* text, int x, int y, int w, int h, SDL_Color color) const
 {
-	if (!font || !renderer || !text) {
-		LOG("DrawText: invalid font/renderer/text");
-		return false;
-	}
+	//if (!font || !renderer || !text) {
+	//	LOG("DrawText: invalid font/renderer/text");
+	//	return false;
+	//}
 
-	// Render the text to a surface
-	// SDL3_ttf: length can be 0 for null-terminated strings
-	SDL_Surface* surface = TTF_RenderText_Blended_Wrapped(font, text, 0, color,540);
-	if (!surface) {
-		LOG("DrawText: TTF_RenderText_Solid failed: %s", SDL_GetError());
-		return false;
-	}
+	//// Render the text to a surface
+	//// SDL3_ttf: length can be 0 for null-terminated strings
+	//SDL_Surface* surface = TTF_RenderText_Blended_Wrapped(font, text, 0, color,540);
+	//if (!surface) {
+	//	LOG("DrawText: TTF_RenderText_Solid failed: %s", SDL_GetError());
+	//	return false;
+	//}
 
-	// Create a texture from the surface
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-	if (!texture) {
-		LOG("DrawText: SDL_CreateTextureFromSurface failed: %s", SDL_GetError());
-		SDL_DestroySurface(surface);
-		return false;
-	}
+	//// Create a texture from the surface
+	//SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+	//if (!texture) {
+	//	LOG("DrawText: SDL_CreateTextureFromSurface failed: %s", SDL_GetError());
+	//	SDL_DestroySurface(surface);
+	//	return false;
+	//}
 
-	// Optional but often needed when using alpha/text
-	SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+	//// Optional but often needed when using alpha/text
+	//SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
 
-	// If w/h are 0, use the text�s natural size
-	float fw = (w > 0) ? (float)w : (float)surface->w;
-	float fh = (h > 0) ? (float)h : (float)surface->h;
+	//// If w/h are 0, use the text�s natural size
+	//float fw = (w > 0) ? (float)w : (float)surface->w;
+	//float fh = (h > 0) ? (float)h : (float)surface->h;
 
-	SDL_FRect dstrect = { (float)x, (float)y, fw, fh };
+	//SDL_FRect dstrect = { (float)x, (float)y, fw, fh };
 
-	// Render the texture to the current render target
-	if (!SDL_RenderTexture(renderer, texture, nullptr, &dstrect)) {
-		LOG("DrawText: SDL_RenderTexture failed: %s", SDL_GetError());
-	}
+	//// Render the texture to the current render target
+	//if (!SDL_RenderTexture(renderer, texture, nullptr, &dstrect)) {
+	//	LOG("DrawText: SDL_RenderTexture failed: %s", SDL_GetError());
+	//}
 
-	// Cleanup
-	SDL_DestroyTexture(texture);
-	SDL_DestroySurface(surface);
+	//// Cleanup
+	//SDL_DestroyTexture(texture);
+	//SDL_DestroySurface(surface);
 
 	return true;
 }
