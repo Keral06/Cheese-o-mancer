@@ -4545,7 +4545,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 			break;
 		case ColliderType::CHEESEBALL:
-			Engine::GetInstance().scene->ratmissionfinished;
+			Engine::GetInstance().scene->ratmissionfinished=true;
 			break;
 		}
 
