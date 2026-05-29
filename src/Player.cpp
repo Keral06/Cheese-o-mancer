@@ -263,7 +263,7 @@ void Player::GetPhysicsValues() {
 void Player::Move() {
 	/*if (isdead || Engine::GetInstance().scene->IsGamePaused())
 		return;*/
-	if (isAttacking) return;
+	if (isAttacking && isCollidedFloor) return;
 	isWalking = false;
 	if (velocity.y == 0) {
 		isCollidedFloor = true;
