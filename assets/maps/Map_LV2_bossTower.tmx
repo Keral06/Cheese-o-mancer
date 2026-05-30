@@ -1462,7 +1462,7 @@
    <tile/>
   </data>
  </layer>
- <group id="29" name="Sky" offsetx="-8401.03" offsety="-6527.52" parallaxx="0.1" parallaxy="0.1">
+ <group id="29" name="Sky" offsetx="-8377.03" offsety="-6551.52" parallaxx="0.1" parallaxy="0.1">
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>

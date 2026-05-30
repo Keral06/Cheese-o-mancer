@@ -77,7 +77,7 @@
    <object id="415" gid="2932" x="5103.77" y="3967" width="7242.46" height="3610"/>
   </objectgroup>
  </group>
- <group id="52" name="Castle" offsetx="-5408" offsety="-3584" parallaxx="0.1" parallaxy="0.1">
+ <group id="52" name="Castle" offsetx="-5239.39" offsety="-3378.91" parallaxx="0.1" parallaxy="0.2">
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>

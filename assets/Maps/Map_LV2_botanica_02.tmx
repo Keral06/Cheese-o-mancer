@@ -62,7 +62,7 @@
    <object id="419" gid="1569" x="-481.2" y="1080.44" width="4000" height="2250"/>
   </objectgroup>
  </group>
- <group id="46" name="Castle" offsetx="-13644" offsety="-3752" parallaxx="0.1">
+ <group id="46" name="Castle" offsetx="-14332" offsety="-13048" parallaxx="0.1" parallaxy="0.1">
   <objectgroup id="47" name="Castle 1" parallaxx="0.3">
    <object id="423" gid="20579" x="10982.7" y="17816.2" width="8780.89" height="5268.53"/>
   </objectgroup>
@@ -374763,7 +374763,7 @@
   <object id="337" x="22144" y="14720" width="92" height="128"/>
   <object id="344" x="19840" y="16128" width="1024" height="128"/>
   <object id="345" x="19584" y="16000" width="256" height="128"/>
-  <object id="346" x="19456" y="15744" width="128" height="128"/>
+  <object id="346" x="19456" y="15744" width="128" height="256"/>
   <object id="347" x="20864" y="16000" width="256" height="128"/>
   <object id="348" x="21120" y="15872" width="17792" height="128"/>
   <object id="349" x="37120" y="13568" width="256" height="128"/>
