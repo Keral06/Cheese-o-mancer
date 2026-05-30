@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="60" height="24" tilewidth="128" tileheight="128" infinite="0" nextlayerid="37" nextobjectid="453">
+<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="60" height="24" tilewidth="128" tileheight="128" infinite="0" nextlayerid="37" nextobjectid="453">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -1462,57 +1462,57 @@
    <tile/>
   </data>
  </layer>
- <group id="29" name="Sky" offsetx="-4427.03" offsety="-5055.52">
+ <group id="29" name="Sky" offsetx="-8401.03" offsety="-6527.52" parallaxx="0.1" parallaxy="0.1">
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>
-  <objectgroup id="30" name="Sky1">
+  <objectgroup id="30" name="Sky1" parallaxx="0.4" parallaxy="0.4">
    <properties>
     <property name="Background" type="bool" value="true"/>
     <property name="Draw" type="bool" value="true"/>
     <property name="Parallax" type="float" value="0.02"/>
    </properties>
-   <object id="331" gid="1563" x="3920" y="7693" width="7000" height="2250"/>
+   <object id="331" gid="1563" x="2736" y="7101" width="7000" height="2250"/>
   </objectgroup>
-  <objectgroup id="31" name="Sky2">
+  <objectgroup id="31" name="Sky2" parallaxx="0.5" parallaxy="0.5">
    <properties>
     <property name="Background" type="bool" value="true"/>
     <property name="Draw" type="bool" value="true"/>
     <property name="Parallax" type="float" value="0.05"/>
    </properties>
-   <object id="333" gid="1564" x="3528" y="7741" width="7000" height="2250"/>
+   <object id="333" gid="1564" x="3484" y="7269" width="7000" height="2250"/>
   </objectgroup>
-  <objectgroup id="32" name="Sky3">
+  <objectgroup id="32" name="Sky3" parallaxx="0.6" parallaxy="0.6">
    <properties>
     <property name="Background" type="bool" value="true"/>
     <property name="Draw" type="bool" value="true"/>
     <property name="Parallax" type="float" value="0.1"/>
    </properties>
-   <object id="334" gid="1565" x="3432" y="7756.15" width="7000" height="2250"/>
+   <object id="334" gid="1565" x="3204" y="7424.15" width="7000" height="2250"/>
   </objectgroup>
-  <objectgroup id="33" name="Sky4">
+  <objectgroup id="33" name="Sky4" parallaxx="0.7" parallaxy="0.7">
    <properties>
     <property name="Background" type="bool" value="true"/>
     <property name="Draw" type="bool" value="true"/>
     <property name="Parallax" type="float" value="0.15"/>
    </properties>
-   <object id="336" gid="1566" x="3936" y="7756.15" width="7000" height="2250"/>
+   <object id="336" gid="1566" x="3876" y="7512.15" width="7000" height="2250"/>
   </objectgroup>
-  <objectgroup id="34" name="Sky5">
+  <objectgroup id="34" name="Sky5" parallaxx="0.8" parallaxy="0.8">
    <properties>
     <property name="Background" type="bool" value="true"/>
     <property name="Draw" type="bool" value="true"/>
     <property name="Parallax" type="float" value="0.2"/>
    </properties>
-   <object id="337" gid="1567" x="4416" y="7781" width="7000" height="2250"/>
+   <object id="337" gid="1567" x="4480" y="7725" width="7000" height="2250"/>
   </objectgroup>
-  <objectgroup id="35" name="Sky6">
+  <objectgroup id="35" name="Sky6" parallaxx="0.9" parallaxy="0.9">
    <properties>
     <property name="Background" type="bool" value="true"/>
     <property name="Draw" type="bool" value="true"/>
     <property name="Parallax" type="float" value="0.25"/>
    </properties>
-   <object id="339" gid="1568" x="5993.6" y="7665.13" width="4000" height="2250"/>
+   <object id="339" gid="1568" x="6829.6" y="7573.13" width="4000" height="2250"/>
   </objectgroup>
  </group>
  <group id="24" name="Boss Room">
@@ -2966,11 +2966,11 @@
     <tile/>
    </data>
   </layer>
-  <objectgroup id="28" name="BossColumn">
+  <objectgroup id="28" name="BossColumn" parallaxx="0.95">
    <properties>
     <property name="Draw" type="bool" value="true"/>
    </properties>
-   <object id="327" gid="1562" x="124" y="2692" width="6528" height="2432"/>
+   <object id="327" gid="1562" x="-64" y="2684" width="6528" height="2432"/>
   </objectgroup>
  </group>
  <layer id="13" name="AssetsBG" width="60" height="24">
@@ -7361,8 +7361,8 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="36" name="Foreground Columns">
-  <object id="340" gid="2538" x="-1208" y="2784" width="6364" height="2560"/>
+ <objectgroup id="36" name="Foreground Columns" parallaxx="0.9">
+  <object id="340" gid="2538" x="-68" y="2732" width="6364" height="2560"/>
  </objectgroup>
  <layer id="10" name="Map" width="60" height="24">
   <properties>
