@@ -81,9 +81,9 @@ bool Verdugo::Start()
     isboss = true;
     texture = textureA1;
     LOG("Verdugo creado");
-    SDL_Texture* Justice;
-    Justice = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Justice.png");
-    Engine::GetInstance().scene->TarotCards.push_back(Justice);
+
+ 
+    Engine::GetInstance().scene->cards.push("Justice", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Justice.png"), nullptr);
 
     return true;
 }

@@ -84,9 +84,9 @@ bool CheeseBallInteract::Update(float dt)
 							if (py != nullptr) {
 								
 								Engine::GetInstance().scene->cheese = true;
-								SDL_Texture* Cheese;
-								Cheese = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_WheelOfFortune.png");
-								Engine::GetInstance().scene->TarotCards.push_back(Cheese);
+							
+
+								Engine::GetInstance().scene->cards.push("WheelOfFortune", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_WheelOfFortune.png"), nullptr);
 							}
 						}
 						return true;

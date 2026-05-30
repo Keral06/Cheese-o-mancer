@@ -148,8 +148,8 @@ bool HANDMAN::Update(float dt)
                     }
 
                     if (this->level == 1) {
-                        SDL_Texture* HangedMan = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_HangMan.png");
-                        Engine::GetInstance().scene->TarotCards.push_back(HangedMan);
+                       
+                        Engine::GetInstance().scene->cards.push("HangMan", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_HangMan.png"), nullptr);
                     }
                     return true;
                 }

@@ -6,6 +6,8 @@
 #include "UIButton.h"
 #include "Animation.h"
 #include "Inventario.h"
+#include "ListaMisiones.h"
+#include "TarotCards.h"
 
 struct SDL_Texture;
 
@@ -282,7 +284,7 @@ public:
 	bool hasTalkedHermit = false;
 
 	//Tarot bools
-	std::vector<SDL_Texture*> TarotCards;
+	TarotCards cards;
 
 	//dialogue movement restriction
 

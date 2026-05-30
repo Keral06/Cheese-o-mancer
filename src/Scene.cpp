@@ -342,12 +342,12 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 	}
 	if (uiElement->id == 46) { 
 		currentCardIndex++;
-		if (currentCardIndex >= TarotCards.size()) currentCardIndex = 0;
+		if (currentCardIndex >= cards.cards.size()) currentCardIndex = 0;
 		return true;
 	}
 	if (uiElement->id == 47) { 
 		currentCardIndex--;
-		if (currentCardIndex < 0) currentCardIndex = TarotCards.size() -1;
+		if (currentCardIndex < 0) currentCardIndex = cards.cards.size() -1;
 		return true;
 	}
 	if (uiElement->id == 48) {
@@ -1089,10 +1089,10 @@ void  Scene::PostUpdateLevel() {
 					Engine::GetInstance().render->DrawTextureNoCamera(cardsBase, 240, 60, 800, 600);
 				}
 
-				if (TarotCards.size() > 0) {
-					SDL_Texture* Holder;
-					Holder = TarotCards.at(currentCardIndex);
-					Engine::GetInstance().render->DrawTextureNoCamera(Holder, 730, 162, 200, 400);
+				if (cards.cards.size() > 0) {
+					
+				
+					Engine::GetInstance().render->DrawTextureNoCamera(cards.cards[currentCardIndex].imagen, 730, 162, 200, 400);
 				}
 
 			
