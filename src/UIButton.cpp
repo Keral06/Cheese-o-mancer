@@ -110,3 +110,12 @@ bool UIButton::CleanUp()
 	pendingToDelete = true;
 	return true;
 }
+
+void UIButton ::ChangeImage(SDL_Texture* one, SDL_Texture* two) {
+
+	buttonNormalTexture = one;
+	buttonPressedTexture = two;
+
+
+
+}
