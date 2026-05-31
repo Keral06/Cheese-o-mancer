@@ -1958,16 +1958,18 @@ void Scene::CreateInventoryUI() {
 	inventoryBag = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Inventari_Bag_01.png"); 
 	uiCoin = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_coin.png"); 
 	cardsIcon = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Tarot_InventoryItem1_.png");
-	
+	cardsIcon2 = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Tarot_InventoryItem2_.png");
 	arrowRight = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_BurronRight_.png");
 	arrowLeft = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_ButtonLeft_.png");
+	arrowRight2 = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_BurronRight2_.png");
+	arrowLeft2 = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_ButtonLeft2_.png");
 	cardsBase = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_Base_.png");
 
 	auto invPrevPage = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 48, "",
 		{ 610, 295, 50, 50 },
 		this, SDL_Rect{ 0,0,0,0 },
-		arrowLeft, arrowLeft
+		arrowLeft, arrowLeft2
 	);
 	if (invPrevPage) invPrevPage->visible = false;
 
@@ -1975,7 +1977,7 @@ void Scene::CreateInventoryUI() {
 		UIElementType::BUTTON, 49, "",
 		{ 1170, 295, 50, 50 }, 
 		this, SDL_Rect{ 0,0,0,0 },
-		arrowRight, arrowRight
+		arrowRight2, arrowRight
 	);
 	if (invNextPage) invNextPage->visible = false;
 
@@ -1983,21 +1985,21 @@ void Scene::CreateInventoryUI() {
 		UIElementType::BUTTON, 45, "",
 		{ 1000, 425, 96, 96 }, 
 		this, SDL_Rect{ 0,0,0,0 },
-		cardsIcon, cardsIcon
+		cardsIcon, cardsIcon2
 	);
 	if (cardButton) cardButton->visible = false;
 
 	auto previousCard = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 47, "",
 		{ 690, 350, 50, 50 }, this, SDL_Rect{ 0,0,0,0 },
-		arrowLeft, arrowLeft
+		arrowLeft2, arrowLeft
 	);
 	if (previousCard) previousCard->visible = false;
 
 	auto nextCard = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 46, "",
 		{ 920, 350, 50, 50 }, this, SDL_Rect{ 0,0,0,0 },
-		arrowRight, arrowRight
+		arrowRight2, arrowRight
 	);
 	if (nextCard) nextCard->visible = false;
 }
@@ -2200,18 +2202,20 @@ void Scene::HandleTeleportUIEvents(UIElement* uiElement) {
 void Scene::MissionUI() {
 	
 	arrowRight = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_BurronRight_.png");
+	arrowRight2 = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_BurronRight2_.png");
 	arrowLeft = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_ButtonLeft_.png");
+	arrowLeft2 = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_ButtonLeft2_.png");
 	auto previousMission = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 65, "",
 		{ 380, 350, 50, 50 }, this, SDL_Rect{ 0,0,0,0 },
-		arrowLeft, arrowLeft
+		arrowLeft2, arrowLeft
 	);
 	if (previousMission) previousMission->visible = false;
 
 	auto nextMission = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 66, "",
 		{ 850, 350, 50, 50 }, this, SDL_Rect{ 0,0,0,0 },
-		arrowRight, arrowRight
+		arrowRight2, arrowRight
 	);
 	if (nextMission) nextMission->visible = false;
 

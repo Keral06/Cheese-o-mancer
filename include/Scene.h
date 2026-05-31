@@ -182,13 +182,15 @@ private:
 
 	//Texturas tarot
 	SDL_Texture* cardsIcon = nullptr;
+	SDL_Texture* cardsIcon2 = nullptr;
 	SDL_Texture* cardsBase = nullptr;
 	SDL_Texture* cardTheFool = nullptr;
 	SDL_Texture* cardTheMagician = nullptr;
 	SDL_Texture* cardWheelOfFortune = nullptr;
 	SDL_Texture* arrowRight = nullptr;
 	SDL_Texture* arrowLeft = nullptr;
-
+	SDL_Texture* arrowRight2 = nullptr;
+	SDL_Texture* arrowLeft2 = nullptr;
 	//Texturas
 
 	void UpdatePauseMenu(float dt);
