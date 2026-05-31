@@ -51,11 +51,12 @@ protected:
 
     Vector2D spawnPosition;
 
-    float attackCooldown = 2.0f;
+    float attackCooldown = 2000.0f;
     float attackTimer = 0.0f;
 
-    float attackDuration = 0.6f;
+    float attackDuration = 200.0f;
     float attackDurationTimer = 0.0f;
 
-    bool attackLocked = false;
+    float attackCooldownTimer = 0.0f;
+    bool justExitedAttack = false;
 };
