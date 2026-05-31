@@ -270,6 +270,8 @@ public:
 	Uint8 fadeAlpha = 0;
 
 	int lives = 4;
+	int score = 0;
+	bool hasDamagePlus = false;
 	bool hasTalkedMagician = false;
 
 	//inventario

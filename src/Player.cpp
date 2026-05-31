@@ -324,7 +324,7 @@ void Player::Move() {
 	// =====================
 	if (godMode)
 	{
-		lives = 4;
+		Engine::GetInstance().scene->lives = 4;
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
 			velocity.y = -godmodeSpeed;
@@ -582,7 +582,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 			Enemy* e = static_cast<Enemy*>(physB->listener);
 			if (e)
 			{
-				int damageAmount = hasDamagePlus ? 68 : 34;
+				int damageAmount = Engine::GetInstance().scene->hasDamagePlus ? 68 : 34;
 				e->DecreaseHealth(damageAmount);
 				LOG("Enemy hit by player attack");
 			}
@@ -664,9 +664,9 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 		isdead = true;
 		if (extralife) { extralife = false; return; }
 		
-		lives--;
+		Engine::GetInstance().scene->lives--;
 
-		if (lives <= 0)
+		if (Engine::GetInstance().scene->lives <= 0)
 		{
 			isDeadDefinitive = true;
 		}
@@ -684,9 +684,9 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 	case ColliderType::EXTRALIVE:
 	{
 		if (hasHealed == false) {
-			if (lives < 4) {
+			if (Engine::GetInstance().scene->lives < 4) {
 				Engine::GetInstance().audio->PlayFx(healfx);
-				lives++;
+				Engine::GetInstance().scene->lives++;
 				LOG("Player healed.");
 			}
 			hasHealed = true;

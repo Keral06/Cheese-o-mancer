@@ -645,8 +645,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                     }
 
                     if (objectNode.attribute("score")) {
-                        Player::score = objectNode.attribute("score").as_int();
-                        LOG("Score cargado desde XML: %d", Player::score);
+                        Engine::GetInstance().scene->score = objectNode.attribute("score").as_int();
+                        LOG("Score cargado desde XML: %d", Engine::GetInstance().scene->score);
                     }
                     if (objectNode.attribute("timer")) {
                         Engine::GetInstance().scene->levelTimer = objectNode.attribute("timer").as_float();
@@ -1059,7 +1059,7 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
 
                     pugi::xml_attribute scoreAttr = objectNode.attribute("score");
                     if (!scoreAttr) scoreAttr = objectNode.append_attribute("score");
-                    scoreAttr.set_value(Player::score);
+                    scoreAttr.set_value(Engine::GetInstance().scene->score);
 
                     pugi::xml_attribute timerAttr = objectNode.attribute("timer");
                     if (!timerAttr) timerAttr = objectNode.append_attribute("timer");

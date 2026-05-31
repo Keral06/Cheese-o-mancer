@@ -172,7 +172,7 @@ bool HANDMAN::Update(float dt)
                 if (BeatBoss.hasEnded) {
                     /*firstTimeBossKill = false;*/
                     isStoreOn = true;
-                    moneyPlayer = py->score;
+                    moneyPlayer = Engine::GetInstance().scene->score;
                     Engine::GetInstance().scene->SetStore(isStoreOn, storeID);
                     return true;
                 }

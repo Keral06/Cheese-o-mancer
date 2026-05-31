@@ -119,7 +119,7 @@ void Rat::OnCollision(PhysBody* physA, PhysBody* physB)
         Player* player = dynamic_cast<Player*>(physB->listener);
 
         if (player && damageTimer <= 0) {
-            player->lives--;
+            Engine::GetInstance().scene->lives--;
             LOG("Player hurt!");
         }
     }

@@ -597,7 +597,10 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		{
 		case ColliderType::PLAYER:
 			isGettingTouched = true;
-			break;
+			break; case ColliderType::CHEESEBALL:
+				CleanUp();
+				break;
+		}
 		}
 
 

@@ -292,7 +292,7 @@ void Bee::OnCollision(PhysBody* physA, PhysBody* physB)
             Player* player = dynamic_cast<Player*>(physB->listener);
 
             if (player)
-                player->lives--;
+               Engine::GetInstance().scene->lives--;
 
             SetBeeState(BeeState::BEE_PATROL);
             return;

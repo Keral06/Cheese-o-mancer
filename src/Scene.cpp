@@ -261,7 +261,7 @@ bool Scene::PostUpdate()
 
 		Engine::GetInstance().render->DrawText("LEVEL COMPLETED!", 400, 100, 500, 100, { 0, 255, 0, 255 }); 
 		{
-			std::string scoreStr = "Score: " + std::to_string(Player::score);
+			std::string scoreStr = "Score: " + std::to_string(Engine::GetInstance().scene->score);
 			Engine::GetInstance().render->DrawText(scoreStr.c_str(), 540, 250, 0, 0, { 255, 255, 255, 255 });
 		}
 
@@ -283,7 +283,7 @@ bool Scene::PostUpdate()
 		Engine::GetInstance().render->DrawText("CONGRATULATIONS!", 380, 100, 600, 100, { 255, 215, 0, 255 });
 
 		{
-			std::string scoreStr = "Final Score: " + std::to_string(Player::score);
+			std::string scoreStr = "Final Score: " + std::to_string(Engine::GetInstance().scene->score);
 			Engine::GetInstance().render->DrawText(scoreStr.c_str(), 500, 250, 0, 0, { 255, 255, 255, 255 });
 		}
 
@@ -858,7 +858,7 @@ void Scene::UpdateLevel(float dt) {
 		levelTimer += dt / 1000.0f;
 	}
 
-	if (player && player->lives <= 0) {
+	if (player && Engine::GetInstance().scene->lives <= 0) {
 		ChangeScene(SceneID::GAME_OVER);
 		return;
 	}
@@ -1005,7 +1005,7 @@ void  Scene::PostUpdateLevel() {
 				SDL_RenderTexture(Engine::GetInstance().render->renderer, panelTexture, NULL, &destRect);
 
 			}
-			if (player->lives == 4) {
+			if (Engine::GetInstance().scene->lives == 4) {
 				if (heart4Texture != nullptr) {
 					float w, h;
 					SDL_GetTextureSize(heart4Texture, &w, &h);
@@ -1016,7 +1016,7 @@ void  Scene::PostUpdateLevel() {
 
 				}
 			}
-			else if (player->lives == 3) {
+			else if (Engine::GetInstance().scene->lives == 3) {
 				if (heart3Texture != nullptr) {
 					float w, h;
 					SDL_GetTextureSize(heart3Texture, &w, &h);
@@ -1028,7 +1028,7 @@ void  Scene::PostUpdateLevel() {
 				}
 
 			}
-			else if (player->lives == 2) {
+			else if (Engine::GetInstance().scene->lives == 2) {
 
 				if (heart2Texture != nullptr) {
 					float w, h;
@@ -1040,7 +1040,7 @@ void  Scene::PostUpdateLevel() {
 
 				}
 			}
-			else if (player->lives == 1) {
+			else if (Engine::GetInstance().scene->lives == 1) {
 
 				if (heart1Texture != nullptr) {
 					float w, h;
@@ -1066,7 +1066,7 @@ void  Scene::PostUpdateLevel() {
 			}
 
 		
-		std::string scoreText = "Score: " + std::to_string(player->score);
+		std::string scoreText = "Score: " + std::to_string(Engine::GetInstance().scene->score);
 		Engine::GetInstance().render->DrawText(scoreText.c_str(), 1100, 30, 0, 0, { 255, 255, 255, 255 });
 	}
 
@@ -1564,7 +1564,7 @@ void Scene::LoadMap(std::string map)
 	if (continueGame == false) {
 
 		levelTimer = 0.0f;
-		Player::score = 0;
+		Engine::GetInstance().scene->score = 0;
 		showMap = false;
 		inventoryOn = false;
 		//firstDoor = true;       
@@ -1572,7 +1572,7 @@ void Scene::LoadMap(std::string map)
 		//nextSpawnPoint = "";
 		//nextMap = "";
 		if (player) {
-			player->lives = 4;
+			Engine::GetInstance().scene->lives = 4;
 
 			/*
 			player->extralife = false;
@@ -1843,8 +1843,8 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 		//	break;
 	case 39:
 		//mira si el jugador tiene dinero
-		if (player->score >= 20) {
-			player->score -= 20;
+		if (Engine::GetInstance().scene->score >= 20) {
+			Engine::GetInstance().scene->score -= 20;
 			for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
 				if (el->id == 39) {
 					el->visible = false;
@@ -1879,8 +1879,8 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 		break;
 	case 40:
 		//mira si el jugador tiene dinero
-		if (player->score >= 50) {
-			player->score -= 50;
+		if (Engine::GetInstance().scene->score >= 50) {
+			Engine::GetInstance().scene->score -= 50;
 			for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
 				if (el->id == 40) el->Destroy();
 				if (el->id == 36) {
@@ -1919,8 +1919,8 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 		break;
 	case 41:
 		//mira si el jugador tiene dinero
-		if (player->score >= 10) {
-			player->score -= 10;                                                                         
+		if (Engine::GetInstance().scene->score >= 10) {
+			Engine::GetInstance().scene->score -= 10;
 			for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
 				if (el->id == 41) el->Destroy();
 				if (el->id == 37) {
@@ -1962,8 +1962,8 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 		break;
 
 	case 44:
-		if (player->score >= 80) {        
-			player->hasDamagePlus = true;
+		if (Engine::GetInstance().scene->score >= 80) {
+			Engine::GetInstance().scene->hasDamagePlus = true;
 			for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
 				if (el->id == 44) el->Destroy();
 				if (el->id == 43) {
