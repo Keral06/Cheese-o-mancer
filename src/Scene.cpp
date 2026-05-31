@@ -2289,7 +2289,7 @@ void Scene::SetMissionUI() {
 void Scene::InventariIconUI() {
 
 	//BOTON INVENTARIO
-	inventarioDrawing = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Inventari_ScreenIcon_.png");
+	inventarioDrawing = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Inventari_ScreenIcon2.png");
 	inventarioclicado = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Inventari_ScreenIcon_.png");
 	
 	misionesicono = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_Missions_Icon2.png");
@@ -2304,7 +2304,7 @@ void Scene::InventariIconUI() {
 	if (bag) bag->visible = false;
 	auto libreta = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 68, "",
-		{ 950, 570, 120, 120 }, this, SDL_Rect{ 0,0,0,0 },
+		{ 970, 565, 120, 120 }, this, SDL_Rect{ 0,0,0,0 },
 		misionesicono, misionesiconoclicado
 	);
 	if (libreta) libreta->visible = false;
