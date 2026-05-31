@@ -196,6 +196,11 @@ private:
 	SDL_Texture* inventarioclicado = nullptr;
 	SDL_Texture* inventarionotificacion = nullptr;
 	SDL_Texture* inventarionotificacion2 = nullptr;
+
+	SDL_Texture* misionesicono = nullptr;
+	SDL_Texture* misionesiconoclicado = nullptr;
+	SDL_Texture* misionesnoti = nullptr;
+	SDL_Texture* misionesnoticlicado = nullptr;
 	void InventariIconUI();
 	
 	void UpdatePauseMenu(float dt);
