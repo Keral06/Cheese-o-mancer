@@ -16,6 +16,7 @@ public:
 	bool Update(float dt);
 	bool Draw() override;
 	bool CleanUp() override;
+	void ChangeImage(SDL_Texture* one, SDL_Texture* two);
 
 private:
 

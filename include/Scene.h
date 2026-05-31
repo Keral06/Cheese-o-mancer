@@ -39,7 +39,7 @@ enum Areas1 {
 class Scene : public Module
 {
 public:
-
+	void SetInventariIcon(bool on);
 	bool continueGame = false;
 	int savedLevel = 1;
 	bool isPaused = false;
@@ -192,7 +192,12 @@ private:
 	SDL_Texture* arrowRight2 = nullptr;
 	SDL_Texture* arrowLeft2 = nullptr;
 	//Texturas
-
+	SDL_Texture* inventarioDrawing = nullptr;
+	SDL_Texture* inventarioclicado = nullptr;
+	SDL_Texture* inventarionotificacion = nullptr;
+	SDL_Texture* inventarionotificacion2 = nullptr;
+	void InventariIconUI();
+	
 	void UpdatePauseMenu(float dt);
 	void HandleStoreUIEvents(UIElement* uiElement);
 

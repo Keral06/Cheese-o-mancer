@@ -123,7 +123,7 @@ bool Magician::Update(float dt) {
 	if (firstTime == true) {
 		if (!dialogueMagicianStart.hasStarted && Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN) {
 			dialogueMagicianStart.BeginDialogue();
-		
+			Engine::GetInstance().scene->SetInventariIcon(true);
 			Engine::GetInstance().scene->cards.push("The fool", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Fool.png"), nullptr);
 			Engine::GetInstance().scene->misiones.push("Talk with magician", Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Magician1.png"), Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Magician2.png"));
 		}

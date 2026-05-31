@@ -100,6 +100,7 @@ bool Scene::Update(float dt)
 		break;
 	case SceneID::IN_GAME:
 		UpdateLevel(dt);
+	
 		
 		break;
 	case SceneID::GAME_OVER:
@@ -147,6 +148,7 @@ bool Scene::Update(float dt)
 	if (!fadeIn && !isFading)
 	{
 		LoadMap(nextMap);
+
 		StartFadeIn(1.0f);
 	}
 
@@ -335,6 +337,13 @@ void Scene::LoadGame()
 }
 bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 {
+
+	if (uiElement->id == 67) {
+		
+		SetInventory(!inventoryOn);
+		SetInventariIcon(!inventoryOn);
+		return true;
+	}
 	if (uiElement->id == 45) {
 		cardsInventoryOn = !cardsInventoryOn;
 		for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
@@ -436,7 +445,7 @@ Vector2D Scene::GetPlayerPosition()
 void Scene::LoadScene(SceneID newScene)
 {
 	auto& engine = Engine::GetInstance();
-
+	
 	switch (newScene)
 	{
 	case SceneID::INTRO_SCREEN:
@@ -449,6 +458,7 @@ void Scene::LoadScene(SceneID newScene)
 
 	case SceneID::IN_GAME:
 		
+
 		if (lastscene != SceneID::IN_GAME)
 		{
 			firstMapLoad = true;
@@ -753,6 +763,7 @@ void Scene::UpdateLevel(float dt) {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
 	{
 		SetInventory(!inventoryOn);
+		SetInventariIcon(!inventoryOn);
 	}
 	//DEBUG INVENTARIO
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_G) == KEY_DOWN) {
@@ -1473,6 +1484,7 @@ void Scene::LoadMap(std::string map)
 	CreatePauseUI();
 	MissionUI();
 	CreateTeleportUI();
+	InventariIconUI();
 	if (map.find("LV2") != std::string::npos) {
 		CreateStoreLevel2();
 	}
@@ -2226,6 +2238,43 @@ void Scene::SetMissionUI() {
 	for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
 		if (element->id ==65 || element->id ==66) {
 			element->visible = list;
+		}
+	}
+}
+
+//BOTON INVENTARIO
+
+void Scene::InventariIconUI() {
+
+	//BOTON INVENTARIO
+	inventarioDrawing = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Inventari_ScreenIcon_.png");
+	inventarioclicado = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Inventari_ScreenIcon_.png");
+	inventarionotificacion = Engine::GetInstance().textures->Load("assets/Inventario/TarotUI_Inventari_ScreenIcon_.png");
+	inventarionotificacion2 = Engine::GetInstance().textures->Load("assets/Inventario/Tarot/UI_Inventari_ScreenIcon_.png");
+	auto bag = Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 67, "",
+		{ 1080, 540, 170, 170 }, this, SDL_Rect{ 0,0,0,0 },
+		inventarioDrawing, inventarioclicado
+	);
+	if (bag) bag->visible = false;
+	LOG("bag ptr = %p", bag);
+
+	LOG("TOTAL UI:");
+	for (auto& e : Engine::GetInstance().uiManager->UIElementsList) {
+		LOG("ID = %d", e->id);
+	}
+
+
+}
+
+void Scene::SetInventariIcon(bool on) {
+	LOG("TOTAL UI:");
+	for (auto& e : Engine::GetInstance().uiManager->UIElementsList) {
+		LOG("ID = %d", e->id);
+	}
+	for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
+		if (element->id == 67) {
+			element->visible = on;
 		}
 	}
 }
