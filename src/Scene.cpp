@@ -69,6 +69,12 @@ bool Scene::Update(float dt)
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_N) == KEY_DOWN) {
 		list = !list;
 		SetMissionUI();
+		if (inventoryOn) {
+
+
+			SetInventory(!inventoryOn);
+
+		}
 	}
 	
 	switch (currentScene)
@@ -165,9 +171,23 @@ bool Scene::PostUpdate()
 	if (misiones.Visualizada() == false && !someoneIsTalking) {
 	
 	
-		Engine::GetInstance().render->DrawTextureNoCamera(missionTexture, 520, 460, 200, 50);
+		
+		for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
+			if (element->id == 68) {
+				element->ChangeImage(misionesnoti, misionesnoticlicado);
+			}
+		}
+
 	
 	
+	}
+	else {
+	
+		for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
+			if (element->id == 68) {
+				element->ChangeImage(misionesicono, misionesiconoclicado);
+			}
+		}
 	}
 	switch (currentScene)
 	{
@@ -341,7 +361,23 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 	if (uiElement->id == 67) {
 		
 		SetInventory(!inventoryOn);
-		SetInventariIcon(!inventoryOn);
+		if (list) {
+		
+			list = !list;
+			SetMissionUI();
+		
+		}
+	
+		return true;
+	}if (uiElement->id == 68) {
+		list = !list;
+		SetMissionUI();
+		if (inventoryOn) {
+		
+		
+			SetInventory(!inventoryOn);
+		
+		}
 		return true;
 	}
 	if (uiElement->id == 45) {
@@ -763,7 +799,13 @@ void Scene::UpdateLevel(float dt) {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
 	{
 		SetInventory(!inventoryOn);
-		SetInventariIcon(!inventoryOn);
+		if (list) {
+
+			list = !list;
+			SetMissionUI();
+
+		}
+		
 	}
 	//DEBUG INVENTARIO
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_G) == KEY_DOWN) {
@@ -2247,16 +2289,25 @@ void Scene::SetMissionUI() {
 void Scene::InventariIconUI() {
 
 	//BOTON INVENTARIO
-	inventarioDrawing = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Inventari_ScreenIcon_.png");
+	inventarioDrawing = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Inventari_ScreenIcon2.png");
 	inventarioclicado = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Inventari_ScreenIcon_.png");
-	inventarionotificacion = Engine::GetInstance().textures->Load("assets/Inventario/TarotUI_Inventari_ScreenIcon_.png");
-	inventarionotificacion2 = Engine::GetInstance().textures->Load("assets/Inventario/Tarot/UI_Inventari_ScreenIcon_.png");
+	
+	misionesicono = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_Missions_Icon2.png");
+	misionesiconoclicado = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_Missions_Icon1.png");
+	misionesnoti = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_Missions_Icon2_notification.png");
+	misionesnoticlicado = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_Missions_Icon1_notification.png");
 	auto bag = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 67, "",
 		{ 1080, 540, 170, 170 }, this, SDL_Rect{ 0,0,0,0 },
 		inventarioDrawing, inventarioclicado
 	);
 	if (bag) bag->visible = false;
+	auto libreta = Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 68, "",
+		{ 970, 565, 120, 120 }, this, SDL_Rect{ 0,0,0,0 },
+		misionesicono, misionesiconoclicado
+	);
+	if (libreta) libreta->visible = false;
 	LOG("bag ptr = %p", bag);
 
 	LOG("TOTAL UI:");
@@ -2273,7 +2324,7 @@ void Scene::SetInventariIcon(bool on) {
 		LOG("ID = %d", e->id);
 	}
 	for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
-		if (element->id == 67) {
+		if (element->id == 67 || element->id == 68) {
 			element->visible = on;
 		}
 	}

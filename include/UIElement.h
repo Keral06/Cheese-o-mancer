@@ -86,7 +86,11 @@ public:
 	{
 		return true;
 	}
+	virtual void ChangeImage(SDL_Texture* one, SDL_Texture* two){
+	
+	
 
+	}
 public:
 
 	int id;
