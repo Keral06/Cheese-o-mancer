@@ -62,7 +62,7 @@ bool Jailer::Start()
     jailerState = JAILER_IDLE;
     lastJailerState = JAILER_IDLE;
 
-    detectionRange = 20;
+    detectionRange = 10;
     speed = 10;
 
     LOG("Verdugo creado");
@@ -81,6 +81,12 @@ void Jailer::Attack()
 bool Jailer::Update(float dt)
 {
     GetPhysicsValues();
+    distanceToPlayer = CalculateDistance();
+
+    justExitedAttack = false;
+
+    if (attackCooldownTimer > 0.0f)
+        attackCooldownTimer -= dt;
 
     switch (jailerState)
     {
@@ -118,119 +124,79 @@ void Jailer::UpdateIdle(float dt)
 
 void Jailer::UpdateChase(float dt)
 {
-    if (distanceToPlayer > attackRange + 2.0f)
-    {
-        attackLocked = false;
-    }
-
     if (distanceToPlayer > detectionRange)
     {
         SetJailerState(JAILER_RETURN);
         return;
     }
 
-    if (!attackLocked && distanceToPlayer <= attackRange)
+    PerformPathfinding();
+    Move();
+
+    if (justExitedAttack)
+        return;
+
+    // SOLO atacar si cooldown ok
+    if (attackCooldownTimer <= 0.0f &&
+        distanceToPlayer <= attackRange)
     {
         SetJailerState(JAILER_ATTACK);
         return;
     }
-
-    PerformPathfinding();
-    Move();
 }
 void Jailer::UpdateAttack(float dt)
 {
+    LOG("ATTACK | timer=%.2f | animFinished=%d",
+        attackDurationTimer,
+        anims2.HasFinished());
+
     velocity.x = 0;
     velocity.y = 0;
 
     anims2.Update(dt);
 
-   
+    attackDurationTimer -= dt;
+
     if (anims2.HasFinished())
     {
-        attackLocked = true;
+        LOG("ATTACK FINISHED -> CHASE");
+        attackCooldownTimer = attackCooldown;
+        justExitedAttack = true;
+        anims2.Resets();
         SetJailerState(JAILER_CHASE);
         return;
     }
 
-    attackDurationTimer -= dt;
-
-    // =========================
-    // ACTIVAR HITBOX EN VENTANA
-    // =========================
-    if (attackDurationTimer <= (attackDuration - hitboxStart) &&
-        attackDurationTimer >= (attackDuration - hitboxEnd))
-    {
-        if (!hitboxActive)
-        {
-            hitboxActive = true;
-            hasHit = false;
-            LOG("Hitbox ACTIVADA");
-        }
-    }
-    else
-    {
-        if (hitboxActive)
-        {
-            hitboxActive = false;
-            LOG("Hitbox DESACTIVADA");
-        }
-    }
-
-    // =========================
-    // HACER DAÑO (solo una vez)
-    // =========================
-    if (hitboxActive && playerInHitbox && !hasHit)
-    {
-        LOG("GOLPE AL PLAYER");
-
-        Player* player = dynamic_cast<Player*>(Engine::GetInstance().scene->GetPlayer());
-
-        if (player)
-            player->lives--;
-
-        hasHit = true;
-    }
-
-    // =========================
-    // FIN DEL ATAQUE
-    // =========================
-    if (attackDurationTimer <= 0.0f)
-    {
-        hitboxActive = false;
-        attackTimer = attackCooldown;
-
-        SetJailerState(JAILER_CHASE);
-    }
 }
 
 void Jailer::UpdateReturn(float dt)
 {
-    Vector2D current = GetPosition();
+    int x, y;
+    pbody->GetPosition(x, y);
+
+    Vector2D current((float)x, (float)y);
 
     Vector2D dir = spawnPosition - current;
 
-    float len = sqrtf(
-        dir.getX() * dir.getX() +
-        dir.getY() * dir.getY()
-    );
+    float dx = spawnPosition.getX() - current.getX();
+    float len = fabsf(dx);
 
-    if (len < 5.0f)
+    if (len < 10.0f)
     {
         velocity.x = 0;
         velocity.y = 0;
-
         SetJailerState(JAILER_IDLE);
         return;
     }
 
-    dir = Vector2D(
-        dir.getX() / len,
-        dir.getY() / len
-    );
+    dir = Vector2D(dir.getX() / len, dir.getY() / len);
 
+   
     velocity.x = dir.getX() * speed;
-    velocity.y = dir.getY() * speed;
+    velocity.y = 0;
+
+    if (dir.getX() < 0) facingLeft = true;
+    else if (dir.getX() > 0) facingLeft = false;
 }
 
 void Jailer::Draw(float dt)
@@ -252,7 +218,6 @@ void Jailer::Draw(float dt)
     // =========================
     if (jailerState == JAILER_ATTACK)
     {
-        anims2.Update(dt);
         animFrame = anims2.GetCurrentFrame();
         texToDraw = texture2;
     }
@@ -292,7 +257,7 @@ void Jailer::ChangeCurrentAnimation()
         anims.SetCurrent("walk");
         break;
 
-    case EnemyState::RUNNING:
+    case EnemyState::ATTACKING:
         anims2.SetCurrent("attack");
         break;
 
@@ -307,34 +272,32 @@ void Jailer::SetJailerState(JailerState newState)
     if (jailerState == newState)
         return;
 
+    LOG("STATE CHANGE: %d -> %d (frame)", jailerState, newState);
+
     lastJailerState = jailerState;
     jailerState = newState;
 
     switch (jailerState)
     {
     case JAILER_IDLE:
+        LOG(" -> IDLE");
         SetState(EnemyState::IDLE);
         break;
 
     case JAILER_CHASE:
+        LOG(" -> CHASE");
         SetState(EnemyState::WALKING);
         break;
 
     case JAILER_ATTACK:
+        LOG(" -> ATTACK");
         SetState(EnemyState::ATTACKING);
         break;
 
     case JAILER_RETURN:
+        LOG(" -> RETURN");
         SetState(EnemyState::WALKING);
         break;
-    }
-
-    if (jailerState == JAILER_ATTACK)
-    {
-        attackDurationTimer = attackDuration;
-        hitboxActive = false;
-        hasHit = false;
-        playerInHitbox = false;
     }
 }
 

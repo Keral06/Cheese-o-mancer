@@ -172,8 +172,16 @@ void Enemy::ApplyPhysics() {
 
 	// Apply velocity via helper
 	Engine::GetInstance().physics->SetLinearVelocity(pbody, velocity);
-	if (attackHitbox != nullptr) {
-		attackHitbox->SetPosition(GetPosition().getX() - offsetAttackHitboxX, GetPosition().getY() - offsetAttackHitboxY);
+	if (attackHitbox != nullptr)
+	{
+		float offsetX = facingLeft ?
+			-offsetAttackHitboxX :
+			offsetAttackHitboxX;
+
+		attackHitbox->SetPosition(
+			GetPosition().getX() + offsetX,
+			GetPosition().getY() - offsetAttackHitboxY
+		);
 	}
 }
 
