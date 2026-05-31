@@ -55,6 +55,7 @@ public:
 	bool teleportOn = false;
 	int selectedTeleportingLevel = 0;
 	SDL_Texture* teleportBg = nullptr;
+	int currentMission = 0;
 	Scene();
 
 	// Destructor
@@ -162,6 +163,11 @@ private:
 
 	//Funciones para el inventario
 	void CreateInventoryUI();
+
+	//Funciones misiones
+	void MissionUI();
+	void SetMissionUI();
+	SDL_Texture* missionTexture = nullptr;
 
 	// Texturas del inventario
 	SDL_Texture* invPaperCombined = nullptr;
@@ -285,6 +291,11 @@ public:
 
 	//Tarot bools
 	TarotCards cards;
+
+	//Misiones
+
+	ListaMisiones misiones;
+	bool list = false;
 
 	//dialogue movement restriction
 

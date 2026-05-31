@@ -125,6 +125,7 @@ bool Magician::Update(float dt) {
 			dialogueMagicianStart.BeginDialogue();
 		
 			Engine::GetInstance().scene->cards.push("The fool", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Fool.png"), nullptr);
+			Engine::GetInstance().scene->misiones.push("Talk with magician", Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Magician1.png"), Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Magician2.png"));
 		}
 		else if (dialogueMagicianStart.hasStarted && !dialogueMagicianStart.hasEnded && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
 			dialogueMagicianStart.NextDialogue();
@@ -148,6 +149,7 @@ bool Magician::Update(float dt) {
 				dialogueMagicianStart.Draw(dt);
 				if (dialogueMagicianStart.hasEnded) {
 					Engine::GetInstance().scene->hasTalkedMagician = true;
+					Engine::GetInstance().scene->misiones.Completed("Talk with magician");
 				}
 				return true;
 			}

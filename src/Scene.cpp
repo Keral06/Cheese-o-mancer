@@ -66,6 +66,10 @@ bool Scene::Update(float dt)
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
 		showUIDebug = !showUIDebug; 
 	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_N) == KEY_DOWN) {
+		list = !list;
+		SetMissionUI();
+	}
 	
 	switch (currentScene)
 	{
@@ -156,7 +160,13 @@ bool Scene::PostUpdate()
 	if (isPaused) {
 		UpdatePauseMenu();
 	}
-
+	if (misiones.Visualizada() == false && !someoneIsTalking) {
+	
+	
+		Engine::GetInstance().render->DrawTextureNoCamera(missionTexture, 520, 460, 200, 50);
+	
+	
+	}
 	switch (currentScene)
 	{
 	case SceneID::INTRO_SCREEN:
@@ -366,6 +376,20 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 		HandleStoreUIEvents(uiElement);
 		return true;
 	}
+
+	//HANDLE MISSION UI 65,66
+	if (uiElement->id == 65) {
+		currentMission++;
+		if (currentMission >= misiones.objetos.size()) currentMission = 0;
+		return true;
+	}
+	if (uiElement->id == 66) {
+		currentMission--;
+		if (currentMission < 0) currentMission = misiones.objetos.size() - 1;
+		return true;
+	}
+
+
 	switch (currentScene)
 	{
 	case SceneID::INTRO_SCREEN:
@@ -424,6 +448,7 @@ void Scene::LoadScene(SceneID newScene)
 		break;
 
 	case SceneID::IN_GAME:
+		
 		if (lastscene != SceneID::IN_GAME)
 		{
 			firstMapLoad = true;
@@ -1100,6 +1125,25 @@ void  Scene::PostUpdateLevel() {
 		
 		}
 	}
+
+	//MISSIONS
+
+	if (list && !someoneIsTalking ) {
+	
+	
+		if (misiones.objetos.size() > 0) {
+			SDL_Rect screenRect = { -10000, -10000, 50000, 50000 };
+			Engine::GetInstance().render->DrawRectangle(screenRect, 0, 0, 0, 150, true, false);
+			float w, h;
+			SDL_FRect centrar = { 0, 0, 1280, 720 };
+			SDL_GetTextureSize(misiones.objetos[currentMission].imagen, &w, &h);
+			Engine::GetInstance().render->DrawTextureNoCamera(misiones.objetos[currentMission].imagen, 370, 130, w/2, h/2);
+			misiones.objetos[currentMission].visualizada = true;
+		}
+	
+	
+	
+	}
 	if (showMap && map1Texture != nullptr)
 	{
 		SDL_FRect centrar = { 0, 0, 1280, 720 };
@@ -1406,6 +1450,7 @@ void Scene::HandleFinalWinUIEvents(UIElement* uiElement) {
 void Scene::LoadMap(std::string map)
 {
 	UnloadLevel();
+
 	Engine::GetInstance().entityManager->CleanUp();
 
 	if (map == "TEST_map_LV1_startRoom_01.tmx") {
@@ -1426,6 +1471,7 @@ void Scene::LoadMap(std::string map)
 	
 	isPaused = false;
 	CreatePauseUI();
+	MissionUI();
 	CreateTeleportUI();
 	if (map.find("LV2") != std::string::npos) {
 		CreateStoreLevel2();
@@ -1443,6 +1489,8 @@ void Scene::LoadMap(std::string map)
 	heart3Texture = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_Cheese3_01.png");
 	heart4Texture = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_Cheese4_01.png");
 	extraHeartTexture = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_CheeseExtra_01.png");
+
+	missionTexture = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_Mission_NotificationStart_.png");
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("assets/Maps/", map);
 
@@ -2146,3 +2194,34 @@ void Scene::HandleTeleportUIEvents(UIElement* uiElement) {
 //
 //	return 0;
 //}
+
+//MISSIONS
+
+void Scene::MissionUI() {
+	
+	arrowRight = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_BurronRight_.png");
+	arrowLeft = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_ButtonLeft_.png");
+	auto previousMission = Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 65, "",
+		{ 380, 350, 50, 50 }, this, SDL_Rect{ 0,0,0,0 },
+		arrowLeft, arrowLeft
+	);
+	if (previousMission) previousMission->visible = false;
+
+	auto nextMission = Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 66, "",
+		{ 850, 350, 50, 50 }, this, SDL_Rect{ 0,0,0,0 },
+		arrowRight, arrowRight
+	);
+	if (nextMission) nextMission->visible = false;
+
+}
+
+void Scene::SetMissionUI() {
+
+	for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
+		if (element->id ==65 || element->id ==66) {
+			element->visible = list;
+		}
+	}
+}

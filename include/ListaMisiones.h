@@ -29,4 +29,5 @@ public:
     void hasBeenSeen(std::string nom);
     void Completed(std::string nom);
     bool tieneObjeto(std::string nom);
+    bool Visualizada();
 };

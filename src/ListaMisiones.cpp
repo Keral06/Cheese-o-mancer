@@ -44,3 +44,16 @@ void ListaMisiones::hasBeenSeen(std::string nom) {// para cuando se ha visualiza
         }
     }
 }
+
+bool ListaMisiones::Visualizada() {
+
+    for (int j = 0; j < objetos.size(); j++) {
+        if (objetos[j].visualizada == false) {
+            return false;
+        }
+    }
+    return true;
+
+
+
+}

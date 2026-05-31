@@ -2807,6 +2807,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 					if (dialogue.hasEnded) {
 					
 						Engine::GetInstance().scene->hasTalkedHermit = true;
+						Engine::GetInstance().scene->misiones.push("Hermit", Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Botanist1.png"), Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Botanist2.png"));
+					
 					}
 					return true;
 				}
@@ -2935,7 +2937,10 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 					hasAllFinished.NextDialogue();
 					hasAllFinished.Draw(dt);
-					if (hasAllFinished.hasEnded) { Engine::GetInstance().scene->finishedmissionHermit = true; }
+					if (hasAllFinished.hasEnded) { Engine::GetInstance().scene->finishedmissionHermit = true;
+					Engine::GetInstance().scene->cards.push("Hermit", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Hermit.png"), nullptr);
+					Engine::GetInstance().scene->misiones.Completed("Hermit");
+					}
 					return true;
 				}
 				hasAllFinished.BeginDialogue();
@@ -3114,6 +3119,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 					if (dialogue.hasEnded) {
 
 						Engine::GetInstance().scene->hasTalkedWell = true;
+						Engine::GetInstance().scene->misiones.push("Well", Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_VoiceWell1.png"), Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_VoiceWell2.png"));
+
 					}
 					return true;
 				}
@@ -3168,8 +3175,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 					if (notAdvanced.hasEnded) {
 						Engine::GetInstance().scene->hasShownPoemToWell = true;
 						
-						Engine::GetInstance().scene->inventario.push("EmpressKey", Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemSacredSpringWater1_.png"), nullptr); //PLACEHOLDER
-
+						Engine::GetInstance().scene->misiones.Completed("Well");
 					}
 					return true;
 				}
@@ -3395,6 +3401,9 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 					if (dialogue.hasEnded) {
 
 						Engine::GetInstance().scene->talkedTiredPreacher = true;
+						Engine::GetInstance().scene->misiones.push("Psalms", Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Hierophant1.png"), Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Hierophant2.png"));
+						
+
 					}
 					return true;
 				}
@@ -3535,6 +3544,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 					SDL_Texture* help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
 					Engine::GetInstance().scene->inventario.push("EmpressKey1", help, nullptr);
+					Engine::GetInstance().scene->misiones.Completed("Psalms");
+					Engine::GetInstance().scene->cards.push("Hermit", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Hierophant.png"), nullptr);
 				}
 				return true;
 			}
@@ -3778,6 +3789,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 						if (dialogue.hasEnded) {
 
 							Engine::GetInstance().scene->hidingPlaceATM = 1;
+							Engine::GetInstance().scene->misiones.push("Timmy", Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_LittleFinley1.png"), Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_LittleFinley2.png"));
+
 						}
 						return true;
 					}
@@ -3803,6 +3816,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 						if (hasFinished.hasEnded) {
 
 							Engine::GetInstance().scene->hasTalkedToTimmyOnce = true;
+							Engine::GetInstance().scene->misiones.Completed("Timmy");
 						}
 						return true;
 					}
@@ -4150,6 +4164,9 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 						Engine::GetInstance().scene->talkedTwiceEmpress = true;
 						Engine::GetInstance().scene->EmpressTrustedDialogue = true;
+						Engine::GetInstance().scene->misiones.push("Empress", Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Queen1.png"), Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Queen1.png"));
+
+
 					}
 					return true;
 				}
@@ -4180,6 +4197,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 						Engine::GetInstance().scene->inventario.eliminarObjeto("Moldy");
 						Engine::GetInstance().scene->inventario.eliminarObjeto("Core");
 						Engine::GetInstance().scene->inventario.eliminarObjeto("Rusty");
+						Engine::GetInstance().scene->misiones.Completed("Empress");
+						Engine::GetInstance().scene->cards.push("Empress", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Empress.png"), nullptr);
 					}
 					return true;
 				}
@@ -4425,6 +4444,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 
 						Engine::GetInstance().scene->ratTalkedOnce = true;
+						Engine::GetInstance().scene->cards.push("Hermit", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Chariot.png"), nullptr);
+
 						
 					}
 					return true;
