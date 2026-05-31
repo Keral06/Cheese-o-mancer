@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.12.1" name="e_attack4_breakwall" tilewidth="1152" tileheight="1792" tilecount="40" columns="8">
- <image source="../../../../resources/spritesheets/Cheese Executoner/Nuevos en Grid/spritesheet ataque 4 break wall.png" width="9216" height="8960"/>
+<tileset version="1.2" tiledversion="1.3.1" name="Verdugo_Idle_Walk" tilewidth="640" tileheight="640" tilecount="48" columns="6">
+ <image source="Verdugo_Idle_Walk.png" width="3840" height="5120"/>
  <tile id="0">
   <properties>
-   <property name="loop" type="bool" value="false"/>
-   <property name="name" value="attack4_bw"/>
+   <property name="loop" type="bool" value="true"/>
+   <property name="name" value="idle"/>
   </properties>
   <animation>
    <frame tileid="0" duration="100"/>
@@ -35,13 +35,32 @@
    <frame tileid="25" duration="100"/>
    <frame tileid="26" duration="100"/>
    <frame tileid="27" duration="100"/>
-   <frame tileid="28" duration="100"/>
-   <frame tileid="29" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="30">
+  <properties>
+   <property name="loop" type="bool" value="true"/>
+   <property name="name" value="walk"/>
+  </properties>
+  <animation>
    <frame tileid="30" duration="100"/>
    <frame tileid="31" duration="100"/>
    <frame tileid="32" duration="100"/>
    <frame tileid="33" duration="100"/>
    <frame tileid="34" duration="100"/>
+   <frame tileid="35" duration="100"/>
+   <frame tileid="36" duration="100"/>
+   <frame tileid="37" duration="100"/>
+   <frame tileid="38" duration="100"/>
+   <frame tileid="39" duration="100"/>
+   <frame tileid="40" duration="100"/>
+   <frame tileid="41" duration="100"/>
+   <frame tileid="42" duration="100"/>
+   <frame tileid="43" duration="100"/>
+   <frame tileid="44" duration="100"/>
+   <frame tileid="45" duration="100"/>
+   <frame tileid="46" duration="100"/>
+   <frame tileid="47" duration="100"/>
   </animation>
  </tile>
 </tileset>

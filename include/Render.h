@@ -47,6 +47,8 @@ public:
 
 	float EaseInOut(float t);
 
+	void SetCameraFocusSmooth(float worldX, float worldY, float newZoom, float duration);
+
 public:
 
 	SDL_Renderer* renderer;
@@ -62,6 +64,20 @@ public:
 	float zoomDuration = 0.0f;
 
 	bool zooming = false;
+	bool cameraMoving = false;
+
+	float camStartX = 0.0f;
+	float camStartY = 0.0f;
+
+	float camTargetX = 0.0f;
+	float camTargetY = 0.0f;
+
+	float camStartZoom = 0.0f;
+	float camTargetZoom = 1.0f;
+
+	float camTime = 0.0f;
+	float camDuration = 1.0f;
+
 private:
 	bool vsync = false;
 	TTF_Font* font;

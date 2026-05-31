@@ -116,6 +116,26 @@ bool Render::Update(float dt)
 		float easedT = EaseInOut(t);
 		zoom = startZoom + (targetZoom - startZoom) * easedT;
 	}
+
+	if (cameraMoving)
+	{
+		camTime += dt;
+		float t = camTime / camDuration;
+
+		if (t >= 1.0f)
+		{
+			t = 1.0f;
+			cameraMoving = false;
+		}
+
+		float easedT = EaseInOut(t);
+
+		camera.x = camStartX + (camTargetX - camStartX) * easedT;
+		camera.y = camStartY + (camTargetY - camStartY) * easedT;
+
+		zoom = camStartZoom + (camTargetZoom - camStartZoom) * easedT;
+	}
+
 	return true;
 }
 
@@ -516,4 +536,24 @@ void Render::SetZoomSmooth(float newZoom, float duration)
 float Render::EaseInOut(float t)
 {
 	return t * t * (3.0f - 2.0f * t);
+}
+
+void Render::SetCameraFocusSmooth(float worldX, float worldY, float newZoom, float duration)
+{
+	int scale = Engine::GetInstance().window->GetScale();
+
+	// cámara actual en world space
+	camStartX = camera.x;
+	camStartY = camera.y;
+
+	camTargetX = -(worldX * scale - camera.w * 0.5f);
+	camTargetY = -(worldY * scale - camera.h * 0.5f);
+
+	camStartZoom = zoom;
+	camTargetZoom = newZoom;
+
+	camDuration = duration;
+	camTime = 0.0f;
+
+	cameraMoving = true;
 }
