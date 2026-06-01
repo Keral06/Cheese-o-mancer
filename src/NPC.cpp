@@ -4587,16 +4587,18 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		Dialogue GivesArticact;
 		Dialogue AfterMission;*/
 
-		Dialogue paperDialogue("assets/Dialogues/Hierophant/Hierophant_Inital_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_Inital_Names.txt"); //Primer Diálogo
+		Dialogue paperDialogue("assets/Dialogues/Mission_Sculptor/Sculptor_Initial_Dialogues.txt", "assets/Dialogues/Mission_Sculptor/Sculptor_Initial_Names.txt"); //Primer Diálogo
 		this->initial = paperDialogue;
-		Dialogue secondDialogue("assets/Dialogues/Hierophant/Hierophant_AllPsalms_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AllPsalms_Names.txt"); //Dialogo All psalms
+		Dialogue secondDialogue("assets/Dialogues/Mission_Sculptor/Sculptor_NotAdvanced_Dialogues.txt", "assets/Dialogues/Mission_Sculptor/Sculptor_NotAdvanced_Names.txt"); //No avanzado
 		this->notAdvanced = secondDialogue;
 
-		Dialogue percent("assets/Dialogues/Hierophant/Hierophant_AfterInital_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AfterInital_Names.txt"); //Dialogo despues de segunda interaccion
+		Dialogue percent("assets/Dialogues/Mission_Sculptor/Sculptor_MissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Sculptor/Sculptor_MissionCompleted_Names.txt"); //Acabado
 		this->completed = percent;
-		Dialogue lvll2("assets/Dialogues/Hierophant/Hierophant_AllPsalms_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AllPsalms_Names.txt"); //Whistleblower has read all psalms
+		Dialogue lvll2("assets/Dialogues/Mission_Sculptor/Sculptor_BringStatue_Dialogues.txt", "assets/Dialogues/Mission_Sculptor/Sculptor_BringStatue_Names.txt"); //Bring one statue
 		this->teleport = lvll2;
 
+		Dialogue aa("assets/Dialogues/Mission_Sculptor/Sculptor_AfterMissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Sculptor/Sculptor_AfterMissionCompleted_Names.txt"); //AfterFinished
+		this->AfterMission = aa;
 
 
 
@@ -4840,9 +4842,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			isGettingTouched = true;
 
 			break;
-		case ColliderType::CHEESEBALL:
-			Engine::GetInstance().scene->ratmissionfinished = true;
-			break;
+		
 		}
 
 	}
@@ -4862,14 +4862,14 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		Dialogue GivesArticact;
 		Dialogue AfterMission;*/
 
-		Dialogue paperDialogue("assets/Dialogues/Hierophant/Hierophant_Inital_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_Inital_Names.txt"); //Primer Diálogo
+		Dialogue paperDialogue("assets/Dialogues/Mission_Strength/Strength_Inital_Dialogues.txt", "assets/Dialogues/Mission_Strength/Strength_Inital_Names.txt"); //Primer Diálogo
 		this->initial = paperDialogue;
-		Dialogue secondDialogue("assets/Dialogues/Hierophant/Hierophant_AllPsalms_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AllPsalms_Names.txt"); //Dialogo All psalms
+		Dialogue secondDialogue("assets/Dialogues/Mission_Strength/Strength_NotAdvanced_Dialogues.txt", "assets/Dialogues/Mission_Strength/Strength_NotAdvanced_Names.txt"); //Dialogo All psalms
 		this->notAdvanced = secondDialogue;
 
-		Dialogue percent("assets/Dialogues/Hierophant/Hierophant_AfterInital_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AfterInital_Names.txt"); //Dialogo despues de segunda interaccion
+		Dialogue percent("assets/Dialogues/Mission_Strength/Strength_MissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Strength/Strength_MissionCompleted_Names.txt"); //Dialogo despues de segunda interaccion
 		this->completed = percent;
-		Dialogue lvll2("assets/Dialogues/Hierophant/Hierophant_AllPsalms_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AllPsalms_Names.txt"); //Whistleblower has read all psalms
+		Dialogue lvll2("assets/Dialogues/Mission_Strength/Strength_AfterMissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Strength/Strength_AfterMissionCompleted_Names.txt"); //Whistleblower has read all psalms
 		this->teleport = lvll2;
 
 
@@ -5067,7 +5067,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 			}
 
-			//opens teleport
+			//After finished
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->finishedMissionSculptor == true) {
 
 				if (teleport.hasStarted) {
@@ -5075,8 +5075,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 					teleport.NextDialogue();
 					teleport.Draw(dt);
 					if (teleport.hasEnded) {
-						// Abrir el menú de teletransporte después del diálogo
-						Engine::GetInstance().scene->SetTeleport(true);
+						
 					}
 					return true;
 				}
@@ -5114,9 +5113,6 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		case ColliderType::PLAYER:
 			isGettingTouched = true;
 
-			break;
-		case ColliderType::CHEESEBALL:
-			Engine::GetInstance().scene->ratmissionfinished = true;
 			break;
 		}
 
