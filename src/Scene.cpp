@@ -366,6 +366,12 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 			list = !list;
 			SetMissionUI();
 		
+		}if (cardsInventoryOn) {
+		
+			cardsInventoryOn = !cardsInventoryOn;
+			SetTarotUI(cardsInventoryOn);
+		
+		
 		}
 	
 		return true;
@@ -378,15 +384,38 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 			SetInventory(!inventoryOn);
 		
 		}
+		if (cardsInventoryOn) {
+
+			cardsInventoryOn = !cardsInventoryOn;
+			SetTarotUI(cardsInventoryOn);
+
+
+		}
+		return true;
+	}
+	if (uiElement->id == 69) {
+		cardsInventoryOn = !cardsInventoryOn;
+
+		SetTarotUI(cardsInventoryOn);
+		if (inventoryOn) {
+
+
+			SetInventory(!inventoryOn);
+
+		}
+		if (list) {
+		
+			list = !list;
+			SetMissionUI();
+		
+		
+		
+		}
 		return true;
 	}
 	if (uiElement->id == 45) {
 		cardsInventoryOn = !cardsInventoryOn;
-		for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
-			if (element->id == 46 || element->id == 47) {
-				element->visible = cardsInventoryOn;
-			}
-		}
+		SetTarotUI(cardsInventoryOn);
 		return true;
 	}
 
@@ -398,11 +427,13 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 	if (uiElement->id == 46) { 
 		currentCardIndex++;
 		if (currentCardIndex >= cards.cards.size()) currentCardIndex = 0;
+		Engine::GetInstance().render->DrawTextureNoCamera(cards.cards[currentCardIndex].imagen, 730, 162, 200, 400);
 		return true;
 	}
 	if (uiElement->id == 47) { 
 		currentCardIndex--;
 		if (currentCardIndex < 0) currentCardIndex = cards.cards.size() -1;
+		Engine::GetInstance().render->DrawTextureNoCamera(cards.cards[currentCardIndex].imagen, 730, 162, 200, 400);
 		return true;
 	}
 	if (uiElement->id == 48) {
@@ -845,6 +876,19 @@ void Scene::UpdateLevel(float dt) {
 			}
 		}
 	}
+	if (cardsInventoryOn) {
+		if (cardsBase != nullptr) {
+			Engine::GetInstance().render->DrawTextureNoCamera(cardsBase, 240, 60, 800, 600);
+		}
+
+		if (cards.cards.size() > 0) {
+
+
+			Engine::GetInstance().render->DrawTextureNoCamera(cards.cards[currentCardIndex].imagen, 730, 162, 200, 400);
+		}
+
+
+	}
 	if (isPaused||showHelp||inventoryOn) {
 		return;
 	}
@@ -1162,19 +1206,7 @@ void  Scene::PostUpdateLevel() {
 					Engine::GetInstance().render->DrawText(scoreText.c_str(), textX, textY, 0, 0, { 0, 0, 0, 255 });
 				}
 			}
-			if (cardsInventoryOn) {
-				if (cardsBase != nullptr) {
-					Engine::GetInstance().render->DrawTextureNoCamera(cardsBase, 240, 60, 800, 600);
-				}
-
-				if (cards.cards.size() > 0) {
-					
-				
-					Engine::GetInstance().render->DrawTextureNoCamera(cards.cards[currentCardIndex].imagen, 730, 162, 200, 400);
-				}
-
 			
-			}
 		
 		}
 	}
@@ -2296,18 +2328,28 @@ void Scene::InventariIconUI() {
 	misionesiconoclicado = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_Missions_Icon1.png");
 	misionesnoti = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_Missions_Icon2_notification.png");
 	misionesnoticlicado = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_Missions_Icon1_notification.png");
+
+	cardsIcon = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Tarot_InventoryItem1_.png");
+	cardsIcon2 = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Tarot_InventoryItem2_.png");
 	auto bag = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 67, "",
-		{ 1080, 540, 170, 170 }, this, SDL_Rect{ 0,0,0,0 },
+		{ 1110, 560, 160, 160 }, this, SDL_Rect{ 0,0,0,0 },
 		inventarioDrawing, inventarioclicado
 	);
 	if (bag) bag->visible = false;
 	auto libreta = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 68, "",
-		{ 970, 565, 120, 120 }, this, SDL_Rect{ 0,0,0,0 },
+		{ 1020, 590, 110, 110 }, this, SDL_Rect{ 0,0,0,0 },
 		misionesicono, misionesiconoclicado
 	);
+
+	auto tarot = Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 69, "",
+		{ 940, 600, 100, 100 }, this, SDL_Rect{ 0,0,0,0 },
+		cardsIcon, cardsIcon2
+	);
 	if (libreta) libreta->visible = false;
+	if (tarot) tarot->visible = false;
 	LOG("bag ptr = %p", bag);
 
 	LOG("TOTAL UI:");
@@ -2324,8 +2366,41 @@ void Scene::SetInventariIcon(bool on) {
 		LOG("ID = %d", e->id);
 	}
 	for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
-		if (element->id == 67 || element->id == 68) {
+		if (element->id == 67 || element->id == 68 || element->id == 69) {
 			element->visible = on;
 		}
+	}
+}
+
+//tarot Logic
+
+void Scene::TarotUI() {
+
+	arrowRight = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_BurronRight_.png");
+	arrowLeft = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_ButtonLeft_.png");
+	arrowRight2 = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_BurronRight2_.png");
+	arrowLeft2 = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_ButtonLeft2_.png");
+	cardsBase = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_Base_.png");
+	
+}
+
+void Scene::SetTarotUI(bool on) {
+	for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
+		if (element->id == 46 || element->id == 47) {
+			element->visible = cardsInventoryOn;
+		}
+	}
+	if (on) {
+		if (cardsBase != nullptr) {
+			Engine::GetInstance().render->DrawTextureNoCamera(cardsBase, 240, 60, 800, 600);
+		}
+
+		if (cards.cards.size() > 0) {
+
+
+			Engine::GetInstance().render->DrawTextureNoCamera(cards.cards[currentCardIndex].imagen, 730, 162, 200, 400);
+		}
+
+
 	}
 }

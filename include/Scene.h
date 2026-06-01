@@ -155,6 +155,14 @@ private:
 	void UpdateFinalWin(float dt);
 	void UnloadFinalWin();
 	void HandleFinalWinUIEvents(UIElement* uiElement);
+
+	//tarot
+
+	void TarotUI();
+
+	void SetTarotUI(bool aaa);
+
+	bool tarot = false;
 	
 
 	//Funciones Store
