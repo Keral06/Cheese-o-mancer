@@ -604,7 +604,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		}
 
 
-	}
+	
 	void WallBeforeWheel::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
