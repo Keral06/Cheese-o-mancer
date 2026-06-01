@@ -343,3 +343,26 @@ void Dialogue::AddName(const char* tsxPath) {
 
 
 }
+
+bool Dialogue::AvanzarDialogo(float dt) {
+	if (hasStarted) {
+
+		NextDialogue();
+		Draw(dt);
+		if (hasEnded) {
+
+			return true;
+		}
+		return false;
+	}
+	BeginDialogue();
+	Draw(dt);
+
+
+	return false;
+
+
+
+
+
+}

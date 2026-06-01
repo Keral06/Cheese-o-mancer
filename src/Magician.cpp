@@ -128,9 +128,9 @@ bool Magician::Update(float dt) {
 			Engine::GetInstance().scene->misiones.push("Talk with magician", Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Magician1.png"), Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Magician2.png"));
 		}
 		else if (dialogueMagicianStart.hasStarted && !dialogueMagicianStart.hasEnded && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
-			dialogueMagicianStart.NextDialogue();
+		
 
-			if (dialogueMagicianStart.hasEnded) {
+			if (dialogueMagicianStart.AvanzarDialogo(dt)) {
 				firstTime = false;
 
 			}
@@ -144,17 +144,12 @@ bool Magician::Update(float dt) {
 
 
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedMagician == false) {
-			if (dialogueMagicianStart.hasStarted) {
-				dialogueMagicianStart.NextDialogue();
-				dialogueMagicianStart.Draw(dt);
-				if (dialogueMagicianStart.hasEnded) {
+			
+				if (dialogueMagicianStart.AvanzarDialogo(dt)) {
 					Engine::GetInstance().scene->hasTalkedMagician = true;
 					Engine::GetInstance().scene->misiones.Completed("Talk with magician");
 				}
-				return true;
-			}
-			dialogueMagicianStart.BeginDialogue();
-			dialogueMagicianStart.Draw(dt);
+			
 			return true;
 		}
 		if (dialogueMagicianStart.hasStarted && !dialogueMagicianStart.hasEnded) {
@@ -164,13 +159,7 @@ bool Magician::Update(float dt) {
 
 
 		if (Engine::GetInstance().scene->cheese == false && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedMagician == true) {
-			if (BeforeCheese.hasStarted) {
-				BeforeCheese.NextDialogue();
-				BeforeCheese.Draw(dt);
-				return true;
-			}
-			BeforeCheese.BeginDialogue();
-			BeforeCheese.Draw(dt);
+			BeforeCheese.AvanzarDialogo(dt);
 			return true;
 		}
 		if (BeforeCheese.hasStarted && !BeforeCheese.hasEnded) {
@@ -179,13 +168,7 @@ bool Magician::Update(float dt) {
 		}
 
 		if (Engine::GetInstance().scene->cheese == true && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-			if (AfterCheese.hasStarted) {
-				AfterCheese.NextDialogue();
-				AfterCheese.Draw(dt);
-				return true;
-			}
-			AfterCheese.BeginDialogue();
-			AfterCheese.Draw(dt);
+			AfterCheese.AvanzarDialogo(dt);
 			return true;
 		}
 		if (AfterCheese.hasStarted && !AfterCheese.hasEnded) {

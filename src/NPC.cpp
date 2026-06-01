@@ -176,17 +176,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
-
-				if (dialogue.hasStarted) {
-
-					dialogue.NextDialogue();
-					dialogue.Draw(dt);
-					return true;
-				}
-				dialogue.BeginDialogue();
-				dialogue.Draw(dt);
-
-
+				dialogue.AvanzarDialogo(dt);
 				return true;
 			}
 			if (dialogue.hasStarted && !dialogue.hasEnded) {
@@ -305,15 +295,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 
-				if (dialogue.hasStarted) {
-
-					dialogue.NextDialogue();
-					dialogue.Draw(dt);
-					return true;
-				}
-				dialogue.BeginDialogue();
-				dialogue.Draw(dt);
-
+				dialogue.AvanzarDialogo(dt);
 
 				return true;
 			}
@@ -432,15 +414,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 
-				if (dialogue.hasStarted) {
-
-					dialogue.NextDialogue();
-					dialogue.Draw(dt);
-					return true;
-				}
-				dialogue.BeginDialogue();
-				dialogue.Draw(dt);
-
+				dialogue.AvanzarDialogo(dt);
 
 				return true;
 			}
@@ -560,15 +534,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->cheese == true) {
 
 
-				if (dialogue.hasStarted) {
-
-					dialogue.NextDialogue();
-					dialogue.Draw(dt);
-					return true;
-				}
-				dialogue.BeginDialogue();
-				dialogue.Draw(dt);
-
+				dialogue.AvanzarDialogo(dt);
 
 				return true;
 			}
@@ -691,15 +657,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 
-				if (dialogue.hasStarted) {
-
-					dialogue.NextDialogue();
-					dialogue.Draw(dt);
-					return true;
-				}
-				dialogue.BeginDialogue();
-				dialogue.Draw(dt);
-
+				dialogue.AvanzarDialogo(dt);
 
 				return true;
 			}
@@ -819,15 +777,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 
-				if (dialogue.hasStarted) {
-
-					dialogue.NextDialogue();
-					dialogue.Draw(dt);
-					return true;
-				}
-				dialogue.BeginDialogue();
-				dialogue.Draw(dt);
-
+				dialogue.AvanzarDialogo(dt);
 
 				return true;
 			}
@@ -947,16 +897,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
-
-				if (dialogue.hasStarted) {
-
-					dialogue.NextDialogue();
-					dialogue.Draw(dt);
-					return true;
-				}
-				dialogue.BeginDialogue();
-				dialogue.Draw(dt);
-
+				dialogue.AvanzarDialogo(dt);
 
 				return true;
 			}
@@ -1076,16 +1017,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
-
-				if (dialogue.hasStarted) {
-
-					dialogue.NextDialogue();
-					dialogue.Draw(dt);
-					return true;
-				}
-				dialogue.BeginDialogue();
-				dialogue.Draw(dt);
-
+				dialogue.AvanzarDialogo(dt);
 
 				return true;
 			}
@@ -1204,16 +1136,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
-
-				if (dialogue.hasStarted) {
-
-					dialogue.NextDialogue();
-					dialogue.Draw(dt);
-					return true;
-				}
-				dialogue.BeginDialogue();
-				dialogue.Draw(dt);
-
+				dialogue.AvanzarDialogo(dt);
 
 				return true;
 			}
@@ -1333,17 +1256,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
-
-				if (dialogue.hasStarted) {
-
-					dialogue.NextDialogue();
-					dialogue.Draw(dt);
-					return true;
-				}
-				dialogue.BeginDialogue();
-				dialogue.Draw(dt);
-
-
+				dialogue.AvanzarDialogo(dt);
 				return true;
 			}
 			if (dialogue.hasStarted && !dialogue.hasEnded) {
@@ -1462,16 +1375,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
-
-				if (dialogue.hasStarted) {
-
-					dialogue.NextDialogue();
-					dialogue.Draw(dt);
-					return true;
-				}
-				dialogue.BeginDialogue();
-				dialogue.Draw(dt);
-
+				dialogue.AvanzarDialogo(dt);
 
 				return true;
 			}
@@ -1590,15 +1494,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 
-				if (dialogue.hasStarted) {
-
-					dialogue.NextDialogue();
-					dialogue.Draw(dt);
-					return true;
-				}
-				dialogue.BeginDialogue();
-				dialogue.Draw(dt);
-
+				dialogue.AvanzarDialogo(dt);
 
 				return true;
 			}
@@ -1717,16 +1613,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
-
-				if (dialogue.hasStarted) {
-
-					dialogue.NextDialogue();
-					dialogue.Draw(dt);
-					return true;
-				}
-				dialogue.BeginDialogue();
-				dialogue.Draw(dt);
-
+				dialogue.AvanzarDialogo(dt);
 
 				return true;
 			}
@@ -1847,16 +1734,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 
-				if (dialogue.hasStarted) {
-
-					dialogue.NextDialogue();
-					dialogue.Draw(dt);
-					return true;
-				}
-				dialogue.BeginDialogue();
-				dialogue.Draw(dt);
-
-
+				dialogue.AvanzarDialogo(dt);
 				return true;
 			}
 			if (dialogue.hasStarted && !dialogue.hasEnded) {
@@ -1973,16 +1851,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
-
-				if (dialogue.hasStarted) {
-
-					dialogue.NextDialogue();
-					dialogue.Draw(dt);
-					return true;
-				}
-				dialogue.BeginDialogue();
-				dialogue.Draw(dt);
-
+				dialogue.AvanzarDialogo(dt);
 
 				return true;
 			}
@@ -2107,16 +1976,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			if (hasTalkedBefore && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
-				if (secondDialogue.hasStarted) {
-
-					secondDialogue.NextDialogue();
-					secondDialogue.Draw(dt);
-					
-					return true;
-				}
-				secondDialogue.BeginDialogue();
-				secondDialogue.Draw(dt);
-
+				dialogue.AvanzarDialogo(dt);
 
 				return true;
 			}
@@ -2263,17 +2123,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			if (hasTalkedBefore && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
-				if (secondDialogue.hasStarted) {
-
-					secondDialogue.NextDialogue();
-					secondDialogue.Draw(dt);
-
-					return true;
-				}
-				secondDialogue.BeginDialogue();
-				secondDialogue.Draw(dt);
-
-
+				secondDialogue.AvanzarDialogo(dt);
 				return true;
 			}
 			if (secondDialogue.hasStarted && !secondDialogue.hasEnded) {
@@ -2288,16 +2138,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 
-				if (dialogue.hasStarted) {
-
-					dialogue.NextDialogue();
-					dialogue.Draw(dt);
-					if (dialogue.hasEnded) { dialogue.CleanUp(); hasTalkedBefore = true; }
-					return true;
-				}
-				dialogue.BeginDialogue();
-				dialogue.Draw(dt);
-
+				dialogue.AvanzarDialogo(dt);
 
 				return true;
 			}
@@ -2415,16 +2256,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			if (hasTalkedBefore && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
-				if (secondDialogue.hasStarted) {
-
-					secondDialogue.NextDialogue();
-					secondDialogue.Draw(dt);
-
-					return true;
-				}
-				secondDialogue.BeginDialogue();
-				secondDialogue.Draw(dt);
-
+				secondDialogue.AvanzarDialogo(dt);
 
 				return true;
 			}
@@ -2439,17 +2271,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
-
-				if (dialogue.hasStarted) {
-
-					dialogue.NextDialogue();
-					dialogue.Draw(dt);
-					if (dialogue.hasEnded) { dialogue.CleanUp(); hasTalkedBefore = true; }
-					return true;
-				}
-				dialogue.BeginDialogue();
-				dialogue.Draw(dt);
-
+				dialogue.AvanzarDialogo(dt);
 
 				return true;
 			}
@@ -2574,31 +2396,13 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 
 				if (randomNumber == 5) {
-					if (PercentChance.hasStarted) {
-
-						PercentChance.NextDialogue();
-						PercentChance.Draw(dt);
-
-						return true;
-					}
-					PercentChance.BeginDialogue();
-					PercentChance.Draw(dt);
-
+					PercentChance.AvanzarDialogo(dt);
 
 					return true;
 				
 				
 				}
-				if (secondDialogue.hasStarted) {
-
-					secondDialogue.NextDialogue();
-					secondDialogue.Draw(dt);
-
-					return true;
-				}
-				secondDialogue.BeginDialogue();
-				secondDialogue.Draw(dt);
-
+				secondDialogue.AvanzarDialogo(dt);
 
 				return true;
 			}
@@ -2618,16 +2422,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 
-				if (dialogue.hasStarted) {
-
-					dialogue.NextDialogue();
-					dialogue.Draw(dt);
-					if (dialogue.hasEnded) { dialogue.CleanUp(); hasTalkedBefore = true; }
-					return true;
-				}
-				dialogue.BeginDialogue();
-				dialogue.Draw(dt);
-
+				dialogue.AvanzarDialogo(dt);
 
 				return true;
 			}
@@ -2796,27 +2591,22 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 				int i = 3383;
-			
+
 			}
-			
+
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedHermit == false) { //primer dialogo solo sale una vez
 
+				if (dialogue.AvanzarDialogo(dt) == true) {
 
-				if (dialogue.hasStarted) {
+					Engine::GetInstance().scene->hasTalkedHermit = true;
+					Engine::GetInstance().scene->misiones.push("Hermit", Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Botanist1.png"), Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Botanist2.png"));
 
-					dialogue.NextDialogue();
-					dialogue.Draw(dt);
-					if (dialogue.hasEnded) {
-					
-						Engine::GetInstance().scene->hasTalkedHermit = true;
-						Engine::GetInstance().scene->misiones.push("Hermit", Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Botanist1.png"), Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Botanist2.png"));
-					
-					}
-					return true;
+
 				}
-				dialogue.BeginDialogue();
-				dialogue.Draw(dt);
+
+
+				return true;
 
 
 				return true;
@@ -2829,21 +2619,14 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 
 			//dialogo si le ha traido el primer objeto
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && py!=nullptr && Engine::GetInstance().scene->inventario.tieneObjeto("SpringWater") && Engine::GetInstance().scene->springWaterHermit == false) { //primer dialogo solo sale una vez
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && py != nullptr && Engine::GetInstance().scene->inventario.tieneObjeto("SpringWater") && Engine::GetInstance().scene->springWaterHermit == false) { //primer dialogo solo sale una vez
+
+				if (level1.AvanzarDialogo(dt) == true) {
+					Engine::GetInstance().scene->springWaterHermit = true;
+					Engine::GetInstance().scene->inventario.eliminarObjeto("SpringWater");
 
 
-				if (level1.hasStarted) {
-
-					level1.NextDialogue();
-					level1.Draw(dt);
-					if (level1.hasEnded) { 
-						Engine::GetInstance().scene->springWaterHermit = true;
-						Engine::GetInstance().scene->inventario.eliminarObjeto("SpringWater");
-					}
-					return true;
 				}
-				level1.BeginDialogue();
-				level1.Draw(dt);
 
 
 				return true;
@@ -2855,21 +2638,14 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			}
 
 			//Dialogo si 2ndo objeto
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN  && py != nullptr && Engine::GetInstance().scene->inventario.tieneObjeto("HorseskinManure") == true && Engine::GetInstance().scene->HorsekinManureHermit == false) { //primer dialogo solo sale una vez
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && py != nullptr && Engine::GetInstance().scene->inventario.tieneObjeto("HorseskinManure") == true && Engine::GetInstance().scene->HorsekinManureHermit == false) { //primer dialogo solo sale una vez
 
+				if (level2.AvanzarDialogo(dt) == true) {
 
-				if (level2.hasStarted) {
-
-					level2.NextDialogue();
-					level2.Draw(dt);
-					if (level2.hasEnded) {
-						Engine::GetInstance().scene->HorsekinManureHermit = true;
-						Engine::GetInstance().scene->inventario.eliminarObjeto("HorseskinManure");
-					}
-					return true;
+					Engine::GetInstance().scene->HorsekinManureHermit = true;
+					Engine::GetInstance().scene->inventario.eliminarObjeto("HorseskinManure");
 				}
-				level2.BeginDialogue();
-				level2.Draw(dt);
+
 
 
 				return true;
@@ -2882,24 +2658,21 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 			//Dialogo si tercer objeto
 
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN  && py != nullptr && Engine::GetInstance().scene->inventario.tieneObjeto("Gargantuan") && Engine::GetInstance().scene->GargantuanHermit == false) { //primer dialogo solo sale una vez
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && py != nullptr && Engine::GetInstance().scene->inventario.tieneObjeto("Gargantuan") && Engine::GetInstance().scene->GargantuanHermit == false) { //primer dialogo solo sale una vez
 
 
-				if (level3.hasStarted) {
+				if (level3.AvanzarDialogo(dt) == true) {
 
-					level3.NextDialogue();
-					level3.Draw(dt);
-					if (level3.hasEnded) { 
-						Engine::GetInstance().scene->GargantuanHermit = true;
-						Engine::GetInstance().scene->inventario.eliminarObjeto("Gargantuan");
-					}
+
+					Engine::GetInstance().scene->GargantuanHermit = true;
+					Engine::GetInstance().scene->inventario.eliminarObjeto("Gargantuan");
+
+					return true;
+
+
+
 					return true;
 				}
-				level3.BeginDialogue();
-				level3.Draw(dt);
-
-
-				return true;
 			}
 			if (level3.hasStarted && !level3.hasEnded) {
 				level3.Draw(dt);
@@ -2907,20 +2680,16 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 			}
 
+
 			//Dialogo si los tiene todos
 
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN  && py != nullptr && Engine::GetInstance().scene->HorsekinManureHermit && Engine::GetInstance().scene->springWaterHermit && Engine::GetInstance().scene->GargantuanHermit && !Engine::GetInstance().scene->finishedmissionHermit) { //primer dialogo solo sale una vez
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && py != nullptr && Engine::GetInstance().scene->HorsekinManureHermit && Engine::GetInstance().scene->springWaterHermit && Engine::GetInstance().scene->GargantuanHermit && !Engine::GetInstance().scene->finishedmissionHermit) { //primer dialogo solo sale una vez
 
+				if (hasAll.AvanzarDialogo(dt)) {
 
-				if (hasAll.hasStarted) {
+					Engine::GetInstance().scene->finishedmissionHermit = true;
 
-					hasAll.NextDialogue();
-					hasAll.Draw(dt);
-					if (hasAll.hasEnded) { Engine::GetInstance().scene->finishedmissionHermit = true; }
-					return true;
 				}
-				hasAll.BeginDialogue();
-				hasAll.Draw(dt);
 
 
 				return true;
@@ -2931,26 +2700,22 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 			}
 
+
 			//Dialogo si ya ha acabado la mision
-			
+
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && hasAll.hasEnded && py != nullptr && Engine::GetInstance().scene->finishedmissionHermit) { //primer dialogo solo sale una vez
 
 
-				if (hasAllFinished.hasStarted) {
+				if (hasAllFinished.AvanzarDialogo(dt)) {
 
-					hasAllFinished.NextDialogue();
-					hasAllFinished.Draw(dt);
-					if (hasAllFinished.hasEnded) { Engine::GetInstance().scene->finishedmissionHermit = true;
+					Engine::GetInstance().scene->finishedmissionHermit = true;
 					Engine::GetInstance().scene->cards.push("Hermit", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Hermit.png"), nullptr);
 					Engine::GetInstance().scene->misiones.Completed("Hermit");
-					}
+
+
+
 					return true;
 				}
-				hasAllFinished.BeginDialogue();
-				hasAllFinished.Draw(dt);
-
-
-				return true;
 			}
 			if (hasAllFinished.hasStarted && !hasAllFinished.hasEnded) {
 				hasAllFinished.Draw(dt);
@@ -2959,21 +2724,12 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			}
 			//Dialogo si esta a medias 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedHermit == true) {
-				if (notAdvanced.hasStarted) {
-
-					notAdvanced.NextDialogue();
-					notAdvanced.Draw(dt);
-					if (notAdvanced.hasEnded) { return true; }
-					return true;
-				}
-				
-
-				notAdvanced.BeginDialogue();
-				notAdvanced.Draw(dt);
+				notAdvanced.AvanzarDialogo(dt);
 
 
-					return true;
-				
+
+				return true;
+
 
 			}
 			if (notAdvanced.hasStarted && !notAdvanced.hasEnded) {
@@ -2982,10 +2738,12 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 			}
 
-		}
-		
 
-		return true;
+
+		}
+				
+			
+		
 	}
 	bool Hermit::CleanUp() {
 		LOG("Unloading Hermit");
@@ -3115,20 +2873,17 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedWell == false) { //primer dialogo solo sale una vez
 
 
-				if (dialogue.hasStarted) {
-
-					dialogue.NextDialogue();
-					dialogue.Draw(dt);
-					if (dialogue.hasEnded) {
-
+				
+					if (dialogue.AvanzarDialogo(dt)) {
+					
 						Engine::GetInstance().scene->hasTalkedWell = true;
 						Engine::GetInstance().scene->misiones.push("Well", Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_VoiceWell1.png"), Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_VoiceWell2.png"));
 
 					}
+					
 					return true;
-				}
-				dialogue.BeginDialogue();
-				dialogue.Draw(dt);
+				
+			
 
 
 				return true;
@@ -3144,19 +2899,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->dawn == false && Engine::GetInstance().scene->night == false && Engine::GetInstance().scene->day == false && Engine::GetInstance().scene->dusk == false) { //primer dialogo solo sale una vez
 
 
-				if (level1.hasStarted) {
-
-					level1.NextDialogue();
-					level1.Draw(dt);
-					if (level1.hasEnded) {
-
-						
-					}
-					return true;
-				}
-				level1.BeginDialogue();
-				level1.Draw(dt);
-
+				level1.AvanzarDialogo(dt);
 
 				return true;
 			}
@@ -3170,21 +2913,15 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasAllPoems == true && Engine::GetInstance().scene->hasShownPoemToWell == false) { //primer dialogo solo sale una vez
 
+				if (notAdvanced.AvanzarDialogo(dt)) {
+				
+				
+					Engine::GetInstance().scene->hasShownPoemToWell = true;
 
-				if (notAdvanced.hasStarted) {
-
-					notAdvanced.NextDialogue();
-					notAdvanced.Draw(dt);
-					if (notAdvanced.hasEnded) {
-						Engine::GetInstance().scene->hasShownPoemToWell = true;
-						
-						Engine::GetInstance().scene->misiones.Completed("Well");
-					}
-					return true;
+					Engine::GetInstance().scene->misiones.Completed("Well");
+				
 				}
-				notAdvanced.BeginDialogue();
-				notAdvanced.Draw(dt);
-
+				
 
 				return true;
 			}
@@ -3199,19 +2936,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasAllPoems == true && Engine::GetInstance().scene->hasShownPoemToWell == true) { 
 
 
-				if (level2.hasStarted) {
-
-					level2.NextDialogue();
-					level2.Draw(dt);
-					if (level2.hasEnded) {
-						
-
-					}
-					return true;
-				}
-				level2.BeginDialogue();
-				level2.Draw(dt);
-
+				level2.AvanzarDialogo(dt);
 
 				return true;
 			}
@@ -3226,19 +2951,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) { 
 
 
-				if (level3.hasStarted) {
-
-					level3.NextDialogue();
-					level3.Draw(dt);
-					if (level3.hasEnded) {
-
-
-					}
-					return true;
-				}
-				level3.BeginDialogue();
-				level3.Draw(dt);
-
+				level3.AvanzarDialogo(dt);
 
 				return true;
 			}
@@ -3397,22 +3110,16 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->talkedTiredPreacher == false) { //primer dialogo solo sale una vez
 
 
-				if (dialogue.hasStarted) {
-
-					dialogue.NextDialogue();
-					dialogue.Draw(dt);
-					if (dialogue.hasEnded) {
+				
+					if (dialogue.AvanzarDialogo(dt)) {
 
 						Engine::GetInstance().scene->talkedTiredPreacher = true;
 						Engine::GetInstance().scene->misiones.push("Psalms", Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Hierophant1.png"), Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Hierophant2.png"));
 						
 
 					}
-					return true;
-				}
-				dialogue.BeginDialogue();
-				dialogue.Draw(dt);
-
+					
+				
 
 				return true;
 			}
@@ -3427,21 +3134,13 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasReadAllPsalms == true && Engine::GetInstance().scene->hasTalkedAboutPsalmsB4 == false) { //primer dialogo solo sale una vez
 
 
-				if (level1.hasStarted) {
-
-					level1.NextDialogue();
-					level1.Draw(dt);
-					if (level1.hasEnded) {
+				
+					if (level1.AvanzarDialogo(dt)) {
 
 						Engine::GetInstance().scene->hasTalkedAboutPsalmsB4 = true;
 					}
 					return true;
-				}
-				level1.BeginDialogue();
-				level1.Draw(dt);
-
-
-				return true;
+				
 			}
 			if (level1.hasStarted && !level1.hasEnded) {
 				level1.Draw(dt);
@@ -3454,18 +3153,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasReadAllPsalms == false) {
 
 
-				if (notAdvanced.hasStarted) {
-
-					notAdvanced.NextDialogue();
-					notAdvanced.Draw(dt);
-					if (notAdvanced.hasEnded) {
-
-
-					}
-					return true;
-				}
-				notAdvanced.BeginDialogue();
-				notAdvanced.Draw(dt);
+				notAdvanced.AvanzarDialogo(dt);
 
 
 				return true;
@@ -3485,20 +3173,13 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedAboutPsalmsB4 == true && Engine::GetInstance().scene->hasBeenWhistledblowed == false) {
 
 
-				if (level2.hasStarted) {
-
-				level2.NextDialogue();
-				level2.Draw(dt);
-				if (level2.hasEnded) {
+				
+				if (level2.AvanzarDialogo(dt)) {
 
 					Engine::GetInstance().scene->hasBeenWhistledblowed = true;
 				}
 				return true;
-			}
-			level2.BeginDialogue();
-			level2.Draw(dt);
-
-
+			
 			return true;
 			}
 			if (level2.hasStarted && !level2.hasEnded) {
@@ -3513,19 +3194,12 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasBeenWhistledblowed == true && Engine::GetInstance().scene->DefeatedHighPrietest == false) {
 
 
-			if (level3.hasStarted) {
-
-				level3.NextDialogue();
-				level3.Draw(dt);
-				if (level3.hasEnded) {
+			
+				if (level3.AvanzarDialogo(dt)) {
 
 					Engine::GetInstance().scene->hasBeenWhistledblowed = true;
 				}
-				return true;
-			}
-			level3.BeginDialogue();
-			level3.Draw(dt);
-
+			
 
 			return true;
 			}
@@ -3539,11 +3213,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasBeenWhistledblowed == true && Engine::GetInstance().scene->DefeatedHighPrietest == true) {
 
 
-			if (hasAll.hasStarted) {
-
-				hasAll.NextDialogue();
-				hasAll.Draw(dt);
-				if (hasAll.hasEnded) {
+				if (hasAll.AvanzarDialogo(dt)) {
 
 					SDL_Texture* help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
 					Engine::GetInstance().scene->inventario.push("EmpressKey1", help, nullptr);
@@ -3551,11 +3221,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 					Engine::GetInstance().scene->cards.push("Hermit", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Hierophant.png"), nullptr);
 				}
 				return true;
-			}
-			hasAll.BeginDialogue();
-			hasAll.Draw(dt);
-
-
+			
 			return true;
 			}
 			if (hasAll.hasStarted && !hasAll.hasEnded) {
@@ -3785,21 +3451,14 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hidingPlaceATM == 0 && Engine::GetInstance().scene->hasFoundTimmyThreeTimes == false) {
 
 
-					if (dialogue.hasStarted) {
-
-						dialogue.NextDialogue();
-						dialogue.Draw(dt);
-						if (dialogue.hasEnded) {
+					
+						if (dialogue.AvanzarDialogo(dt)) {
 
 							Engine::GetInstance().scene->hidingPlaceATM = 1;
 							Engine::GetInstance().scene->misiones.push("Timmy", Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_LittleFinley1.png"), Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_LittleFinley2.png"));
 
 						}
-						return true;
-					}
-					dialogue.BeginDialogue();
-					dialogue.Draw(dt);
-
+					
 
 					return true;
 				}
@@ -3812,20 +3471,13 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hidingPlaceATM == 0 && Engine::GetInstance().scene->hasFoundTimmyThreeTimes == true && Engine::GetInstance().scene->hasTalkedToTimmyOnce == false) {
 
 
-					if (hasFinished.hasStarted) {
-
-						hasFinished.NextDialogue();
-						hasFinished.Draw(dt);
-						if (hasFinished.hasEnded) {
+					
+						if (hasFinished.AvanzarDialogo(dt)) {
 
 							Engine::GetInstance().scene->hasTalkedToTimmyOnce = true;
 							Engine::GetInstance().scene->misiones.Completed("Timmy");
 						}
-						return true;
-					}
-					hasFinished.BeginDialogue();
-					hasFinished.Draw(dt);
-
+					
 
 					return true;
 				}
@@ -3837,20 +3489,12 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hidingPlaceATM == 0 && Engine::GetInstance().scene->hasFoundTimmyThreeTimes == true && Engine::GetInstance().scene->hasTalkedToTimmyOnce == true && Engine::GetInstance().scene->DefeatedHighPrietest == true && Engine::GetInstance().scene->talkedOnceAfterDefeatBoss == false) {
 
 
-					if (AfterBoss.hasStarted) {
-
-						AfterBoss.NextDialogue();
-						AfterBoss.Draw(dt);
-						if (AfterBoss.hasEnded) {
+					
+						if (AfterBoss.AvanzarDialogo(dt)) {
 
 							Engine::GetInstance().scene->talkedOnceAfterDefeatBoss = true;
 						}
-						return true;
-					}
-					AfterBoss.BeginDialogue();
-					AfterBoss.Draw(dt);
-
-
+					
 					return true;
 				}
 				if (AfterBoss.hasStarted && !AfterBoss.hasEnded) {
@@ -3862,20 +3506,12 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hidingPlaceATM == 0 && Engine::GetInstance().scene->hasFoundTimmyThreeTimes == true && Engine::GetInstance().scene->hasTalkedToTimmyOnce == true) {
 
 
-					if (hasAllFinished.hasStarted) {
-
-						hasAllFinished.NextDialogue();
-						hasAllFinished.Draw(dt);
-						if (hasAllFinished.hasEnded) {
+				
+						if (hasAllFinished.AvanzarDialogo(dt)) {
 
 							Engine::GetInstance().scene->hasTalkedToTimmyOnce = true;
 						}
-						return true;
-					}
-					hasAllFinished.BeginDialogue();
-					hasAllFinished.Draw(dt);
-
-
+					
 					return true;
 				}
 				if (hasAllFinished.hasStarted && !hasAllFinished.hasEnded) {
@@ -3898,20 +3534,11 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hidingPlaceATM == 1) {
 
 
-					if (dialogue.hasStarted) {
-
-						dialogue.NextDialogue();
-						dialogue.Draw(dt);
-						if (dialogue.hasEnded) {
+						if (dialogue.AvanzarDialogo(dt)) {
 
 							Engine::GetInstance().scene->hidingPlaceATM = 2;
 						}
-						return true;
-					}
-					dialogue.BeginDialogue();
-					dialogue.Draw(dt);
-
-
+					
 					return true;
 				}
 				if (dialogue.hasStarted && !dialogue.hasEnded) {
@@ -3925,21 +3552,13 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hidingPlaceATM == 2) {
 
 
-					if (dialogue.hasStarted) {
-
-						dialogue.NextDialogue();
-						dialogue.Draw(dt);
-						if (dialogue.hasEnded) {
+					
+						if (dialogue.AvanzarDialogo(dt)) {
 
 							Engine::GetInstance().scene->hidingPlaceATM = 3;
 							
 						}
-						return true;
-					}
-					dialogue.BeginDialogue();
-					dialogue.Draw(dt);
-
-
+					
 					return true;
 				}
 				if (dialogue.hasStarted && !dialogue.hasEnded) {
@@ -3952,20 +3571,13 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hidingPlaceATM == 3) {
 
 
-					if (dialogue.hasStarted) {
-
-						dialogue.NextDialogue();
-						dialogue.Draw(dt);
-						if (dialogue.hasEnded) {
+					
+						if (dialogue.AvanzarDialogo(dt)) {
 
 							Engine::GetInstance().scene->hidingPlaceATM = 0;
 							Engine::GetInstance().scene->hasFoundTimmyThreeTimes = true;
 						}
-						return true;
-					}
-					dialogue.BeginDialogue();
-					dialogue.Draw(dt);
-
+						
 
 					return true;
 				}
@@ -4158,11 +3770,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			//trusted dialogue
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasShownPoemToWell == true && Engine::GetInstance().scene->talkedTwiceEmpress == false) {
 
-				if (trusted.hasStarted) {
-
-					trusted.NextDialogue();
-					trusted.Draw(dt);
-					if (trusted.hasEnded) {
+				
+					if (trusted.AvanzarDialogo(dt)) {
 
 
 						Engine::GetInstance().scene->talkedTwiceEmpress = true;
@@ -4171,12 +3780,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 
 					}
-					return true;
-				}
-				trusted.BeginDialogue();
-				trusted.Draw(dt);
-
-
+					
 				return true;
 			}
 			if (trusted.hasStarted && !trusted.hasEnded) {
@@ -4187,11 +3791,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			//has artifact
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasShownPoemToWell == true && Engine::GetInstance().scene->hasAllFragments == true && !Engine::GetInstance().scene->inventario.tieneObjeto("Artifact") && Engine::GetInstance().scene->talkedTwiceEmpress == true) {
 
-				if (GivesArtifact.hasStarted) {
-
-					GivesArtifact.NextDialogue();
-					GivesArtifact.Draw(dt);
-					if (GivesArtifact.hasEnded) {
+			
+					if (GivesArtifact.AvanzarDialogo(dt)) {
 
 
 						SDL_Texture* help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
@@ -4203,11 +3804,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 						Engine::GetInstance().scene->misiones.Completed("Empress");
 						Engine::GetInstance().scene->cards.push("Empress", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Empress.png"), nullptr);
 					}
-					return true;
-				}
-				GivesArtifact.BeginDialogue();
-				GivesArtifact.Draw(dt);
-
+				
 
 				return true;
 			}
@@ -4221,20 +3818,12 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		//After Mission
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN  && Engine::GetInstance().scene->hasAllFragments == true && Engine::GetInstance().scene->inventario.tieneObjeto("Artifact")) {
 
-			if (AfterMission.hasStarted) {
-
-				AfterMission.NextDialogue();
-				AfterMission.Draw(dt);
-				if (AfterMission.hasEnded) {
+			
+				if (AfterMission.AvanzarDialogo(dt)) {
 
 
 				}
-				return true;
-			}
-			AfterMission.BeginDialogue();
-			AfterMission.Draw(dt);
-
-
+				
 			return true;
 		}
 		if (AfterMission.hasStarted && !AfterMission.hasEnded) {
@@ -4245,20 +3834,13 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		//regular
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasShownPoemToWell == false) {
 
-			if (regular.hasStarted) {
-
-				regular.NextDialogue();
-				regular.Draw(dt);
-				if (regular.hasEnded) {
+			
+				if (regular.AvanzarDialogo(dt)) {
 
 
 					Engine::GetInstance().scene->hasTalkedOnceEmpress = true;
 				}
-				return true;
-			}
-			regular.BeginDialogue();
-			regular.Draw(dt);
-
+				
 
 			return true;
 		}
@@ -4439,11 +4021,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			//INITIAL dialogue
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->ratTalkedOnce == false) {
 
-				if (initial.hasStarted) {
-
-					initial.NextDialogue();
-					initial.Draw(dt);
-					if (initial.hasEnded) {
+				
+					if (initial.AvanzarDialogo(dt)) {
 
 
 						Engine::GetInstance().scene->ratTalkedOnce = true;
@@ -4452,11 +4031,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 						
 					}
 					return true;
-				}
-				initial.BeginDialogue();
-				initial.Draw(dt);
-
-
+				
 				return true;
 			}
 			if (initial.hasStarted && !initial.hasEnded) {
@@ -4467,22 +4042,14 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			//Not advanced
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->ratmissionfinished==false) {
 
-				if (notAdvanced.hasStarted) {
-
-					notAdvanced.NextDialogue();
-					notAdvanced.Draw(dt);
-					if (notAdvanced.hasEnded) {
+				
+					if (notAdvanced.AvanzarDialogo(dt)) {
 
 
 					
 
 					}
-					return true;
-				}
-				notAdvanced.BeginDialogue();
-				notAdvanced.Draw(dt);
-
-
+					
 				return true;
 			}
 			if (notAdvanced.hasStarted && !notAdvanced.hasEnded) {
@@ -4493,22 +4060,14 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			//Completed mission
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->ratmissionfinished == true && Engine::GetInstance().scene->teleportUnlocked == false) {
 
-				if (completed.hasStarted) {
-
-					completed.NextDialogue();
-					completed.Draw(dt);
-					if (completed.hasEnded) {
+				
+					if (completed.AvanzarDialogo(dt)) {
 
 
 						Engine::GetInstance().scene->teleportUnlocked = true;
 
 					}
-					return true;
-				}
-				completed.BeginDialogue();
-				completed.Draw(dt);
-
-
+					
 				return true;
 			}
 			if (completed.hasStarted && !completed.hasEnded) {
@@ -4520,19 +4079,12 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			//opens teleport
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->ratmissionfinished == true && Engine::GetInstance().scene->teleportUnlocked == true) {
 
-				if (teleport.hasStarted) {
-
-					teleport.NextDialogue();
-					teleport.Draw(dt);
-					if (teleport.hasEnded) {
+				
+					if (teleport.AvanzarDialogo(dt)) {
 						// Abrir el menú de teletransporte después del diálogo
 						Engine::GetInstance().scene->SetTeleport(true);
 					}
-					return true;
-				}
-				teleport.BeginDialogue();
-				teleport.Draw(dt);
-
+					
 				return true;
 			}
 			if (teleport.hasStarted && !teleport.hasEnded) {
@@ -4716,11 +4268,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			//INITIAL dialogue
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedSculptor == false) {
 
-				if (initial.hasStarted) {
-
-					initial.NextDialogue();
-					initial.Draw(dt);
-					if (initial.hasEnded) {
+				
+					if (initial.AvanzarDialogo(dt)) {
 
 
 						Engine::GetInstance().scene->hasTalkedSculptor = true;
@@ -4728,11 +4277,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 
 					}
-					return true;
-				}
-				initial.BeginDialogue();
-				initial.Draw(dt);
-
+					
 
 				return true;
 			}
@@ -4744,22 +4289,14 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			//Not advanced
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->ratmissionfinished == false) {
 
-				if (notAdvanced.hasStarted) {
-
-					notAdvanced.NextDialogue();
-					notAdvanced.Draw(dt);
-					if (notAdvanced.hasEnded) {
+				
+					if (notAdvanced.AvanzarDialogo(dt)) {
 
 
 
 
 					}
-					return true;
-				}
-				notAdvanced.BeginDialogue();
-				notAdvanced.Draw(dt);
-
-
+					
 				return true;
 			}
 			if (notAdvanced.hasStarted && !notAdvanced.hasEnded) {
@@ -4770,21 +4307,15 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			//Completed mission
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->finishedMissionSculptor == false ) { //y mirar si tiene cadáveres???
 
-				if (completed.hasStarted) {
-
-					completed.NextDialogue();
-					completed.Draw(dt);
-					if (completed.hasEnded) {
+				
+					if (completed.AvanzarDialogo(dt)) {
 
 
 						Engine::GetInstance().scene->finishedMissionSculptor = true;
 
 					}
 					return true;
-				}
-				completed.BeginDialogue();
-				completed.Draw(dt);
-
+				
 
 				return true;
 			}
@@ -4797,18 +4328,12 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			//opens teleport
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN  && Engine::GetInstance().scene->finishedMissionSculptor == true) {
 
-				if (teleport.hasStarted) {
-
-					teleport.NextDialogue();
-					teleport.Draw(dt);
-					if (teleport.hasEnded) {
+				
+					if (teleport.AvanzarDialogo(dt)) {
 						// Abrir el menú de teletransporte después del diálogo
 						Engine::GetInstance().scene->SetTeleport(true);
 					}
-					return true;
-				}
-				teleport.BeginDialogue();
-				teleport.Draw(dt);
+				
 
 				return true;
 			}
@@ -4989,11 +4514,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			//INITIAL dialogue
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedSculptor == false) {
 
-				if (initial.hasStarted) {
-
-					initial.NextDialogue();
-					initial.Draw(dt);
-					if (initial.hasEnded) {
+			
+					if (initial.AvanzarDialogo(dt)) {
 
 
 						Engine::GetInstance().scene->hasTalkedSculptor = true;
@@ -5001,11 +4523,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 
 					}
-					return true;
-				}
-				initial.BeginDialogue();
-				initial.Draw(dt);
-
+					
 
 				return true;
 			}
@@ -5017,21 +4535,14 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			//Not advanced
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->ratmissionfinished == false) {
 
-				if (notAdvanced.hasStarted) {
-
-					notAdvanced.NextDialogue();
-					notAdvanced.Draw(dt);
-					if (notAdvanced.hasEnded) {
+				
+					if (notAdvanced.AvanzarDialogo(dt)) {
 
 
 
 
 					}
-					return true;
-				}
-				notAdvanced.BeginDialogue();
-				notAdvanced.Draw(dt);
-
+					
 
 				return true;
 			}
@@ -5043,21 +4554,14 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			//Completed mission
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->finishedMissionSculptor == false) { //y mirar si tiene cadáveres???
 
-				if (completed.hasStarted) {
-
-					completed.NextDialogue();
-					completed.Draw(dt);
-					if (completed.hasEnded) {
+				
+					if (completed.AvanzarDialogo(dt)) {
 
 
 						Engine::GetInstance().scene->finishedMissionSculptor = true;
 
 					}
-					return true;
-				}
-				completed.BeginDialogue();
-				completed.Draw(dt);
-
+					
 
 				return true;
 			}
@@ -5070,19 +4574,12 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			//After finished
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->finishedMissionSculptor == true) {
 
-				if (teleport.hasStarted) {
-
-					teleport.NextDialogue();
-					teleport.Draw(dt);
-					if (teleport.hasEnded) {
+			
+					if (teleport.AvanzarDialogo(dt)) {
 						
 					}
 					return true;
-				}
-				teleport.BeginDialogue();
-				teleport.Draw(dt);
-
-				return true;
+				
 			}
 			if (teleport.hasStarted && !teleport.hasEnded) {
 				teleport.Draw(dt);

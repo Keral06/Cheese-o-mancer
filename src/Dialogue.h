@@ -29,7 +29,7 @@ public:
 	bool PostUpdate();
 	void AddDialogue(const char* tsxPath);
 	void AddName(const char* tsxPath);
-
+	bool AvanzarDialogo(float dt);
 	void Draw(float dt);
 
 private:
