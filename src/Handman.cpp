@@ -133,8 +133,8 @@ bool HANDMAN::Update(float dt)
         }
         if (firstTime && dialogue.hasStarted && !dialogue.hasEnded) {
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-                dialogue.NextDialogue();
-                if (dialogue.hasEnded) {
+              
+                if (dialogue.AvanzarDialogo(dt)) {
                     firstTime = false;
                     if (!bossDefeated) {
                         dialogueHANDMAN.hasEnded = false;
@@ -168,8 +168,8 @@ bool HANDMAN::Update(float dt)
 
         if (bossDefeated && BeatBoss.hasStarted && !BeatBoss.hasEnded) {
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-                BeatBoss.NextDialogue();
-                if (BeatBoss.hasEnded) {
+               
+                if (BeatBoss.AvanzarDialogo(dt)) {
                     /*firstTimeBossKill = false;*/
                     isStoreOn = true;
                     moneyPlayer = Engine::GetInstance().scene->score;

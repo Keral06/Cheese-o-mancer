@@ -430,17 +430,11 @@ bool Pics::Update(float dt)
 			}
 			if (dialogue.hasStarted) {
 
-				dialogue.NextDialogue();
-				dialogue.Draw(dt);
-				if (dialogue.hasEnded) {
+				if (dialogue.AvanzarDialogo(dt)) {
 					CheckBoolOfPlayer();
 
 				}
-				return true;
 			}
-			dialogue.BeginDialogue();
-			dialogue.Draw(dt);
-
 
 			if (dialogue.hasStarted && !dialogue.hasEnded) {
 				dialogue.Draw(dt);
