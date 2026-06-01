@@ -352,6 +352,9 @@ public:
 		bool hasTalkedOnceEmpress = false;
 		bool talkedTwiceEmpress = false;
 
+		//Sculptor
+		bool hasTalkedSculptor = false;
+		bool finishedMissionSculptor = false;
 		//teleport variables
 
 		bool teleportUnlocked = false;

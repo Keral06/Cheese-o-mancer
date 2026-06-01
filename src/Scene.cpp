@@ -106,7 +106,7 @@ bool Scene::Update(float dt)
 		break;
 	case SceneID::IN_GAME:
 		UpdateLevel(dt);
-	
+		SetInventariIcon(true);
 		
 		break;
 	case SceneID::GAME_OVER:

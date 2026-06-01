@@ -1268,3 +1268,132 @@ public:
 
 	SDL_Texture* InteractTexture = nullptr;
 };
+
+
+//MISSION SCULPTOR
+
+class Knight : public NPC
+{
+public:
+	Knight();
+
+	virtual ~Knight();
+	bool Awake();
+	bool Start();
+	bool Update(float dt);
+	bool CleanUp();
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+	void Draw(float dt);
+
+
+public:
+
+
+private:
+
+
+
+
+
+
+
+
+private:
+	SDL_Texture* texture;
+	AnimationSet anims;
+	PhysBody* pbody;
+	int texW, texH;
+	const char* tsxPath;
+	std::string currentAnimName = "idle";
+
+	Dialogue initial;
+	Dialogue notAdvanced;
+	Dialogue completed;
+	Dialogue teleport;
+	Dialogue AfterMission;
+
+	bool finishedMission = false;
+	int isThereATM = false;
+
+
+	//Hermit bools
+	bool springWater = false;
+	bool HorsekinManure = false;
+	bool Gargantuan = false;
+
+public:
+	int coinFx;
+	int coinPickupFx;
+	int xInicial;
+	int yInicial;
+	int hidingPlace = 0;
+
+	bool isGettingTouched = false;
+	Player* py;
+
+	SDL_Texture* InteractTexture = nullptr;
+};
+//MISSION KNIGHT
+class Sculptor : public NPC
+{
+public:
+	Sculptor();
+
+	virtual ~Sculptor();
+	bool Awake();
+	bool Start();
+	bool Update(float dt);
+	bool CleanUp();
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+	void Draw(float dt);
+
+
+public:
+
+
+private:
+
+
+
+
+
+
+
+
+private:
+	SDL_Texture* texture;
+	AnimationSet anims;
+	PhysBody* pbody;
+	int texW, texH;
+	const char* tsxPath;
+	std::string currentAnimName = "idle";
+
+	Dialogue initial;
+	Dialogue notAdvanced;
+	Dialogue completed;
+	Dialogue teleport;
+	Dialogue AfterMission;
+
+	bool finishedMission = false;
+	int isThereATM = false;
+
+
+	//Hermit bools
+	bool springWater = false;
+	bool HorsekinManure = false;
+	bool Gargantuan = false;
+
+public:
+	int coinFx;
+	int coinPickupFx;
+	int xInicial;
+	int yInicial;
+	int hidingPlace = 0;
+
+	bool isGettingTouched = false;
+	Player* py;
+
+	SDL_Texture* InteractTexture = nullptr;
+};

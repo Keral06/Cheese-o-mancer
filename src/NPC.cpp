@@ -4577,3 +4577,553 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 
 	}
+
+	//MISSION SCULPTOR
+	Sculptor::Sculptor() :NPC(EntityType::NPC) {
+
+		/*Dialogue regular;
+		Dialogue trusted;
+		Dialogue scolding;
+		Dialogue GivesArticact;
+		Dialogue AfterMission;*/
+
+		Dialogue paperDialogue("assets/Dialogues/Hierophant/Hierophant_Inital_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_Inital_Names.txt"); //Primer Diálogo
+		this->initial = paperDialogue;
+		Dialogue secondDialogue("assets/Dialogues/Hierophant/Hierophant_AllPsalms_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AllPsalms_Names.txt"); //Dialogo All psalms
+		this->notAdvanced = secondDialogue;
+
+		Dialogue percent("assets/Dialogues/Hierophant/Hierophant_AfterInital_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AfterInital_Names.txt"); //Dialogo despues de segunda interaccion
+		this->completed = percent;
+		Dialogue lvll2("assets/Dialogues/Hierophant/Hierophant_AllPsalms_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AllPsalms_Names.txt"); //Whistleblower has read all psalms
+		this->teleport = lvll2;
+
+
+
+
+
+	}
+	Sculptor::~Sculptor()
+	{
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+	}
+
+
+	bool Sculptor::Awake() {
+		return true;
+	}
+	bool Sculptor::Start() {
+
+		std::unordered_map<int, std::string> aliases = {
+				  {0, "idle"},{15, "start"}, {30, "talk"},{45, "end"}
+		};
+		anims.LoadFromTSX("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.tsx", aliases);
+		anims.SetCurrent("idle");
+
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.png");
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
+
+		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
+		texW = 128;
+		texH = 128;
+		pbody = nullptr;
+		if (pbody == nullptr) {
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+		}
+
+
+		return true;
+	}
+	void Sculptor::Draw(float dt) {
+		if (texture == nullptr) { return; }
+		anims.Update(dt);
+		const SDL_Rect& animFrame = anims.GetCurrentFrame();
+
+		int x, y;
+		pbody->GetPosition(x, y);
+		position.setX((float)x);
+		position.setY((float)y);
+
+
+		Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
+
+	}
+	bool Sculptor::Update(float dt) {
+
+
+		if (!isGettingTouched) {
+			// Solo si no estaba ya en idle
+			if (currentAnimName != "idle") {
+				anims.SetCurrent("idle");
+				currentAnimName = "idle";
+			}
+		}
+		else {
+			// Si tocamos la E estando en idle, "start"
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && currentAnimName == "idle") {
+				anims.SetCurrent("start");
+				currentAnimName = "start";
+			}
+			// Si ya no estamos hablando, "end"
+			else if (currentAnimName == "talk" && !Engine::GetInstance().scene->someoneIsTalking) {
+				anims.SetCurrent("end");
+				currentAnimName = "end";
+			}
+
+			// Transiciones cuando terminan los fotogramas
+			if (currentAnimName == "start" && anims.HasFinished()) {
+				anims.SetCurrent("talk");
+				currentAnimName = "talk";
+			}
+			else if (currentAnimName == "end" && anims.HasFinished()) {
+				anims.SetCurrent("idle");
+				currentAnimName = "idle";
+			}
+		}
+		Draw(dt);
+
+
+		//draw
+		anims.Update(dt);
+		if (texture != nullptr) {
+			SDL_Rect rect = anims.GetCurrentFrame();
+			int drawX = (int)position.getX() - (texW / 2);
+			int drawY = (int)position.getY() - (texH / 2);
+			Engine::GetInstance().render->DrawTexture(texture, drawX, drawY, &rect);
+		}
+
+		if (isGettingTouched) {
+			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+
+
+
+			//INITIAL dialogue
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedSculptor == false) {
+
+				if (initial.hasStarted) {
+
+					initial.NextDialogue();
+					initial.Draw(dt);
+					if (initial.hasEnded) {
+
+
+						Engine::GetInstance().scene->hasTalkedSculptor = true;
+						
+
+
+					}
+					return true;
+				}
+				initial.BeginDialogue();
+				initial.Draw(dt);
+
+
+				return true;
+			}
+			if (initial.hasStarted && !initial.hasEnded) {
+				initial.Draw(dt);
+				return true;
+
+			}
+			//Not advanced
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->ratmissionfinished == false) {
+
+				if (notAdvanced.hasStarted) {
+
+					notAdvanced.NextDialogue();
+					notAdvanced.Draw(dt);
+					if (notAdvanced.hasEnded) {
+
+
+
+
+					}
+					return true;
+				}
+				notAdvanced.BeginDialogue();
+				notAdvanced.Draw(dt);
+
+
+				return true;
+			}
+			if (notAdvanced.hasStarted && !notAdvanced.hasEnded) {
+				notAdvanced.Draw(dt);
+				return true;
+
+			}
+			//Completed mission
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->finishedMissionSculptor == false ) { //y mirar si tiene cadáveres???
+
+				if (completed.hasStarted) {
+
+					completed.NextDialogue();
+					completed.Draw(dt);
+					if (completed.hasEnded) {
+
+
+						Engine::GetInstance().scene->finishedMissionSculptor = true;
+
+					}
+					return true;
+				}
+				completed.BeginDialogue();
+				completed.Draw(dt);
+
+
+				return true;
+			}
+			if (completed.hasStarted && !completed.hasEnded) {
+				completed.Draw(dt);
+				return true;
+
+			}
+
+			//opens teleport
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN  && Engine::GetInstance().scene->finishedMissionSculptor == true) {
+
+				if (teleport.hasStarted) {
+
+					teleport.NextDialogue();
+					teleport.Draw(dt);
+					if (teleport.hasEnded) {
+						// Abrir el menú de teletransporte después del diálogo
+						Engine::GetInstance().scene->SetTeleport(true);
+					}
+					return true;
+				}
+				teleport.BeginDialogue();
+				teleport.Draw(dt);
+
+				return true;
+			}
+			if (teleport.hasStarted && !teleport.hasEnded) {
+				teleport.Draw(dt);
+				return true;
+
+			}
+		}
+
+
+
+		return true;
+	}
+	bool Sculptor::CleanUp() {
+		LOG("Unloading Hermit");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void Sculptor::OnCollision(PhysBody* physA, PhysBody* physB) {
+
+		Player* pp = static_cast<Player*>(physB->listener);
+		py = pp;
+		switch (physB->ctype)
+		{
+		case ColliderType::PLAYER:
+			isGettingTouched = true;
+
+			break;
+		case ColliderType::CHEESEBALL:
+			Engine::GetInstance().scene->ratmissionfinished = true;
+			break;
+		}
+
+	}
+	void Sculptor::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+		isGettingTouched = false;
+
+
+
+	}
+
+	//MISSION KNIGHT
+	Knight::Knight() :NPC(EntityType::NPC) {
+
+		/*Dialogue regular;
+		Dialogue trusted;
+		Dialogue scolding;
+		Dialogue GivesArticact;
+		Dialogue AfterMission;*/
+
+		Dialogue paperDialogue("assets/Dialogues/Hierophant/Hierophant_Inital_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_Inital_Names.txt"); //Primer Diálogo
+		this->initial = paperDialogue;
+		Dialogue secondDialogue("assets/Dialogues/Hierophant/Hierophant_AllPsalms_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AllPsalms_Names.txt"); //Dialogo All psalms
+		this->notAdvanced = secondDialogue;
+
+		Dialogue percent("assets/Dialogues/Hierophant/Hierophant_AfterInital_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AfterInital_Names.txt"); //Dialogo despues de segunda interaccion
+		this->completed = percent;
+		Dialogue lvll2("assets/Dialogues/Hierophant/Hierophant_AllPsalms_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AllPsalms_Names.txt"); //Whistleblower has read all psalms
+		this->teleport = lvll2;
+
+
+
+
+
+	}
+	Knight::~Knight()
+	{
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+	}
+
+
+	bool Knight::Awake() {
+		return true;
+	}
+	bool Knight::Start() {
+
+		std::unordered_map<int, std::string> aliases = {
+				  {0, "idle"},{15, "start"}, {30, "talk"},{45, "end"}
+		};
+		anims.LoadFromTSX("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.tsx", aliases);
+		anims.SetCurrent("idle");
+
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.png");
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
+
+		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
+		texW = 128;
+		texH = 128;
+		pbody = nullptr;
+		if (pbody == nullptr) {
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+		}
+
+
+		return true;
+	}
+	void Knight::Draw(float dt) {
+		if (texture == nullptr) { return; }
+		anims.Update(dt);
+		const SDL_Rect& animFrame = anims.GetCurrentFrame();
+
+		int x, y;
+		pbody->GetPosition(x, y);
+		position.setX((float)x);
+		position.setY((float)y);
+
+
+		Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
+
+	}
+	bool Knight::Update(float dt) {
+
+
+		if (!isGettingTouched) {
+			// Solo si no estaba ya en idle
+			if (currentAnimName != "idle") {
+				anims.SetCurrent("idle");
+				currentAnimName = "idle";
+			}
+		}
+		else {
+			// Si tocamos la E estando en idle, "start"
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && currentAnimName == "idle") {
+				anims.SetCurrent("start");
+				currentAnimName = "start";
+			}
+			// Si ya no estamos hablando, "end"
+			else if (currentAnimName == "talk" && !Engine::GetInstance().scene->someoneIsTalking) {
+				anims.SetCurrent("end");
+				currentAnimName = "end";
+			}
+
+			// Transiciones cuando terminan los fotogramas
+			if (currentAnimName == "start" && anims.HasFinished()) {
+				anims.SetCurrent("talk");
+				currentAnimName = "talk";
+			}
+			else if (currentAnimName == "end" && anims.HasFinished()) {
+				anims.SetCurrent("idle");
+				currentAnimName = "idle";
+			}
+		}
+		Draw(dt);
+
+
+		//draw
+		anims.Update(dt);
+		if (texture != nullptr) {
+			SDL_Rect rect = anims.GetCurrentFrame();
+			int drawX = (int)position.getX() - (texW / 2);
+			int drawY = (int)position.getY() - (texH / 2);
+			Engine::GetInstance().render->DrawTexture(texture, drawX, drawY, &rect);
+		}
+
+		if (isGettingTouched) {
+			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+
+
+
+			//INITIAL dialogue
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedSculptor == false) {
+
+				if (initial.hasStarted) {
+
+					initial.NextDialogue();
+					initial.Draw(dt);
+					if (initial.hasEnded) {
+
+
+						Engine::GetInstance().scene->hasTalkedSculptor = true;
+
+
+
+					}
+					return true;
+				}
+				initial.BeginDialogue();
+				initial.Draw(dt);
+
+
+				return true;
+			}
+			if (initial.hasStarted && !initial.hasEnded) {
+				initial.Draw(dt);
+				return true;
+
+			}
+			//Not advanced
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->ratmissionfinished == false) {
+
+				if (notAdvanced.hasStarted) {
+
+					notAdvanced.NextDialogue();
+					notAdvanced.Draw(dt);
+					if (notAdvanced.hasEnded) {
+
+
+
+
+					}
+					return true;
+				}
+				notAdvanced.BeginDialogue();
+				notAdvanced.Draw(dt);
+
+
+				return true;
+			}
+			if (notAdvanced.hasStarted && !notAdvanced.hasEnded) {
+				notAdvanced.Draw(dt);
+				return true;
+
+			}
+			//Completed mission
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->finishedMissionSculptor == false) { //y mirar si tiene cadáveres???
+
+				if (completed.hasStarted) {
+
+					completed.NextDialogue();
+					completed.Draw(dt);
+					if (completed.hasEnded) {
+
+
+						Engine::GetInstance().scene->finishedMissionSculptor = true;
+
+					}
+					return true;
+				}
+				completed.BeginDialogue();
+				completed.Draw(dt);
+
+
+				return true;
+			}
+			if (completed.hasStarted && !completed.hasEnded) {
+				completed.Draw(dt);
+				return true;
+
+			}
+
+			//opens teleport
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->finishedMissionSculptor == true) {
+
+				if (teleport.hasStarted) {
+
+					teleport.NextDialogue();
+					teleport.Draw(dt);
+					if (teleport.hasEnded) {
+						// Abrir el menú de teletransporte después del diálogo
+						Engine::GetInstance().scene->SetTeleport(true);
+					}
+					return true;
+				}
+				teleport.BeginDialogue();
+				teleport.Draw(dt);
+
+				return true;
+			}
+			if (teleport.hasStarted && !teleport.hasEnded) {
+				teleport.Draw(dt);
+				return true;
+
+			}
+		}
+
+
+
+		return true;
+	}
+	bool Knight::CleanUp() {
+		LOG("Unloading Hermit");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+	void Knight::OnCollision(PhysBody* physA, PhysBody* physB) {
+
+		Player* pp = static_cast<Player*>(physB->listener);
+		py = pp;
+		switch (physB->ctype)
+		{
+		case ColliderType::PLAYER:
+			isGettingTouched = true;
+
+			break;
+		case ColliderType::CHEESEBALL:
+			Engine::GetInstance().scene->ratmissionfinished = true;
+			break;
+		}
+
+	}
+	void Knight::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+		isGettingTouched = false;
+
+
+
+	}
