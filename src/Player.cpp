@@ -1,4 +1,4 @@
-
+ï»¿
 // =====================
 // PLAYER IMPLEMENTATION
 // =====================
@@ -359,7 +359,7 @@ void Player::Move() {
 		// SOBRE QUESO
 		if (isMounted)
 		{
-			return; // aquí sí puedes cortar si quieres
+			return; // aquÃ­ sÃ­ puedes cortar si quieres
 		}
 		// SUELO NORMAL
 		else
@@ -410,7 +410,7 @@ void Player::Jump() {
 	bool spacePressed = Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN;
 	//LOG("Space pressed");
 
-	bool canFirstJump = spacePressed && !isJumping && isCollidedFloor && !godMode; // seguido lo que propuso el profesor, añadido canFirstJump y Can second jump para acortar codigo
+	bool canFirstJump = spacePressed && !isJumping && isCollidedFloor && !godMode; // seguido lo que propuso el profesor, aÃ±adido canFirstJump y Can second jump para acortar codigo
 	bool canSecondJump = spacePressed && isJumping && !secondJump && !godMode;
 	/*if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping == false && !godMode && (isCollidedFloor)|| Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping && !secondJump && !godMode)) {
 		Engine::GetInstance().audio->PlayFx(jumpfx);
@@ -577,7 +577,8 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 	{
 		if (other == ColliderType::ENEMY)
 		{
-			/*if (!hitboxActive || hasHit) return;*/
+			// âœ… Verificaciones
+			if (!hitboxActive || hasHit) return;
 
 			Enemy* e = static_cast<Enemy*>(physB->listener);
 			if (e)
@@ -914,18 +915,18 @@ void Player::HandleAttack() {
 		}
 		else
 		{
-			// Guardamos el siguiente ataque en buffer
 			bufferedAttack = true;
 		}
 	}
 
-	// SI ESTAMOS ATACANDO
 	if (isAttacking)
 	{
 		if (currentAnimSet->HasFinished())
 		{
 			lastAttackTime = now;
 			hitboxActive = false;
+			hasHit = false;
+
 			if (bufferedAttack)
 			{
 				bufferedAttack = false;
@@ -934,7 +935,7 @@ void Player::HandleAttack() {
 				if (attackCombo > 3) attackCombo = 1;
 
 				StartAttack(attackCombo);
-				
+
 			}
 			else
 			{
@@ -982,18 +983,15 @@ void Player::StartAttack(int combo)
 	case 3:
 		currentAnimSet->SetCurrent("attack3");
 		currentAnimSet->Resets();
-		attackfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Jester/Jester_ataque3.wav"); //NECESSITA DELAY EN EL AUDIO (audio especific per aquest atac)
+		attackfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Jester/Jester_ataque3.wav");
 		Engine::GetInstance().audio->PlayFx(attackfx);
 		break;
 	}
 
-
 	hasHit = false;
 	hitboxActive = true;
-	
 
 	LOG("Player attack start combo %d", combo);
-	LOG("Start attack combo %d", combo);
 }
 
 void Player::UpdateAttackHitbox()
@@ -1154,7 +1152,7 @@ void Player::HandleMountedMovement()
 		{
 			waitingAttackAnimEnd = true;
 
-			// forzar animación attack3
+			// forzar animaciÃ³n attack3
 			currentAnimSet = &anims3x4;
 			texture = texture3x4;
 			currentAnimSet->SetCurrent("attack3");
@@ -1179,7 +1177,7 @@ void Player::DismountAndLaunch()
 	mountedBall->pbody->GetPosition(x, y);
 	SetPosition(Vector2D(x, y - mountedBall->radius - texH));
 
-	// Lanzar bola en parábola
+	// Lanzar bola en parÃ¡bola
 	float forceX = facingLeft ? -2000.0f : 2000.0f;
 	float forceY = -6.0f;
 
@@ -1190,7 +1188,7 @@ void Player::DismountAndLaunch()
 		true
 	);
 
-	// romper vínculo
+	// romper vÃ­nculo
 	mountedBall->ismounted = false;
 	mountedBall = nullptr;
 	isMounted = false;
