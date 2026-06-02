@@ -22,25 +22,83 @@ void Animation::Reset() {
 
 bool Animation::HasFinishedOnce() const { return finishedOnce_ && !loop_; }
 
+void Animation::ResetReverse()
+{
+    if (frames_.empty())
+        return;
+
+    currentIndex_ = (int)frames_.size() - 1;
+
+    timeInFrameMs_ = 0;
+
+    finishedOnce_ = false;
+
+    reverse_ = true;
+}
+
 void Animation::Update(float dt) {
-    if (frames_.empty()) return;
+    if (frames_.empty())
+        return;
 
-    timeInFrameMs_ += static_cast<int>(dt);
+    timeInFrameMs_ += static_cast<int>(dt) * speed_;
 
-    while (timeInFrameMs_ >= frames_[currentIndex_].durationMs) {
+    while (timeInFrameMs_ >= frames_[currentIndex_].durationMs)
+    {
         timeInFrameMs_ -= frames_[currentIndex_].durationMs;
 
-        if (currentIndex_ + 1 < static_cast<int>(frames_.size())) {
-            ++currentIndex_;
-        }
-        else {
-            if (loop_) {
-                currentIndex_ = 0;
+        // =========================
+        // FORWARD
+        // =========================
+
+        if (!reverse_)
+        {
+            if (currentIndex_ + 1 < (int)frames_.size())
+            {
+                currentIndex_++;
             }
-            else {
-                finishedOnce_ = true;
-                currentIndex_ = static_cast<int>(frames_.size()) - 1;
-                break;
+            else
+            {
+                if (loop_)
+                {
+                    currentIndex_ = 0;
+                }
+                else
+                {
+                    finishedOnce_ = true;
+
+                    currentIndex_ =
+                        (int)frames_.size() - 1;
+
+                    break;
+                }
+            }
+        }
+
+        // =========================
+        // REVERSE
+        // =========================
+
+        else
+        {
+            if (currentIndex_ > 0)
+            {
+                currentIndex_--;
+            }
+            else
+            {
+                if (loop_)
+                {
+                    currentIndex_ =
+                        (int)frames_.size() - 1;
+                }
+                else
+                {
+                    finishedOnce_ = true;
+
+                    currentIndex_ = 0;
+
+                    break;
+                }
             }
         }
     }
@@ -56,6 +114,16 @@ bool Animation::IsAtLastFrame() const {
 }
 
 int Animation::GetFrameCount() const { return static_cast<int>(frames_.size()); }
+
+int Animation::GetCurrentFrameIndex() const
+{
+    return currentIndex_;
+}
+
+void Animation::SetReverse(bool v)
+{
+    reverse_ = v;
+}
 
 // ---------- AnimationSet ----------
 
@@ -145,6 +213,16 @@ bool AnimationSet::LoadFromTSX(const char* tsxPath,
     return !clips_.empty();
 }
 
+int AnimationSet::GetCurrentFrameIndex() const
+{
+    auto it = clips_.find(currentName_);
+
+    if (it == clips_.end())
+        return 0;
+
+    return it->second.GetCurrentFrameIndex();
+}
+
 void AnimationSet::SetCurrent(const std::string& name) {
     if (currentName_ == name) return; // no change
     if (!Has(name)) return;           // unknown name
@@ -182,4 +260,20 @@ void AnimationSet::Resets()
     {
         anim.Reset();
     }
+}
+void AnimationSet::SetReverse(bool v)
+{
+    if (Has(currentName_))
+        clips_[currentName_].SetReverse(v);
+}
+void AnimationSet::ResetsReverse()
+{
+    if (Has(currentName_))
+        clips_[currentName_].ResetReverse();
+}
+
+void AnimationSet::SetSpeed(float s)
+{
+    if (clips_.count(currentName_))
+        clips_[currentName_].SetSpeed(s);
 }

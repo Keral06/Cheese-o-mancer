@@ -3,8 +3,12 @@
 #include "Physics.h"
 
 enum VerdugoState {
+    IDLEV,
+    WALKV,
+    ATAQUEP1,
     ATAQUE1,
     ATAQUE2,
+    ATAQUE3START,
     ATAQUE3A,
     ATAQUE3B,
     ATAQUE3C,
@@ -20,6 +24,16 @@ enum AttackType {
     ATTACK_4
 };
 
+enum BossPhase
+{
+    PHASE_INTROV,
+    PHASE_1V,
+    PHASE_TRANSFORMV,
+    PHASE_2V,
+    PHASE_DEADV,
+    PHASE_ENDCHOICEV
+};
+
 class Verdugo : public Enemy
 {
 public:
@@ -29,6 +43,17 @@ public:
     bool Start() override;
     void Attack() override;
     bool Update(float dt) override;
+    void UpdateIntro(float dt);
+    void UpdatePhase1(float dt);
+    void ExecutePhase1Attack();
+
+    void UpdatePhase1Attack();
+
+    void StartTransformation();
+    void UpdateTransformation(float dt);
+    void UpdatePhase2(float dt);
+    void EnterEndState();
+    void UpdateEndChoice(float dt);
     void Draw(float dt) override;
     void UpdateAttack();
     void OnCollision(PhysBody* physA, PhysBody* physB) override;
@@ -40,8 +65,12 @@ public:
     void ExecuteAttack();
 
     void UpdateAttackLogic();
+    void Die();
+    void SpawnWeakWall();
+
 
     bool MoveToAttackRange(float targetRange);
+    void OnWallDestroyed();
    
 protected:
     int attackTimer = 0;
@@ -52,10 +81,19 @@ protected:
     float hitboxEnd = 15.0f;
     bool hasHit = false;
     bool hitboxActive = false;
-
+    bool coinDropped = false;
     bool isAttacking = false;
 
     bool playerInHitbox = true;
+
+    AnimationSet animsAtaqueFase1;
+    AnimationSet animsIdle;
+
+    SDL_Texture* textureAF1 = NULL;
+    SDL_Texture* textureIdleWalk = NULL;
+
+ 
+
     AnimationSet animsAtaque1;
     AnimationSet animsAtaque2;
     AnimationSet animsAtaque3a;
@@ -80,7 +118,8 @@ protected:
     SDL_Texture* textureDeath = NULL;
     SDL_Texture* textureT = NULL;
     
-    float offset = 0.0f;
+    float offsetY = 0.0f;
+    float offsetX = 0.0f;
 
     AttackType currentAttack = ATTACK_1;
     bool attackInProgress = false;
@@ -92,4 +131,25 @@ protected:
 
     bool facingLeft = false;
     bool bolazo = false;
+
+    bool wallSpawned = false;
+    bool wallDestroyed = false;
+
+    int limitRight = 10100;
+    int limitLeft = 900;
+
+    BossPhase phase = PHASE_INTROV;
+
+    bool introFinished = false;
+    bool transformationFinished = false;
+    bool phase1Defeated = false;
+    bool phase2Defeated = false;
+
+    bool introTriggered = false;
+    bool introCinematicDone = false;
+    float introTimer = 0.0f;
+
+    int bodyW;
+    int bodyH;
+    bodyType type;
 };

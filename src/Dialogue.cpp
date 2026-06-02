@@ -11,17 +11,74 @@
 #include "EntityManager.h"
 
 //El primer dialogo es el ultimo del vector!!
+//
 
-
-Dialogue :: Dialogue(const char	*tsxPath) {
-
+Dialogue :: Dialogue(const char	*tsxPath, const char* name) {
+	textureDialogue = Engine::GetInstance().textures->Load("resources/UI/UI_Dialogue/UI_Dialogue_Base_01.png");
+	
 	this->tsxPath = tsxPath;
+	nameOf = name;
+	std::ifstream fich(tsxPath);
+	std::string helper;
+	char a;
+	hasStarted = false;
+	fich.get(a);
+	while (a != '+') { //this is what ends the txt document
+		while (a != '\n') {
+
+			helper.push_back(a);
+			fich.get(a);
+			
+
+		}
+		lenght++;
+		dialogue.push_back(helper);
+		while (!helper.empty()) {
+
+			helper.pop_back();
+
+		}
+		fich.get(a);
 
 
+		
+
+	}
+	if (name == nullptr) { return; }
+	std::ifstream ficht(nameOf);
+	std::string helpery;
+	char b;
+	hasStarted = false;
+	ficht.get(b);
+	while (b != '+') { //this is what ends the txt document
+		while (b != '\n') {
+			helpery.push_back(b);
+			ficht.get(b);
+
+
+		}
+
+		this->name.push_back(helpery);
+	
+		while (!helpery.empty()) {
+
+			helpery.pop_back();
+
+		}
+		ficht.get(b);
+
+
+
+
+	}
+
+	
+	
 }
 
 Dialogue::Dialogue()
 {
+	textureDialogue = Engine::GetInstance().textures->Load("resources/UI/UI_Dialogue/UI_Dialogue_Base_01.png");
 }
 
 Dialogue::~Dialogue() {
@@ -34,76 +91,150 @@ bool Dialogue::Awake() {
 
 bool Dialogue::Start() {
 
-	std::ifstream fich(tsxPath);
-	std::string helper;
-	char a;
-	fich >> a;
-	while (a != 'ñ') { //this is what ends the txt document
-		while (a != '/n') {
-			
-			helper.push_back(a);
-			fich >> a;
-			
-		
-		
-		
-		}
-		dialogue.push_back(helper);
-		while (!helper.empty()) {
-		
-			helper.pop_back();
-		
-		}
-		fich >> a;
 	
-	
-	
-	
-	}
-	
-	lenght = dialogue.size();
 
 
 	return true;
 }
 void Dialogue::Draw(float dt) {
-	//hacer que lo escriba en pantalla
+	float w, h;
+	SDL_GetTextureSize(textureDialogue, &w, &h);
+
+		
+	Engine::GetInstance().render->DrawTextureNoCamera(textureDialogue,250, 420, w / 1.5, h / 1.5);
+	if (choicesBeingMade) {
+		Engine::GetInstance().render->DrawText(dialogueHelper[lenghtHelper-1].c_str(), 330, 550, 0, 0, { 0,0,0 });
+		Engine::GetInstance().render->DrawText(dialogueHelper[lenghtHelper].c_str(), 330, 580, 0, 0, { 0,0,0 });
+	
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN) {
+		
+			NextDialogue();
+		
+		}
+	
+		if (nameHelper.size() != 0) {
+
+			Engine::GetInstance().render->DrawText(nameHelper[lenghtHelper].c_str(), 312, 520, 0, 0, { 0,0,0 });
+
+		}
+		return;
+	}
+	Engine::GetInstance().render->DrawText(dialogueHelper[lenghtHelper ].c_str(), 330, 550, 0, 0, { 0,0,0 });
+	if (nameHelper.size() != 0) {
+	
+	Engine::GetInstance().render->DrawText(nameHelper[lenghtHelper].c_str(), 312, 520, 0, 0, { 0,0,0 });
+	
+	}
 }
 
 bool Dialogue::Update(float dt)
 {
 	if (!hasStarted) return true;
+	if (hasEnded) { return true; }
+	
+	
 	
 	Draw(dt);
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
-	
-		NextDialogue();
-	
-	}
 	
 	return true;
 }
 void Dialogue::BeginDialogue() {
 	
 	dialogueHelper = dialogue;
-	lenghtHelper = lenght;
+	nameHelper = name;
+	lenghtHelper = 0;
 	hasStarted = true;
-
+	hasEnded = false;
+	printf("%s", dialogueHelper[lenghtHelper].c_str());
+	Engine::GetInstance().scene->someoneIsTalking = true;
+	
+	
 
 
 }
+bool Dialogue::WhatChoice() {
+
+	return choice;
+
+}
 void Dialogue:: NextDialogue() {
-	if (lenghtHelper > 0) {
+	if (choicesBeingMade) {
 	
-		printf("%c",dialogueHelper[lenghtHelper]);
-		dialogue.pop_back();
-		lenghtHelper--;
+		if (choice) {
+			if (lenghtHelper < lenght - 1) {
+
+				while (dialogueHelper[lenghtHelper] != "CHOICE 1:") {
+				
+					lenghtHelper++;
+				
+				}
+				lenghtHelper++;
+
+				printf("%s\n", dialogueHelper[lenghtHelper].c_str());
+				if (nameHelper.size() != 0) {
+
+					printf("%s\n", nameHelper[lenghtHelper].c_str());
+
+				}
+			}
+		
+		
+		
+		}
+		else {
+		
+			while (dialogueHelper[lenghtHelper] != "CHOICE 2:") {
+
+				lenghtHelper++;
+
+			}
+			lenghtHelper++;
+		
+		}
+	
+	
+		choicesBeingMade = false;
+	
+		return;
+	
+	
+	}
+	if (choice) {
+	
+	if (dialogueHelper[lenghtHelper + 1] == "CHOICE 2:" && choice) {
+	
+		lenghtHelper == lenght;
+	
+	}
+	
+	}
+	if (lenghtHelper < lenght-1) {
+	
+		lenghtHelper++;
+		if (dialogueHelper[lenghtHelper] == "CHOICE") {
+		
+			choicesBeingMade = true;
+			lenghtHelper += 2;
+		
+		}
+
+		
+
+		printf("%s\n",dialogueHelper[lenghtHelper].c_str());
+		if (nameHelper.size() != 0) {
+		
+		printf("%s\n",nameHelper[lenghtHelper].c_str());
+		
+		}
 	}
 	else {
 		hasStarted = false;
-		
+		Engine::GetInstance().scene->someoneIsTalking = false;
 	}
 	HasEnded(hasStarted);
+}
+std::string Dialogue::GetCurrentDialogue() {
+	return dialogueHelper[lenghtHelper];
 }
 bool Dialogue:: HasEnded(bool name){
 
@@ -124,3 +255,114 @@ bool Dialogue::CleanUp()
 	return true;
 }
 
+bool Dialogue::PostUpdate() {
+	if (hasStarted) {
+	
+		Engine::GetInstance().render->DrawText(dialogueHelper[lenghtHelper - 1].c_str(), 100, 100, 0, 0, { 255,255,255 });
+		
+		Engine::GetInstance().render->DrawTextureNoCamera(textureDialogue, 100, 100, 1, 1);
+	}
+
+	return true;
+}
+
+void Dialogue::AddDialogue(const char* tsxPath) {
+
+
+	this->tsxPath = tsxPath;
+
+	std::ifstream fich(tsxPath);
+	std::string helper;
+	char a;
+	hasStarted = false;
+	fich.get(a);
+	while (a != '+') { //this is what ends the txt document
+		while (a != '\n') {
+
+			helper.push_back(a);
+			fich.get(a);
+
+
+		}
+		lenght++;
+		dialogue.push_back(helper);
+		while (!helper.empty()) {
+
+			helper.pop_back();
+
+		}
+		fich.get(a);
+
+
+
+
+	}
+
+
+
+
+
+
+}
+
+void Dialogue::AddName(const char* tsxPath) {
+
+
+	this->tsxPath = tsxPath;
+
+	std::ifstream fich(tsxPath);
+	std::string helper;
+	char a;
+	hasStarted = false;
+	fich.get(a);
+	while (a != '+') { //this is what ends the txt document
+		while (a != '\n') {
+
+			helper.push_back(a);
+			fich.get(a);
+
+
+		}
+	
+		name.push_back(helper);
+		while (!helper.empty()) {
+
+			helper.pop_back();
+
+		}
+		fich.get(a);
+
+
+
+
+	}
+
+
+
+
+
+
+}
+
+bool Dialogue::AvanzarDialogo(float dt) {
+	if (hasStarted) {
+
+		NextDialogue();
+		Draw(dt);
+		if (hasEnded) {
+
+			return true;
+		}
+		return false;
+	}
+	BeginDialogue();
+	Draw(dt);
+
+
+	return false;
+
+
+
+
+
+}

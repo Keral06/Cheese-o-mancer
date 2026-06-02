@@ -3,9 +3,11 @@
 #include "Module.h"
 #include <list>
 #include <vector>
+#include <map>
 #include "Player.h"
 #include "Checkpoint.h"
 #include <memory>
+#include "ParticleExample.h"
 
 class Enemy;
 class Player;
@@ -56,6 +58,10 @@ struct MapLayer
     std::string name;
     int width;
     int height;
+
+    float parallaxX = 1.0f;
+    float parallaxY = 1.0f;
+
     std::vector<int> tiles;
     Properties properties;
     // L07: TODO 6: Short function to get the gid value of i,j
@@ -72,6 +78,7 @@ struct ObjectGroup
     // L07: TODO 1: Add the info to the MapLayer Struct
     int id;
     std::string name;
+    Properties properties;
     struct Object
     {
         // L07: TODO 1: Add the info to the MapLayer Struct
@@ -81,12 +88,26 @@ struct ObjectGroup
         int height;
         int x;
         int y;
+        int gid = 0;
         Properties properties;
     };
 
     
     std::vector<Object*> objects;
 
+};
+
+
+// Sprites animados
+struct TileFrame {
+    int tileId;
+    int duration;
+};
+
+struct TileAnimation {
+    std::vector<TileFrame> frames;
+    int currentFrame = 0;
+    float timer = 0.0f;
 };
 
 // L06: TODO 2: Create a struct to hold information for a TileSet
@@ -104,9 +125,15 @@ struct TileSet
     int columns;
     SDL_Texture* texture;
 
+    //animaciones (clave: ID local, valor: animacion)
+    std::map<int, TileAnimation> animations;
+
     // L07: TODO 7: Implement the method that receives the gid and returns a Rect
     SDL_Rect GetRect(unsigned int gid) {
-        SDL_Rect rect = { 0 };
+        SDL_Rect rect = { 0, 0, 0, 0 };
+
+        //evita la división por cero si columns es 0
+        if (columns <= 0) return rect;
 
         int relativeIndex = gid - firstGid;
         rect.w = tileWidth;
@@ -178,7 +205,8 @@ public:
     MapLayer* GetNavigationLayer();
     Vector2D Map::GetMapSizeInTiles();
     Vector2D GetMapSizeInPixels();
-    void DrawLayer(const char* layerName);
+    void DrawLayer(std::string layerName);
+    void DrawObjectLayerParallax(std::string layerName, float parallaxSpeed);
     int GetTileWidth() {
     return mapData.tileWidth;
 }
@@ -200,6 +228,7 @@ public:
     ObjectGroup::Object* GetObjectByProperty(std::string layerName, std::string propName, std::string value);
     std::vector<int> killedEnemies;
     std::vector<PhysBody*> mapBodies;
+    std::vector<ParticleExample*> mapParticles;
 public: 
     std::string mapFileName;
     std::string mapPath;
@@ -209,4 +238,8 @@ private:
     MapData mapData;
     //L15 TODO 2: make the mapFileXML an attribute of the Map class
     pugi::xml_document mapFileXML;
+
+    // Helper functions para procesar grupos anidados de Tiled
+    void ParseLayersRecursive(pugi::xml_node parentNode);
+    void ParseObjectGroupsRecursive(pugi::xml_node parentNode);
 };

@@ -19,12 +19,15 @@ public:
 
 public:
 	bool isActivated = false;
+	int xInicial = 0;
+	int yInicial = 0;
 
 private:
 	SDL_Texture* texture = nullptr;
-	Animation idleAnim;
+	int texW, texH;
+	/*Animation idleAnim;
 	Animation activateAnim;
-	Animation* currentAnim = nullptr;
+	Animation* currentAnim = nullptr;*/
 
 	PhysBody* pbody = nullptr;
 	int fxId = -1;

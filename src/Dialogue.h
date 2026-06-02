@@ -6,7 +6,7 @@
 #include <SDL3/SDL.h>
 #include "Pathfinding.h"
 #include <stdio.h>
-
+//#include <SDL3_ttf/SDL_ttf.h>
 #include <fstream>
 
 struct SDL_Texture;
@@ -15,7 +15,7 @@ class Dialogue
 {
 public:
 	
-	Dialogue(const char* tsxPath);
+	Dialogue(const char* tsxPath,  const char* name = nullptr);
 	Dialogue();
 	virtual ~Dialogue();
 
@@ -26,35 +26,47 @@ public:
 
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void NextDialogue();
-
-
+	bool PostUpdate();
+	void AddDialogue(const char* tsxPath);
+	void AddName(const char* tsxPath);
+	bool AvanzarDialogo(float dt);
+	void Draw(float dt);
 
 private:
 
-	void Draw(float dt);
 	
 
 
-private:
+public:
 	//Vector de texturas
 	
 	
 	const char *tsxPath;
+	const char* nameOf;
 
 	std::vector<std::string> dialogue;
 	std::vector<std::string> dialogueHelper;
+	std::vector<std::string> name;
+	std::vector<std::string> nameHelper;
 	int lenght = 0;
 	int lenghtHelper = 0;
 	
 
 public:
 	
-		
+	std::string GetCurrentDialogue();
+	bool WhatChoice();
 	
-	
+	SDL_Texture* textureDialogue;
 	void BeginDialogue();
 	bool HasEnded(bool name);
 
 	bool hasEnded = false;
 	bool hasStarted = false;
+
+	//Choices logic
+
+	bool choicesBeingMade = false;
+
+	bool choice = false;
 };

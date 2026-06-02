@@ -19,6 +19,16 @@
 #include "Jailer.h"
 #include "CheeseBall.h"
 #include "Door.h"
+#include "Magician.h"
+#include "cheeseballInteractuable.h"
+#include "WeakWall.h"
+#include "Pickable_objects.h"
+#include "Horse.h"
+#include "Bee.h"
+#include "PrincessBoss.h"
+#include "KnightBoss.h"
+#include "FlowerBomb.h"
+#include "SpikeHazard.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -134,6 +144,114 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 	case EntityType::DOOR:
 		entity = std::make_shared<Door>();
 		break;
+	case EntityType::MAGICIAN:
+		entity = std::make_shared<Magician>();
+		break;
+	case EntityType::BEE:
+		entity = std::make_shared<Bee>();
+		break;
+	case EntityType::FLOWERBOMB:
+		entity = std::make_shared<FlowerBomb>();
+		break;
+	case EntityType::SPIKEHAZARD:
+		entity = std::make_shared<SpikeHazard>();
+		break;
+	case EntityType::PRINCESS:
+		entity = std::make_shared<PrincessBoss>();
+		break;
+	case EntityType::KNIGHT:
+		entity = std::make_shared<KnightBoss>();
+		break;
+	case EntityType::CHEESEBALLINTERACT:
+		entity = std::make_shared<CheeseBallInteract>();
+		break;
+	case EntityType::HIDDENSCRAPOFPAPER:
+		entity = std::make_shared<HiddenScrapOfPaper>();
+		break;
+	case EntityType::DISCARDEDSCROLL:
+		entity = std::make_shared<DiscardedScroll>();
+		break;
+	case EntityType::SKETCHES:
+		entity = std::make_shared<Sketches>();
+		break;
+	case EntityType::WALLBEFOREWHEEL:
+		entity = std::make_shared<WallBeforeWheel>();
+		break;
+	case EntityType::LOCKEDDOOR:
+		entity = std::make_shared<LockedDoor>();
+		break;
+	case EntityType::DESTRUCTDOOR:
+		entity = std::make_shared<DestructDoor>();
+		break;
+	case EntityType::NORMALFLAG:
+		entity = std::make_shared<NormalFlag>();
+		break;
+	case EntityType::CHEESEFLAG:
+		entity = std::make_shared<CheeseFlag>();
+		break;
+	case EntityType::NOTEROYALHALLS:
+		entity = std::make_shared<NoteRoyalHalls>();
+		break;
+	case EntityType::COMPASS:
+		entity = std::make_shared<Compass>();
+		break;
+	case EntityType::PORTRAIT:
+		entity = std::make_shared<Portrait>();
+		break;
+	case EntityType::UNFINISHEDPORTRAIT:
+		entity = std::make_shared<UnfinishedPortrait>();
+		break;
+	case EntityType::HUNGSWORD:
+		entity = std::make_shared<HungSword>();
+		break;
+	case EntityType::COWWEB:
+		entity = std::make_shared<CowWeb>();
+		break;
+	case EntityType::WEAKWALL:
+		entity = std::make_shared<WeakWall>();
+		break;
+	case EntityType::PICS:
+		entity = std::make_shared<Pics>();
+		break;
+	case EntityType::MONUMENT:
+		entity = std::make_shared<CommemorativeMonument>();
+		break;
+	case EntityType::MILKMAID:
+		entity = std::make_shared<milkmaid>();
+		break;
+	case EntityType::GUARDTOWER:
+		entity = std::make_shared<TowGuard>();
+		break;
+	case EntityType::DEATH:
+		entity = std::make_shared<death>();
+		break;
+	case EntityType::HORSE:
+		entity = std::make_shared<Horse>();
+		break;
+	case EntityType::HERMIT:
+		entity = std::make_shared<Hermit>();
+		break;
+	case EntityType::WELL:
+		entity = std::make_shared<Well>();
+		break;
+	case EntityType::HIEROPHANT:
+		entity = std::make_shared<Hierophant>();
+		break;
+	case EntityType::TIMMY:
+		entity = std::make_shared<Timmy>();
+		break;
+	case EntityType::EMPRESS:
+		entity = std::make_shared<Empress>();
+		break;
+	case EntityType::SCULPTOR:
+		entity = std::make_shared<Sculptor>();
+		break;
+	case EntityType::RETIREDKNIGHT:
+		entity = std::make_shared<RetiredKnight>();
+		break;
+	case EntityType::TELEPORT:
+		entity = std::make_shared<RatKing>();
+		break;
 	default:
 		break;
 	}
@@ -166,6 +284,10 @@ bool EntityManager::Update(float dt)
 	{
 		if ((*it)->toDelete)
 		{
+			LOG("Entity ptr: %p | toDelete: %d | type: %d",
+				(void*)(*it).get(),
+				(*it)->toDelete,
+				(*it)->type);
 			(*it)->CleanUp();
 			it = entities.erase(it);
 		}

@@ -7,6 +7,7 @@
 #include "FireBall.h"
 #include "CheeseBall.h"
 
+
 enum PlayerState {
 	JUMPING,
 	FALLING,
@@ -14,6 +15,8 @@ enum PlayerState {
 	RUNNING,
 	ONCHEESE,
 	IDLE,
+	IDLE_ON_CHEESE,
+	RUNNING_ON_CHEESE,
 	DEFAULT
 
 };
@@ -38,7 +41,7 @@ public:
 
 	Vector2D GetPosition();
 	void SetPosition(Vector2D pos);
-	void CameraRender();
+	void CameraRender(float dt);
 	void UpdateFireballs(float dt);
 	static bool isPlayerProtectedquestion();
 	static bool IsPlayerProtected;
@@ -56,6 +59,9 @@ public:
 
 	void DismountAndLaunch();
 
+	void DismountVerticalJump();
+
+	void ResetCheeseState();
 private:
 
 	void GetPhysicsValues();
@@ -70,9 +76,9 @@ private:
 public:
 	PlayerState state;
 	PlayerState lastState;
-	bool hasMap1 = false;
 	//Declare player parameters
 	float speed = 15.0f;
+	float godmodeSpeed = 40.0f;
 	SDL_Texture* texture = NULL;
 	int texW, texH;
 	//Audio fx
@@ -81,10 +87,15 @@ public:
 	b2Vec2 respawnPosition;
 	//fx
 	int lastStepTime = 0;
+	
+	//FX 
 	int movefx;
 	int jumpfx;	
 	int checkpointfx;
 	int deathfx;
+	int healfx;
+	int attackfx;
+
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
 	float jumpForce = 950.0f; // The force to apply when jumping
@@ -97,6 +108,7 @@ public:
 	bool isWalking = false;
 	bool isCollidedWall = false;
 	bool isCollidedFloor = false;
+	int floorContacts = 0;
 	bool facingLeft = false;
 	std::vector<std::shared_ptr<FireBall>> fireballs;
 	
@@ -105,16 +117,37 @@ public:
 	//Score and lives
 
 	static int score;
-	int lives = 3;
+	int lives = 1; 
+	bool hasTalkedMagician = false;
 	bool isDeadDefinitive = false;
+	bool hasHealed = false;
 
 	//MARC ESTOS SON LOS BOOLS DE EL PLAYER PARA CONVERSACIONES
 
 	bool hasCheese = false;
 	bool beatBoss = false;
+	bool beatPrincess = false;
 	bool hasTalkedWithMagician = false; //abrir puerta para poder seguir / desbloquea la vida UI
-	
+	bool extralife = false;
+
+	//BOOLS OF THE PAPERS
+	bool day = false;
+	bool night = false;
+	bool dusk = false;
+	bool dawn = false;
+
+	//Hermit bools
+	bool springWater = false;
+	bool HorsekinManure = false;
+	bool Gargantuan = false;
+
+	bool hasCheeseDownJump = true;
+	bool cheeseDownJumpUsed = false;
 	/*SDL_Rect& lastFrame;*/
+         
+	bool hasDamagePlus = false;
+
+
 private: 
 	b2Vec2 velocity;
 	AnimationSet anims2x3;
@@ -138,6 +171,7 @@ private:
 	Uint32 bufferStart = 0;
 
 	PhysBody* attackHitbox = nullptr;
+	PhysBody* feetHitbox = nullptr;
 
 	bool hitboxActive = false;
 	bool hasHit = false;
@@ -155,6 +189,23 @@ private:
 	int offsetAttackHitboxY = -50;
 
 	std::shared_ptr<CheeseBall> mountedBall = nullptr;
+	bool cheeseBallRequested = false;
 	bool isMounted = false;
 	int spawnOffset = 30;
+	bool movingBall = false;
+
+	float cheeseSpeed = 10.0f;
+	float cheeseTime = 300.0f;
+
+	bool isWallWalking = false;
+	bool isOnSpecialWall = false;
+	float wallNormal = 0.0f;
+
+	bool cheeseFirstJumpDone = false;
+	bool pendingDismount = false;
+	bool doVerticalJump = false;
+
+	bool pendingCheeseJump = false;
+	bool waitingAttackAnimEnd = false;
+	int jumpTriggerOffset = 7;
 };

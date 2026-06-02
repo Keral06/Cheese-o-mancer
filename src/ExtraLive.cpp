@@ -26,7 +26,7 @@ bool ExtraLive::Start() {
 	
 
 	//Initialize Enemy parameters
-	texture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/ExtraLive.png");
+	texture = Engine::GetInstance().textures->Load("Assets/Textures/provisional_healPlant.png");
 
 	
 	// L08 TODO 4: Add a physics to an item - initialize the physics body
@@ -45,8 +45,6 @@ bool ExtraLive::Start() {
 
 		pbody->listener = this;
 		
-
-
 
 	pbody->ctype = ColliderType::EXTRALIVE;
 	pbody->listener = this;   // so Begin/EndContact can call back to Item
@@ -71,8 +69,6 @@ bool ExtraLive::Update(float dt)
 		int y = 0;
 		pbody->GetPosition(x, y);
 
-
-		
 		Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2);
 	}
 
@@ -101,12 +97,12 @@ void ExtraLive::OnCollision(PhysBody* physA, PhysBody* physB) {
 	switch (physB->ctype)
 	{
 	case ColliderType::PLAYER:
-		LOG("Coin picked up!");
+		LOG("Heal plant interact");
 		
 
-		toDelete = true;
+		/*toDelete = true;
 		Engine::GetInstance().physics->DeletePhysBody(pbody);
-		pbody = nullptr;
+		pbody = nullptr;*/
 		break;
 
 	default:

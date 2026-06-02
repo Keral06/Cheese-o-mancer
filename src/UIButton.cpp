@@ -20,6 +20,7 @@ UIButton::UIButton(int id, SDL_Rect bounds, const char* text, SDL_Texture* norma
 	this->buttonPressedTexture = pressedTexture;
 
 	drawBasic = false;
+
 }
 
 UIButton::~UIButton()
@@ -108,4 +109,13 @@ bool UIButton::CleanUp()
 {
 	pendingToDelete = true;
 	return true;
+}
+
+void UIButton ::ChangeImage(SDL_Texture* one, SDL_Texture* two) {
+
+	buttonNormalTexture = one;
+	buttonPressedTexture = two;
+
+
+
 }

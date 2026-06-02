@@ -26,6 +26,7 @@ enum bodyType {
 
 enum class ColliderType {
     PLAYER,
+	PLAYERFEET,
     PLAYERATTACK,
     CHEESEBALL,
     ITEM,
@@ -39,7 +40,13 @@ enum class ColliderType {
     FIREBALL,
     ENEMY_ATTACK,
     EXTRALIVE,
-    FINALBOSS
+    FINALBOSS,
+    MAGICIAN,
+    HANDMAN,
+	CHEESEBALLINTERACT,
+    WEAKWALL,
+    NPC,
+    MOHOWALL
     // ..
 };
 
@@ -79,6 +86,7 @@ public:
 
     // Create basic physics objects
     PhysBody* CreateRectangle(int x, int y, int width, int height, bodyType type);
+    PhysBody* CreateRectangleFriction(int x, int y, int width, int height, bodyType type, float friction);
     PhysBody* CreateCircle(int x, int y, int radious, bodyType type);
     PhysBody* CreateRectangleSensor(int x, int y, int width, int height, bodyType type);
     PhysBody* CreateChain(int x, int y, int* points, int size, bodyType type);

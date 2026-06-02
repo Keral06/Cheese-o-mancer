@@ -5,6 +5,8 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "Log.h"
+#include "DestructibleEntity.h"
+#include "Enemy.h"
 
 CheeseBall::CheeseBall()
     : Entity(EntityType::CHEESEBALL)
@@ -23,7 +25,7 @@ bool CheeseBall::Awake()
 
 bool CheeseBall::Start()
 {
-    texture = Engine::GetInstance().textures->Load("assets/textures/cheeseball.png");
+    texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/Cheese_wheel/Cheese_wheel.png");
 
     pbody = Engine::GetInstance().physics->CreateCircle(position.getX(), position.getY(), radius, bodyType::DYNAMIC);
 
@@ -44,12 +46,19 @@ bool CheeseBall::Update(float dt)
 
     position.setX((float)x);
     position.setY((float)y);
+    float angle = pbody->GetRotation();
+    float angleDeg = angle * 180.0f / 3.14f;
 
     Engine::GetInstance().render->DrawTexture(
         texture,
         x - radius,
         y - radius,
-        nullptr
+        nullptr,
+        1.0f,
+        angle,  
+        INT_MAX,
+        INT_MAX,
+        SDL_FLIP_NONE
     );
 
     return true;
@@ -57,11 +66,65 @@ bool CheeseBall::Update(float dt)
 
 void CheeseBall::OnCollision(PhysBody* physA, PhysBody* physB)
 {
-    //if (physB->ctype == ColliderType::PLAYER)
-    //{
-    //    LOG("Player touched CheeseBall");
-    //    // aquí decides: sumar puntos, heal, boost, etc.
-    //}
+    if (physB->ctype == ColliderType::WEAKWALL)
+    {
+        if (physB->listener != nullptr)
+        {
+            DestructibleEntity* destructible = dynamic_cast<DestructibleEntity*>(physB->listener);
+
+            if (destructible && ismounted)
+            {
+                destructible->TakeDamage(1);
+                if (!ismounted) {
+                    toDelete = true;
+                }
+            }
+        }
+        return;
+    }
+
+    if ((physB->ctype == ColliderType::PLATFORM || physB->ctype == ColliderType::PARED) && !ismounted)
+    {
+        LOG("CheeseBall touched platform/wall");
+        toDelete = true;
+        return;
+    }
+    if (physB->ctype == ColliderType::PLATFORM && ismounted)
+    {
+       
+        firstjump = true;
+        return;
+    }
+    if (physB->ctype == ColliderType::ENEMY)
+    {
+        Enemy* enemy = dynamic_cast<Enemy*>(physB->listener);
+
+        if (enemy)
+        {
+            if (!enemy->isboss) {
+                // Bola en smash
+                if (canSmash)
+                {
+                    enemy->toDelete = true;
+                    return;
+                }
+
+                // Bola lanzada
+                if (!ismounted)
+                {
+                    enemy->toDelete = true;
+                    toDelete = true;
+                    return;
+                }
+
+                // Bola montada
+                LOG("CheeseBall touched enemy");
+                launch = true;
+            }
+        }
+
+        return;
+    }
 }
 
 void CheeseBall::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
@@ -97,3 +160,5 @@ void CheeseBall::SetVelocityy(b2Vec2 vel)
 {
     Engine::GetInstance().physics->SetLinearVelocity(pbody, vel);
 }
+
+

@@ -17,11 +17,11 @@ Door::~Door()
 
 bool Door::Start()
 {
-    // Crear sensor físico (no colisiona, solo detecta)
+   
     pbody = Engine::GetInstance().physics->CreateRectangleSensor(
-        position.getX(),
-        position.getY(),
-        64, 64, // tamaño puerta (ajústalo)
+        position.getX() + width/2,
+        position.getY() + height/2,
+        width, height,
         bodyType::STATIC
     );
 
@@ -51,13 +51,17 @@ void Door::SetDoorData(
     const std::string& targetMap,
     const std::string& targetDoor,
     int offsetX,
-    int offsetY
+    int offsetY,
+    int width,
+    int height
 )
 {
     this->targetMap = targetMap;
     this->targetDoor = targetDoor;
     this->offsetX = offsetX;
     this->offsetY = offsetY;
+    this->width = width;
+    this->height = height;
 }
 
 void Door::OnCollision(PhysBody* physA, PhysBody* physB)
@@ -70,6 +74,9 @@ void Door::OnCollision(PhysBody* physA, PhysBody* physB)
     // Guardamos a qué puerta queremos aparecer
    Engine::GetInstance().scene->nextSpawnPoint = targetDoor;
 
+   Engine::GetInstance().scene->firstDoor = false;
+
+   Engine::GetInstance().scene->nextMap = targetMap;
     // Cambiar de mapa
-    Engine::GetInstance().scene->LoadMap(targetMap);
+   Engine::GetInstance().scene->StartFadeOut(0.5f);
 }

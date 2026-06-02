@@ -7,8 +7,6 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-const float ZOOM_LEVEL = 0.30f;
-
 Render::Render() : Module()
 {
 	name = "render";
@@ -31,7 +29,6 @@ bool Render::Awake()
 
 	int scale = Engine::GetInstance().window->GetScale() / 6;
 	SDL_Window* window = Engine::GetInstance().window->window;
-
 	//L05 TODO 5 - Load the configuration of the Render module
 	
 	// SDL3: no flags; create default renderer and set vsync separately
@@ -56,26 +53,27 @@ bool Render::Awake()
 			}
 		}
 		SDL_SetRenderLogicalPresentation(renderer, 1280, 720, SDL_LOGICAL_PRESENTATION_LETTERBOX);
-		camera.w = Engine::GetInstance().window->width * scale;
-		camera.h = Engine::GetInstance().window->height * scale;
+		camera.w = Engine::GetInstance().window->width;
+		camera.h = Engine::GetInstance().window->height;
 		camera.x = 0;
 		camera.y = 0;
 		
 	}
-	/*if (!TTF_Init())
+
+	if (!TTF_Init())
 	{
 		LOG("TTF_Init failed: %s", SDL_GetError());
 		ret = false;
 	}
 	else
 	{
-		font = TTF_OpenFont("Assets/Fonts/alagard.ttf", 24);
+		font = TTF_OpenFont("resources/UI/UI_Fonts/CheesomancerText2.ttf", 24);
 
 		if (font == nullptr)
 		{
 			LOG("Failed to load font! SDL_ttf Error: %s", SDL_GetError());
 		}
-	}*/
+	}
 
 
 	return ret;
@@ -102,6 +100,42 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
+	if (zooming)
+	{
+		zoomTime += dt;
+
+		float t = zoomTime / zoomDuration;
+
+		if (t >= 1.0f)
+		{
+			t = 1.0f;
+			zooming = false;
+		}
+
+		
+		float easedT = EaseInOut(t);
+		zoom = startZoom + (targetZoom - startZoom) * easedT;
+	}
+
+	if (cameraMoving)
+	{
+		camTime += dt;
+		float t = camTime / camDuration;
+
+		if (t >= 1.0f)
+		{
+			t = 1.0f;
+			cameraMoving = false;
+		}
+
+		float easedT = EaseInOut(t);
+
+		camera.x = camStartX + (camTargetX - camStartX) * easedT;
+		camera.y = camStartY + (camTargetY - camStartY) * easedT;
+
+		zoom = camStartZoom + (camTargetZoom - camStartZoom) * easedT;
+	}
+
 	return true;
 }
 
@@ -138,59 +172,127 @@ void Render::ResetViewPort()
 // Blit to screen
 bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivotX, int pivotY, SDL_FlipMode flip) const
 {
-	bool ret = true;
 	int scale = Engine::GetInstance().window->GetScale();
 
-	// SDL3 uses float rects for rendering
 	SDL_FRect rect;
-	float world_x = (float)((int)(camera.x * speed) + x * scale);
-	float world_y = (float)((int)(camera.y * speed) + y * scale);
-	float center_x = (float)(camera.w / 2);
-	float center_y = (float)(camera.h / 2);
 
-	rect.x = center_x + (world_x - center_x) * ZOOM_LEVEL;
-	rect.y = center_y + (world_y - center_y) * ZOOM_LEVEL;
 	
+	float world_x = (camera.x + x * scale) * zoom;
+	float world_y = (camera.y + y * scale) * zoom;
 
-	if (section != NULL)
+	rect.x = floor(world_x);
+	rect.y = floor(world_y);
+
+	
+	if (section)
 	{
-		rect.w = (float)(section->w * scale * ZOOM_LEVEL);
-		rect.h = (float)(section->h * scale * ZOOM_LEVEL);
+		rect.w = (section->w * scale * zoom) + 1;
+		rect.h = (section->h * scale * zoom) + 1;
 	}
 	else
 	{
-		float tw = 0.0f, th = 0.0f;
-		if (!SDL_GetTextureSize(texture, &tw, &th)) { return false; }
-		rect.w = tw * scale * ZOOM_LEVEL;
-		rect.h = th * scale * ZOOM_LEVEL;
+		float tw, th;
+		SDL_GetTextureSize(texture, &tw, &th);
+
+		rect.w = tw * scale * zoom;
+		rect.h = th * scale * zoom;
 	}
 
-	const SDL_FRect* src = NULL;
-	SDL_FRect srcRect;
-	if (section != NULL)
-	{
-		srcRect = { (float)section->x, (float)section->y, (float)section->w, (float)section->h };
-		src = &srcRect;
-	}
-
-	SDL_FPoint* p = NULL;
+	
+	SDL_FPoint* p = nullptr;
 	SDL_FPoint pivot;
+
 	if (pivotX != INT_MAX && pivotY != INT_MAX)
 	{
-		pivot = { (float)pivotX * scale * ZOOM_LEVEL, (float)pivotY * scale * ZOOM_LEVEL };
+		pivot = {
+			pivotX * scale * zoom,
+			pivotY * scale * zoom
+		};
 		p = &pivot;
 	}
 
-	// SDL3: returns bool; map to int-style check
-	int rc = SDL_RenderTextureRotated(renderer, texture, src, &rect, angle, p, flip) ? 0 : -1;
-	if (rc != 0)
+	
+	const SDL_FRect* src = nullptr;
+	SDL_FRect srcRect;
+
+	if (section)
 	{
-		LOG("Cannot blit to screen. SDL_RenderTextureRotated error: %s", SDL_GetError());
-		ret = false;
+		srcRect = {
+			(float)section->x,
+			(float)section->y,
+			(float)section->w,
+			(float)section->h
+		};
+		src = &srcRect;
 	}
 
-	return ret;
+	return SDL_RenderTextureRotated(
+		renderer,
+		texture,
+		src,
+		&rect,
+		angle,
+		p,
+		flip
+	);
 }
+
+bool Render::DrawParallax(SDL_Texture* texture, int x, int y, int width, int height, const SDL_Rect* section, float speed, double angle, int pivotX, int pivotY, SDL_FlipMode flip) const
+{
+	int scale = Engine::GetInstance().window->GetScale();
+	SDL_FRect rect;
+
+	// Aplicamos la velocidad de Parallax (speed) SOLO a la cámara. 
+	// Así, si speed = 1.0, se mueve igual que el suelo. Si es 0.2, se mueve más lento.
+	float world_x = (camera.x * speed + x * scale) * zoom;
+	float world_y = (camera.y * speed + y * scale) * zoom;
+
+	rect.x = floor(world_x);
+	rect.y = floor(world_y);
+
+	// A los objetos también hay que aplicarles la escala y el zoom para que cuadren con el mapa
+	rect.w = width * scale * zoom;
+	rect.h = height * scale * zoom;
+
+	SDL_FPoint* p = nullptr;
+	SDL_FPoint pivot;
+
+	if (pivotX != INT_MAX && pivotY != INT_MAX)
+	{
+		pivot = {
+			(float)(pivotX * scale * zoom),
+			(float)(pivotY * scale * zoom)
+		};
+
+		p = &pivot;
+	}
+
+	const SDL_FRect* src = nullptr;
+	SDL_FRect srcRect;
+
+	if (section)
+	{
+		srcRect = {
+			(float)section->x,
+			(float)section->y,
+			(float)section->w,
+			(float)section->h
+		};
+
+		src = &srcRect;
+	}
+
+	return SDL_RenderTextureRotated(
+		renderer,
+		texture,
+		src,
+		&rect,
+		angle,
+		p,
+		flip
+	);
+}
+
 bool Render::DrawTextureNoCamera(SDL_Texture* texture, int x, int y, int w, int h, float speed, double angle, int pivotX, int pivotY, SDL_FlipMode flip) const
 {
 	bool ret = true;
@@ -233,81 +335,75 @@ bool Render::DrawTextureNoCamera(SDL_Texture* texture, int x, int y, int w, int 
 }
 bool Render::DrawRectangle(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, bool use_camera) const
 {
-	bool ret = true;
 	int scale = Engine::GetInstance().window->GetScale();
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
 
 	SDL_FRect rec;
+
+	float world_x = (camera.x + rect.x * scale) * zoom;
+	float world_y = (camera.y + rect.y * scale) * zoom;
+
 	if (use_camera)
 	{
-		float world_x = (float)((int)(camera.x + rect.x * scale));
-		float world_y = (float)((int)(camera.y + rect.y * scale));
-		float center_x = (float)(camera.w / 2);
-		float center_y = (float)(camera.h / 2);
-
-		rec.x = center_x + (world_x - center_x) * ZOOM_LEVEL;
-		rec.y = center_y + (world_y - center_y) * ZOOM_LEVEL;
-		rec.w = (float)(rect.w * scale * ZOOM_LEVEL);
-		rec.h = (float)(rect.h * scale * ZOOM_LEVEL);
+		rec.x = world_x;
+		rec.y = world_y;
 	}
 	else
 	{
-		rec = { (float)rect.x * scale, (float)rect.y * scale, (float)rect.w * scale, (float)rect.h * scale };
+		rec.x = rect.x * scale;
+		rec.y = rect.y * scale;
 	}
 
-	int result = (filled ? SDL_RenderFillRect(renderer, &rec) : SDL_RenderRect(renderer, &rec)) ? 0 : -1;
+	rec.w = rect.w * scale * zoom;
+	rec.h = rect.h * scale * zoom;
 
-	if (result != 0)
-	{
-		LOG("Cannot draw quad to screen. SDL_RenderFillRect/SDL_RenderRect error: %s", SDL_GetError());
-		ret = false;
-	}
-
-	return ret;
+	return filled ?
+		SDL_RenderFillRect(renderer, &rec) :
+		SDL_RenderRect(renderer, &rec);
 }
 
 bool Render::DrawText(const char* text, int x, int y, int w, int h, SDL_Color color) const
 {
-	//if (!font || !renderer || !text) {
-	//	LOG("DrawText: invalid font/renderer/text");
-	//	return false;
-	//}
+	if (!font || !renderer || !text) {
+		LOG("DrawText: invalid font/renderer/text");
+		return false;
+	}
 
-	//// Render the text to a surface
-	//// SDL3_ttf: length can be 0 for null-terminated strings
-	//SDL_Surface* surface = TTF_RenderText_Solid(font, text, 0, color);
-	//if (!surface) {
-	//	LOG("DrawText: TTF_RenderText_Solid failed: %s", SDL_GetError());
-	//	return false;
-	//}
+	// Render the text to a surface
+	// SDL3_ttf: length can be 0 for null-terminated strings
+	SDL_Surface* surface = TTF_RenderText_Blended_Wrapped(font, text, 0, color,540);
+	if (!surface) {
+		LOG("DrawText: TTF_RenderText_Solid failed: %s", SDL_GetError());
+		return false;
+	}
 
-	//// Create a texture from the surface
-	//SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-	//if (!texture) {
-	//	LOG("DrawText: SDL_CreateTextureFromSurface failed: %s", SDL_GetError());
-	//	SDL_DestroySurface(surface);
-	//	return false;
-	//}
+	// Create a texture from the surface
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+	if (!texture) {
+		LOG("DrawText: SDL_CreateTextureFromSurface failed: %s", SDL_GetError());
+		SDL_DestroySurface(surface);
+		return false;
+	}
 
-	//// Optional but often needed when using alpha/text
-	//SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+	// Optional but often needed when using alpha/text
+	SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
 
-	//// If w/h are 0, use the text�s natural size
-	//float fw = (w > 0) ? (float)w : (float)surface->w;
-	//float fh = (h > 0) ? (float)h : (float)surface->h;
+	// If w/h are 0, use the text�s natural size
+	float fw = (w > 0) ? (float)w : (float)surface->w;
+	float fh = (h > 0) ? (float)h : (float)surface->h;
 
-	//SDL_FRect dstrect = { (float)x, (float)y, fw, fh };
+	SDL_FRect dstrect = { (float)x, (float)y, fw, fh };
 
-	//// Render the texture to the current render target
-	//if (!SDL_RenderTexture(renderer, texture, nullptr, &dstrect)) {
-	//	LOG("DrawText: SDL_RenderTexture failed: %s", SDL_GetError());
-	//}
+	// Render the texture to the current render target
+	if (!SDL_RenderTexture(renderer, texture, nullptr, &dstrect)) {
+		LOG("DrawText: SDL_RenderTexture failed: %s", SDL_GetError());
+	}
 
-	//// Cleanup
-	//SDL_DestroyTexture(texture);
-	//SDL_DestroySurface(surface);
+	// Cleanup
+	SDL_DestroyTexture(texture);
+	SDL_DestroySurface(surface);
 
 	return true;
 }
@@ -327,15 +423,15 @@ bool Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b,
 		float center_x = (float)(camera.w / 2);
 		float center_y = (float)(camera.h / 2);
 
-		float world_x1 = (float)(camera.x + x1 * scale);
-		float world_y1 = (float)(camera.y + y1 * scale);
-		X1 = center_x + (world_x1 - center_x) * ZOOM_LEVEL;
-		Y1 = center_y + (world_y1 - center_y) * ZOOM_LEVEL;
+		float world_x1 = (float)(camera.x + x1 * scale) * zoom;
+		float world_y1 = (float)(camera.y + y1 * scale) * zoom;
+		X1 = center_x + (world_x1 - center_x);
+		Y1 = center_y + (world_y1 - center_y);
 
-		float world_x2 = (float)(camera.x + x2 * scale);
-		float world_y2 = (float)(camera.y + y2 * scale);
-		X2 = center_x + (world_x2 - center_x) * ZOOM_LEVEL;
-		Y2 = center_y + (world_y2 - center_y) * ZOOM_LEVEL;
+		float world_x2 = (float)(camera.x + x2 * scale) * zoom;
+		float world_y2 = (float)(camera.y + y2 * scale) * zoom;
+		X2 = center_x + (world_x2 - center_x);
+		Y2 = center_y + (world_y2 - center_y);
 	}
 	else
 	{
@@ -358,54 +454,41 @@ bool Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b,
 
 bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool use_camera) const
 {
-	bool ret = true;
 	int scale = Engine::GetInstance().window->GetScale();
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
 
-	int result = -1;
 	SDL_FPoint points[360];
 
-	float factor = (float)M_PI / 180.0f;
+	float rad = radius * scale * zoom;
 
-	float cx = (float)((use_camera ? camera.x : 0) + x * scale);
-	float cy = (float)((use_camera ? camera.y : 0) + y * scale);
-	float scale_final;
+	float cx, cy;
+
+	float screenX = camera.w * 0.5f;
+	float screenY = camera.h * 0.5f;
 
 	if (use_camera)
 	{
-		float screen_center_x = (float)(camera.w / 2);
-		float screen_center_y = (float)(camera.h / 2);
-		float world_x = (float)(camera.x + x * scale);
-		float world_y = (float)(camera.y + y * scale);
-
-		cx = screen_center_x + (world_x - screen_center_x) * ZOOM_LEVEL;
-		cy = screen_center_y + (world_y - screen_center_y) * ZOOM_LEVEL;
-		scale_final = (float)radius * scale * ZOOM_LEVEL;
+		cx = (camera.x + x * scale) * zoom + screenX;
+		cy = (camera.y + y * scale) * zoom + screenY;
 	}
 	else
 	{
-		cx = (float)(x * scale);
-		cy = (float)(y * scale);
-		scale_final= (float)radius * scale;
+		cx = x * scale + screenX;
+		cy = y * scale + screenY;
+		rad = radius * scale;
 	}
 
-	for (int i = 0; i < 360; ++i)
+	float factor = (float)M_PI / 180.0f;
+
+	for (int i = 0; i < 360; i++)
 	{
-		points[i].x = cx + (float)(radius * cos(i * factor));
-		points[i].y = cy + (float)(radius * sin(i * factor));
+		points[i].x = cx + cosf(i * factor) * rad;
+		points[i].y = cy + sinf(i * factor) * rad;
 	}
 
-	result = SDL_RenderPoints(renderer, points, 360) ? 0 : -1;
-
-	if (result != 0)
-	{
-		LOG("Cannot draw quad to screen. SDL_RenderPoints error: %s", SDL_GetError());
-		ret = false;
-	}
-
-	return ret;
+	return SDL_RenderPoints(renderer, points, 360);
 }
 bool Render::IsOnScreenWorldRect(float x, float y, float w, float h, int margin) const
 {
@@ -440,3 +523,37 @@ bool Render::IsOnScreenWorldRect(float x, float y, float w, float h, int margin)
 	return result;
 }
 
+void Render::SetZoomSmooth(float newZoom, float duration)
+{
+	startZoom = zoom;
+	targetZoom = newZoom;
+
+	zoomDuration = duration;
+	zoomTime = 0.0f;
+
+	zooming = true;
+}
+float Render::EaseInOut(float t)
+{
+	return t * t * (3.0f - 2.0f * t);
+}
+
+void Render::SetCameraFocusSmooth(float worldX, float worldY, float newZoom, float duration)
+{
+	int scale = Engine::GetInstance().window->GetScale();
+
+	// cámara actual en world space
+	camStartX = camera.x;
+	camStartY = camera.y;
+
+	camTargetX = -(worldX * scale - camera.w * 0.5f);
+	camTargetY = -(worldY * scale - camera.h * 0.5f);
+
+	camStartZoom = zoom;
+	camTargetZoom = newZoom;
+
+	camDuration = duration;
+	camTime = 0.0f;
+
+	cameraMoving = true;
+}

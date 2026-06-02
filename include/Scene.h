@@ -5,6 +5,9 @@
 #include "Enemy.h"
 #include "UIButton.h"
 #include "Animation.h"
+#include "Inventario.h"
+#include "ListaMisiones.h"
+#include "TarotCards.h"
 
 struct SDL_Texture;
 
@@ -12,23 +15,47 @@ enum class SceneID
 {
 	INTRO_SCREEN,
 	MAIN_MENU,
-	LEVEL1,
-	LEVEL2,
-	LEVEL3,
-	LEVEL4,
-	LEVEL5,
+	IN_GAME,
 	GAME_OVER,
 	WIN_SCREEN,
 	FINAL_WIN
 };
 
+enum Level {
+	LEVEL1,
+	LEVEL2,
+	LEVEL3,
+	LEVEL4
+};
+
+enum Areas1 {
+	START,
+	TOWER,
+	PANTRY,
+	TORTURE,
+	BOSS
+};
+
 class Scene : public Module
 {
 public:
+	void SetInventariIcon(bool on);
+	bool continueGame = false;
 	int savedLevel = 1;
 	bool isPaused = false;
+	bool showHelp = true;
+	bool firstMapLoad = true;
 	bool storeOn = false;
+	bool inventoryOn = false;
+	int currentInvPage = 0;
+	bool cardsInventoryOn = false;
+	int currentCardIndex = 0;
+	int totalUnlockedCards = 1;
 	bool showUIDebug = false;
+	bool teleportOn = false;
+	int selectedTeleportingLevel = 0;
+	SDL_Texture* teleportBg = nullptr;
+	int currentMission = 0;
 	Scene();
 
 	// Destructor
@@ -69,21 +96,30 @@ public:
 	void ChangeScene(SceneID newScene);
 	void UnloadCurrentScene();
 	void LoadScene(SceneID newScene);
-
+	SceneID GetCurrentScene()
+	{
+		return currentScene;
+	}
+	SceneID GetLastScene()
+	{
+		return lastscene;
+	}
 	void SaveLevel();
 	void LoadGame();
 	void LoadMap(std::string map);
+
+	void StartFadeOut(float duration);
+
+	void StartFadeIn(float duration);
+
+	Player* Scene::GetPlayer() const;
 private:
 	//Introscreen functions
 	void LoadIntro();
 	void UpdateIntro(float dt);
 	void UnloadIntro();
 
-	void ChangeToLvl1();
-	void ChangeToLvl2();
-	void ChangeToLvl3();
-	void ChangeToLvl4();
-	void ChangeToLvl5();
+	
 
 	// L17 TODO 3: Define specific function for main menu scene: Load, Unload, Handle UI events
 	void LoadMainMenu();
@@ -92,30 +128,9 @@ private:
 	void HandleMainMenuUIEvents(UIElement* uiElement);
 
 	// L17 TODO 4: Define specific functions for level1 scene: Load, Unload, Update, PostUpdate
-	void LoadLevel1();
-	void UnloadLevel1();
-	void UpdateLevel1(float dt);
-	void PostUpdateLevel1();
-
-	// L17 TODO 5: Define specific functions for level2 scene: Load, Unload, Update
-	void LoadLevel2();
-	void UpdateLevel2(float dt);
-	void UnloadLevel2();
-
-	//Lvl3 Functions
-	void LoadLevel3();
-	void UpdateLevel3(float dt);
-	void UnloadLevel3();
-
-	//Lvl4 Functions
-	void LoadLevel4();
-	void UpdateLevel4(float dt);
-	void UnloadLevel4();
-
-	//Lvl5 Functions
-	void LoadLevel5();
-	void UpdateLevel5(float dt);
-	void UnloadLevel5();
+	void UnloadLevel();
+	void UpdateLevel(float dt);
+	void PostUpdateLevel();
 
 	// Funciones para la pantalla de Game Over
 	void LoadGameOver(); 
@@ -127,7 +142,7 @@ private:
 	void LoadWinScreen();           
 	void UpdateWinScreen(float dt);  
 	void UnloadWinScreen();          
-	void HandleWinScreenUIEvents(UIElement* uiElement);
+
 
 	// Funciones para el Menú de Pausa
 	void CreatePauseUI();            
@@ -140,13 +155,71 @@ private:
 	void UpdateFinalWin(float dt);
 	void UnloadFinalWin();
 	void HandleFinalWinUIEvents(UIElement* uiElement);
+
+	//tarot
+
+	void TarotUI();
+
+	void SetTarotUI(bool aaa);
+
+	bool tarot = false;
 	
 
 	//Funciones Store
 	void CreateStoreLevel1();
+	void CreateStoreLevel2();
 
+	//Funciones para el inventario
+	void CreateInventoryUI();
 
+	//Funciones misiones
+	void MissionUI();
+	void SetMissionUI();
+	SDL_Texture* missionTexture = nullptr;
+
+	// Texturas del inventario
+	SDL_Texture* invPaperCombined = nullptr;
+	SDL_Texture* iconMap = nullptr;
+	SDL_Texture* iconKey = nullptr;
+	SDL_Texture* iconLamp = nullptr;
+	SDL_Texture* iconSpring = nullptr;
+	SDL_Texture* iconHorseMacure = nullptr;
+	SDL_Texture* iconGargantuan = nullptr;
+	SDL_Texture* inventoryBag = nullptr;
+	SDL_Texture* uiCoin = nullptr;
+
+	//Texturas tarot
+	SDL_Texture* cardsIcon = nullptr;
+	SDL_Texture* cardsIcon2 = nullptr;
+	SDL_Texture* cardsBase = nullptr;
+	SDL_Texture* cardTheFool = nullptr;
+	SDL_Texture* cardTheMagician = nullptr;
+	SDL_Texture* cardWheelOfFortune = nullptr;
+	SDL_Texture* arrowRight = nullptr;
+	SDL_Texture* arrowLeft = nullptr;
+	SDL_Texture* arrowRight2 = nullptr;
+	SDL_Texture* arrowLeft2 = nullptr;
+	//Texturas
+	SDL_Texture* inventarioDrawing = nullptr;
+	SDL_Texture* inventarioclicado = nullptr;
+	SDL_Texture* inventarionotificacion = nullptr;
+	SDL_Texture* inventarionotificacion2 = nullptr;
+
+	SDL_Texture* misionesicono = nullptr;
+	SDL_Texture* misionesiconoclicado = nullptr;
+	SDL_Texture* misionesnoti = nullptr;
+	SDL_Texture* misionesnoticlicado = nullptr;
+	void InventariIconUI();
+	
+	void UpdatePauseMenu(float dt);
 	void HandleStoreUIEvents(UIElement* uiElement);
+
+public:
+	//Funciones para el teletransporte
+	void CreateTeleportUI();
+	void SetTeleport(bool teleport);
+	void HandleTeleportUIEvents(UIElement* uiElement);
+	
 private:
 
 	//L03: TODO 3b: Declare a Player attribute
@@ -154,28 +227,147 @@ private:
 	std::string tilePosDebug = "[0,0]";
 	SDL_Texture* helpTexture = nullptr;
 	SDL_Texture* map1Texture = nullptr;
-	bool showHelp = false;
+	
 	bool showMap = false;
 	SDL_Texture* introTexture = nullptr;
 	SDL_Texture* heartTexture = nullptr;
+	SDL_Texture* panelTexture = nullptr;
+	SDL_Texture* heart1Texture = nullptr;
+	SDL_Texture* heart2Texture = nullptr;
+	SDL_Texture* heart3Texture = nullptr;
+	SDL_Texture* heart4Texture = nullptr;
+	SDL_Texture* extraHeartTexture = nullptr;
+
 	std::vector<std::shared_ptr<Enemy>> enemies;
 
 	std::shared_ptr<UIButton> uiBt;
 	float volume = 1.0;
-	bool continueGame = false;
 	bool exitGame = false;
 	bool showCredits = false;
 	SceneID currentScene = SceneID::MAIN_MENU;
+	SceneID lastscene = SceneID::MAIN_MENU;
 	SDL_Texture* loseTexture = nullptr;
 	AnimationSet loseAnimSet;
 	bool slidersOn = false;
 	SDL_Texture* Volume = nullptr;
 	SDL_Texture* VolumeEffects = nullptr;
 	SDL_Texture* fullscreen = nullptr;
+	
+	SDL_Texture* storeBag = nullptr;
+	SDL_Texture* storePaperMap = nullptr;
+	SDL_Texture* storePaperLife = nullptr;
+	SDL_Texture* storePaperKey = nullptr;
+	SDL_Texture* storePaperDamage = nullptr;
+	int selectedStoreItem = 0;
+
 
 public:
-	void SetStore(bool store);
+	void SetStore(bool store, int storeID = 1);
+	void SetInventory(bool inventory);
+	SDL_Rect rectInvMap = { 0, 0, 0, 0 };
 	std::string nextMap = "";
 	std::string nextSpawnPoint = "Door_1_1";
 	std::string nextDoor = "";
+	bool firstDoor = true;
+	bool cheese = true;
+
+	bool isFading = false;
+	bool fadeIn = false;   // true = fade in, false = fade out
+	float fadeTime = 0.0f;
+	float fadeDuration = 1.0f; // segundos
+	Uint8 fadeAlpha = 0;
+
+	int lives = 4;
+	int score = 0;
+	bool hasDamagePlus = false;
+	bool hasTalkedMagician = false;
+
+	//inventario
+	Inventario inventario;
+	//MARC ESTOS SON LOS BOOLS DE EL PLAYER PARA CONVERSACIONES
+
+	
+	bool beatBoss = false;
+	bool extralife = false;
+
+	//BOOLS OF THE PAPERS
+	bool day = false;
+	bool night = false;
+	bool dusk = false;
+	bool dawn = false;
+
+	bool hasAllPoems = false;
+
+	//Hermit bools for player
+	bool springWater = false;
+	bool HorsekinManure = false;
+	bool Gargantuan = false;
+	//for hermit
+
+	bool springWaterHermit = false;
+	bool HorsekinManureHermit = false;
+	bool GargantuanHermit = false;
+	bool finishedmissionHermit = false;
+
+	bool hasTalkedHermit = false;
+
+	//Tarot bools
+	TarotCards cards;
+
+	//Misiones
+
+	ListaMisiones misiones;
+	bool list = false;
+
+	//dialogue movement restriction
+
+	bool someoneIsTalking = false;
+	bool ObjectObserved = false;
+
+	//psalms
+
+	bool psalm1 = false;
+	bool psalm2 = false;
+	bool psalm3 = false;
+	bool hasReadAllPsalms = false;
+	bool hasTalkedAboutPsalmsB4 = false;
+	bool DefeatedHighPrietest = false;
+	bool hasBeenWhistledblowed = false;
+
+	//Well's echo bools
+
+	bool hasTalkedWell = false;
+	bool hasShownPoemToWell = false;
+
+	//level 3 bools
+
+	bool talkedTiredPreacher = false;
+
+
+		//Little Finley
+		
+
+		int hidingPlaceATM = 0;
+		bool hasFoundTimmyThreeTimes = false;
+		bool hasTalkedToTimmyOnce = false;
+		bool talkedOnceAfterDefeatBoss = false;
+
+		//Empress
+
+		bool EmpressTrustedDialogue = false;
+		bool hasAllFragments = false;
+		bool hasSparedPrincessAndKnight = false;
+		bool hasTalkedOnceEmpress = false;
+		bool talkedTwiceEmpress = false;
+
+		//Sculptor
+		bool hasTalkedSculptor = false;
+		bool finishedMissionSculptor = false;
+		//teleport variables
+
+		bool teleportUnlocked = false;
+		bool ratTalkedOnce = false;
+		bool ratmissionfinished = false;
+		int whereIsRat = 1;
+
 };

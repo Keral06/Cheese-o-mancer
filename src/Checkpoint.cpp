@@ -3,6 +3,7 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "Render.h"
+#include "Scene.h"
 #include "Physics.h"
 
 Checkpoint::Checkpoint() : Entity(EntityType::CHECKPOINT)
@@ -13,13 +14,31 @@ Checkpoint::Checkpoint() : Entity(EntityType::CHECKPOINT)
 Checkpoint::~Checkpoint() {}
 
 bool Checkpoint::Start() {
-	texture = Engine::GetInstance().textures->Load("Assets/Textures/PREV/checkpoint-Sheet.png");
+	texture = Engine::GetInstance().textures->Load("Assets/Textures/provisional_flag.png");
 
 	fxId = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/checkpoint.wav");
 
+	Engine::GetInstance().textures.get()->GetSize(texture, texW, texH);
+	if (pbody == nullptr) {
+		position.setX(xInicial);
+		position.setY(yInicial);
+		pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+			(int)position.getX() + texW / 2,
+			(int)position.getY() + texH / 2 - 16,
+			texW / 2,
+			texH / 2,
+			bodyType::DYNAMIC
+		);
+		b2Body_SetGravityScale(pbody->body, 0.0f);
 
-	idleAnim.AddFrame({ 0, 0, 90, 90 }, 100);
+		pbody->listener = this;
 
+		pbody->ctype = ColliderType::SAVE;
+		pbody->listener = this;   // so Begin/EndContact can call back to Item
+
+	}
+
+	/*idleAnim.AddFrame({ 0, 0, 90, 90 }, 100);
 
 	for (int i = 0; i < 6; i++) {
 		activateAnim.AddFrame({ i * 90, 0, 90, 90 }, 100);
@@ -34,20 +53,32 @@ bool Checkpoint::Start() {
 		bodyType::STATIC
 	);
 	pbody->ctype = ColliderType::SAVE;
-	pbody->listener = this;
+	pbody->listener = this;*/
 
 	return true;
 }
 
 bool Checkpoint::Update(float dt)
 {
-	if (currentAnim != nullptr)
+	/*if (isActivated) {
+		return true;
+	}*/
+
+	/*if (currentAnim != nullptr)
 		currentAnim->Update(dt);
 
 	int drawX = (int)position.getX() - (90 - 32) / 2;
 	int drawY = (int)position.getY() - (90 - 32);
 
-	Engine::GetInstance().render->DrawTexture(texture, drawX, drawY, &currentAnim->GetCurrentFrame());
+	Engine::GetInstance().render->DrawTexture(texture, drawX, drawY, &currentAnim->GetCurrentFrame());*/
+
+	if (pbody != nullptr) {
+		int x = 0;
+		int y = 0;
+		pbody->GetPosition(x, y);
+
+		Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2 - 145);
+	}
 
 	return true;
 }
@@ -56,10 +87,18 @@ void Checkpoint::OnCollision(PhysBody* physA, PhysBody* physB)
 {
 
 	if (physB->ctype == ColliderType::PLAYER && !isActivated) {
-		isActivated = true;
-		currentAnim = &activateAnim;
-		currentAnim->Reset();
+		isActivated = true; 
+		/*currentAnim = &activateAnim;
+		currentAnim->Reset();*/
 		Engine::GetInstance().audio->PlayFx(fxId);
+		Player* rawPlayer = Engine::GetInstance().scene->GetPlayer();
+
+		if (rawPlayer != nullptr) {
+			std::shared_ptr<Player> playerPtr(rawPlayer, [](Player*) {});
+
+			Engine::GetInstance().map->SaveEntities(playerPtr);
+
+		}
 	}
 }
 

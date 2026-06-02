@@ -12,7 +12,6 @@ struct SDL_Texture;
 class HANDMAN : public NPC
 {
 public:
-	HANDMAN(Dialogue dialogueHandman, std::string name, SDL_Texture* texture, const char* tsxPath, Dialogue& dialogue, Dialogue& hasBought, Dialogue& hasNotBought, EntityType entity, Dialogue& BeatBoss);
 	HANDMAN();
 	virtual ~HANDMAN();
 
@@ -21,6 +20,7 @@ public:
 	bool Update(float dt);
 	bool CleanUp();
 	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
 
 public:
@@ -39,26 +39,33 @@ private:
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
-	PhysBody* pbody;
+	PhysBody* pbody = nullptr;
 	int texW, texH;
+	int level;
 	const char* tsxPath;
+	
 
 public:
+	SDL_Texture* InteractTexture = nullptr;
 	int coinFx;
+	int storeID = 1;
 	int coinPickupFx;
 	int xInicial;
 	int yInicial;	
 	Dialogue dialogueHANDMAN;
 	Dialogue hasBought;
 	Dialogue hasNotBought;
+	Dialogue hasNoMoney;
+	Dialogue hasBeenSold;
 	Dialogue BeatBoss;
 	bool hasBeenKilled = false;
 	bool wantsBuy = false;
-	bool isStoreOn = true;
+	bool isStoreOn = false;
 	bool firstTime = true;
 	bool firstTimeBossKill = true;
-
+	bool isGettingTouched = false;
+	Player* py;
 	int moneyPlayer = 0;
-
-	
+	bool isWaitingForAnimation = false;
+	Dialogue* pendingDialogue = nullptr;
 };

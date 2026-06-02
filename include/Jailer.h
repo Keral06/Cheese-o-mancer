@@ -10,13 +10,29 @@ public:
     bool Start() override;
     void Attack() override;
     bool Update(float dt) override;
-    void UpdateAttack();
+    void UpdateIdle(float dt);
+    void UpdateChase(float dt);
+    void UpdateAttack(float dt);
+    void UpdateReturn(float dt);
+
+    void Draw(float dt) override;
+    void ChangeCurrentAnimation() override;
     void OnCollision(PhysBody* physA, PhysBody* physB) override;
     void OnCollisionEnd(PhysBody* physA, PhysBody* physB) override;
 protected:
-    int attackTimer = 0;
-    int attackCooldown = 50;
-    float attackDuration = 20.0f;
+
+    enum JailerState
+    {
+        JAILER_IDLE,
+        JAILER_CHASE,
+        JAILER_ATTACK,
+        JAILER_RETURN,
+        JAILER_DEATH
+    };
+
+
+    void SetJailerState(JailerState newState);
+    
 
     float hitboxStart = 5.0f;
     float hitboxEnd = 15.0f;
@@ -26,4 +42,21 @@ protected:
     bool isAttacking = false;
 
     bool playerInHitbox = true;
+    char* texName2 = "";
+    AnimationSet anims2;
+    SDL_Texture* texture2 = nullptr;
+
+    JailerState jailerState;
+    JailerState lastJailerState;
+
+    Vector2D spawnPosition;
+
+    float attackCooldown = 2000.0f;
+    float attackTimer = 0.0f;
+
+    float attackDuration = 200.0f;
+    float attackDurationTimer = 0.0f;
+
+    float attackCooldownTimer = 0.0f;
+    bool justExitedAttack = false;
 };
