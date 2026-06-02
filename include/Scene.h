@@ -236,6 +236,17 @@ private:
 	SDL_Texture* heart2Texture = nullptr;
 	SDL_Texture* heart3Texture = nullptr;
 	SDL_Texture* heart4Texture = nullptr;
+	SDL_Texture* quesoQuintos_5 = nullptr; 
+	SDL_Texture* quesoQuintos_4 = nullptr; 
+	SDL_Texture* quesoQuintos_3 = nullptr; 
+	SDL_Texture* quesoQuintos_2 = nullptr; 
+	SDL_Texture* quesoQuintos_1 = nullptr;
+	SDL_Texture* quesoSextos_6 = nullptr;
+	SDL_Texture* quesoSextos_5 = nullptr;
+	SDL_Texture* quesoSextos_4 = nullptr;
+	SDL_Texture* quesoSextos_3 = nullptr;
+	SDL_Texture* quesoSextos_2 = nullptr;
+	SDL_Texture* quesoSextos_1 = nullptr;
 	SDL_Texture* extraHeartTexture = nullptr;
 
 	std::vector<std::shared_ptr<Enemy>> enemies;
@@ -255,6 +266,7 @@ private:
 	
 	SDL_Texture* storeBag = nullptr;
 	SDL_Texture* storePaperMap = nullptr;
+	SDL_Texture* storePaperPermLife = nullptr;
 	SDL_Texture* storePaperLife = nullptr;
 	SDL_Texture* storePaperKey = nullptr;
 	SDL_Texture* storePaperDamage = nullptr;
@@ -290,6 +302,7 @@ public:
 	bool beatBoss = false;
 	bool beatPrincess = false;	
 	bool extralife = false;
+	int maxLives = 4;
 
 	//BOOLS OF THE PAPERS
 	bool day = false;
