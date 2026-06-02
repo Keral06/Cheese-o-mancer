@@ -129,14 +129,12 @@ bool Player::Update(float dt)
 		godMode = !godMode;
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
-		beatBoss = true;
-		Engine::GetInstance().scene->cheese = true;
+		Engine::GetInstance().scene->beatBoss = true;
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
-		beatPrincess = true;
-		Engine::GetInstance().scene->cheese = true;
+		Engine::GetInstance().scene->beatPrincess = true;
 	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_N) == KEY_DOWN) {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) {
 		AddPoints(100);
 	}
 	bool isPaused = Engine::GetInstance().scene->isPaused || Engine::GetInstance().scene->showHelp;
@@ -836,8 +834,8 @@ bool Player::isDead()
 
 void Player::AddPoints(int points)
 {
-	Player::score += points;
-	LOG("Score: %d", Player::score);
+	Engine::GetInstance().scene->score += points;
+	LOG("Score: %d", Engine::GetInstance().scene->score);
 }
 
 bool Player::isPlayerProtectedquestion() {

@@ -118,7 +118,7 @@ void Coins::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::PLAYER:
 		LOG("Coin picked up!");
 		Engine::GetInstance().audio->PlayFx(coinPickupFx);
-
+		Engine::GetInstance().scene->score += 1;
 		toDelete = true;
 		Engine::GetInstance().physics->DeletePhysBody(pbody);
 		pbody = nullptr;
