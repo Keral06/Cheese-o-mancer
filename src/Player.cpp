@@ -1,5 +1,4 @@
-﻿
-// =====================
+﻿// =====================
 // PLAYER IMPLEMENTATION
 // =====================
 
@@ -23,7 +22,7 @@
 
 // Variables estaticas del jugador
 int Player::score = 0;
-bool Player:: IsPlayerProtected = false;
+bool Player::IsPlayerProtected = false;
 
 // =====================
 // CONSTRUCTOR / DESTRUCTOR
@@ -55,11 +54,11 @@ bool Player::Start() {
 	state = RUNNING;
 	lastState = RUNNING;
 	// load
-	std::unordered_map<int, std::string> aliases2x3 = { {2,"run"},{16,"jump"},{28,"hoponcheese"}};
-	std::unordered_map<int, std::string> aliases3x3 = { {0,"idle"},{17,"idleOnCheese"}};
-	std::unordered_map<int, std::string> aliases3x4 = { {0,"attack2"},{6,"attack3"},{16,"attack1"}};
-	std::unordered_map<int, std::string> aliases4x4 = { {0,"ballroll"}};
-	std::unordered_map<int, std::string> aliases5x5 = { {0,"ballattack"}};
+	std::unordered_map<int, std::string> aliases2x3 = { {2,"run"},{16,"jump"},{28,"hoponcheese"} };
+	std::unordered_map<int, std::string> aliases3x3 = { {0,"idle"},{17,"idleOnCheese"} };
+	std::unordered_map<int, std::string> aliases3x4 = { {0,"attack2"},{6,"attack3"},{16,"attack1"} };
+	std::unordered_map<int, std::string> aliases4x4 = { {0,"ballroll"} };
+	std::unordered_map<int, std::string> aliases5x5 = { {0,"ballattack"} };
 	float limitUp = Engine::GetInstance().render->camera.h / 4;
 	Engine::GetInstance().render->camera.y = limitUp;
 
@@ -81,8 +80,8 @@ bool Player::Start() {
 	// L08 TODO 5: Add physics to the player - initialize physics body
 	texW = 215;
 	texH = 384;
-	pbody = Engine::GetInstance().physics->CreateRectangleFriction(position.getX(),position.getY(),texW,texH, bodyType::DYNAMIC, 0.0f);
-	
+	pbody = Engine::GetInstance().physics->CreateRectangleFriction(position.getX(), position.getY(), texW, texH, bodyType::DYNAMIC, 0.0f);
+
 	// L08 TODO 6: Assign player class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
 
@@ -101,16 +100,26 @@ bool Player::Start() {
 	attackHitbox->ctype = ColliderType::PLAYERATTACK;
 	hitboxActive = false;
 
+	feetHitbox = Engine::GetInstance().physics->CreateRectangleSensor(
+		position.getX(),
+		position.getY() + (texH / 2),
+		texW - 60,
+		20,
+		bodyType::KINEMATIC
+	);
+	feetHitbox->listener = this;
+	feetHitbox->ctype = ColliderType::PLAYERFEET;
+
 	//initialize audio effect
-	
+
 	//jumpfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/salto.wav");
 	checkpointfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/checkpoint.wav");
 	deathfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/player_death.wav");
 	pickCoinFxId = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/coin-collision-sound-342335.wav");
-	healfx= Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Heal_plant.wav");
+	healfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Heal_plant.wav");
 
 	respawnPosition = { PIXEL_TO_METERS(position.getX()), PIXEL_TO_METERS(position.getY()) };
-	
+
 	return true;
 }
 
@@ -143,21 +152,21 @@ bool Player::Update(float dt)
 			mountedBall->pbody->GetPosition(bx, by);
 
 			position.setX(bx);
-			position.setY(by - mountedBall->radius - texH/2);
-			pbody->SetPosition(bx, by - mountedBall->radius - texH/2);
+			position.setY(by - mountedBall->radius - texH / 2);
+			pbody->SetPosition(bx, by - mountedBall->radius - texH / 2);
 			attackHitbox->SetPosition(bx, by - mountedBall->radius - texH / 2);
 
-			HandleMountedMovement(); 
+			HandleMountedMovement();
 		}
 		else
 		{
 			if (Engine::GetInstance().scene->someoneIsTalking == false) {
 				Move();
 				Jump();
-				
+
 			}
 			else {
-			
+
 				currentAnimSet->SetCurrent("idle");
 			}
 		}
@@ -176,9 +185,9 @@ bool Player::Update(float dt)
 		ApplyPhysics();
 	}
 	if (Engine::GetInstance().scene->ObjectObserved == false) {
-	
-	Draw(dt);
-	
+
+		Draw(dt);
+
 	}
 
 	CameraRender(dt);
@@ -206,7 +215,7 @@ bool Player::Update(float dt)
 		}
 		UpdateFireballs(dt);
 	}
-		
+
 	if (pendingDismount && mountedBall)
 	{
 		pendingDismount = false;
@@ -236,7 +245,7 @@ bool Player::Update(float dt)
 	return true;
 }
 
-void Player :: UpdateFireballs(float dt) {
+void Player::UpdateFireballs(float dt) {
 
 	//for (auto it = fireballs.begin(); it != fireballs.end(); ) {
 
@@ -257,7 +266,8 @@ void Player :: UpdateFireballs(float dt) {
 void Player::GetPhysicsValues() {
 	// Read current velocity
 	velocity = Engine::GetInstance().physics->GetLinearVelocity(pbody);
-	if(!godMode){ velocity = { 0, velocity.y }; }else{ velocity = { 0, 0 }; }
+	if (!godMode) { velocity = { 0, velocity.y }; }
+	else { velocity = { 0, 0 }; }
 }
 
 void Player::Move() {
@@ -265,9 +275,7 @@ void Player::Move() {
 		return;*/
 	if (isAttacking && isCollidedFloor) return;
 	isWalking = false;
-	if (velocity.y == 0) {
-		isCollidedFloor = true;
-	}
+
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT && isOnSpecialWall)
 	{
 		isWallWalking = true;
@@ -293,7 +301,7 @@ void Player::Move() {
 
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			velocity.x = speed;
-		
+
 	}
 
 	// =====================
@@ -374,7 +382,7 @@ void Player::Move() {
 	// =====================
 	// SONIDO PASOS
 	// =====================
-	if (isWalking && isJumping==false)
+	if (isWalking && isJumping == false)
 	{
 		int randNum = rand() % 4;
 		switch (randNum) {
@@ -417,7 +425,7 @@ void Player::Jump() {
 		anims.SetCurrent("jump");
 		isJumping = true;
 		if (firstJump) {
-		
+
 		Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);
 			secondJump = false;
 		}
@@ -426,22 +434,22 @@ void Player::Jump() {
 		Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce+0.1f, true);
 		}
 		firstJump = false;
-		
+
 	}
 	*/
-	
-	if(spacePressed && canFirstJump){
+
+	if (spacePressed && canFirstJump) {
 		//Engine::GetInstance().audio->PlayFx(jumpfx);
 		if (IsProtected) {
 			state = JUMPING;
-			
+
 		}
 		else {
 			state = JUMPING;
-			
+
 		}
 		isJumping = true;
- 		Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);
+		Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);
 		LOG("Player jumped action");
 		secondJump = false;
 		firstJump = false;
@@ -457,7 +465,7 @@ void Player::Jump() {
 		Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce + 0.1f, true);
 		secondJump = true;
 	}*/
-	
+
 }
 
 void Player::ApplyPhysics() {
@@ -479,8 +487,8 @@ void Player::ApplyPhysics() {
 
 void Player::Draw(float dt) {
 
-	
-	
+
+
 	currentAnimSet->Update(dt);
 	const SDL_Rect& animFrame = currentAnimSet->GetCurrentFrame();
 
@@ -499,7 +507,7 @@ void Player::Draw(float dt) {
 	SDL_FlipMode flip = facingLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
 
 	int drawX = x - animFrame.w / 2;
-	int drawY = y - animFrame.h / 2; 
+	int drawY = y - animFrame.h / 2;
 
 	float rotation = 0.0f;
 
@@ -519,7 +527,7 @@ void Player::Draw(float dt) {
 		INT_MAX,
 		flip
 	);
-	
+
 }
 
 void Player::CameraRender(float dt) {
@@ -571,13 +579,32 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 	ColliderType other = physB->ctype;
 
 	// =========================
+	// 0. COLISIÓN DE LOS PIES
+	// =========================
+	if (physA == feetHitbox)
+	{
+		if (other == ColliderType::PLATFORM)
+		{
+			floorContacts++;
+			isJumping = false;
+			firstJump = true;
+			isCollidedFloor = true;
+
+			if (isMounted) {
+				DismountAndLaunch();
+			}
+		}
+	
+		return;
+	}
+
+	// =========================
 	// 1. ATAQUE DEL JUGADOR
 	// =========================
 	if (physA->ctype == ColliderType::PLAYERATTACK)
 	{
 		if (other == ColliderType::ENEMY)
 		{
-			// ✅ Verificaciones
 			if (!hitboxActive || hasHit) return;
 
 			Enemy* e = static_cast<Enemy*>(physB->listener);
@@ -587,18 +614,9 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 				e->DecreaseHealth(damageAmount);
 				LOG("Enemy hit by player attack");
 			}
-
 			hasHit = true;
 		}
-
-
-		/*case ColliderType::CHEESE_POWERDOWNJUMP:
-			hasCheeseDownJump = true;
-			cheeseDownJumpUsed = false;
-			LOG("Cheese Down Jump acquired");
-			break;*/ //METER AQUI LO DEL DOBLE SALTO
-
-		return; // importante: no seguir procesando como player normal
+		return;
 	}
 
 	// =========================
@@ -608,12 +626,6 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 	{
 	case ColliderType::PLATFORM:
 	{
-		isJumping = false;
-		firstJump = true;
-		isCollidedFloor = true;
-		if (isMounted) {
-			DismountAndLaunch();
-		}
 		break;
 	}
 
@@ -645,9 +657,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 			respawnPosition = b2Body_GetPosition(pbody->body);
 
 		hasHealed = false;
-
-		LOG("Checkpoint rached.");
-
+		LOG("Checkpoint reached.");
 		break;
 	}
 
@@ -660,19 +670,24 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 		if (IsProtected) break;
 
 		if (!isdead)
-			Engine::GetInstance().audio->PlayFx(deathfx);
-
-		isdead = true;
-		if (extralife) { extralife = false; return; }
-		
-		Engine::GetInstance().scene->lives--;
-
-		if (Engine::GetInstance().scene->lives <= 0)
 		{
-			isDeadDefinitive = true;
-		}
+			Engine::GetInstance().audio->PlayFx(deathfx);
+			isdead = true;
 
-		currentAnimSet->SetCurrent("jump");
+			if (extralife) {
+				extralife = false;
+				break;
+			}
+
+			Engine::GetInstance().scene->lives--;
+
+			if (Engine::GetInstance().scene->lives <= 0)
+			{
+				isDeadDefinitive = true;
+			}
+
+			currentAnimSet->SetCurrent("jump");
+		}
 		break;
 	}
 
@@ -698,18 +713,25 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 	default:
 		break;
 	}
-
-	//LOG("Lives: %d", lives);
 }
 
 void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 {
+	// =========================
+	// SALIDA DE LOS PIES DEL SUELO
+	// =========================
+	if (physA == feetHitbox && physB->ctype == ColliderType::PLATFORM)
+	{
+		isCollidedFloor = false;
+		return;
+	}
+
+	// =========================
+	// SALIDAS DEL CUERPO PRINCIPAL
+	// =========================
 	switch (physB->ctype)
 	{
 	case ColliderType::PLATFORM:
-		LOG("End Collision PLATFORM");
-		
-		isCollidedFloor = false;
 		break;
 	case ColliderType::ITEM:
 		LOG("End Collision ITEM");
@@ -725,9 +747,6 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 		LOG("End Collision SAVE");
 		break;
 	case ColliderType::FIREBALL:
-
-
-
 		break;
 	case ColliderType::MOHOWALL:
 		isOnSpecialWall = false;
@@ -765,6 +784,12 @@ bool Player::CleanUp()
 		attackHitbox = nullptr;
 	}
 
+	if (feetHitbox != nullptr) {
+		feetHitbox->listener = nullptr;
+		Engine::GetInstance().physics->DeletePhysBody(feetHitbox);
+		feetHitbox = nullptr;
+	}
+
 	Engine::GetInstance().textures->UnLoad(texture);
 
 	return true;
@@ -772,7 +797,7 @@ bool Player::CleanUp()
 
 void Player::SetPosition(Vector2D pos)
 {
-	
+
 	this->position = pos;
 
 	if (pbody != nullptr && !B2_IS_NULL(pbody->body)) {
@@ -787,7 +812,7 @@ void Player::SetPosition(Vector2D pos)
 
 void Player::Reset()
 {
-	
+
 	b2Vec2 initialPos = respawnPosition;
 	b2Rot rotation = b2MakeRot(0.0f);
 	b2Body_SetTransform(pbody->body, initialPos, rotation);
@@ -801,7 +826,7 @@ void Player::Reset()
 	Engine::GetInstance().render->camera.y = limitUp;
 	IsProtected = false;
 	currentAnimSet->SetCurrent("jump");
-	
+
 }
 
 bool Player::isDead()
@@ -867,7 +892,7 @@ void Player::ChangeCurrentAnimation() {
 		currentAnimSet->SetCurrent("idleOnCheese");
 		break;
 	case RUNNING_ON_CHEESE:
-		currentAnimSet = &anims4x4;  
+		currentAnimSet = &anims4x4;
 		texture = texture4x4;
 		currentAnimSet->SetCurrent("ballroll");
 		break;
@@ -1007,6 +1032,10 @@ void Player::UpdateAttackHitbox()
 		x + offsetX,
 		y + offsetAttackHitboxY
 	);
+
+	if (feetHitbox) {
+		feetHitbox->SetPosition(x, y + (texH / 2));
+	}
 }
 
 // =====================
@@ -1017,35 +1046,35 @@ void Player::SpawnCheeseBall()
 {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_C) == KEY_DOWN && !isMounted && Engine::GetInstance().scene->cheese == true)
 	{
-			ResetCheeseState();
-			auto entity = Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEESEBALL);
-			auto cb = std::dynamic_pointer_cast<CheeseBall>(entity);
+		ResetCheeseState();
+		auto entity = Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEESEBALL);
+		auto cb = std::dynamic_pointer_cast<CheeseBall>(entity);
 
-			if (!cb)
-			{
-				LOG("Error: CheeseBall cast failed");
-				return;
-			}
-			cb->ismounted = true;
-			int px, py;
-			pbody->GetPosition(px, py);
+		if (!cb)
+		{
+			LOG("Error: CheeseBall cast failed");
+			return;
+		}
+		cb->ismounted = true;
+		int px, py;
+		pbody->GetPosition(px, py);
 
-			Vector2D spawnPos(px, py + texH / 2 + cb->radius - 200);
-			cb->SetPosition(spawnPos);
-			cb->Start();
-			
+		Vector2D spawnPos(px, py + texH / 2 + cb->radius - 200);
+		cb->SetPosition(spawnPos);
+		cb->Start();
 
-			int bx, by;
-			cb->pbody->GetPosition(bx, by);
-			SetPosition(Vector2D(bx, by - cb->radius - texH / 2));
 
-			mountedBall = cb;
-			isMounted = true;
-			mountedBall->firstjump = true;
-			state = ONCHEESE;
-			cheeseTime = 300.0f;
-			Engine::GetInstance().physics->SetLinearVelocity(pbody, { 0,0 });
-			
+		int bx, by;
+		cb->pbody->GetPosition(bx, by);
+		SetPosition(Vector2D(bx, by - cb->radius - texH / 2));
+
+		mountedBall = cb;
+		isMounted = true;
+		mountedBall->firstjump = true;
+		state = ONCHEESE;
+		cheeseTime = 300.0f;
+		Engine::GetInstance().physics->SetLinearVelocity(pbody, { 0,0 });
+
 	}
 }
 
@@ -1062,7 +1091,7 @@ void Player::HandleMountedMovement()
 		return;
 	}
 	cheeseTime--;
-	
+
 	if (waitingAttackAnimEnd)
 	{
 		int currentFrame = currentAnimSet->GetCurrentFrameIndex();
@@ -1077,7 +1106,7 @@ void Player::HandleMountedMovement()
 
 	b2Vec2 vel = b2Body_GetLinearVelocity(mountedBall->pbody->body);
 	movingBall = false;
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT){
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		if (!facingLeft) {
 			cheeseSpeed = 10.0f;
 			cheeseTime = 300.0f;
@@ -1091,10 +1120,10 @@ void Player::HandleMountedMovement()
 		else {
 
 			vel.x = -cheeseSpeed;
-			
+
 		}
 		movingBall = true;
-		facingLeft = true;		
+		facingLeft = true;
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		if (facingLeft) {
@@ -1117,7 +1146,7 @@ void Player::HandleMountedMovement()
 		}
 		movingBall = true;
 		facingLeft = false;
-		
+
 	}
 	if (state == ONCHEESE) {
 		return;
@@ -1196,7 +1225,7 @@ void Player::DismountAndLaunch()
 	state = DEFAULT;
 
 	ResetCheeseState();
-	
+
 }
 
 void Player::DismountVerticalJump()
@@ -1274,3 +1303,4 @@ void Player::ResetCheeseState()
 		mountedBall->firstjump = false;
 	}
 }
+

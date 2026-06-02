@@ -108,6 +108,7 @@ public:
 	bool isWalking = false;
 	bool isCollidedWall = false;
 	bool isCollidedFloor = false;
+	int floorContacts = 0;
 	bool facingLeft = false;
 	std::vector<std::shared_ptr<FireBall>> fireballs;
 	
@@ -170,6 +171,7 @@ private:
 	Uint32 bufferStart = 0;
 
 	PhysBody* attackHitbox = nullptr;
+	PhysBody* feetHitbox = nullptr;
 
 	bool hitboxActive = false;
 	bool hasHit = false;
