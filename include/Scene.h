@@ -288,6 +288,7 @@ public:
 
 	
 	bool beatBoss = false;
+	bool beatPrincess = false;	
 	bool extralife = false;
 
 	//BOOLS OF THE PAPERS

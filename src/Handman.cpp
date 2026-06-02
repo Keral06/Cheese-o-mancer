@@ -114,10 +114,10 @@ bool HANDMAN::Update(float dt)
         }
         bool bossDefeated = false;
         if (storeID == 1) {
-            bossDefeated = py->beatBoss;
+            bossDefeated = Engine::GetInstance().scene->beatBoss;
         }
         else if (storeID == 2) {
-            bossDefeated = py->beatPrincess;
+            bossDefeated = Engine::GetInstance().scene->beatPrincess;
         }
         if (isWaitingForAnimation) {
             if (anims.HasFinished()) {
@@ -232,7 +232,7 @@ bool HANDMAN::Update(float dt)
                     isStoreOn = false;
                     Engine::GetInstance().scene->SetStore(isStoreOn, storeID);
 
-                    if (py->score < moneyPlayer) {
+                    if (Engine::GetInstance().scene->score < moneyPlayer) {
                         pendingDialogue = &hasBought;
                     }
                     else {
