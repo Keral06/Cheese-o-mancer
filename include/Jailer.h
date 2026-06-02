@@ -14,6 +14,7 @@ public:
     void UpdateChase(float dt);
     void UpdateAttack(float dt);
     void UpdateReturn(float dt);
+    void Die();
 
     void Draw(float dt) override;
     void ChangeCurrentAnimation() override;
@@ -32,7 +33,7 @@ protected:
 
 
     void SetJailerState(JailerState newState);
-    
+
 
     float hitboxStart = 5.0f;
     float hitboxEnd = 15.0f;
@@ -41,7 +42,7 @@ protected:
 
     bool isAttacking = false;
 
-    bool playerInHitbox = true;
+    bool playerInHitbox = false;
     char* texName2 = "";
     AnimationSet anims2;
     SDL_Texture* texture2 = nullptr;
@@ -51,12 +52,15 @@ protected:
 
     Vector2D spawnPosition;
 
-    float attackCooldown = 2000.0f;
+    float attackCooldown = 2.0f;
     float attackTimer = 0.0f;
 
-    float attackDuration = 200.0f;
+    float attackDuration = 0.2f;
     float attackDurationTimer = 0.0f;
 
     float attackCooldownTimer = 0.0f;
     bool justExitedAttack = false;
+
+    int damageTimer = 0;
+    int damageCooldown = 60;
 };
