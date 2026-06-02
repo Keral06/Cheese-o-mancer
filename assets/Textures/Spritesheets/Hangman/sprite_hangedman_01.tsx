@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.12.1" name="sprite_hangedman_01" tilewidth="256" tileheight="640" tilecount="105" columns="35">
+<tileset version="1.10" tiledversion="1.11.2" name="sprite_hangedman_01" tilewidth="256" tileheight="640" tilecount="105" columns="35">
  <image source="sprite_hangedman_01.png" width="8960" height="1920"/>
  <tile id="0">
   <animation>
@@ -85,7 +85,7 @@
  </tile>
  <tile id="70">
   <properties>
-   <property name="loop" type="bool" value="true"/>
+   <property name="loop" type="bool" value="false"/>
    <property name="name" value="idle"/>
   </properties>
   <animation>

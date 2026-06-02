@@ -1115,7 +1115,7 @@ void  Scene::PostUpdateLevel() {
 	}
 
 	if (player != nullptr) {
-		std::string scoreText = "Score: " + std::to_string(player->score);
+		std::string scoreText = "Score: " + std::to_string(Engine::GetInstance().scene->score);
 		Engine::GetInstance().render->DrawText(scoreText.c_str(), 1100, 30, 0, 0, { 255, 255, 255, 255 });
 
 		std::string timerText = "Time: " + std::to_string((int)levelTimer);
@@ -1199,7 +1199,7 @@ void  Scene::PostUpdateLevel() {
 				Engine::GetInstance().render->DrawTextureNoCamera(uiCoin, coinX -25, coinY +25, coinSize, coinSize);
 
 				if (player != nullptr) {
-					std::string scoreText = std::to_string(player->score);
+					std::string scoreText = std::to_string(Engine::GetInstance().scene->score);
 
 					int textX = coinX + coinSize + 30;
 					int textY = coinY + 40; 
