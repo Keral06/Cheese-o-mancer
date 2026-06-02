@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="175" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="36" nextobjectid="424">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="175" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="36" nextobjectid="429">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -55356,6 +55356,18 @@
    <point/>
   </object>
   <object id="423" name="Player" type="Player" x="14592" y="5340">
+   <point/>
+  </object>
+  <object id="424" name="Timmy" type="Timmy" x="14618.2" y="7184.85">
+   <point/>
+  </object>
+  <object id="425" name="Empress" type="Empress" x="15251.5" y="6815.15">
+   <point/>
+  </object>
+  <object id="427" name="Sculptor" type="Sculptor" x="13266.7" y="6996.97">
+   <point/>
+  </object>
+  <object id="428" name="RetiredKnight" type="RetiredKnight" x="15824.2" y="7066.67">
    <point/>
   </object>
  </objectgroup>

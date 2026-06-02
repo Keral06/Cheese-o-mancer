@@ -57,7 +57,9 @@ enum class EntityType
 	WELL,
 	HIEROPHANT,
 	TIMMY,
-	EMPRESS
+	EMPRESS,
+	SCULPTOR,
+	RETIREDKNIGHT
 };
 
 class PhysBody;
