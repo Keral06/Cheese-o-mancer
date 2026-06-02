@@ -919,8 +919,8 @@ void Player::Attack() {
 	wasPressedLastFrame = isPressed;
 }
 
-void Player::HandleAttack() {
-
+void Player::HandleAttack()
+{
 	const float comboResetTimeMs = 400;
 	static Uint32 lastAttackTime = 0;
 
@@ -934,7 +934,15 @@ void Player::HandleAttack() {
 
 		if (!isAttacking)
 		{
-			attackCombo = 1;
+			// Si está en el aire, siempre usar attack3
+			if (!isCollidedFloor)
+			{
+				attackCombo = 3;
+			}
+			else
+			{
+				attackCombo = 1;
+			}
 			StartAttack(attackCombo);
 			lastAttackTime = now;
 		}
@@ -956,8 +964,16 @@ void Player::HandleAttack() {
 			{
 				bufferedAttack = false;
 
-				attackCombo++;
-				if (attackCombo > 3) attackCombo = 1;
+				// Si está en el aire, siempre usar attack3
+				if (!isCollidedFloor)
+				{
+					attackCombo = 3;
+				}
+				else
+				{
+					attackCombo++;
+					if (attackCombo > 3) attackCombo = 1;
+				}
 
 				StartAttack(attackCombo);
 
