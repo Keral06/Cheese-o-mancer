@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="66" height="142" tilewidth="128" tileheight="128" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="66" height="142" tilewidth="128" tileheight="128" infinite="0" nextlayerid="9" nextobjectid="7">
+ <tileset firstgid="1" source="tileset_lv2_sky_parallax_1.tsx"/>
+ <tileset firstgid="2" source="tileset_lv2_sky_parallax_2.tsx"/>
+ <tileset firstgid="3" source="tileset_lv2_sky_parallax_3.tsx"/>
+ <tileset firstgid="4" source="tileset_lv2_sky_parallax_4.tsx"/>
+ <tileset firstgid="5" source="tileset_lv2_sky_parallax_5.tsx"/>
+ <tileset firstgid="6" source="tileset_lv2_sky_parallax_6.tsx"/>
  <layer id="1" name="Tile Layer 1" width="66" height="142">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -146,4 +152,24 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <group id="8" name="sky" offsetx="-2680" offsety="-1320" parallaxx="0.1" parallaxy="0.1">
+  <objectgroup id="2" name="sky 1" parallaxx="0.4" parallaxy="0.4">
+   <object id="1" gid="1" x="-4380.85" y="3546.52" width="14658.1" height="4711.52"/>
+  </objectgroup>
+  <objectgroup id="3" name="sky 2" parallaxx="0.5" parallaxy="0.5">
+   <object id="2" gid="2" x="-4389.3" y="3605.67" width="14658.1" height="4711.52"/>
+  </objectgroup>
+  <objectgroup id="4" name="sky 3" parallaxx="0.6" parallaxy="0.6">
+   <object id="3" gid="3" x="-4381" y="3715.08" width="14658.1" height="4711.52"/>
+  </objectgroup>
+  <objectgroup id="5" name="sky 4" parallaxx="0.7" parallaxy="0.7">
+   <object id="4" gid="4" x="-4406.21" y="3925" width="14658.1" height="4711.52"/>
+  </objectgroup>
+  <objectgroup id="6" name="sky 5" parallaxx="0.8" parallaxy="0.8">
+   <object id="5" gid="5" x="-3995.86" y="3850.13" width="14658.1" height="4711.52"/>
+  </objectgroup>
+  <objectgroup id="7" name="sky 6" parallaxx="0.9" parallaxy="0.9">
+   <object id="6" gid="6" x="-1357.74" y="3821.97" width="8376.04" height="4711.52"/>
+  </objectgroup>
+ </group>
 </map>

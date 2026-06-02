@@ -985,6 +985,22 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                     well->Start();
                     well->mapID = id;
                     }
+                else if (entityType == "Sculptor") {
+                        std::shared_ptr<Sculptor> sculptor = std::dynamic_pointer_cast<Sculptor>(Engine::GetInstance().entityManager->CreateEntity(EntityType::SCULPTOR));
+                        sculptor->position = Vector2D(x, y);
+                        sculptor->xInicial = (int)x;
+                        sculptor->yInicial = (int)y;
+                        sculptor->Start();
+                        sculptor->mapID = id;
+                        }
+                else if (entityType == "RetiredKnight") {
+                            std::shared_ptr<RetiredKnight> retired = std::dynamic_pointer_cast<RetiredKnight>(Engine::GetInstance().entityManager->CreateEntity(EntityType::RETIREDKNIGHT));
+                            retired->position = Vector2D(x, y);
+                            retired->xInicial = (int)x;
+                            retired->yInicial = (int)y;
+                            retired->Start();
+                            retired->mapID = id;
+                            }
                 else if (entityType == "Pics") {
                     auto pics = std::dynamic_pointer_cast<Pics>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PICS));
                     pics->position = Vector2D(x, y);

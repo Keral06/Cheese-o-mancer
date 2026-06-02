@@ -3349,18 +3349,19 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	bool Timmy::Start() {
 
 		std::unordered_map<int, std::string> aliases = {
-				  {0, "idle"},{15, "start"}, {30, "talk"},{45, "end"}
+				  {0, "idle"}
 		};
-		anims.LoadFromTSX("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.tsx", aliases);
+
+		anims.LoadFromTSX("assets/Textures/Spritesheets/Little Finley_NPC/finley.tsx", aliases);
 		anims.SetCurrent("idle");
 
-		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.png");
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Little Finley_NPC/Finley_spritesheet.png");
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
-		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
 		pbody = nullptr;
+
 		if (pbody == nullptr) {
 			position.setX(xInicial);
 			position.setY(yInicial);
@@ -3371,12 +3372,12 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 				texH,
 				bodyType::DYNAMIC
 			);
+
 			b2Body_SetGravityScale(pbody->body, 0.0f);
 
 			pbody->listener = this;
 			pbody->ctype = ColliderType::NPC;
 		}
-
 
 		return true;
 	}
@@ -3397,53 +3398,14 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	bool Timmy::Update(float dt) {
 
 		if (hidingPlace != Engine::GetInstance().scene->hidingPlaceATM) {
-		
 			return true;
-		
 		}
-		if (!isGettingTouched) {
-			// Solo si no estaba ya en idle
-			if (currentAnimName != "idle") {
-				anims.SetCurrent("idle");
-				currentAnimName = "idle";
-			}
-		}
-		else {
-			// Si tocamos la E estando en idle, "start"
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && currentAnimName == "idle") {
-				anims.SetCurrent("start");
-				currentAnimName = "start";
-			}
-			// Si ya no estamos hablando, "end"
-			else if (currentAnimName == "talk" && !Engine::GetInstance().scene->someoneIsTalking) {
-				anims.SetCurrent("end");
-				currentAnimName = "end";
-			}
 
-			// Transiciones cuando terminan los fotogramas
-			if (currentAnimName == "start" && anims.HasFinished()) {
-				anims.SetCurrent("talk");
-				currentAnimName = "talk";
-			}
-			else if (currentAnimName == "end" && anims.HasFinished()) {
-				anims.SetCurrent("idle");
-				currentAnimName = "idle";
-			}
-		}
 		Draw(dt);
-
-
-		//draw
-		anims.Update(dt);
-		if (texture != nullptr) {
-			SDL_Rect rect = anims.GetCurrentFrame();
-			int drawX = (int)position.getX() - (texW / 2);
-			int drawY = (int)position.getY() - (texH / 2);
-			Engine::GetInstance().render->DrawTexture(texture, drawX, drawY, &rect);
-		}
 
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+
 			switch (hidingPlace) {
 			
 			case 0:
@@ -3629,7 +3591,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 	}
 
-	//EMpress
+	//Empress
 	Empress::Empress() :NPC(EntityType::NPC) {
 
 		/*Dialogue regular;
@@ -3668,19 +3630,21 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	}
 	bool Empress::Start() {
 
+		// De momento solo idle
 		std::unordered_map<int, std::string> aliases = {
-				  {0, "idle"},{15, "start"}, {30, "talk"},{45, "end"}
+				  {0, "idle"}
 		};
-		anims.LoadFromTSX("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.tsx", aliases);
+
+		anims.LoadFromTSX("assets/Textures/Spritesheets/High Priestess/high_priestess_idle.tsx", aliases);
 		anims.SetCurrent("idle");
 
-		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.png");
+		texture = Engine::GetInstance().textures->Load("resources/spritesheets/High Priestess/priestess_idle_01.png");
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
-		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
 		pbody = nullptr;
+
 		if (pbody == nullptr) {
 			position.setX(xInicial);
 			position.setY(yInicial);
@@ -3696,7 +3660,6 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			pbody->listener = this;
 			pbody->ctype = ColliderType::NPC;
 		}
-
 
 		return true;
 	}
@@ -3716,51 +3679,11 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	}
 	bool Empress::Update(float dt) {
 
-		if (Engine::GetInstance().scene->hasSparedPrincessAndKnight==false) {
-
+		if (Engine::GetInstance().scene->hasSparedPrincessAndKnight == false) {
 			return true;
+		}
 
-		}
-		if (!isGettingTouched) {
-			// Solo si no estaba ya en idle
-			if (currentAnimName != "idle") {
-				anims.SetCurrent("idle");
-				currentAnimName = "idle";
-			}
-		}
-		else {
-			// Si tocamos la E estando en idle, "start"
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && currentAnimName == "idle") {
-				anims.SetCurrent("start");
-				currentAnimName = "start";
-			}
-			// Si ya no estamos hablando, "end"
-			else if (currentAnimName == "talk" && !Engine::GetInstance().scene->someoneIsTalking) {
-				anims.SetCurrent("end");
-				currentAnimName = "end";
-			}
-
-			// Transiciones cuando terminan los fotogramas
-			if (currentAnimName == "start" && anims.HasFinished()) {
-				anims.SetCurrent("talk");
-				currentAnimName = "talk";
-			}
-			else if (currentAnimName == "end" && anims.HasFinished()) {
-				anims.SetCurrent("idle");
-				currentAnimName = "idle";
-			}
-		}
 		Draw(dt);
-
-
-		//draw
-		anims.Update(dt);
-		if (texture != nullptr) {
-			SDL_Rect rect = anims.GetCurrentFrame();
-			int drawX = (int)position.getX() - (texW / 2);
-			int drawY = (int)position.getY() - (texH / 2);
-			Engine::GetInstance().render->DrawTexture(texture, drawX, drawY, &rect);
-		}
 
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
@@ -3924,18 +3847,20 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	bool RatKing::Start() {
 
 		std::unordered_map<int, std::string> aliases = {
-				  {0, "idle"},{15, "start"}, {30, "talk"},{45, "end"}
+				  {0, "idle"}
 		};
-		anims.LoadFromTSX("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.tsx", aliases);
+
+		// ¡Ojo con las rutas! Cámbialas por las reales del Rey Rata
+		anims.LoadFromTSX("assets/Textures/Spritesheets/rat king/ratking_idle.tsx", aliases);
 		anims.SetCurrent("idle");
 
-		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.png");
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/rat king/sprite_ratking_01_idle.png");
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
-		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
 		pbody = nullptr;
+
 		if (pbody == nullptr) {
 			position.setX(xInicial);
 			position.setY(yInicial);
@@ -3951,7 +3876,6 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			pbody->listener = this;
 			pbody->ctype = ColliderType::NPC;
 		}
-
 
 		return true;
 	}
@@ -3971,47 +3895,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	}
 	bool RatKing::Update(float dt) {
 
-		
-		if (!isGettingTouched) {
-			// Solo si no estaba ya en idle
-			if (currentAnimName != "idle") {
-				anims.SetCurrent("idle");
-				currentAnimName = "idle";
-			}
-		}
-		else {
-			// Si tocamos la E estando en idle, "start"
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && currentAnimName == "idle") {
-				anims.SetCurrent("start");
-				currentAnimName = "start";
-			}
-			// Si ya no estamos hablando, "end"
-			else if (currentAnimName == "talk" && !Engine::GetInstance().scene->someoneIsTalking) {
-				anims.SetCurrent("end");
-				currentAnimName = "end";
-			}
-
-			// Transiciones cuando terminan los fotogramas
-			if (currentAnimName == "start" && anims.HasFinished()) {
-				anims.SetCurrent("talk");
-				currentAnimName = "talk";
-			}
-			else if (currentAnimName == "end" && anims.HasFinished()) {
-				anims.SetCurrent("idle");
-				currentAnimName = "idle";
-			}
-		}
 		Draw(dt);
-
-
-		//draw
-		anims.Update(dt);
-		if (texture != nullptr) {
-			SDL_Rect rect = anims.GetCurrentFrame();
-			int drawX = (int)position.getX() - (texW / 2);
-			int drawY = (int)position.getY() - (texH / 2);
-			Engine::GetInstance().render->DrawTexture(texture, drawX, drawY, &rect);
-		}
 
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
@@ -4171,18 +4055,19 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	bool Sculptor::Start() {
 
 		std::unordered_map<int, std::string> aliases = {
-				  {0, "idle"},{15, "start"}, {30, "talk"},{45, "end"}
+				  {0, "idle"}
 		};
-		anims.LoadFromTSX("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.tsx", aliases);
+
+		anims.LoadFromTSX("assets/Textures/Spritesheets/Frustated Sculptor_NPC/frustatedSculptor.tsx", aliases);
 		anims.SetCurrent("idle");
 
-		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.png");
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Frustated Sculptor_NPC/Frustated_Sculptor.png");
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
-		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
 		pbody = nullptr;
+
 		if (pbody == nullptr) {
 			position.setX(xInicial);
 			position.setY(yInicial);
@@ -4199,10 +4084,9 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			pbody->ctype = ColliderType::NPC;
 		}
 
-
 		return true;
-	}
-	void Sculptor::Draw(float dt) {
+
+	}	void Sculptor::Draw(float dt) {
 		if (texture == nullptr) { return; }
 		anims.Update(dt);
 		const SDL_Rect& animFrame = anims.GetCurrentFrame();
@@ -4218,47 +4102,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	}
 	bool Sculptor::Update(float dt) {
 
-
-		if (!isGettingTouched) {
-			// Solo si no estaba ya en idle
-			if (currentAnimName != "idle") {
-				anims.SetCurrent("idle");
-				currentAnimName = "idle";
-			}
-		}
-		else {
-			// Si tocamos la E estando en idle, "start"
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && currentAnimName == "idle") {
-				anims.SetCurrent("start");
-				currentAnimName = "start";
-			}
-			// Si ya no estamos hablando, "end"
-			else if (currentAnimName == "talk" && !Engine::GetInstance().scene->someoneIsTalking) {
-				anims.SetCurrent("end");
-				currentAnimName = "end";
-			}
-
-			// Transiciones cuando terminan los fotogramas
-			if (currentAnimName == "start" && anims.HasFinished()) {
-				anims.SetCurrent("talk");
-				currentAnimName = "talk";
-			}
-			else if (currentAnimName == "end" && anims.HasFinished()) {
-				anims.SetCurrent("idle");
-				currentAnimName = "idle";
-			}
-		}
 		Draw(dt);
-
-
-		//draw
-		anims.Update(dt);
-		if (texture != nullptr) {
-			SDL_Rect rect = anims.GetCurrentFrame();
-			int drawX = (int)position.getX() - (texW / 2);
-			int drawY = (int)position.getY() - (texH / 2);
-			Engine::GetInstance().render->DrawTexture(texture, drawX, drawY, &rect);
-		}
 
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
@@ -4379,7 +4223,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	}
 
 	//MISSION KNIGHT
-	Knight::Knight() :NPC(EntityType::NPC) {
+	RetiredKnight::RetiredKnight() : NPC(EntityType::NPC) {
 
 		/*Dialogue regular;
 		Dialogue trusted;
@@ -4402,7 +4246,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 
 	}
-	Knight::~Knight()
+	RetiredKnight::~RetiredKnight()
 	{
 		if (pbody != nullptr) {
 			Engine::GetInstance().physics->DeletePhysBody(pbody);
@@ -4411,24 +4255,25 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	}
 
 
-	bool Knight::Awake() {
+	bool RetiredKnight::Awake() {
 		return true;
 	}
-	bool Knight::Start() {
+	bool RetiredKnight::Start() {
 
 		std::unordered_map<int, std::string> aliases = {
-				  {0, "idle"},{15, "start"}, {30, "talk"},{45, "end"}
+					  {0, "idle"}
 		};
-		anims.LoadFromTSX("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.tsx", aliases);
+
+		anims.LoadFromTSX("assets/Textures/Spritesheets/Retired Knight_NPC/retiredKnight.tsx", aliases);
 		anims.SetCurrent("idle");
 
-		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.png");
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Retired Knight_NPC/spritesheet.png");
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
-		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
 		pbody = nullptr;
+
 		if (pbody == nullptr) {
 			position.setX(xInicial);
 			position.setY(yInicial);
@@ -4448,7 +4293,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 		return true;
 	}
-	void Knight::Draw(float dt) {
+	void RetiredKnight::Draw(float dt) {
 		if (texture == nullptr) { return; }
 		anims.Update(dt);
 		const SDL_Rect& animFrame = anims.GetCurrentFrame();
@@ -4462,49 +4307,9 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
 
 	}
-	bool Knight::Update(float dt) {
+	bool RetiredKnight::Update(float dt) {
 
-
-		if (!isGettingTouched) {
-			// Solo si no estaba ya en idle
-			if (currentAnimName != "idle") {
-				anims.SetCurrent("idle");
-				currentAnimName = "idle";
-			}
-		}
-		else {
-			// Si tocamos la E estando en idle, "start"
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && currentAnimName == "idle") {
-				anims.SetCurrent("start");
-				currentAnimName = "start";
-			}
-			// Si ya no estamos hablando, "end"
-			else if (currentAnimName == "talk" && !Engine::GetInstance().scene->someoneIsTalking) {
-				anims.SetCurrent("end");
-				currentAnimName = "end";
-			}
-
-			// Transiciones cuando terminan los fotogramas
-			if (currentAnimName == "start" && anims.HasFinished()) {
-				anims.SetCurrent("talk");
-				currentAnimName = "talk";
-			}
-			else if (currentAnimName == "end" && anims.HasFinished()) {
-				anims.SetCurrent("idle");
-				currentAnimName = "idle";
-			}
-		}
 		Draw(dt);
-
-
-		//draw
-		anims.Update(dt);
-		if (texture != nullptr) {
-			SDL_Rect rect = anims.GetCurrentFrame();
-			int drawX = (int)position.getX() - (texW / 2);
-			int drawY = (int)position.getY() - (texH / 2);
-			Engine::GetInstance().render->DrawTexture(texture, drawX, drawY, &rect);
-		}
 
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
@@ -4592,7 +4397,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 		return true;
 	}
-	bool Knight::CleanUp() {
+	bool RetiredKnight::CleanUp() {
 		LOG("Unloading Hermit");
 		Engine::GetInstance().textures->UnLoad(texture);
 		if (pbody != nullptr) {
@@ -4601,7 +4406,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		}
 		return true;
 	}
-	void Knight::OnCollision(PhysBody* physA, PhysBody* physB) {
+	void RetiredKnight::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 		Player* pp = static_cast<Player*>(physB->listener);
 		py = pp;
@@ -4614,7 +4419,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		}
 
 	}
-	void Knight::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+	void RetiredKnight::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
 

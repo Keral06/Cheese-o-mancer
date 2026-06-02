@@ -1272,12 +1272,12 @@ public:
 
 //MISSION SCULPTOR
 
-class Knight : public NPC
+class RetiredKnight : public NPC
 {
 public:
-	Knight();
+	RetiredKnight();
 
-	virtual ~Knight();
+	virtual ~RetiredKnight();
 	bool Awake();
 	bool Start();
 	bool Update(float dt);
