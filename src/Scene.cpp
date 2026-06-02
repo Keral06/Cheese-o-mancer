@@ -2350,21 +2350,13 @@ void Scene::InventariIconUI() {
 	);
 	if (libreta) libreta->visible = false;
 	if (tarot) tarot->visible = false;
-	LOG("bag ptr = %p", bag);
 
-	LOG("TOTAL UI:");
-	for (auto& e : Engine::GetInstance().uiManager->UIElementsList) {
-		LOG("ID = %d", e->id);
-	}
 
 
 }
 
 void Scene::SetInventariIcon(bool on) {
-	LOG("TOTAL UI:");
-	for (auto& e : Engine::GetInstance().uiManager->UIElementsList) {
-		LOG("ID = %d", e->id);
-	}
+	
 	for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
 		if (element->id == 67 || element->id == 68 || element->id == 69) {
 			element->visible = on;
