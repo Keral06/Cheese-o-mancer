@@ -2509,8 +2509,8 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
-		texW = 128;
-		texH = 128;
+		texW = 128*3;
+		texH = 128*4;
 		pbody = nullptr;
 		if (pbody == nullptr) {
 			position.setX(xInicial);
@@ -2818,8 +2818,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
-		texW = 128;
-		texH = 128;
+		texW = 128*3;
+		texH = 128*3;
 		pbody = nullptr;
 		if (pbody == nullptr) {
 			position.setX(xInicial);
@@ -3045,8 +3045,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hierophant/sprite_hierophant_01.png");
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
-		texW = 128;
-		texH = 128;
+		texW = 128*3;
+		texH = 128*4;
 		pbody = nullptr;
 		if (pbody == nullptr) {
 			position.setX(xInicial);
@@ -3358,8 +3358,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Little Finley_NPC/Finley_spritesheet.png");
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
-		texW = 128;
-		texH = 128;
+		texW = 128*2;
+		texH = 128*3;
 		pbody = nullptr;
 
 		if (pbody == nullptr) {
@@ -3817,14 +3817,14 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		Dialogue GivesArticact;
 		Dialogue AfterMission;*/
 
-		Dialogue paperDialogue("assets/Dialogues/Hierophant/Hierophant_Inital_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_Inital_Names.txt"); //Primer Diálogo
+		Dialogue paperDialogue("assets/Dialogues/Mission_Chariot/Chariot_Initial_Dialogues.txt", "assets/Dialogues/Mission_Chariot/Chariot_Initial_Names.txt"); //Primer Diálogo
 		this->initial = paperDialogue;
-		Dialogue secondDialogue("assets/Dialogues/Hierophant/Hierophant_AllPsalms_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AllPsalms_Names.txt"); //Dialogo All psalms
+		Dialogue secondDialogue("assets/Dialogues/Mission_Chariot/Chariot_NotAdvanced_Dialogues.txt", "assets/Dialogues/Mission_Chariot/Chariot_NotAdvanced_Names.txt"); //Dialogo All psalms
 		this->notAdvanced = secondDialogue;
 
-		Dialogue percent("assets/Dialogues/Hierophant/Hierophant_AfterInital_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AfterInital_Names.txt"); //Dialogo despues de segunda interaccion
+		Dialogue percent("assets/Dialogues/Mission_Chariot/Chariot_MissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Chariot/Chariot_MissionCompleted_Names.txt"); //Dialogo despues de segunda interaccion
 		this->completed = percent;
-		Dialogue lvll2("assets/Dialogues/Hierophant/Hierophant_AllPsalms_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AllPsalms_Names.txt"); //Whistleblower has read all psalms
+		Dialogue lvll2("assets/Dialogues/Mission_Chariot/Chariot_BeforeSelectingDestination_Dialogues.txt", "assets/Dialogues/Mission_Chariot/Chariot_BeforeSelectingDestination_Dialogues.txt"); //Whistleblower has read all psalms
 		this->teleport = lvll2;
 		
 
@@ -3857,8 +3857,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/rat king/sprite_ratking_01_idle.png");
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
-		texW = 128;
-		texH = 128;
+		texW = 384;
+		texH = 384;
 		pbody = nullptr;
 
 		if (pbody == nullptr) {
@@ -4064,8 +4064,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Frustated Sculptor_NPC/Frustated_Sculptor.png");
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
-		texW = 128;
-		texH = 128;
+		texW = 384;
+		texH = 384+ 128;
 		pbody = nullptr;
 
 		if (pbody == nullptr) {
@@ -4270,8 +4270,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Retired Knight_NPC/spritesheet.png");
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
-		texW = 128;
-		texH = 128;
+		texW = 384;
+		texH = 384;
 		pbody = nullptr;
 
 		if (pbody == nullptr) {
