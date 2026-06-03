@@ -132,8 +132,15 @@ struct TileSet
     SDL_Rect GetRect(unsigned int gid) {
         SDL_Rect rect = { 0, 0, 0, 0 };
 
-        //evita la división por cero si columns es 0
-        if (columns <= 0) return rect;
+        //si columns es 0, es una colección de imágenes o una imagen gigante suelta.
+        // Devolvemos el tamaño de la imagen base para que no sea 0x0.
+        if (columns <= 0) {
+            rect.w = tileWidth;
+            rect.h = tileHeight;
+            rect.x = 0;
+            rect.y = 0;
+            return rect;
+        }
 
         int relativeIndex = gid - firstGid;
         rect.w = tileWidth;

@@ -131,12 +131,13 @@ bool Map::Update(float dt)
 TileSet* Map::GetTilesetFromTileId(int gid) const
 {
     TileSet* bestFit = nullptr;
+    int maxGid = -1;
 
     for (const auto& tileset : mapData.tilesets) {
-        // En lugar de depender del tileCount, simplemente buscamos el Tileset 
-        // con el firstGid más alto que sea menor o igual a nuestro GID.
-        if (gid >= tileset->firstGid) {
+        // Buscamos el tileset con el firstGid más alto que siga siendo menor o igual al GID del objeto
+        if (gid >= tileset->firstGid && tileset->firstGid > maxGid) {
             bestFit = tileset;
+            maxGid = tileset->firstGid;
         }
     }
 
@@ -1256,33 +1257,29 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
                         if (tileSet != nullptr) {
                             //LOG("PARALLAX DEBUG: Tileset encontrado. Textura cargada: %s", (tileSet->texture != nullptr ? "SI" : "NO (¡Puntero Nulo!)"));
 
-                            if (tileSet->texture != nullptr) {
+                            if (tileSet != nullptr && tileSet->texture != nullptr) {
                                 SDL_Rect tileRect = tileSet->GetRect(cleanGid);
 
-                                /*float camX = Engine::GetInstance().render->camera.x * -1.0f;
-                                float camY = Engine::GetInstance().render->camera.y * -1.0f;
+                                // --- PARCHE DE TAMAÑO ---
+                                // Si Tiled omitió el tamaño, usamos el del Tileset original
+                                int finalWidth = object->width;
+                                int finalHeight = object->height;
+                                if (finalWidth == 0 || finalHeight == 0) {
+                                    finalWidth = tileRect.w;
+                                    finalHeight = tileRect.h;
+                                }
 
-                                int drawX = object->x + (int)(camX * parallaxSpeed);
-                                int drawY = object->y - object->height + (int)(camY * parallaxSpeed);*/
-
-                                //LOG("PARALLAX DEBUG: Dibujando en X: %d, Y: %d", drawX, drawY);
                                 Engine::GetInstance().render->DrawParallax(
                                     tileSet->texture,
                                     object->x,
-                                    object->y - object->height,
-                                    object->width,
-                                    object->height,
+                                    object->y - finalHeight, // Usamos el height corregido
+                                    finalWidth,              // Usamos el width corregido
+                                    finalHeight,             // Usamos el height corregido
                                     &tileRect,
                                     parallaxSpeed,
-                                    0,
-                                    0,
-                                    0,
-                                    SDL_FLIP_NONE
+                                    0, 0, 0, SDL_FLIP_NONE
                                 );
                             }
-                        }
-                        else {
-                            //LOG("PARALLAX DEBUG: ERROR - No se encontro un Tileset para el GID %d", cleanGid);
                         }
                     }
                 }
