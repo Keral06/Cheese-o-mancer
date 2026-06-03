@@ -87,6 +87,7 @@ bool Player::Start() {
 
 	// L08 TODO 7: Assign collider type
 	pbody->ctype = ColliderType::PLAYER;
+	b2Body_SetGravityScale(pbody->body, 2.25f); // Borrar para tener el salto antiguo
 
 	attackHitbox = Engine::GetInstance().physics->CreateRectangleSensor(
 		position.getX(),
