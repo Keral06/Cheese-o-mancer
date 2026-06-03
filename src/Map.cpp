@@ -1001,6 +1001,14 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                             retired->Start();
                             retired->mapID = id;
                             }
+                else if (entityType == "HighPriestess") {
+                                std::shared_ptr<HighPriestess> highPriestess = std::dynamic_pointer_cast<HighPriestess>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HIGHPRIESTESS));
+                                highPriestess->position = Vector2D(x, y);
+                                highPriestess->xInicial = (int)x;
+                                highPriestess->yInicial = (int)y;
+                                highPriestess->Start();
+                                highPriestess->mapID = id;
+                                }
                 else if (entityType == "Pics") {
                     auto pics = std::dynamic_pointer_cast<Pics>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PICS));
                     pics->position = Vector2D(x, y);

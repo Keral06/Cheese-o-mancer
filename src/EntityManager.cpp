@@ -252,6 +252,9 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 	case EntityType::TELEPORT:
 		entity = std::make_shared<RatKing>();
 		break;
+	case EntityType::HIGHPRIESTESS:
+		entity = std::make_shared<HighPriestess>();
+		break;
 	default:
 		break;
 	}

@@ -59,7 +59,8 @@ enum class EntityType
 	TIMMY,
 	EMPRESS,
 	SCULPTOR,
-	RETIREDKNIGHT
+	RETIREDKNIGHT,
+	HIGHPRIESTESS
 };
 
 class PhysBody;

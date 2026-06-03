@@ -3631,14 +3631,14 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	bool Empress::Start() {
 
 		// De momento solo idle
-		std::unordered_map<int, std::string> aliases = {
-				  {0, "idle"}
-		};
+		//std::unordered_map<int, std::string> aliases = {
+		//		  {0, "idle"}
+		//};
 
-		anims.LoadFromTSX("assets/Textures/Spritesheets/High Priestess/high_priestess_idle.tsx", aliases);
-		anims.SetCurrent("idle");
+		//anims.LoadFromTSX("assets/Textures/Spritesheets/High Priestess/high_priestess_idle.tsx", aliases);
+		//anims.SetCurrent("idle");
 
-		texture = Engine::GetInstance().textures->Load("resources/spritesheets/High Priestess/priestess_idle_01.png");
+		//texture = Engine::GetInstance().textures->Load("resources/spritesheets/High Priestess/priestess_idle_01.png");
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
 		texW = 128;
@@ -4425,3 +4425,114 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 
 	}
+
+
+
+	HighPriestess::HighPriestess() : NPC(EntityType::HIGHPRIESTESS)
+	{
+		// De momento sin dialogos asignados
+	}
+
+	HighPriestess::~HighPriestess()
+	{
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+	}
+
+	bool HighPriestess::Awake()
+	{
+		return true;
+	}
+
+	bool HighPriestess::Start()
+	{
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
+
+		// De momento solo idle
+		std::unordered_map<int, std::string> aliases = {
+				  {0, "idle"}
+		};
+
+		anims.LoadFromTSX("assets/Textures/Spritesheets/High Priestess/high_priestess_idle.tsx", aliases);
+		anims.SetCurrent("idle");
+
+		texture = Engine::GetInstance().textures->Load("resources/spritesheets/High Priestess/priestess_idle_01.png");
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
+
+		texW = 128;
+		texH = 128;
+		pbody = nullptr;
+
+		if (pbody == nullptr) {
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+		}
+
+		return true;
+	}
+
+	void HighPriestess::Draw(float dt)
+	{
+		if (texture == nullptr) return;
+		anims.Update(dt);
+		const SDL_Rect& animFrame = anims.GetCurrentFrame();
+
+		int x, y;
+		pbody->GetPosition(x, y);
+		position.setX((float)x);
+		position.setY((float)y);
+
+		Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
+	}
+
+	bool HighPriestess::Update(float dt)
+	{
+		if (!active) return true;
+
+		Draw(dt);
+		return true;
+	}
+
+	bool HighPriestess::CleanUp()
+	{
+		LOG("Unloading High Priestess");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+
+	void HighPriestess::OnCollision(PhysBody* physA, PhysBody* physB)
+	{
+		Player* pp = static_cast<Player*>(physB->listener);
+		py = pp;
+		switch (physB->ctype)
+		{
+		case ColliderType::PLAYER:
+			isGettingTouched = true;
+			break;
+		}
+	}
+
+	void HighPriestess::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
+	{
+		isGettingTouched = false;
+	}
+
+
+
