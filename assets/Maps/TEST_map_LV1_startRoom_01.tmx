@@ -19162,9 +19162,9 @@
    <tile gid="344"/>
    <tile gid="344"/>
    <tile gid="343"/>
-   <tile gid="283"/>
-   <tile gid="284"/>
-   <tile gid="695"/>
+   <tile gid="313"/>
+   <tile gid="314"/>
+   <tile gid="635"/>
    <tile/>
    <tile/>
    <tile/>
@@ -19337,9 +19337,9 @@
    <tile gid="313"/>
    <tile gid="284"/>
    <tile gid="313"/>
-   <tile gid="313"/>
-   <tile gid="314"/>
-   <tile gid="725"/>
+   <tile gid="343"/>
+   <tile gid="344"/>
+   <tile gid="665"/>
    <tile/>
    <tile/>
    <tile/>
@@ -19512,9 +19512,9 @@
    <tile gid="345"/>
    <tile gid="345"/>
    <tile gid="285"/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="283"/>
+   <tile gid="284"/>
+   <tile gid="695"/>
    <tile/>
    <tile/>
    <tile/>
@@ -19687,9 +19687,9 @@
    <tile gid="283"/>
    <tile gid="315"/>
    <tile gid="343"/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="313"/>
+   <tile gid="314"/>
+   <tile gid="725"/>
    <tile/>
    <tile/>
    <tile/>
@@ -22197,12 +22197,12 @@
   </data>
  </layer>
  <objectgroup id="30" name="WeakWalls">
-  <object id="361" x="12032" y="5109.45" width="128" height="1148.55"/>
-  <object id="362" x="10496" y="5118.55" width="128" height="1169.45"/>
-  <object id="363" x="8960" y="5124.61" width="128" height="1151.39"/>
-  <object id="364" x="7424" y="5094.3" width="128" height="1169.7"/>
-  <object id="365" x="5888" y="5106.42" width="128" height="1153.58"/>
-  <object id="366" x="4617.94" y="5118.55" width="128" height="1148.48"/>
+  <object id="361" x="12032" y="5215.51" width="128" height="1042.49"/>
+  <object id="362" x="10496" y="5218.55" width="128" height="1069.45"/>
+  <object id="363" x="8960" y="5191.28" width="128" height="1084.72"/>
+  <object id="364" x="7424" y="5194.3" width="128" height="1069.7"/>
+  <object id="365" x="5888" y="5227.63" width="128" height="1032.37"/>
+  <object id="366" x="4617.94" y="5236.73" width="128" height="1030.3"/>
   <object id="372" x="13312" y="5167.03" width="128" height="1092.97"/>
   <object id="374" x="15148.3" y="5199.33" width="37.3333" height="1074.67"/>
  </objectgroup>
@@ -52456,9 +52456,9 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="145"/>
-   <tile gid="146"/>
-   <tile gid="147"/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -52806,9 +52806,9 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="145"/>
+   <tile gid="146"/>
+   <tile gid="147"/>
    <tile/>
    <tile/>
    <tile/>
