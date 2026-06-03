@@ -13,6 +13,7 @@ public:
     void OnCollisionEnd(PhysBody* physA, PhysBody* physB) override;
     void Die();
     void Patrol();
+    void Draw(float dt) override;
 protected:
 
     bool coinDropped = false;
