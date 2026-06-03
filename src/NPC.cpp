@@ -2510,7 +2510,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128*3;
-		texH = 128*4;
+		texH = 128*4 ;
 		pbody = nullptr;
 		if (pbody == nullptr) {
 			position.setX(xInicial);
