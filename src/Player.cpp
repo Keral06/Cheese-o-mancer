@@ -74,9 +74,9 @@ bool Player::Start() {
 	texture4x4 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/4x4/j_ballroll.png");
 	texture5x5 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/5x5/j_5x5.png");
 	//L03: TODO 2: Initialize Player parameters
-	texture = texture2x3;
-	currentAnimSet = &anims2x3;
-	currentAnimSet->SetCurrent("run");
+	texture = texture3x3;
+	currentAnimSet = &anims3x3;
+	currentAnimSet->SetCurrent("idle");
 	// L08 TODO 5: Add physics to the player - initialize physics body
 	texW = 215;
 	texH = 384;
