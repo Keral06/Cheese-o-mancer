@@ -9,6 +9,8 @@
 #include "ListaMisiones.h"
 #include "TarotCards.h"
 
+class BossFightPrincessKnight;
+
 struct SDL_Texture;
 
 enum class SceneID
@@ -113,6 +115,9 @@ public:
 	void StartFadeIn(float duration);
 
 	Player* Scene::GetPlayer() const;
+
+	BossFightPrincessKnight* GetBossFightController() const { return bossFightController; }
+
 private:
 	//Introscreen functions
 	void LoadIntro();
@@ -213,6 +218,8 @@ private:
 	
 	void UpdatePauseMenu(float dt);
 	void HandleStoreUIEvents(UIElement* uiElement);
+
+	BossFightPrincessKnight* bossFightController = nullptr;
 
 public:
 	//Funciones para el teletransporte

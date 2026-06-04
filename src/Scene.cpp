@@ -21,6 +21,7 @@
 #include "Handman.h"
 #include "ParticleSystem.h"
 #include "ParticleExample.h"
+#include "BossFightPrincessKnight.h"
 
 Scene::Scene() : Module()
 {
@@ -48,6 +49,9 @@ bool Scene::Start()
 {
 	srand(time(NULL));
 	LoadScene(currentScene);
+
+	bossFightController = new BossFightPrincessKnight();
+	bossFightController->Start();
 
 	return true;
 }
@@ -158,6 +162,10 @@ bool Scene::Update(float dt)
 		StartFadeIn(1.0f);
 	}
 
+	if (bossFightController != nullptr)
+	{
+		bossFightController->Update(dt);
+	}
 	return true;
 }
 
@@ -494,6 +502,13 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
+	if (bossFightController != nullptr)
+	{
+		delete bossFightController;
+		bossFightController = nullptr;
+	}
+	return true;
+
 	UnloadCurrentScene();
 	return true;
 }

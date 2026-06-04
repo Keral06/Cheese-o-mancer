@@ -98,6 +98,15 @@ bool KnightBoss::Start()
 
     bounceStarted = false;
 
+    BossFightPrincessKnight* controller = Engine::GetInstance().scene->GetBossFightController();
+
+    if (controller != nullptr)
+    {
+        SetFightController(controller);
+        controller->knight = this; // La princesa se registra a sí misma en el controlador
+        LOG("PrincessBoss enlazada automáticamente al entrar a la sala.");
+    }
+
     return true;
 }
 
@@ -136,6 +145,7 @@ bool KnightBoss::Update(float dt)
         if (currentAnim && currentAnim->HasFinished())
         {
             OnTransformFinished();
+            FinishAction();
         }
 
         break;
@@ -193,6 +203,14 @@ void KnightBoss::UpdateEntrance(float dt)
         busy = false;
 
         SetKnightState(KnightState::IDLE);
+    }
+
+    if (stateTimer >= 1.5f)
+    {
+        velocity.x = 0;
+        busy = false;
+        SetKnightState(KnightState::IDLE);
+        FinishAction(); // Avisa al controlador para pasar a KNIGHT_TRANSFORM
     }
 }
 
@@ -268,8 +286,7 @@ void KnightBoss::UpdateLunge(float dt)
 
         SetKnightState(KnightState::RECOVER);
 
-        /*if (fightController)
-            FinishAction();*/
+        FinishAction();
     }
 }
 
@@ -613,6 +630,4 @@ void KnightBoss::FinishAction()
     actionFinished = true;
     busy = false;
 
-    if (fightController)
-        fightController->OnBossFinishedAttack(BossTurn::KNIGHT);
 }

@@ -101,6 +101,15 @@ bool PrincessBoss::Start()
 
     busy = false;
 
+    BossFightPrincessKnight* controller = Engine::GetInstance().scene->GetBossFightController();
+
+    if (controller != nullptr)
+    {
+        SetFightController(controller);
+        controller->princess = this; // La princesa se registra a sí misma en el controlador
+        LOG("PrincessBoss enlazada automáticamente al entrar a la sala.");
+    }
+
     return true;
 }
 
@@ -241,13 +250,12 @@ void PrincessBoss::UpdateFlowerAttack(float dt)
         busy = false;
         SetPrincessState(PrincessState::IDLE);
 
-        actionFinished = true;
-
         flowersSpawned = 0;
         spawnedFlowers.clear();
-    }
-    
 
+        
+        FinishAction();
+    }
     
 }
 
@@ -338,19 +346,13 @@ void PrincessBoss::UpdateSpikeAttack(float dt)
 
     if (rightBorderSpike && waveX >= rightBorderSpike->position.getX())
     {
-        if (leftBorderSpike)
-            leftBorderSpike->Resume();
-
-        if (rightBorderSpike)
-            rightBorderSpike->Resume();
-
-        busy = false;
-
-        actionFinished = true;
-
-       /* fightController->OnBossFinishedAttack(BossTurn::PRINCESS);*/
+        if (leftBorderSpike)  leftBorderSpike->Resume();
+        if (rightBorderSpike) rightBorderSpike->Resume();
 
         SetPrincessState(PrincessState::IDLE);
+
+        // CRÍTICO: Asegurar bandera de fin
+        FinishAction();
     }
 }
 

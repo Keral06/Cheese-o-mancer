@@ -62,7 +62,13 @@ public:
 
     bool IsFightActive() const;
 
-    void OnBossFinishedAttack(BossTurn who);
+
+    // ===============================
+    // REFERENCES
+    // ===============================
+
+    PrincessBoss* princess;
+    KnightBoss* knight;
 
 private:
 
@@ -74,12 +80,8 @@ private:
     void UpdatePhase(float dt);
     void UpdateDeath(float dt);
 
-    // ===============================
-    // REFERENCES
-    // ===============================
 
-    PrincessBoss* princess;
-    KnightBoss* knight;
+    
 
     // ===============================
     // STATES

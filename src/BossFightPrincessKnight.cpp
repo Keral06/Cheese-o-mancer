@@ -8,7 +8,7 @@
 #include "Input.h"
 #include "Scene.h"
 #include "Log.h"
-
+#include "EntityManager.h"
 #include "PrincessBoss.h"
 #include "KnightBoss.h"
 
@@ -52,23 +52,10 @@ bool BossFightPrincessKnight::Start()
 {
     LOG("BossFightPrincessKnight START");
 
-    // TODO:
-    // Buscar bosses en escena
-    // TEMP:
-    // Crear bosses manualmente
+    // Limpiamos los punteros por seguridad. Se rellenarán solos cuando los bosses spawneen.
+    princess = nullptr;
+    knight = nullptr;
 
-
-
-    princess = new PrincessBoss();
-    knight = new KnightBoss();
-
-    princess->Start();
-    knight->Start();
-
-    princess->SetFightController(this);
-    knight->SetFightController(this);
-
-    
     return true;
 }
 
@@ -256,39 +243,42 @@ void BossFightPrincessKnight::UpdateIntro(float dt)
 }
 
 // ===============================
-// PHASE UPDATE
+// PHASE UPDATE (Comprobación de término de acción)
 // ===============================
-
 void BossFightPrincessKnight::UpdatePhase(float dt)
 {
+    // 1. Si estamos esperando el delay entre turnos
     if (waitingNextTurn)
     {
         turnDelayTimer -= dt;
-
         if (turnDelayTimer <= 0.0f)
         {
             waitingNextTurn = false;
 
-            if (currentTurn == BossTurn::KNIGHT)
-            {
-                StartPrincessTurn();
-            }
-            else
-            {
-                StartKnightTurn();
-            }
+            // Alternancia estricta
+            if (currentTurn == BossTurn::KNIGHT) StartPrincessTurn();
+            else StartKnightTurn();
         }
+        return;
     }
 
-    // TODO:
-    // Check phase transitions
+    // 2. Monitorear si el boss actual ha terminado su ataque
+    if (currentTurn == BossTurn::KNIGHT && knight->HasFinishedAction())
+    {
+        knight->ResetActionFinished();
+        knight->ReturnToBase(knightBasePos);
+        EndCurrentTurn(); // Activa el delay seguro antes de pasar al siguiente
+    }
+    else if (currentTurn == BossTurn::PRINCESS && princess->HasFinishedAction())
+    {
+        princess->ResetActionFinished();
+        princess->ReturnToBase(princessBasePos);
+        EndCurrentTurn();
+    }
 
-    // Example:
-    //
-    // if (princess->GetHealth() <= ...)
-    // {
-    //      NextPhase();
-    // }
+    // TODO: Aquí añadirías la lógica para cambiar de fase cuando la vida baje:
+    // if (vida <= 0 && currentPhase < 3) { NextPhase(); }
+    // else if (vida <= 0 && currentPhase == 3) { SetFightState(BossFightState::DEATH); }
 }
 
 // ===============================
@@ -304,34 +294,50 @@ void BossFightPrincessKnight::UpdateDeath(float dt)
 // ===============================
 // START KNIGHT TURN
 // ===============================
-
 void BossFightPrincessKnight::StartKnightTurn()
 {
     currentTurn = BossTurn::KNIGHT;
+    knight->ResetActionFinished();
 
-    int r = rand() % 2;
-
-    if (r == 0)
-        knight->StartLungeAttack();
-    else
-        knight->StartBounceAttack();
+    // Filtro de ataques por fase
+    if (currentPhase == 1 || currentPhase == 2)
+    {
+        // Fase 1 y 2: Solo Lunge. Pasamos multiplicador de velocidad (Fase 2 es más rápida)
+        float speedMult = (currentPhase == 2) ? 1.5f : 1.0f;
+        knight->StartLungeAttack(speedMult);
+    }
+    else if (currentPhase == 3)
+    {
+        // Fase 3: Todos los ataques aleatorios (Lunge a velocidad normal o Bounce)
+        int r = rand() % 2;
+        if (r == 0) knight->StartLungeAttack(1.0f);
+        else knight->StartBounceAttack();
+    }
 }
 
 // ===============================
 // START PRINCESS TURN
 // ===============================
-
 void BossFightPrincessKnight::StartPrincessTurn()
 {
     currentTurn = BossTurn::PRINCESS;
+    princess->ResetActionFinished();
 
-    int r = rand() % 2;
-
-    if (r == 0)
+    if (currentPhase == 1 || currentPhase == 2)
+    {
+        // Fase 1 y 2: Solo Spike Attack
         princess->StartSpikeAttack();
-    else
-        princess->StartFlowerAttack(20);
+    }
+    else if (currentPhase == 3)
+    {
+        // Fase 3: Todos los ataques aleatorios
+        int r = rand() % 2;
+        if (r == 0) princess->StartSpikeAttack();
+        else princess->StartFlowerAttack(20);
+    }
 }
+
+
 
 // ===============================
 // END CURRENT TURN
@@ -397,17 +403,5 @@ bool BossFightPrincessKnight::IsFightActive() const
         fightState != BossFightState::FINISHED;
 }
 
-void BossFightPrincessKnight::OnBossFinishedAttack(BossTurn who)
-{
-    if (who == BossTurn::KNIGHT)
-    {
-        knight->ReturnToBase(knightBasePos);
-        StartPrincessTurn();
-    }
-    else
-    {
-        princess->ReturnToBase(princessBasePos);
-        StartKnightTurn();
-    }
-}
+
 
