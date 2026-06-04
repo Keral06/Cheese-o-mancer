@@ -605,26 +605,6 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 		return;
 	}
 
-	// =========================
-	// 1. ATAQUE DEL JUGADOR
-	// =========================
-	if (physA->ctype == ColliderType::PLAYERATTACK)
-	{
-		if (other == ColliderType::ENEMY)
-		{
-			if (!hitboxActive || hasHit) return;
-
-			Enemy* e = static_cast<Enemy*>(physB->listener);
-			if (e)
-			{
-				int damageAmount = Engine::GetInstance().scene->hasDamagePlus ? 68 : 34;
-				e->DecreaseHealth(damageAmount);
-				LOG("Enemy hit by player attack");
-			}
-			hasHit = true;
-		}
-		return;
-	}
 
 	// =========================
 	// 2. COLISIONES DEL PLAYER (CUERPO PRINCIPAL)
@@ -930,78 +910,66 @@ void Player::HandleAttack()
 {
 	const float comboResetTimeMs = 400;
 	static Uint32 lastAttackTime = 0;
-
 	Uint32 now = SDL_GetTicks();
 
-	// INPUT DETECTADO
-	if (attackRequested)
-	{
+	if (attackRequested) {
 		attackRequested = false;
-		hasHit = false;
+		if (!isAttacking) {
+			// INCREMENTAR EL ID: Cada vez que el usuario inicia un ataque nuevo,
+			// el identificador cambia, haciendo que los enemigos vuelvan a ser vulnerables.
+			currentAttackId++;
 
-		if (!isAttacking)
-		{
-			// Si está en el aire, siempre usar attack3
-			if (!isCollidedFloor)
-			{
-				attackCombo = 3;
-			}
-			else
-			{
-				attackCombo = 1;
-			}
+			attackCombo = (!isCollidedFloor) ? 3 : 1;
 			StartAttack(attackCombo);
-			lastAttackTime = now;
 		}
-		else
-		{
+		else {
 			bufferedAttack = true;
 		}
 	}
 
-	if (isAttacking)
-	{
-		if (currentAnimSet->HasFinished())
-		{
-			lastAttackTime = now;
-			hitboxActive = false;
-			hasHit = false;
+	if (isAttacking) {
+		int currentFrame = currentAnimSet->GetCurrentFrameIndex();
 
-			if (bufferedAttack)
-			{
-				bufferedAttack = false;
+		// ACTIVACIÓN DEL HITBOX (Frames activos)
+		if (currentFrame >= 1 && currentFrame <= 5) {
+			hitboxActive = true;
+			UpdateAttackHitbox();
 
-				// Si está en el aire, siempre usar attack3
-				if (!isCollidedFloor)
-				{
-					attackCombo = 3;
+			int x, y;
+			attackHitbox->GetPosition(x, y);
+
+			SDL_Rect hitboxRect = { (int)x, (int)y, 80, 120 };
+			std::vector<PhysBody*> hits = Engine::GetInstance().physics->QueryArea(hitboxRect);
+
+			for (auto* body : hits) {
+				if (body->ctype == ColliderType::ENEMY) {
+					Enemy* e = static_cast<Enemy*>(body->listener);
+
+					// LÓGICA DE DAÑO ÚNICO:
+					// Solo daña si el ID guardado en el enemigo es distinto al ID actual.
+					if (e && e->lastAttackId != currentAttackId) {
+						e->DecreaseHealth(20);
+						e->lastAttackId = currentAttackId; // Marcamos al enemigo con el ID actual
+					}
 				}
-				else
-				{
-					attackCombo++;
-					if (attackCombo > 3) attackCombo = 1;
-				}
-
-				StartAttack(attackCombo);
-
-			}
-			else
-			{
-				isAttacking = false;
-				state = DEFAULT;
 			}
 		}
-	}
+		else {
+			hitboxActive = false;
+		}
 
-	// RESET DEL COMBO SI PASA MUCHO TIEMPO
-	if (!isAttacking && attackCombo > 0)
-	{
-		if (now - lastAttackTime > comboResetTimeMs)
-		{
-			attackCombo = 0;
-			hasHit = false;
-			state = DEFAULT;
-			LOG("Combo reset (timeout)");
+		if (currentAnimSet->HasFinished()) {
+			if (bufferedAttack) {
+				bufferedAttack = false;
+				attackCombo = (!isCollidedFloor) ? 3 : (attackCombo >= 3 ? 1 : attackCombo + 1);
+				StartAttack(attackCombo);
+			}
+			else {
+				isAttacking = false;
+				state = DEFAULT;
+				// YA NO NECESITAS RESETEAR ENEMIGOS AQUÍ. 
+				// El cambio de ID en el próximo clic se encarga de todo.
+			}
 		}
 	}
 }
@@ -1036,7 +1004,6 @@ void Player::StartAttack(int combo)
 		break;
 	}
 
-	hasHit = false;
 	hitboxActive = true;
 
 	LOG("Player attack start combo %d", combo);
@@ -1326,4 +1293,3 @@ void Player::ResetCheeseState()
 		mountedBall->firstjump = false;
 	}
 }
-

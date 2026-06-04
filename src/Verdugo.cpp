@@ -324,21 +324,6 @@ void Verdugo::StartTransformation()
     LOG("TRANSFORMACIÓN INICIADA");
 }
 
-void Verdugo::UpdateTransformation(float dt)
-{
-    currentAnimSet->Update(dt);
-
-    if (currentAnimSet->HasFinished())
-    {
-        phase = PHASE_2V;
-
-        state = ATAQUE1;
-        currentAnimSet->Resets();
-
-        LOG("PHASE 2 ACTIVADA");
-    }
-}
-
 void Verdugo::UpdatePhase2(float dt)
 {
     if (phase != PHASE_2V) return;

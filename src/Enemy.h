@@ -98,6 +98,7 @@ public:
 	float knockbackForce = 10.0f;
 	int knockbackTimer = 0;
 	int knockbackDuration = 50;
+	int lastAttackId = -1;
 
 	Vector2D deathPosition;
 protected:

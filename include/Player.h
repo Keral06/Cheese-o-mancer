@@ -62,6 +62,7 @@ public:
 	void DismountVerticalJump();
 
 	void ResetCheeseState();
+	void ResetEnemiesHitStatus();
 private:
 
 	void GetPhysicsValues();
@@ -146,7 +147,7 @@ public:
 	/*SDL_Rect& lastFrame;*/
          
 	bool hasDamagePlus = false;
-
+	int currentAttackId = 0;
 
 private: 
 	b2Vec2 velocity;
@@ -174,7 +175,6 @@ private:
 	PhysBody* feetHitbox = nullptr;
 
 	bool hitboxActive = false;
-	bool hasHit = false;
 	bool playerInHitbox = false;
 
 	int attackDuration = 20;
