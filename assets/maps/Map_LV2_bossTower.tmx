@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="60" height="24" tilewidth="128" tileheight="128" infinite="0" nextlayerid="37" nextobjectid="453">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="60" height="24" tilewidth="128" tileheight="128" infinite="0" nextlayerid="37" nextobjectid="453">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -1472,7 +1472,7 @@
     <property name="Draw" type="bool" value="true"/>
     <property name="Parallax" type="float" value="0.02"/>
    </properties>
-   <object id="331" gid="1563" x="-2086.53" y="2271.64" width="7402.25" height="2379.3"/>
+   <object id="331" gid="1563" x="-2181.37" y="2441.75" width="7735.45" height="2486.4"/>
   </objectgroup>
   <objectgroup id="31" name="Sky2" parallaxx="0.5" parallaxy="0.5">
    <properties>
@@ -1480,7 +1480,7 @@
     <property name="Draw" type="bool" value="true"/>
     <property name="Parallax" type="float" value="0.05"/>
    </properties>
-   <object id="333" gid="1564" x="-1985.89" y="2331.27" width="7402.25" height="2379.3"/>
+   <object id="333" gid="1564" x="-2079.09" y="2502.88" width="7735.45" height="2486.4"/>
   </objectgroup>
   <objectgroup id="32" name="Sky3" parallaxx="0.6" parallaxy="0.6">
    <properties>
@@ -1488,7 +1488,7 @@
     <property name="Draw" type="bool" value="true"/>
     <property name="Parallax" type="float" value="0.1"/>
    </properties>
-   <object id="334" gid="1565" x="-1923.31" y="2512.67" width="7402.25" height="2379.3"/>
+   <object id="334" gid="1565" x="-2016.58" y="2691.26" width="7735.45" height="2630.4"/>
   </objectgroup>
   <objectgroup id="33" name="Sky4" parallaxx="0.7" parallaxy="0.7">
    <properties>
@@ -1496,7 +1496,7 @@
     <property name="Draw" type="bool" value="true"/>
     <property name="Parallax" type="float" value="0.15"/>
    </properties>
-   <object id="336" gid="1566" x="-2275.27" y="2386.2" width="7402.25" height="2379.3"/>
+   <object id="336" gid="1566" x="-2387.27" y="2557.92" width="7735.45" height="2486.4"/>
   </objectgroup>
   <objectgroup id="34" name="Sky5" parallaxx="0.8" parallaxy="0.8">
    <properties>
@@ -1504,7 +1504,7 @@
     <property name="Draw" type="bool" value="true"/>
     <property name="Parallax" type="float" value="0.2"/>
    </properties>
-   <object id="337" gid="1567" x="-2022.35" y="2544.02" width="7402.25" height="2379.3"/>
+   <object id="337" gid="1567" x="-2109.85" y="2769.66" width="7735.45" height="2694.4"/>
   </objectgroup>
   <objectgroup id="35" name="Sky6" parallaxx="0.9" parallaxy="0.9">
    <properties>
@@ -1512,7 +1512,7 @@
     <property name="Draw" type="bool" value="true"/>
     <property name="Parallax" type="float" value="0.25"/>
    </properties>
-   <object id="339" gid="1568" x="-734.007" y="2427.79" width="5910.91" height="2795.3"/>
+   <object id="339" gid="1568" x="-782.406" y="2599.02" width="6176.98" height="2921.13"/>
   </objectgroup>
  </group>
  <group id="24" name="Boss Room">
