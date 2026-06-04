@@ -104,7 +104,7 @@ bool KnightBoss::Start()
     {
         SetFightController(controller);
         controller->knight = this; // La princesa se registra a sí misma en el controlador
-        LOG("PrincessBoss enlazada automáticamente al entrar a la sala.");
+        LOG("Knight enlazada automáticamente al entrar a la sala.");
     }
 
     return true;

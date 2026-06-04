@@ -2104,6 +2104,11 @@ Player* Scene::GetPlayer() const
 	return player.get();
 }
 
+void Scene::SetPlayer(std::shared_ptr<Player> _player)
+{
+	player = _player;
+}
+
 //funciones inventario
 void Scene::CreateInventoryUI() {
 	invPaperCombined = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Inventari_PaperAll_01.png"); 

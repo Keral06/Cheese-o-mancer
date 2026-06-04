@@ -122,4 +122,7 @@ private:
 
     Vector2D knightBasePos;
     Vector2D princessBasePos;
+
+    bool introTriggered = false;
+    float knightTargetX = 1800.0f;
 };

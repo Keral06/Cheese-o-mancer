@@ -95,6 +95,7 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 	{
 	case EntityType::PLAYER:
 		entity = std::make_shared<Player>();
+		Engine::GetInstance().scene->SetPlayer(std::dynamic_pointer_cast<Player>(entity));
 		break;
 	case EntityType::CHEESEBALL:
 		entity = std::make_shared<CheeseBall>();

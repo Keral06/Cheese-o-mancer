@@ -116,6 +116,9 @@ public:
 
 	Player* Scene::GetPlayer() const;
 
+	void SetPlayer(std::shared_ptr<Player> _player);
+	
+
 	BossFightPrincessKnight* GetBossFightController() const { return bossFightController; }
 
 private:

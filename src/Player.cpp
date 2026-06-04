@@ -120,7 +120,7 @@ bool Player::Start() {
 	healfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Heal_plant.wav");
 
 	respawnPosition = { PIXEL_TO_METERS(position.getX()), PIXEL_TO_METERS(position.getY()) };
-
+	
 	return true;
 }
 
@@ -263,6 +263,14 @@ void Player::UpdateFireballs(float dt) {
 // =====================
 
 void Player::GetPhysicsValues() {
+	if (pbody != nullptr)
+	{
+		int x, y;
+		pbody->GetPosition(x, y);
+		position.setX((float)x);
+		position.setY((float)y);
+	}
+
 	// Read current velocity
 	velocity = Engine::GetInstance().physics->GetLinearVelocity(pbody);
 	if (!godMode) { velocity = { 0, velocity.y }; }
