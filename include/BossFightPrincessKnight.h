@@ -126,4 +126,5 @@ private:
 
     bool introTriggered = false;
     float knightTargetX = 1800.0f;
+    bool princessTranformed = false;
 };

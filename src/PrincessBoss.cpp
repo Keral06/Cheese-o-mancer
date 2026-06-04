@@ -139,9 +139,10 @@ bool PrincessBoss::Update(float dt)
 
     case PrincessState::TRANSFORM:
     {
-        if (stateTimer >= 2.0f)
+        if (currentAnim->HasFinished())
         {
-            busy = false;
+            
+            FinishAction();
 
             SetPrincessState(PrincessState::IDLE);
         }
@@ -482,6 +483,11 @@ void PrincessBoss::ChangeCurrentAnimation()
         currentTexture = textureDeath;
         break;
 
+    case PrincessState::TRANSFORM:
+        // PARCHE TEMPORAL: Usamos la de IDLE mientras no tengamos el .tsx real
+        currentAnim = &animsMagic;
+        currentTexture = textureMagic;
+        break;
     default:
         break;
     }
@@ -611,6 +617,5 @@ void PrincessBoss::FinishAction()
     actionFinished = true;
     busy = false;
 
-    /*if (fightController)
-        fightController->OnBossFinishedAttack(BossTurn::PRINCESS);*/
+    
 }

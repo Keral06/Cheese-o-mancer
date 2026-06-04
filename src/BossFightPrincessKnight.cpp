@@ -264,15 +264,19 @@ void BossFightPrincessKnight::UpdateIntro(float dt)
     // 4. TRANSFORMACIÓN DE LA PRINCESA Y COMIENZO DE LA PELEA
     case BossFightState::PRINCESS_TRANSFORM:
     {
-        if (!princess->IsBusy())
+        //LOG("%d", princess->IsBusy());
+
+        if (!princessTranformed)
         {
             princess->ResetActionFinished();
             princess->StartTransform();
             LOG("Intro: Princesa empieza a transformarse.");
+            princessTranformed = true;
         }
 
         if (princess->HasFinishedAction())
         {
+            princess->currentAnim->Resets();
             princess->ResetActionFinished();
             introFinished = true;
 

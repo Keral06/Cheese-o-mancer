@@ -607,9 +607,7 @@ void KnightBoss::StartFight()
 
 void KnightBoss::OnTransformFinished()
 {
-    LOG("Transform finished -> Phase 1 start");
-
-    SetKnightState(KnightState::IDLE);
+    LOG("Transform finished -> Ready for Controller phase trigger");
 
     phase = PHASE_1;
 

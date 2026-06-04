@@ -90,7 +90,7 @@ public:
 
     void FinishAction();
 
-private:
+public:
 
     // ===============================
     // INTERNAL UPDATES
@@ -138,7 +138,7 @@ private:
     AnimationSet animsDefeat;
     AnimationSet animsMagic;
     AnimationSet animsMove;
-
+    //AnimationSet animsCTransform;
     
 
     SDL_Texture* textureNIdle = nullptr;
