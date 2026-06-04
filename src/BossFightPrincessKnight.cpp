@@ -108,6 +108,7 @@ bool BossFightPrincessKnight::Update(float dt)
 
     case BossFightState::INTRO:
     case BossFightState::KNIGHT_ENTRANCE:
+    case BossFightState::KNIGHT_DIAL_BEFORE_TRANSFORM:
     case BossFightState::KNIGHT_TRANSFORM:
     case BossFightState::PRINCESS_TRANSFORM:
         UpdateIntro(dt);
@@ -170,87 +171,96 @@ void BossFightPrincessKnight::UpdateIntro(float dt)
 {
     switch (fightState)
     {
-        // 1. ESPERANDO A QUE TERMINE EL DIÁLOGO (DEBUG CON LA "E")
+        // ==========================================
+        // PASO 1: ESPERANDO AL PRIMER DIÁLOGO
+        // ==========================================
     case BossFightState::INTRO:
     {
-        // Simulamos el fin del diálogo al pulsar la tecla E
         if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
         {
-            LOG("Diálogo completado con la tecla E. ¡Aparece el Caballero!");
+            LOG("Primer diálogo completado. ¡El Caballero SPAWNEA en medio!");
 
             if (knight != nullptr && princess != nullptr)
             {
-                // Guardamos sus posiciones iniciales reales del mapa
-                knightBasePos = knight->GetPosition();
                 princessBasePos = princess->GetPosition();
 
-                // Calculamos el "medio" entre la princesa y el jugador para el freno del Caballero
+                // Calculamos el medio entre la Princesa y el Jugador
                 Player* player = Engine::GetInstance().scene->GetPlayer();
                 float playerX = player ? player->position.getX() : princessBasePos.getX() - 300.0f;
                 knightTargetX = (princessBasePos.getX() + playerX) * 0.5f;
 
-                // Teletransportamos al Caballero FUERA de la cámara por la derecha (ej. +1000 píxeles)
-                knight->ReturnToBase(Vector2D(princessBasePos.getX() + 1000.0f, knightBasePos.getY()));
+                // Teletransportamos al Caballero directamente al centro exacto
+                knightBasePos = Vector2D(knightTargetX, knight->GetPosition().getY());
+                knight->ReturnToBase(knightBasePos);
 
-                // Forzamos al caballero a meter el Lunge de entrada
+                // Activamos la animación del Slide/Lunge inicial
+                knight->SetKnightState(KnightState::ENTRANCE_DASH);
                 knight->ResetActionFinished();
-                knight->StartIntroEntrance(1.2f); // 1.2x velocidad para una entrada impactante
 
+                // Quitamos el Zoom de la cámara suavemente
+                Engine::GetInstance().render->SetZoomSmooth(0.3f, 800);
+
+                // CAMBIO AQUÍ: En vez de ir a la transformación, pasamos al nuevo diálogo
                 SetFightState(BossFightState::KNIGHT_ENTRANCE);
+                LOG("BossFight State: Esperando al segundo diálogo pre-transformación...");
             }
         }
         break;
     }
 
-    // 2. EL CABALLERO ENTRA DESDE FUERA Y SE PONE EN MEDIO
+    // ========================================================
+    // PASO 2: EL CABALLERO LLEGA AL FINAL DEL SLIDE
+    // ========================================================
     case BossFightState::KNIGHT_ENTRANCE:
     {
-        // Modificamos ligeramente el comportamiento en la intro para que frene en su TargetX
-        if (knight->GetPosition().getX() <= knightTargetX || knight->HasFinishedAction())
+        // En cuanto el caballero llega al frame final del slide...
+        if (knight->HasFinishedAction())
         {
-            LOG("El Caballero ha llegado al medio de la sala.");
+            LOG("El Caballero ha frenado en el centro. Se queda estático en el slide.");
 
-            // Frenamos sus físicas por completo y lo dejamos en ese punto central
             knight->ResetActionFinished();
-            knightBasePos = Vector2D(knightTargetX, knightBasePos.getY()); // Su nueva base será el centro
-            knight->ReturnToBase(knightBasePos);
 
-            // Quitamos el Zoom de la cámara para que el jugador vea todo el escenario del combate
-            Engine::GetInstance().render->SetZoomSmooth(0.3f, 800);
-            LOG("CAMARA: Restaurando ZOOM original para el combate.");
-
-            // Pasamos a la transformación del Caballero
-            SetFightState(BossFightState::KNIGHT_TRANSFORM);
+            
+            
+            SetFightState(BossFightState::KNIGHT_DIAL_BEFORE_TRANSFORM);
         }
         break;
     }
 
-    // 3. TRANSFORMACIÓN DEL CABALLERO
+    // ========================================================
+    // PASO 3: SEGUNDO DIÁLOGO (ESPERANDO EN LA POSE DEL SLIDE)
+    // ========================================================
+    case BossFightState::KNIGHT_DIAL_BEFORE_TRANSFORM:
+    {
+        
+            if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+            {
+                LOG("Segundo diálogo completado. ¡Empieza la transformación!");
+
+                // Al pasar a KNIGHT_TRANSFORM, tu código ya llamará a knight->StartTransform()
+                // lo que sacará al caballero del slide y cargará los sprites de mutación.
+                SetFightState(BossFightState::KNIGHT_TRANSFORM);
+            }
+        
+        break;
+    }
     case BossFightState::KNIGHT_TRANSFORM:
     {
-        // Añadimos una comprobación estricta para que SOLO llame a la función una vez
-        // Puedes usar una variable booleana interna o comprobar si el Caballero ya está en su estado de transformación
-        if (!knight->IsBusy() && knight->GetState() != KnightState::TRANSFORM) // O como se llame tu enum de estado en Knight
+        if (knight->GetState() != KnightState::TRANSFORM)
         {
             knight->ResetActionFinished();
             knight->StartTransform();
-            LOG("Intro: Caballero empieza a transformarse.");
+            LOG("Intro: Caballero empieza a transformarse de manera segura.");
         }
 
-        // Si el caballero ya ha terminado la animación de transformarse
         if (knight->HasFinishedAction())
         {
-            LOG("Controller detecta que el Caballero terminó de transformarse. Pasando a la Princesa.");
-
+            LOG("Controller: Caballero transformado correctamente. Pasamos a la Princesa.");
             knight->ResetActionFinished();
-
-            // CAMBIO CRÍTICO: Forzamos el paso al siguiente estado inmediatamente 
-            // para que en el próximo frame no vuelva a entrar aquí.
             SetFightState(BossFightState::PRINCESS_TRANSFORM);
         }
         break;
     }
-
     // 4. TRANSFORMACIÓN DE LA PRINCESA Y COMIENZO DE LA PELEA
     case BossFightState::PRINCESS_TRANSFORM:
     {

@@ -91,7 +91,7 @@ public:
 
     KnightState GetState() const { return knightState; }
 
-private:
+public:
 
     // =========================
     // INTERNAL UPDATES

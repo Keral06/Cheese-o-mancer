@@ -212,6 +212,10 @@ void KnightBoss::UpdateEntrance(float dt)
     //    SetKnightState(KnightState::IDLE);
     //    FinishAction(); // Avisa al controlador para pasar a KNIGHT_TRANSFORM
     //}
+    if (currentAnim && currentAnim->GetCurrentFrameIndex() == 18)
+    {
+        FinishAction(); 
+    }
 }
 
 // =========================
@@ -421,6 +425,7 @@ void KnightBoss::Draw(float dt)
 {
     if (currentAnim == nullptr)
         return;
+
 
     double rotation = 0.0;
 
