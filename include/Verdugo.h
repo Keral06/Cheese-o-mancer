@@ -68,6 +68,8 @@ public:
     void Die();
     void SpawnWeakWall();
 
+    void DebugChangePhase();
+
 
     bool MoveToAttackRange(float targetRange);
     void OnWallDestroyed();
