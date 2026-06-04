@@ -65,6 +65,8 @@ bool Verdugo::Start()
     textureA4b = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Cheese Executoner/ataque4b.png");
     textureDeath = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Cheese Executoner/death.png");
 
+    
+
     //Add physics to the enemy - initialize physics body
     pbody = Engine::GetInstance().physics->CreateRectangle(position.getX(), position.getY(), texW, texH, bodyType::DYNAMIC);
 
@@ -82,7 +84,7 @@ bool Verdugo::Start()
     Vector2D tilePos = Engine::GetInstance().map->WorldToMap((int)pos.getX(), (int)pos.getY());
     //Reset pathfinding
     pathfinding->ResetPath(tilePos);
-
+    
     CreateAttackHitbox(GetPosition().getX(),GetPosition().getY(), 70,200);
 
     phase = PHASE_INTROV;
@@ -101,7 +103,8 @@ bool Verdugo::Start()
 
     attackInProgress = false;
     isAttacking = false;
-
+    velocity.x = 0;
+    velocity.y = 0;
  
     Engine::GetInstance().scene->cards.push("Justice", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Justice.png"), nullptr);
 
@@ -123,6 +126,7 @@ bool Verdugo::Update(float dt)
         EnterEndState();
         return true;
     }
+
 
     switch (phase)
     {
@@ -163,7 +167,7 @@ void Verdugo::UpdateIntro(float dt)
     {
         float dist = CalculateDistance();
 
-        LOG("%f",dist);
+        //LOG("%f",dist);
 
         if (dist < 10.0f) // ajusta el trigger
         {
