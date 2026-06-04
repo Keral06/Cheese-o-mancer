@@ -87,6 +87,10 @@ public:
 
     void ReturnToBase(Vector2D pos);
 
+    void StartIntroEntrance(float speedMultiplier);
+
+    KnightState GetState() const { return knightState; }
+
 private:
 
     // =========================

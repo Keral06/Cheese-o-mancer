@@ -193,25 +193,25 @@ void KnightBoss::StartEntrance()
 
 void KnightBoss::UpdateEntrance(float dt)
 {
-    velocity.x = -12.0f;
-    velocity.y = 0;
+    //velocity.x = -12.0f;
+    //velocity.y = 0;
 
-    if (stateTimer >= 1.5f)
-    {
-        velocity.x = 0;
+    //if (stateTimer >= 1.5f)
+    //{
+    //    velocity.x = 0;
 
-        busy = false;
+    //    busy = false;
 
-        SetKnightState(KnightState::IDLE);
-    }
+    //    SetKnightState(KnightState::IDLE);
+    //}
 
-    if (stateTimer >= 1.5f)
-    {
-        velocity.x = 0;
-        busy = false;
-        SetKnightState(KnightState::IDLE);
-        FinishAction(); // Avisa al controlador para pasar a KNIGHT_TRANSFORM
-    }
+    //if (stateTimer >= 1.5f)
+    //{
+    //    velocity.x = 0;
+    //    busy = false;
+    //    SetKnightState(KnightState::IDLE);
+    //    FinishAction(); // Avisa al controlador para pasar a KNIGHT_TRANSFORM
+    //}
 }
 
 // =========================
@@ -522,7 +522,7 @@ void KnightBoss::ChangeCurrentAnimation()
     {
         currentAnim = &animsNSlide;
         currentTexture = textureNSlide;
-
+        
         
         break;
     }
@@ -623,6 +623,22 @@ void KnightBoss::ReturnToBase(Vector2D pos)
     velocity = { 0,0 };
 
     busy = false;
+}
+
+void KnightBoss::StartIntroEntrance(float speedMultiplier)
+{
+    busy = true;
+    actionFinished = false;
+    stateTimer = 0.0f;
+
+    // Forzamos el estado de la entrada deslizante
+    SetKnightState(KnightState::ENTRANCE_DASH);
+
+    // Ajustamos la velocidad de entrada basándonos en tu UpdateEntrance original multiplicada por el float
+    velocity.x = -12.0f * speedMultiplier;
+    velocity.y = 0.0f;
+
+    LOG("Knight iniciando deslizamiento de la intro con animsNSlide");
 }
 
 void KnightBoss::FinishAction()
