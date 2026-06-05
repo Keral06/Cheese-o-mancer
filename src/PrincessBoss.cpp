@@ -43,6 +43,7 @@ bool PrincessBoss::Start()
     std::unordered_map<int, std::string> aliasesDefeat = { {0,"defeat"} };
     std::unordered_map<int, std::string> aliasesMagic = { {0,"magic"} };
     std::unordered_map<int, std::string> aliasesMove = { {0,"move"} };
+    std::unordered_map<int, std::string> aliasesCTransform = { {0,"transform"} };
 
     animsNIdle.LoadFromTSX("assets/Textures/Spritesheets/Princess/pn_idle_prepared.tsx", aliasesNIdle);
     animsCIdle.LoadFromTSX("assets/Textures/Spritesheets/Princess/pt_idle.tsx", aliasesCIdle);
@@ -50,7 +51,7 @@ bool PrincessBoss::Start()
     animsDefeat.LoadFromTSX("assets/Textures/Spritesheets/Princess/pt_defeat.tsx", aliasesDefeat);
     animsMagic.LoadFromTSX("assets/Textures/Spritesheets/Princess/pt_magic.tsx", aliasesMagic);
     animsMove.LoadFromTSX("assets/Textures/Spritesheets/Princess/pt_move.tsx", aliasesMove);
-    /*animsCTransform.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/j_sp_5x5.tsx", aliasesCTransform);*/
+    animsCTransform.LoadFromTSX("assets/Textures/Spritesheets/Princess/pn_transform.tsx", aliasesCTransform);
 
     textureNIdle = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Princess/princessN_Idle+Prepared.png");
     textureCIdle = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Princess/sprite_princessT_01_idle.png");
@@ -58,6 +59,7 @@ bool PrincessBoss::Start()
     textureDefeat = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Princess/sprite_princessT_05_defeat.png");
     textureMagic = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Princess/sprite_princessT_02_magic.png");
     textureMove = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Princess/sprite_princessT_03_move.png");
+    textureTransform = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Princess/sprite_princessT_04_transform.png");
 
     texture = textureNIdle;
 
@@ -136,17 +138,21 @@ bool PrincessBoss::Update(float dt)
     {
     case PrincessState::IDLE:
         break;
-
+    case PrincessState::CIDLE:
+        break;
     case PrincessState::TRANSFORM:
     {
         if (currentAnim->HasFinished())
         {
-            
             FinishAction();
 
-            SetPrincessState(PrincessState::IDLE);
-        }
+            isTransformed = true;
 
+            SetPrincessState(PrincessState::CIDLE);
+
+            
+            AdjustHitboxY(-128 * 5);
+        }
         break;
     }
 
@@ -164,7 +170,9 @@ bool PrincessBoss::Update(float dt)
     case PrincessState::DEATH:
         break;
     }
-
+    if (!isTransformed) {
+        ApplyPhysics();
+    }
     Draw(dt);
 
     return true;
@@ -249,7 +257,7 @@ void PrincessBoss::UpdateFlowerAttack(float dt)
     if (stateTimer >= 2.0f)
     {
         busy = false;
-        SetPrincessState(PrincessState::IDLE);
+        SetPrincessState(PrincessState::CIDLE);
 
         flowersSpawned = 0;
         spawnedFlowers.clear();
@@ -297,12 +305,12 @@ void PrincessBoss::UpdateSpikeAttack(float dt)
     {
         Vector2D leftPos(
             base.getX() + 100.0f,
-            base.getY() + 128
+            base.getY() + 128 * 5 +120.0f
         );
 
         Vector2D rightPos(
             base.getX() + 3000.0f,
-            base.getY() + 128
+            base.getY() + 128 * 5 + 120.0f
         );
 
         leftBorderSpike = SpawnSpike(leftPos);
@@ -350,7 +358,7 @@ void PrincessBoss::UpdateSpikeAttack(float dt)
         if (leftBorderSpike)  leftBorderSpike->Resume();
         if (rightBorderSpike) rightBorderSpike->Resume();
 
-        SetPrincessState(PrincessState::IDLE);
+        SetPrincessState(PrincessState::CIDLE);
 
         // CRÍTICO: Asegurar bandera de fin
         FinishAction();
@@ -433,8 +441,8 @@ void PrincessBoss::Draw(float dt)
 
     Engine::GetInstance().render->DrawTexture(
         currentTexture,
-        x - animFrame.w / 2,
-        y - animFrame.h / 2,
+        (x - animFrame.w / 2) + offsetX,
+        (y - animFrame.h / 2) + offsetY,
         &animFrame,
         1.0f,
         0.0,
@@ -461,32 +469,37 @@ void PrincessBoss::ChangeCurrentAnimation()
     case PrincessState::IDLE:
         currentAnim = &animsNIdle;
         currentTexture = textureNIdle;
+        offsetY = 0;
         break;
 
     case PrincessState::CIDLE:
         currentAnim = &animsCIdle;
         currentTexture = textureCIdle;
+        offsetY = 128*2;
         break;
 
     case PrincessState::FLOWER_ATTACK:
         currentAnim = &animsMagic; 
         currentTexture = textureMagic;
+        offsetY = 128*2;
         break;
 
     case PrincessState::SPIKE_ATTACK:
-        currentAnim = &animsMove;
-        currentTexture = textureMove;
+        currentAnim = &animsMagic;
+        currentTexture = textureMagic;
+        offsetY = 128*2;
         break;
 
     case PrincessState::DEATH:
         currentAnim = &animsDeath;
         currentTexture = textureDeath;
+        offsetY = 0;
         break;
 
     case PrincessState::TRANSFORM:
-        // PARCHE TEMPORAL: Usamos la de IDLE mientras no tengamos el .tsx real
-        currentAnim = &animsMagic;
-        currentTexture = textureMagic;
+        currentAnim = &animsCTransform;
+        currentTexture = textureTransform;
+        offsetY = -128*3;
         break;
     default:
         break;
@@ -590,7 +603,7 @@ void PrincessBoss::SpawnSpikeWave(float centerX)
     for (int i = 0; i < (int)offsets.size(); i++)
     {
         float x = centerX + (i - 2) * spacing;
-        float y = base.getY() + offsets[i];
+        float y = base.getY() + 128 * 5 + offsets[i];
 
         auto spike = SpawnSpike(Vector2D(x, y));
 
@@ -618,4 +631,31 @@ void PrincessBoss::FinishAction()
     busy = false;
 
     
+}
+
+void PrincessBoss::AdjustHitboxY(int offsetPxl)
+{
+    if (pbody != nullptr && b2Body_IsValid(pbody->body))
+    {
+        int currentX, currentY;
+        pbody->GetPosition(currentX, currentY);
+
+        // Desplazamos la posición en píxeles
+        int targetY = currentY + offsetPxl;
+        pbody->SetPosition(currentX, targetY);
+
+        // En Box2D 3.x se limpian las velocidades usando la función de la API de C
+        b2Body_SetLinearVelocity(pbody->body, b2Vec2{ 0.0f, 0.0f });
+
+        if (isTransformed)
+        {
+            // Box2D 3.x usa el enum b2_kinematicBody para quitarle la gravedad
+            b2Body_SetType(pbody->body, b2_kinematicBody);
+        }
+        else
+        {
+            // Al morir, vuelve a ser dynamicBody y cae con las físicas normales
+            b2Body_SetType(pbody->body, b2_dynamicBody);
+        }
+    }
 }

@@ -52,7 +52,7 @@ bool KnightBoss::Start()
 
     animsNIdle.LoadFromTSX("assets/Textures/Spritesheets/Knight/Normal/kn_idle.tsx", aliasesNIdle);
     animsNSlide.LoadFromTSX("assets/Textures/Spritesheets/Knight/Normal/kn_slide.tsx", aliasesNSlide);
-    animsCIdle.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/kn_idle.tsx", aliasesCIdle);
+    animsCIdle.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/kc_idle.tsx", aliasesCIdle);
     animsCAttack1.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/kc_attack1.tsx", aliasesCAttack1);
     animsCAttack2.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/kc_attack2.tsx", aliasesCAttack2);
     animsCDefeat.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/kc_defeat.tsx", aliasesCDefeat);
@@ -288,7 +288,7 @@ void KnightBoss::UpdateLunge(float dt)
 
         busy = false;
 
-        SetKnightState(KnightState::RECOVER);
+        SetKnightState(KnightState::CIDLE);
 
         FinishAction();
     }
@@ -357,7 +357,7 @@ void KnightBoss::UpdateBounce(float dt)
 
         busy = false;
 
-        SetKnightState(KnightState::RECOVER);
+        SetKnightState(KnightState::CIDLE);
 
         /*FinishAction();*/
     }
@@ -567,7 +567,12 @@ void KnightBoss::ChangeCurrentAnimation()
         
         break;
     }
-
+    case KnightState::CIDLE:
+    {
+        currentAnim = &animsCIdle;
+        currentTexture = textureCIdle;
+        break;
+    }
     case KnightState::DEATH:
     {
         currentAnim = &animsCDefeat;

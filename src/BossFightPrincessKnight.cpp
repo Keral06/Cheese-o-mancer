@@ -323,7 +323,7 @@ void BossFightPrincessKnight::UpdatePhase(float dt)
     else if (currentTurn == BossTurn::PRINCESS && princess->HasFinishedAction())
     {
         princess->ResetActionFinished();
-        princess->ReturnToBase(princessBasePos);
+        //princess->ReturnToBase(princessBasePos);
         EndCurrentTurn();
     }
 

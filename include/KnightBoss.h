@@ -14,6 +14,7 @@ enum class KnightState
 
     TRANSFORM,
 
+    CIDLE,
     LUNGE_ATTACK,
     BOUNCE_ATTACK,
 
