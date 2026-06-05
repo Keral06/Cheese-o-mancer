@@ -1603,7 +1603,8 @@ void Scene::LoadMap(std::string map)
 		Engine::GetInstance().scene->score = 0;
 		showMap = false;
 		inventoryOn = false;
-		Engine::GetInstance().scene->extralife = false; 
+		Engine::GetInstance().scene->extralife = false;
+		Engine::GetInstance().scene->maxLives = 4;
 		Engine::GetInstance().scene->lives = 4;
 		//firstDoor = true;       
 		//cheese = false;     
@@ -1749,7 +1750,7 @@ void Scene::CreateStoreLevel1() {
 	storePaperMap = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Map.png");
 	storePaperLife = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Life.png");
 	storePaperKey = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Key.png");
-	storePaperPermLife = Engine::GetInstance().textures->Load("assets/UI/Store/StoreUI_Store_Paper_PermanentLife_.png");
+	storePaperPermLife = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_PermanentLife_.png");
 }
 
 void Scene::CreateStoreLevel2() {
@@ -1976,8 +1977,12 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 		//mira si el jugador tiene dinero
 		if (Engine::GetInstance().scene->score >= 10) {
 			Engine::GetInstance().scene->score -= 10;
+			Engine::GetInstance().scene->lives++;
 			for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
-				if (el->id == 41) el->Destroy();
+				if (el->id == 41) {
+					el->visible = false;
+					el->state = UIElementState::DISABLED;
+				}
 				if (el->id == 37) {
 					SDL_Texture* BeenBought = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_SoldOut_01.png");
 					el->SetTexture(BeenBought);
@@ -2049,29 +2054,34 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 		break;
 	case 50:
 		for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
-			if (el->id == 51) el->visible = true; 
+			if (el->id == 51) {
+				if (Engine::GetInstance().scene->extralife == true) {
+					el->visible = false;
+				}
+				else {
+					el->visible = true;
+				}
+			}
 			if (el->id == 39 || el->id == 40 || el->id == 41 || el->id == 42 || el->id == 44) el->visible = false;
 		}
 		selectedStoreItem = 5; 
 		break;
 
 	case 51:
-		if (Engine::GetInstance().scene->score >= 200 && Engine::GetInstance().scene->maxLives < 6) {
 
+		if (Engine::GetInstance().scene->score >= 200) {
 			Engine::GetInstance().scene->score -= 200;
 
-			Engine::GetInstance().scene->maxLives++;
-			Engine::GetInstance().scene->lives = Engine::GetInstance().scene->maxLives;
 
+			Engine::GetInstance().scene->maxLives = 5;
+			Engine::GetInstance().scene->lives = 5;
 			Engine::GetInstance().scene->extralife = true;
 
-			if (Engine::GetInstance().scene->maxLives >= 6) {
-				for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
-					if (el->id == 51) el->Destroy(); 
-					if (el->id == 50) {
-						SDL_Texture* BeenBought = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_SoldOut_01.png");
-						el->SetTexture(BeenBought); 
-					}
+
+			for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
+				if (el->id == 51) {
+					el->visible = false;
+					el->state = UIElementState::DISABLED;
 				}
 			}
 

@@ -339,7 +339,7 @@ void Player::Move() {
 	// =====================
 	if (godMode)
 	{
-		Engine::GetInstance().scene->lives = 4;
+		Engine::GetInstance().scene->lives = Engine::GetInstance().scene->maxLives;
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
 			velocity.y = -godmodeSpeed;
@@ -687,7 +687,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 	case ColliderType::EXTRALIVE:
 	{
 		if (hasHealed == false) {
-			if (Engine::GetInstance().scene->lives < 4) {
+			if (Engine::GetInstance().scene->lives < Engine::GetInstance().scene->maxLives) {
 				Engine::GetInstance().audio->PlayFx(healfx);
 				Engine::GetInstance().scene->lives++;
 				LOG("Player healed.");
