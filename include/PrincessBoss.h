@@ -178,5 +178,6 @@ public:
     bool bordersSpawned = false;
     bool waveStarted = false;
 
+    bool isTransforming = false;
     bool isTransformed = false;
 };

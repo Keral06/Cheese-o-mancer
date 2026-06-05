@@ -142,16 +142,19 @@ bool PrincessBoss::Update(float dt)
         break;
     case PrincessState::TRANSFORM:
     {
+        isTransforming = true;
+
         if (currentAnim->HasFinished())
         {
             FinishAction();
 
             isTransformed = true;
+            isTransforming = false;
 
             SetPrincessState(PrincessState::CIDLE);
 
             
-            AdjustHitboxY(-128 * 5);
+            AdjustHitboxY(-128 * 8);
         }
         break;
     }
@@ -305,12 +308,12 @@ void PrincessBoss::UpdateSpikeAttack(float dt)
     {
         Vector2D leftPos(
             base.getX() + 100.0f,
-            base.getY() + 128 * 5 +120.0f
+            base.getY() + 128 * 7 +120.0f
         );
 
         Vector2D rightPos(
             base.getX() + 3000.0f,
-            base.getY() + 128 * 5 + 120.0f
+            base.getY() + 128 * 7 + 120.0f
         );
 
         leftBorderSpike = SpawnSpike(leftPos);
@@ -439,6 +442,23 @@ void PrincessBoss::Draw(float dt)
         SDL_FLIP_NONE :
         SDL_FLIP_HORIZONTAL;
 
+    if (isTransformed || isTransforming) {
+
+        Engine::GetInstance().render->DrawTextureScaled(
+            currentTexture,
+            (x - animFrame.w / 2) + offsetX,
+            (y - animFrame.h / 2) + offsetY,
+            &animFrame,
+            1.5f,              
+            1.0f,               
+            0.0,                
+            INT_MAX,            
+            INT_MAX,            
+            flip                
+        );
+        return;
+    }
+
     Engine::GetInstance().render->DrawTexture(
         currentTexture,
         (x - animFrame.w / 2) + offsetX,
@@ -475,19 +495,19 @@ void PrincessBoss::ChangeCurrentAnimation()
     case PrincessState::CIDLE:
         currentAnim = &animsCIdle;
         currentTexture = textureCIdle;
-        offsetY = 128*2;
+        offsetY = 0;
         break;
 
     case PrincessState::FLOWER_ATTACK:
         currentAnim = &animsMagic; 
         currentTexture = textureMagic;
-        offsetY = 128*2;
+        offsetY = 0;
         break;
 
     case PrincessState::SPIKE_ATTACK:
         currentAnim = &animsMagic;
         currentTexture = textureMagic;
-        offsetY = 128*2;
+        offsetY = 0;
         break;
 
     case PrincessState::DEATH:
@@ -499,7 +519,8 @@ void PrincessBoss::ChangeCurrentAnimation()
     case PrincessState::TRANSFORM:
         currentAnim = &animsCTransform;
         currentTexture = textureTransform;
-        offsetY = -128*3;
+        offsetY = -128 * 8;
+        offsetX = -128 * 2;
         break;
     default:
         break;
@@ -603,7 +624,7 @@ void PrincessBoss::SpawnSpikeWave(float centerX)
     for (int i = 0; i < (int)offsets.size(); i++)
     {
         float x = centerX + (i - 2) * spacing;
-        float y = base.getY() + 128 * 5 + offsets[i];
+        float y = base.getY() + 128 * 8 + offsets[i];
 
         auto spike = SpawnSpike(Vector2D(x, y));
 

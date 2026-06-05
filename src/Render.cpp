@@ -186,8 +186,8 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 	
 	if (section)
 	{
-		rect.w = (section->w * scale * zoom) + 1;
-		rect.h = (section->h * scale * zoom) + 1;
+		rect.w = (section->w * scale * zoom) + 2;
+		rect.h = (section->h * scale * zoom) + 2;
 	}
 	else
 	{
@@ -556,4 +556,70 @@ void Render::SetCameraFocusSmooth(float worldX, float worldY, float newZoom, flo
 	camTime = 0.0f;
 
 	cameraMoving = true;
+}
+
+bool Render::DrawTextureScaled(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float textureScale, float speed, double angle, int pivotX, int pivotY, SDL_FlipMode flip) const
+{
+	int scale = Engine::GetInstance().window->GetScale();
+
+	SDL_FRect rect;
+
+	float world_x = (camera.x + x * scale) * zoom;
+	float world_y = (camera.y + y * scale) * zoom;
+
+	rect.x = floor(world_x);
+	rect.y = floor(world_y);
+
+	if (section)
+	{
+		// Multiplicamos el tamaño de la sección por la escala personalizada de la textura
+		rect.w = (section->w * scale * zoom * textureScale) + 2;
+		rect.h = (section->h * scale * zoom * textureScale) + 2;
+	}
+	else
+	{
+		float tw, th;
+		SDL_GetTextureSize(texture, &tw, &th);
+
+		// Si no hay sección, escalamos la textura completa
+		rect.w = tw * scale * zoom * textureScale;
+		rect.h = th * scale * zoom * textureScale;
+	}
+
+	SDL_FPoint* p = nullptr;
+	SDL_FPoint pivot;
+
+	if (pivotX != INT_MAX && pivotY != INT_MAX)
+	{
+		// Escalamos también el pivote de rotación para que no se desfase
+		pivot = {
+			pivotX * scale * zoom * textureScale,
+			pivotY * scale * zoom * textureScale
+		};
+		p = &pivot;
+	}
+
+	const SDL_FRect* src = nullptr;
+	SDL_FRect srcRect;
+
+	if (section)
+	{
+		srcRect = {
+			(float)section->x,
+			(float)section->y,
+			(float)section->w,
+			(float)section->h
+		};
+		src = &srcRect;
+	}
+
+	return SDL_RenderTextureRotated(
+		renderer,
+		texture,
+		src,
+		&rect,
+		angle,
+		p,
+		flip
+	);
 }
