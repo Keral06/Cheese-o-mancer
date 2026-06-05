@@ -1047,10 +1047,12 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                 p->setPosition((int)(x + (w / 2.0f)), (int)(y + (h / 2.0f)));
 
                 if (pType == "Fire" || pType == "FIRE") p->setStyle(ParticleExample::FIRE);
+                else if (pType == "Moho" || pType == "MOHO") p->setStyle(ParticleExample::MOHO);
                 else if (pType == "Smoke" || pType == "SMOKE") p->setStyle(ParticleExample::SMOKE);
                 else if (pType == "Rain" || pType == "RAIN") p->setStyle(ParticleExample::RAIN);
                 else if (pType == "Meteor" || pType == "METEOR") p->setStyle(ParticleExample::METEOR);
                 else if (pType == "Explosion" || pType == "EXPLOSION") p->setStyle(ParticleExample::EXPLOSION);
+                else if (pType == "Snow" || pType == "SNOW") p->setStyle(ParticleExample::SNOW);
 
                 p->setPosVar(Vec2(w / 2.0f, h / 2.0f));
                 mapParticles.push_back(p);

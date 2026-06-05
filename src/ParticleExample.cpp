@@ -1,4 +1,6 @@
 #include "ParticleExample.h"
+#include "Engine.h"   
+#include "Textures.h"
 
 void ParticleExample::setStyle(PatticleStyle style)
 {
@@ -20,7 +22,7 @@ void ParticleExample::setStyle(PatticleStyle style)
 
     case ParticleExample::FIRE:
     {
-        initWithTotalParticles(600);
+        initWithTotalParticles(10);
 
         // duration
         _duration = DURATION_INFINITY;
@@ -76,6 +78,43 @@ void ParticleExample::setStyle(PatticleStyle style)
         _posVar = { 40.0f, 20.0f };
         break;
     }
+
+    case ParticleExample::MOHO:
+    {
+        if (_texture == nullptr || _texture == getDefaultTexture()) {
+            _texture = Engine::GetInstance().textures->Load("assets/Textures/Particles/Moho/Moho_Particle_2.png");
+        }
+        initWithTotalParticles(100); // Menos partículas que el fuego, no queremos saturar
+
+        _duration = DURATION_INFINITY;
+        this->_emitterMode = Mode::GRAVITY;
+
+        // Queremos que floten muy suavemente hacia abajo (o hacia arriba si es gravedad negativa)
+        this->modeA.gravity = { 0.0f, 5.0f };
+        this->modeA.speed = 10.0f; // Muy lentas
+        this->modeA.speedVar = 5.0f;
+
+        _angle = 90.0f;
+        _angleVar = 360.0f; // Que salgan en todas direcciones
+
+        _life = 2.0f; // Que duren poco
+        _lifeVar = 0.5f;
+
+        _startSize = 5.0f; // Esporas pequeñitas
+        _startSizeVar = 2.0f;
+        _endSize = START_SIZE_EQUAL_TO_END_SIZE;
+
+        _emissionRate = _totalParticles / _life;
+
+        // Colores: Tonos verdosos/marrones (R, G, B, Alpha)
+        _startColor = { 0.2f, 0.8f, 0.2f, 1.0f };
+        _startColorVar = { 0.1f, 0.1f, 0.1f, 0.0f };
+        _endColor = { 0.1f, 0.5f, 0.1f, 0.0f }; // Se desvanecen
+
+        _posVar = { 10.0f, 30.0f }; // Dispersión a lo largo del muro
+        break;
+    }
+
 
     //case ParticleExample::FIRE_WORK:
     //{
