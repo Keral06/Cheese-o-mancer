@@ -1134,7 +1134,7 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
 
                     if (gid != 0) {
                         TileSet* tileSet = GetTilesetFromTileId(gid);
-                        if (tileSet != nullptr) {
+                        if (tileSet != nullptr && tileSet->texture != nullptr) {
 
                             int relativeId = gid - tileSet->firstGid;
 
