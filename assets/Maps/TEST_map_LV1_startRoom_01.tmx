@@ -55326,7 +55326,7 @@
   </object>
  </objectgroup>
  <objectgroup id="22" name="Items">
-  <object id="378" name="Live" type="Live" x="12802.7" y="1824" width="256" height="384"/>
+  <object id="378" name="Live" type="Live" x="12936" y="1981.58" width="256" height="384"/>
  </objectgroup>
  <objectgroup id="8" name="Entities">
   <object id="328" name="Rat" type="Rat" x="13916" y="864">

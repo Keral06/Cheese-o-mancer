@@ -686,14 +686,8 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 
 	case ColliderType::EXTRALIVE:
 	{
-		if (hasHealed == false) {
-			if (Engine::GetInstance().scene->lives < Engine::GetInstance().scene->maxLives) {
-				Engine::GetInstance().audio->PlayFx(healfx);
-				Engine::GetInstance().scene->lives++;
-				LOG("Player healed.");
-			}
-			hasHealed = true;
-		}
+		// Dejamos este case vacío porque ExtraLive.cpp ahora se encarga de 
+		// dar la vida y reproducir el sonido según sus animaciones.
 		break;
 	}
 

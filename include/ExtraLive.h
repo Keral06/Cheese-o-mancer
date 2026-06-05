@@ -30,6 +30,9 @@ public:
 	int xInicial = 0;
 	int yInicial = 0;
 
+	int healStage = 0; // 0 = Intacta, 1 = 1 fruta, 2 = 2 frutas, 3 = Vacía
+	std::string currentAnimName = "idle";
+
 private:
 
 	SDL_Texture* texture;
