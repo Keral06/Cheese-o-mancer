@@ -389,7 +389,7 @@ void Player::Move() {
 	// =====================
 	// SONIDO PASOS
 	// =====================
-	if (isWalking && isJumping == false)
+	if (isWalking && isCollidedFloor)
 	{
 		int randNum = rand() % 4;
 		switch (randNum) {

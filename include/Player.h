@@ -78,7 +78,7 @@ public:
 	PlayerState state;
 	PlayerState lastState;
 	//Declare player parameters
-	float speed = 15.0f;
+	float speed = 19.5f; // Valor original: 15.0f
 	float godmodeSpeed = 40.0f;
 	SDL_Texture* texture = NULL;
 	int texW, texH;
