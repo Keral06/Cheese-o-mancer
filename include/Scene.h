@@ -8,6 +8,7 @@
 #include "Inventario.h"
 #include "ListaMisiones.h"
 #include "TarotCards.h"
+#include "pl_mpeg.h"
 
 class BossFightPrincessKnight;
 
@@ -20,7 +21,8 @@ enum class SceneID
 	IN_GAME,
 	GAME_OVER,
 	WIN_SCREEN,
-	FINAL_WIN
+	FINAL_WIN,	
+	CUTSCENE
 };
 
 enum Level {
@@ -394,4 +396,23 @@ public:
 		bool ratmissionfinished = false;
 		int whereIsRat = 1;
 
+private:
+	//all video stuff
+	struct VideoData {
+		plm_t* plm = nullptr;
+		SDL_Texture* texture = nullptr;
+		uint8_t* buffer = nullptr;
+		int width = 0;
+		int height = 0;		
+	};
+	
+	bool isPlayingVideo = false;
+	VideoData  video;
+	
+
+	void LoadVideo(VideoData* video, const char* name);
+	void PlayVideo(const char* name);
+	void StopVideo();
+
+	static void OnVideoFrame(plm_t* mpeg, plm_frame_t* frame, void* user);
 };

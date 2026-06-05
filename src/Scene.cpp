@@ -49,6 +49,7 @@ bool Scene::Start()
 {
 	srand(time(NULL));
 	LoadScene(currentScene);
+	LoadVideo(&video, "assets/Screens/animatica-provisional.mpg");
 
 	bossFightController = new BossFightPrincessKnight();
 	bossFightController->Start();
@@ -67,6 +68,25 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	if (isPlayingVideo) {
+		LOG("Video dt: %f", dt);
+		plm_decode(video.plm, dt / 1000.0f);	//passar d milisegons a segons
+
+		if (video.texture && video.buffer) {
+			SDL_UpdateTexture(video.texture, NULL, video.buffer, video.width * 4);
+			SDL_RenderTexture(Engine::GetInstance().render->renderer, video.texture, NULL, NULL);
+		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || plm_has_ended(video.plm)) { //passar a la seguent escena quan acabi o (amb el espai per skip)
+			StopVideo();
+			ChangeScene(SceneID::IN_GAME);
+		}
+		return true;
+	}
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_0) == KEY_DOWN) {
+		ChangeScene(SceneID::CUTSCENE);
+	}
+
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
 		showUIDebug = !showUIDebug; 
 	}
@@ -121,6 +141,9 @@ bool Scene::Update(float dt)
 		break;
 	case SceneID::FINAL_WIN:
 		UpdateFinalWin(dt);
+		break;
+	case SceneID::CUTSCENE:
+		PlayVideo("assets/Screens/animatica-provisional.mpg");
 		break;
 	}
 	if (isPaused) {
@@ -2482,4 +2505,57 @@ void Scene::SetTarotUI(bool on) {
 
 
 	}
+}
+
+//FUNCIONS DELS VIDEOS
+
+void Scene::OnVideoFrame(plm_t* mpeg, plm_frame_t* frame, void* user) {
+	VideoData* video = static_cast<VideoData*>(user);
+
+	if (video->buffer) {
+		LOG("Decoding video frame");
+		plm_frame_to_rgba(frame, video->buffer, video->width * 4);
+	}
+}
+
+void Scene::LoadVideo(VideoData* video, const char* name) {
+	video->plm = plm_create_with_filename(name);
+
+	if (!video->plm) {
+		LOG("Error: Could not load video file %s", name);
+		ChangeScene(SceneID::IN_GAME);
+		return;
+	}
+
+	video->width = plm_get_width(video->plm);
+	video->height = plm_get_height(video->plm);
+
+
+	LOG("Video loaded successfully: %s", name);
+
+	plm_set_audio_enabled(video->plm, 0);
+	plm_set_loop(video->plm, 0);
+
+	video->buffer = new uint8_t[video->width * video->height * 4];
+	video->texture = SDL_CreateTexture(Engine::GetInstance().render->renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_STREAMING, video->width, video->height);
+
+	plm_set_video_decode_callback(video->plm, OnVideoFrame, video);
+
+}
+
+void Scene::PlayVideo(const char* name) {
+	isPlayingVideo = true;
+	Engine::GetInstance().uiManager->CleanUp();
+}
+
+void Scene::StopVideo() {
+	isPlayingVideo = false;
+
+	if (video.plm) plm_destroy(video.plm);
+	if (video.texture) SDL_DestroyTexture(video.texture);
+	if (video.buffer) delete[] video.buffer;
+
+	video.plm = nullptr;
+	video.texture = nullptr;
+	video.buffer = nullptr;
 }
