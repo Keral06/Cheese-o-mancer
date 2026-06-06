@@ -21,6 +21,7 @@
 #include "Handman.h"
 #include "ParticleSystem.h"
 #include "ParticleExample.h"
+#include "BossFightPrincessKnight.h"
 
 Scene::Scene() : Module()
 {
@@ -48,6 +49,10 @@ bool Scene::Start()
 {
 	srand(time(NULL));
 	LoadScene(currentScene);
+	LoadVideo(&video, "assets/Screens/animatica-provisional.mpg");
+
+	bossFightController = new BossFightPrincessKnight();
+	bossFightController->Start();
 
 	return true;
 }
@@ -63,6 +68,25 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	if (isPlayingVideo) {
+		LOG("Video dt: %f", dt);
+		plm_decode(video.plm, dt / 1000.0f);	//passar d milisegons a segons
+
+		if (video.texture && video.buffer) {
+			SDL_UpdateTexture(video.texture, NULL, video.buffer, video.width * 4);
+			SDL_RenderTexture(Engine::GetInstance().render->renderer, video.texture, NULL, NULL);
+		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || plm_has_ended(video.plm)) { //passar a la seguent escena quan acabi o (amb el espai per skip)
+			StopVideo();
+			ChangeScene(SceneID::IN_GAME);
+		}
+		return true;
+	}
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_0) == KEY_DOWN) {
+		ChangeScene(SceneID::CUTSCENE);
+	}
+
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
 		showUIDebug = !showUIDebug; 
 	}
@@ -118,6 +142,9 @@ bool Scene::Update(float dt)
 	case SceneID::FINAL_WIN:
 		UpdateFinalWin(dt);
 		break;
+	case SceneID::CUTSCENE:
+		PlayVideo("assets/Screens/animatica-provisional.mpg");
+		break;
 	}
 	if (isPaused) {
 		UpdatePauseMenu();
@@ -158,6 +185,10 @@ bool Scene::Update(float dt)
 		StartFadeIn(1.0f);
 	}
 
+	if (bossFightController != nullptr)
+	{
+		bossFightController->Update(dt);
+	}
 	return true;
 }
 
@@ -448,7 +479,7 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 		HandlePauseUIEvents(uiElement);
 		return true;
 	}
-	if(uiElement->id>=35 && uiElement->id <= 44) {
+	if(uiElement->id>=35 && uiElement->id <= 51) {
 		HandleStoreUIEvents(uiElement);
 		return true;
 	}
@@ -494,6 +525,13 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
+	if (bossFightController != nullptr)
+	{
+		delete bossFightController;
+		bossFightController = nullptr;
+	}
+	return true;
+
 	UnloadCurrentScene();
 	return true;
 }
@@ -1049,64 +1087,38 @@ void  Scene::PostUpdateLevel() {
 				SDL_RenderTexture(Engine::GetInstance().render->renderer, panelTexture, NULL, &destRect);
 
 			}
-			if (Engine::GetInstance().scene->lives == 4) {
-				if (heart4Texture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(heart4Texture, &w, &h);
+			SDL_Texture* texturaDibujar = nullptr;
 
-
-					SDL_FRect destRect = { 90, 112, w/3, h/3 };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart4Texture, NULL, &destRect);
-
-				}
+			if (Engine::GetInstance().scene->maxLives == 6) {
+				// SEXTOS
+				if (Engine::GetInstance().scene->lives == 6) texturaDibujar = quesoSextos_6;
+				else if (Engine::GetInstance().scene->lives == 5) texturaDibujar = quesoSextos_5;
+				else if (Engine::GetInstance().scene->lives == 4) texturaDibujar = quesoSextos_4;
+				else if (Engine::GetInstance().scene->lives == 3) texturaDibujar = quesoSextos_3;
+				else if (Engine::GetInstance().scene->lives == 2) texturaDibujar = quesoSextos_2;
+				else if (Engine::GetInstance().scene->lives == 1) texturaDibujar = quesoSextos_1;
 			}
-			else if (Engine::GetInstance().scene->lives == 3) {
-				if (heart3Texture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(heart3Texture, &w, &h);
-
-
-					SDL_FRect destRect = { 90, 112, w / 3, h / 3 };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart3Texture, NULL, &destRect);
-
-				}
-
+			else if (Engine::GetInstance().scene->maxLives == 5) {
+				// QUINTOS
+				if (Engine::GetInstance().scene->lives == 5) texturaDibujar = quesoQuintos_5;
+				else if (Engine::GetInstance().scene->lives == 4) texturaDibujar = quesoQuintos_4;
+				else if (Engine::GetInstance().scene->lives == 3) texturaDibujar = quesoQuintos_3;
+				else if (Engine::GetInstance().scene->lives == 2) texturaDibujar = quesoQuintos_2;
+				else if (Engine::GetInstance().scene->lives == 1) texturaDibujar = quesoQuintos_1;
 			}
-			else if (Engine::GetInstance().scene->lives == 2) {
-
-				if (heart2Texture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(heart2Texture, &w, &h);
-
-
-					SDL_FRect destRect = { 90, 112, w / 3, h / 3 };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart2Texture, NULL, &destRect);
-
-				}
+			else {
+				//CUARTOS
+				if (Engine::GetInstance().scene->lives == 4) texturaDibujar = heart4Texture;
+				else if (Engine::GetInstance().scene->lives == 3) texturaDibujar = heart3Texture;
+				else if (Engine::GetInstance().scene->lives == 2) texturaDibujar = heart2Texture;
+				else if (Engine::GetInstance().scene->lives == 1) texturaDibujar = heart1Texture;
 			}
-			else if (Engine::GetInstance().scene->lives == 1) {
 
-				if (heart1Texture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(heart1Texture, &w, &h);
-
-
-					SDL_FRect destRect = { 90, 112, w / 3, h / 3 };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, heart1Texture, NULL, &destRect);
-
-				}
-			}
-			if (player->extralife) {
-
-				if (extraHeartTexture != nullptr) {
-					float w, h;
-					SDL_GetTextureSize(extraHeartTexture, &w, &h);
-
-
-					SDL_FRect destRect = { 90+30, 112, w / 3, h / 3 };
-					SDL_RenderTexture(Engine::GetInstance().render->renderer, extraHeartTexture, NULL, &destRect);
-				}
-
+			if (texturaDibujar != nullptr) {
+				float w, h;
+				SDL_GetTextureSize(texturaDibujar, &w, &h);
+				SDL_FRect destRect = { 90, 112, w / 3, h / 3 };
+				SDL_RenderTexture(Engine::GetInstance().render->renderer, texturaDibujar, NULL, &destRect);
 			}
 
 		
@@ -1147,6 +1159,10 @@ void  Scene::PostUpdateLevel() {
 		else if (selectedStoreItem == 4) {
 			SDL_GetTextureSize(storePaperDamage, &w, &h);
 			Engine::GetInstance().render->DrawTextureNoCamera(storePaperDamage, 550, -50, w / 1.5, h / 1.5);
+		}
+		else if (selectedStoreItem == 5) {
+			SDL_GetTextureSize(storePaperPermLife, &w, &h);
+			Engine::GetInstance().render->DrawTextureNoCamera(storePaperPermLife, 550, -50, w / 1.5, h / 1.5);
 		}
 	}
 
@@ -1574,6 +1590,17 @@ void Scene::LoadMap(std::string map)
 	heart2Texture = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_Cheese2_01.png");
 	heart3Texture = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_Cheese3_01.png");
 	heart4Texture = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_Cheese4_01.png");
+	quesoQuintos_1 = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_02/UI_LifeBar_Cheese1_02.png");
+	quesoQuintos_2 = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_02/UI_LifeBar_Cheese2_02.png");
+	quesoQuintos_3 = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_02/UI_LifeBar_Cheese3_02.png");
+	quesoQuintos_4 = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_02/UI_LifeBar_Cheese4_02.png");
+	quesoQuintos_5 = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_02/UI_LifeBar_Cheese5_02.png");
+	quesoSextos_1 = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_03/UI_LifeBar_Cheese1_03.png");
+	quesoSextos_2 = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_03/UI_LifeBar_Cheese2_03.png");
+	quesoSextos_3 = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_03/UI_LifeBar_Cheese3_03.png");
+	quesoSextos_4 = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_03/UI_LifeBar_Cheese4_03.png");
+	quesoSextos_5 = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_03/UI_LifeBar_Cheese5_03.png");
+	quesoSextos_6 = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_03/UI_LifeBar_Cheese6_03.png");
 	extraHeartTexture = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_CheeseExtra_01.png");
 
 	missionTexture = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_Mission_NotificationStart_.png");
@@ -1599,6 +1626,9 @@ void Scene::LoadMap(std::string map)
 		Engine::GetInstance().scene->score = 0;
 		showMap = false;
 		inventoryOn = false;
+		Engine::GetInstance().scene->extralife = false;
+		Engine::GetInstance().scene->maxLives = 4;
+		Engine::GetInstance().scene->lives = 4;
 		//firstDoor = true;       
 		//cheese = false;     
 		//nextSpawnPoint = "";
@@ -1698,6 +1728,15 @@ void Scene::CreateStoreLevel1() {
 	auto btnLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 37, "TEMPORARY LIFE", { 350, y +250, 170, 170 }, this, SDL_Rect {0,0,0,0}, LifeNormal, LifeClicked);
 	btnLIFE->visible = false;
 
+
+	//PERMANENT LIFE
+	SDL_Texture* PermLife;
+	SDL_Texture* PermLifeClicked;
+	PermLife = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemPermanentLife1_.png");
+	PermLifeClicked = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemPermanentLife2_.png");
+	auto btnPERMLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 50, "PERMANENT LIFE", { 450, y + 150, 170, 170 }, this, SDL_Rect{ 0,0,0,0 }, PermLife, PermLifeClicked);
+	btnPERMLIFE->visible = false;
+
 	//// LLANTERN
 	//auto btnLLANTERN = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 38, "LLANTERN", { x, y + 210, 200, 50 }, this);
 	//btnLLANTERN->visible = false;
@@ -1719,6 +1758,12 @@ void Scene::CreateStoreLevel1() {
 	auto btnBUYLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 41, "BUYLIFE", { 750, y+280, 300, 150 }, this, SDL_Rect{ 0,0,0,0 }, BuyNormal, BuyClicked);
 	btnBUYLIFE->visible = false;
 
+
+	// BUY PERMANENT LIFE
+	auto btnBUYPERMLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 51, "BUYPERMLIFE", { 750, y + 280, 300, 150 }, this, SDL_Rect{ 0,0,0,0 }, BuyNormal, BuyClicked);
+	btnBUYPERMLIFE->visible = false;
+
+
 	////BUYLLANTERN
 	//auto btnBUYLLANTERN = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 42, "BUYLLANTERN", { x + 70, y, 200, 50 }, this);
 	//btnBUYLLANTERN->visible = false;
@@ -1728,6 +1773,7 @@ void Scene::CreateStoreLevel1() {
 	storePaperMap = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Map.png");
 	storePaperLife = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Life.png");
 	storePaperKey = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Key.png");
+	storePaperPermLife = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_PermanentLife_.png");
 }
 
 void Scene::CreateStoreLevel2() {
@@ -1766,6 +1812,7 @@ void Scene::CreateStoreLevel2() {
 	DamageplusClicked = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemDamage2_.png");
 	auto btnDAMAGE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 43, "DAMAGE PLUS", { 450, y + 150, 170, 170 }, this, SDL_Rect{ 0,0,0,0 }, Damageplus, DamageplusClicked);
 	btnDAMAGE->visible = false;
+
 
 	//// LLANTERN
 	//auto btnLLANTERN = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 38, "LLANTERN", { x, y + 210, 200, 50 }, this);
@@ -1810,7 +1857,7 @@ void Scene::SetStore(bool store, int storeID) {
 	if (storeOn) {
 		if (storeID == 1) {
 			for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
-				if (element->id == 35 || element->id == 36 || element->id == 37) {
+				if (element->id == 35 || element->id == 36 || element->id == 37|| element->id == 50) {
 					element->visible = storeOn;
 				}
 			}
@@ -1825,7 +1872,7 @@ void Scene::SetStore(bool store, int storeID) {
 	}
 	else {
 		for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
-			if (element->id >= 35 && element->id <= 44) {
+			if (element->id >= 35 && element->id <= 51) {
 				element->visible = false;
 			}
 		}
@@ -1953,8 +2000,12 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 		//mira si el jugador tiene dinero
 		if (Engine::GetInstance().scene->score >= 10) {
 			Engine::GetInstance().scene->score -= 10;
+			Engine::GetInstance().scene->lives++;
 			for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
-				if (el->id == 41) el->Destroy();
+				if (el->id == 41) {
+					el->visible = false;
+					el->state = UIElementState::DISABLED;
+				}
 				if (el->id == 37) {
 					SDL_Texture* BeenBought = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_SoldOut_01.png");
 					el->SetTexture(BeenBought);
@@ -2024,12 +2075,71 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 			}
 		}
 		break;
+	case 50:
+		for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
+			if (el->id == 51) {
+				if (Engine::GetInstance().scene->extralife == true) {
+					el->visible = false;
+				}
+				else {
+					el->visible = true;
+				}
+			}
+			if (el->id == 39 || el->id == 40 || el->id == 41 || el->id == 42 || el->id == 44) el->visible = false;
+		}
+		selectedStoreItem = 5; 
+		break;
+
+	case 51:
+
+		if (Engine::GetInstance().scene->score >= 200) {
+			Engine::GetInstance().scene->score -= 200;
+
+
+			Engine::GetInstance().scene->maxLives = 5;
+			Engine::GetInstance().scene->lives = 5;
+			Engine::GetInstance().scene->extralife = true;
+
+
+			for (auto& el : Engine::GetInstance().uiManager->UIElementsList) {
+				if (el->id == 51) {
+					el->visible = false;
+					el->state = UIElementState::DISABLED;
+				}
+			}
+
+			for (auto& entity : Engine::GetInstance().entityManager->entities) {
+				if (entity->type == EntityType::HANDMAN) {
+					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
+					handman->hasBeenSold.hasEnded = false;
+					handman->hasBeenSold.BeginDialogue();
+					break;
+				}
+			}
+		}
+		else {
+			for (auto& entity : Engine::GetInstance().entityManager->entities) {
+				if (entity->type == EntityType::HANDMAN) {
+					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
+					handman->hasNoMoney.hasEnded = false;
+					handman->hasNoMoney.BeginDialogue();
+					break;
+				}
+			}
+		}
+		break;
 	}
+
 }
 
 Player* Scene::GetPlayer() const
 {
 	return player.get();
+}
+
+void Scene::SetPlayer(std::shared_ptr<Player> _player)
+{
+	player = _player;
 }
 
 //funciones inventario
@@ -2395,4 +2505,57 @@ void Scene::SetTarotUI(bool on) {
 
 
 	}
+}
+
+//FUNCIONS DELS VIDEOS
+
+void Scene::OnVideoFrame(plm_t* mpeg, plm_frame_t* frame, void* user) {
+	VideoData* video = static_cast<VideoData*>(user);
+
+	if (video->buffer) {
+		LOG("Decoding video frame");
+		plm_frame_to_rgba(frame, video->buffer, video->width * 4);
+	}
+}
+
+void Scene::LoadVideo(VideoData* video, const char* name) {
+	video->plm = plm_create_with_filename(name);
+
+	if (!video->plm) {
+		LOG("Error: Could not load video file %s", name);
+		ChangeScene(SceneID::IN_GAME);
+		return;
+	}
+
+	video->width = plm_get_width(video->plm);
+	video->height = plm_get_height(video->plm);
+
+
+	LOG("Video loaded successfully: %s", name);
+
+	plm_set_audio_enabled(video->plm, 0);
+	plm_set_loop(video->plm, 0);
+
+	video->buffer = new uint8_t[video->width * video->height * 4];
+	video->texture = SDL_CreateTexture(Engine::GetInstance().render->renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_STREAMING, video->width, video->height);
+
+	plm_set_video_decode_callback(video->plm, OnVideoFrame, video);
+
+}
+
+void Scene::PlayVideo(const char* name) {
+	isPlayingVideo = true;
+	Engine::GetInstance().uiManager->CleanUp();
+}
+
+void Scene::StopVideo() {
+	isPlayingVideo = false;
+
+	if (video.plm) plm_destroy(video.plm);
+	if (video.texture) SDL_DestroyTexture(video.texture);
+	if (video.buffer) delete[] video.buffer;
+
+	video.plm = nullptr;
+	video.texture = nullptr;
+	video.buffer = nullptr;
 }

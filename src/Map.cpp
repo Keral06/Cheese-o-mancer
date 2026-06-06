@@ -131,12 +131,13 @@ bool Map::Update(float dt)
 TileSet* Map::GetTilesetFromTileId(int gid) const
 {
     TileSet* bestFit = nullptr;
+    int maxGid = -1;
 
     for (const auto& tileset : mapData.tilesets) {
-        // En lugar de depender del tileCount, simplemente buscamos el Tileset 
-        // con el firstGid más alto que sea menor o igual a nuestro GID.
-        if (gid >= tileset->firstGid) {
+        // Buscamos el tileset con el firstGid más alto que siga siendo menor o igual al GID del objeto
+        if (gid >= tileset->firstGid && tileset->firstGid > maxGid) {
             bestFit = tileset;
+            maxGid = tileset->firstGid;
         }
     }
 
@@ -1001,6 +1002,14 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                             retired->Start();
                             retired->mapID = id;
                             }
+                else if (entityType == "HighPriestess") {
+                                std::shared_ptr<HighPriestess> highPriestess = std::dynamic_pointer_cast<HighPriestess>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HIGHPRIESTESS));
+                                highPriestess->position = Vector2D(x, y);
+                                highPriestess->xInicial = (int)x;
+                                highPriestess->yInicial = (int)y;
+                                highPriestess->Start();
+                                highPriestess->mapID = id;
+                                }
                 else if (entityType == "Pics") {
                     auto pics = std::dynamic_pointer_cast<Pics>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PICS));
                     pics->position = Vector2D(x, y);
@@ -1038,10 +1047,12 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                 p->setPosition((int)(x + (w / 2.0f)), (int)(y + (h / 2.0f)));
 
                 if (pType == "Fire" || pType == "FIRE") p->setStyle(ParticleExample::FIRE);
+                else if (pType == "Moho" || pType == "MOHO") p->setStyle(ParticleExample::MOHO);
                 else if (pType == "Smoke" || pType == "SMOKE") p->setStyle(ParticleExample::SMOKE);
                 else if (pType == "Rain" || pType == "RAIN") p->setStyle(ParticleExample::RAIN);
                 else if (pType == "Meteor" || pType == "METEOR") p->setStyle(ParticleExample::METEOR);
                 else if (pType == "Explosion" || pType == "EXPLOSION") p->setStyle(ParticleExample::EXPLOSION);
+                else if (pType == "Snow" || pType == "SNOW") p->setStyle(ParticleExample::SNOW);
 
                 p->setPosVar(Vec2(w / 2.0f, h / 2.0f));
                 mapParticles.push_back(p);
@@ -1125,7 +1136,7 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
 
                     if (gid != 0) {
                         TileSet* tileSet = GetTilesetFromTileId(gid);
-                        if (tileSet != nullptr) {
+                        if (tileSet != nullptr && tileSet->texture != nullptr) {
 
                             int relativeId = gid - tileSet->firstGid;
 
@@ -1248,33 +1259,29 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
                         if (tileSet != nullptr) {
                             //LOG("PARALLAX DEBUG: Tileset encontrado. Textura cargada: %s", (tileSet->texture != nullptr ? "SI" : "NO (¡Puntero Nulo!)"));
 
-                            if (tileSet->texture != nullptr) {
+                            if (tileSet != nullptr && tileSet->texture != nullptr) {
                                 SDL_Rect tileRect = tileSet->GetRect(cleanGid);
 
-                                /*float camX = Engine::GetInstance().render->camera.x * -1.0f;
-                                float camY = Engine::GetInstance().render->camera.y * -1.0f;
+                                // --- PARCHE DE TAMAÑO ---
+                                // Si Tiled omitió el tamaño, usamos el del Tileset original
+                                int finalWidth = object->width;
+                                int finalHeight = object->height;
+                                if (finalWidth == 0 || finalHeight == 0) {
+                                    finalWidth = tileRect.w;
+                                    finalHeight = tileRect.h;
+                                }
 
-                                int drawX = object->x + (int)(camX * parallaxSpeed);
-                                int drawY = object->y - object->height + (int)(camY * parallaxSpeed);*/
-
-                                //LOG("PARALLAX DEBUG: Dibujando en X: %d, Y: %d", drawX, drawY);
                                 Engine::GetInstance().render->DrawParallax(
                                     tileSet->texture,
                                     object->x,
-                                    object->y - object->height,
-                                    object->width,
-                                    object->height,
+                                    object->y - finalHeight, // Usamos el height corregido
+                                    finalWidth,              // Usamos el width corregido
+                                    finalHeight,             // Usamos el height corregido
                                     &tileRect,
                                     parallaxSpeed,
-                                    0,
-                                    0,
-                                    0,
-                                    SDL_FLIP_NONE
+                                    0, 0, 0, SDL_FLIP_NONE
                                 );
                             }
-                        }
-                        else {
-                            //LOG("PARALLAX DEBUG: ERROR - No se encontro un Tileset para el GID %d", cleanGid);
                         }
                     }
                 }

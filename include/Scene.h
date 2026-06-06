@@ -8,6 +8,9 @@
 #include "Inventario.h"
 #include "ListaMisiones.h"
 #include "TarotCards.h"
+#include "pl_mpeg.h"
+
+class BossFightPrincessKnight;
 
 struct SDL_Texture;
 
@@ -18,7 +21,8 @@ enum class SceneID
 	IN_GAME,
 	GAME_OVER,
 	WIN_SCREEN,
-	FINAL_WIN
+	FINAL_WIN,	
+	CUTSCENE
 };
 
 enum Level {
@@ -113,6 +117,12 @@ public:
 	void StartFadeIn(float duration);
 
 	Player* Scene::GetPlayer() const;
+
+	void SetPlayer(std::shared_ptr<Player> _player);
+	
+
+	BossFightPrincessKnight* GetBossFightController() const { return bossFightController; }
+
 private:
 	//Introscreen functions
 	void LoadIntro();
@@ -214,6 +224,8 @@ private:
 	void UpdatePauseMenu(float dt);
 	void HandleStoreUIEvents(UIElement* uiElement);
 
+	BossFightPrincessKnight* bossFightController = nullptr;
+
 public:
 	//Funciones para el teletransporte
 	void CreateTeleportUI();
@@ -236,6 +248,17 @@ private:
 	SDL_Texture* heart2Texture = nullptr;
 	SDL_Texture* heart3Texture = nullptr;
 	SDL_Texture* heart4Texture = nullptr;
+	SDL_Texture* quesoQuintos_5 = nullptr; 
+	SDL_Texture* quesoQuintos_4 = nullptr; 
+	SDL_Texture* quesoQuintos_3 = nullptr; 
+	SDL_Texture* quesoQuintos_2 = nullptr; 
+	SDL_Texture* quesoQuintos_1 = nullptr;
+	SDL_Texture* quesoSextos_6 = nullptr;
+	SDL_Texture* quesoSextos_5 = nullptr;
+	SDL_Texture* quesoSextos_4 = nullptr;
+	SDL_Texture* quesoSextos_3 = nullptr;
+	SDL_Texture* quesoSextos_2 = nullptr;
+	SDL_Texture* quesoSextos_1 = nullptr;
 	SDL_Texture* extraHeartTexture = nullptr;
 
 	std::vector<std::shared_ptr<Enemy>> enemies;
@@ -255,6 +278,7 @@ private:
 	
 	SDL_Texture* storeBag = nullptr;
 	SDL_Texture* storePaperMap = nullptr;
+	SDL_Texture* storePaperPermLife = nullptr;
 	SDL_Texture* storePaperLife = nullptr;
 	SDL_Texture* storePaperKey = nullptr;
 	SDL_Texture* storePaperDamage = nullptr;
@@ -290,6 +314,7 @@ public:
 	bool beatBoss = false;
 	bool beatPrincess = false;	
 	bool extralife = false;
+	int maxLives = 4;
 
 	//BOOLS OF THE PAPERS
 	bool day = false;
@@ -371,4 +396,23 @@ public:
 		bool ratmissionfinished = false;
 		int whereIsRat = 1;
 
+private:
+	//all video stuff
+	struct VideoData {
+		plm_t* plm = nullptr;
+		SDL_Texture* texture = nullptr;
+		uint8_t* buffer = nullptr;
+		int width = 0;
+		int height = 0;		
+	};
+	
+	bool isPlayingVideo = false;
+	VideoData  video;
+	
+
+	void LoadVideo(VideoData* video, const char* name);
+	void PlayVideo(const char* name);
+	void StopVideo();
+
+	static void OnVideoFrame(plm_t* mpeg, plm_frame_t* frame, void* user);
 };

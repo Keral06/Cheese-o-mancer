@@ -2509,8 +2509,8 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
-		texW = 128;
-		texH = 128;
+		texW = 128*3;
+		texH = 128*4 ;
 		pbody = nullptr;
 		if (pbody == nullptr) {
 			position.setX(xInicial);
@@ -2818,8 +2818,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
-		texW = 128;
-		texH = 128;
+		texW = 128*3;
+		texH = 128*3;
 		pbody = nullptr;
 		if (pbody == nullptr) {
 			position.setX(xInicial);
@@ -3045,8 +3045,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hierophant/sprite_hierophant_01.png");
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
-		texW = 128;
-		texH = 128;
+		texW = 128*3;
+		texH = 128*4;
 		pbody = nullptr;
 		if (pbody == nullptr) {
 			position.setX(xInicial);
@@ -3358,8 +3358,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Little Finley_NPC/Finley_spritesheet.png");
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
-		texW = 128;
-		texH = 128;
+		texW = 128*2;
+		texH = 128*3;
 		pbody = nullptr;
 
 		if (pbody == nullptr) {
@@ -3631,14 +3631,14 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	bool Empress::Start() {
 
 		// De momento solo idle
-		std::unordered_map<int, std::string> aliases = {
-				  {0, "idle"}
-		};
+		//std::unordered_map<int, std::string> aliases = {
+		//		  {0, "idle"}
+		//};
 
-		anims.LoadFromTSX("assets/Textures/Spritesheets/High Priestess/high_priestess_idle.tsx", aliases);
-		anims.SetCurrent("idle");
+		//anims.LoadFromTSX("assets/Textures/Spritesheets/High Priestess/high_priestess_idle.tsx", aliases);
+		//anims.SetCurrent("idle");
 
-		texture = Engine::GetInstance().textures->Load("resources/spritesheets/High Priestess/priestess_idle_01.png");
+		//texture = Engine::GetInstance().textures->Load("resources/spritesheets/High Priestess/priestess_idle_01.png");
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
 		texW = 128;
@@ -3817,14 +3817,14 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		Dialogue GivesArticact;
 		Dialogue AfterMission;*/
 
-		Dialogue paperDialogue("assets/Dialogues/Hierophant/Hierophant_Inital_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_Inital_Names.txt"); //Primer Diálogo
+		Dialogue paperDialogue("assets/Dialogues/Mission_Chariot/Chariot_Initial_Dialogues.txt", "assets/Dialogues/Mission_Chariot/Chariot_Initial_Names.txt"); //Primer Diálogo
 		this->initial = paperDialogue;
-		Dialogue secondDialogue("assets/Dialogues/Hierophant/Hierophant_AllPsalms_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AllPsalms_Names.txt"); //Dialogo All psalms
+		Dialogue secondDialogue("assets/Dialogues/Mission_Chariot/Chariot_NotAdvanced_Dialogues.txt", "assets/Dialogues/Mission_Chariot/Chariot_NotAdvanced_Names.txt"); //Dialogo All psalms
 		this->notAdvanced = secondDialogue;
 
-		Dialogue percent("assets/Dialogues/Hierophant/Hierophant_AfterInital_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AfterInital_Names.txt"); //Dialogo despues de segunda interaccion
+		Dialogue percent("assets/Dialogues/Mission_Chariot/Chariot_MissionCompleted_Dialogues.txt", "assets/Dialogues/Mission_Chariot/Chariot_MissionCompleted_Names.txt"); //Dialogo despues de segunda interaccion
 		this->completed = percent;
-		Dialogue lvll2("assets/Dialogues/Hierophant/Hierophant_AllPsalms_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AllPsalms_Names.txt"); //Whistleblower has read all psalms
+		Dialogue lvll2("assets/Dialogues/Mission_Chariot/Chariot_BeforeSelectingDestination_Dialogues.txt", "assets/Dialogues/Mission_Chariot/Chariot_BeforeSelectingDestination_Dialogues.txt"); //Whistleblower has read all psalms
 		this->teleport = lvll2;
 		
 
@@ -3857,8 +3857,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/rat king/sprite_ratking_01_idle.png");
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
-		texW = 128;
-		texH = 128;
+		texW = 384;
+		texH = 384;
 		pbody = nullptr;
 
 		if (pbody == nullptr) {
@@ -4064,8 +4064,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Frustated Sculptor_NPC/Frustated_Sculptor.png");
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
-		texW = 128;
-		texH = 128;
+		texW = 384;
+		texH = 384+ 128;
 		pbody = nullptr;
 
 		if (pbody == nullptr) {
@@ -4270,8 +4270,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Retired Knight_NPC/spritesheet.png");
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
-		texW = 128;
-		texH = 128;
+		texW = 384;
+		texH = 384;
 		pbody = nullptr;
 
 		if (pbody == nullptr) {
@@ -4425,3 +4425,114 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 
 	}
+
+
+
+	HighPriestess::HighPriestess() : NPC(EntityType::HIGHPRIESTESS)
+	{
+		// De momento sin dialogos asignados
+	}
+
+	HighPriestess::~HighPriestess()
+	{
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+	}
+
+	bool HighPriestess::Awake()
+	{
+		return true;
+	}
+
+	bool HighPriestess::Start()
+	{
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
+
+		// De momento solo idle
+		std::unordered_map<int, std::string> aliases = {
+				  {0, "idle"}
+		};
+
+		anims.LoadFromTSX("assets/Textures/Spritesheets/High Priestess/high_priestess_idle.tsx", aliases);
+		anims.SetCurrent("idle");
+
+		texture = Engine::GetInstance().textures->Load("resources/spritesheets/High Priestess/priestess_idle_01.png");
+		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
+
+		texW = 128;
+		texH = 128;
+		pbody = nullptr;
+
+		if (pbody == nullptr) {
+			position.setX(xInicial);
+			position.setY(yInicial);
+			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+				(int)position.getX(),
+				(int)position.getY(),
+				texW,
+				texH,
+				bodyType::DYNAMIC
+			);
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			pbody->listener = this;
+			pbody->ctype = ColliderType::NPC;
+		}
+
+		return true;
+	}
+
+	void HighPriestess::Draw(float dt)
+	{
+		if (texture == nullptr) return;
+		anims.Update(dt);
+		const SDL_Rect& animFrame = anims.GetCurrentFrame();
+
+		int x, y;
+		pbody->GetPosition(x, y);
+		position.setX((float)x);
+		position.setY((float)y);
+
+		Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
+	}
+
+	bool HighPriestess::Update(float dt)
+	{
+		if (!active) return true;
+
+		Draw(dt);
+		return true;
+	}
+
+	bool HighPriestess::CleanUp()
+	{
+		LOG("Unloading High Priestess");
+		Engine::GetInstance().textures->UnLoad(texture);
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->DeletePhysBody(pbody);
+			pbody = nullptr;
+		}
+		return true;
+	}
+
+	void HighPriestess::OnCollision(PhysBody* physA, PhysBody* physB)
+	{
+		Player* pp = static_cast<Player*>(physB->listener);
+		py = pp;
+		switch (physB->ctype)
+		{
+		case ColliderType::PLAYER:
+			isGettingTouched = true;
+			break;
+		}
+	}
+
+	void HighPriestess::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
+	{
+		isGettingTouched = false;
+	}
+
+
+

@@ -74,9 +74,9 @@ bool Player::Start() {
 	texture4x4 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/4x4/j_ballroll.png");
 	texture5x5 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/5x5/j_5x5.png");
 	//L03: TODO 2: Initialize Player parameters
-	texture = texture2x3;
-	currentAnimSet = &anims2x3;
-	currentAnimSet->SetCurrent("run");
+	texture = texture3x3;
+	currentAnimSet = &anims3x3;
+	currentAnimSet->SetCurrent("idle");
 	// L08 TODO 5: Add physics to the player - initialize physics body
 	texW = 215;
 	texH = 384;
@@ -87,6 +87,7 @@ bool Player::Start() {
 
 	// L08 TODO 7: Assign collider type
 	pbody->ctype = ColliderType::PLAYER;
+	b2Body_SetGravityScale(pbody->body, 2.25f); // Borrar para tener el salto antiguo
 
 	attackHitbox = Engine::GetInstance().physics->CreateRectangleSensor(
 		position.getX(),
@@ -119,7 +120,7 @@ bool Player::Start() {
 	healfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Heal_plant.wav");
 
 	respawnPosition = { PIXEL_TO_METERS(position.getX()), PIXEL_TO_METERS(position.getY()) };
-
+	
 	return true;
 }
 
@@ -262,6 +263,14 @@ void Player::UpdateFireballs(float dt) {
 // =====================
 
 void Player::GetPhysicsValues() {
+	if (pbody != nullptr)
+	{
+		int x, y;
+		pbody->GetPosition(x, y);
+		position.setX((float)x);
+		position.setY((float)y);
+	}
+
 	// Read current velocity
 	velocity = Engine::GetInstance().physics->GetLinearVelocity(pbody);
 	if (!godMode) { velocity = { 0, velocity.y }; }
@@ -330,7 +339,7 @@ void Player::Move() {
 	// =====================
 	if (godMode)
 	{
-		Engine::GetInstance().scene->lives = 4;
+		Engine::GetInstance().scene->lives = Engine::GetInstance().scene->maxLives;
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
 			velocity.y = -godmodeSpeed;
@@ -380,7 +389,7 @@ void Player::Move() {
 	// =====================
 	// SONIDO PASOS
 	// =====================
-	if (isWalking && isJumping == false)
+	if (isWalking && isCollidedFloor)
 	{
 		int randNum = rand() % 4;
 		switch (randNum) {
@@ -596,26 +605,6 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 		return;
 	}
 
-	// =========================
-	// 1. ATAQUE DEL JUGADOR
-	// =========================
-	if (physA->ctype == ColliderType::PLAYERATTACK)
-	{
-		if (other == ColliderType::ENEMY)
-		{
-			if (!hitboxActive || hasHit) return;
-
-			Enemy* e = static_cast<Enemy*>(physB->listener);
-			if (e)
-			{
-				int damageAmount = Engine::GetInstance().scene->hasDamagePlus ? 68 : 34;
-				e->DecreaseHealth(damageAmount);
-				LOG("Enemy hit by player attack");
-			}
-			hasHit = true;
-		}
-		return;
-	}
 
 	// =========================
 	// 2. COLISIONES DEL PLAYER (CUERPO PRINCIPAL)
@@ -697,14 +686,8 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 
 	case ColliderType::EXTRALIVE:
 	{
-		if (hasHealed == false) {
-			if (Engine::GetInstance().scene->lives < 4) {
-				Engine::GetInstance().audio->PlayFx(healfx);
-				Engine::GetInstance().scene->lives++;
-				LOG("Player healed.");
-			}
-			hasHealed = true;
-		}
+		// Dejamos este case vacío porque ExtraLive.cpp ahora se encarga de 
+		// dar la vida y reproducir el sonido según sus animaciones.
 		break;
 	}
 
@@ -921,78 +904,66 @@ void Player::HandleAttack()
 {
 	const float comboResetTimeMs = 400;
 	static Uint32 lastAttackTime = 0;
-
 	Uint32 now = SDL_GetTicks();
 
-	// INPUT DETECTADO
-	if (attackRequested)
-	{
+	if (attackRequested) {
 		attackRequested = false;
-		hasHit = false;
+		if (!isAttacking) {
+			// INCREMENTAR EL ID: Cada vez que el usuario inicia un ataque nuevo,
+			// el identificador cambia, haciendo que los enemigos vuelvan a ser vulnerables.
+			currentAttackId++;
 
-		if (!isAttacking)
-		{
-			// Si está en el aire, siempre usar attack3
-			if (!isCollidedFloor)
-			{
-				attackCombo = 3;
-			}
-			else
-			{
-				attackCombo = 1;
-			}
+			attackCombo = (!isCollidedFloor) ? 3 : 1;
 			StartAttack(attackCombo);
-			lastAttackTime = now;
 		}
-		else
-		{
+		else {
 			bufferedAttack = true;
 		}
 	}
 
-	if (isAttacking)
-	{
-		if (currentAnimSet->HasFinished())
-		{
-			lastAttackTime = now;
-			hitboxActive = false;
-			hasHit = false;
+	if (isAttacking) {
+		int currentFrame = currentAnimSet->GetCurrentFrameIndex();
 
-			if (bufferedAttack)
-			{
-				bufferedAttack = false;
+		// ACTIVACIÓN DEL HITBOX (Frames activos)
+		if (currentFrame >= 1 && currentFrame <= 5) {
+			hitboxActive = true;
+			UpdateAttackHitbox();
 
-				// Si está en el aire, siempre usar attack3
-				if (!isCollidedFloor)
-				{
-					attackCombo = 3;
+			int x, y;
+			attackHitbox->GetPosition(x, y);
+
+			SDL_Rect hitboxRect = { (int)x, (int)y, 80, 120 };
+			std::vector<PhysBody*> hits = Engine::GetInstance().physics->QueryArea(hitboxRect);
+
+			for (auto* body : hits) {
+				if (body->ctype == ColliderType::ENEMY) {
+					Enemy* e = static_cast<Enemy*>(body->listener);
+
+					// LÓGICA DE DAÑO ÚNICO:
+					// Solo daña si el ID guardado en el enemigo es distinto al ID actual.
+					if (e && e->lastAttackId != currentAttackId) {
+						e->DecreaseHealth(20);
+						e->lastAttackId = currentAttackId; // Marcamos al enemigo con el ID actual
+					}
 				}
-				else
-				{
-					attackCombo++;
-					if (attackCombo > 3) attackCombo = 1;
-				}
-
-				StartAttack(attackCombo);
-
-			}
-			else
-			{
-				isAttacking = false;
-				state = DEFAULT;
 			}
 		}
-	}
+		else {
+			hitboxActive = false;
+		}
 
-	// RESET DEL COMBO SI PASA MUCHO TIEMPO
-	if (!isAttacking && attackCombo > 0)
-	{
-		if (now - lastAttackTime > comboResetTimeMs)
-		{
-			attackCombo = 0;
-			hasHit = false;
-			state = DEFAULT;
-			LOG("Combo reset (timeout)");
+		if (currentAnimSet->HasFinished()) {
+			if (bufferedAttack) {
+				bufferedAttack = false;
+				attackCombo = (!isCollidedFloor) ? 3 : (attackCombo >= 3 ? 1 : attackCombo + 1);
+				StartAttack(attackCombo);
+			}
+			else {
+				isAttacking = false;
+				state = DEFAULT;
+				// YA NO NECESITAS RESETEAR ENEMIGOS AQUÍ. 
+				// El cambio de ID en el próximo clic se encarga de todo.
+			}
 		}
 	}
 }
@@ -1027,7 +998,6 @@ void Player::StartAttack(int combo)
 		break;
 	}
 
-	hasHit = false;
 	hitboxActive = true;
 
 	LOG("Player attack start combo %d", combo);
@@ -1317,4 +1287,3 @@ void Player::ResetCheeseState()
 		mountedBall->firstjump = false;
 	}
 }
-

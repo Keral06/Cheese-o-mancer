@@ -1397,3 +1397,40 @@ public:
 
 	SDL_Texture* InteractTexture = nullptr;
 };
+
+
+//High Priestess
+
+class HighPriestess : public NPC
+{
+public:
+	HighPriestess();
+	virtual ~HighPriestess();
+
+	bool Awake();
+	bool Start();
+	bool Update(float dt);
+	bool CleanUp();
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+	void Draw(float dt);
+
+private:
+	SDL_Texture* texture;
+	AnimationSet anims;
+	PhysBody* pbody;
+	int texW, texH;
+	const char* tsxPath;
+	std::string currentAnimName = "idle";
+
+public:
+	int coinFx;
+	int coinPickupFx;
+	int xInicial;
+	int yInicial;
+
+	bool isGettingTouched = false;
+	Player* py;
+
+	SDL_Texture* InteractTexture = nullptr;
+};

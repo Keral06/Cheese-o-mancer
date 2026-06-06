@@ -12,6 +12,7 @@ public:
     {
         NONE,
         FIRE,
+        MOHO,
         /*FIRE_WORK,
         SUN,
         GALAXY,
@@ -29,7 +30,7 @@ public:
 
     SDL_Texture* getDefaultTexture()
     {
-        static SDL_Texture* t = IMG_LoadTexture(_renderer, "assets/Textures/fire.png");
+        static SDL_Texture* t = IMG_LoadTexture(_renderer, "assets/Textures/Particles/fire_particle.png");
 
         if (t == nullptr) {
             // Esto imprimirá un error en la consola si no encuentra la imagen

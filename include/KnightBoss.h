@@ -14,6 +14,7 @@ enum class KnightState
 
     TRANSFORM,
 
+    CIDLE,
     LUNGE_ATTACK,
     BOUNCE_ATTACK,
 
@@ -87,7 +88,11 @@ public:
 
     void ReturnToBase(Vector2D pos);
 
-private:
+    void StartIntroEntrance(float speedMultiplier);
+
+    KnightState GetState() const { return knightState; }
+
+public:
 
     // =========================
     // INTERNAL UPDATES

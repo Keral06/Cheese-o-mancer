@@ -52,7 +52,7 @@ bool KnightBoss::Start()
 
     animsNIdle.LoadFromTSX("assets/Textures/Spritesheets/Knight/Normal/kn_idle.tsx", aliasesNIdle);
     animsNSlide.LoadFromTSX("assets/Textures/Spritesheets/Knight/Normal/kn_slide.tsx", aliasesNSlide);
-    animsCIdle.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/kn_idle.tsx", aliasesCIdle);
+    animsCIdle.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/kc_idle.tsx", aliasesCIdle);
     animsCAttack1.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/kc_attack1.tsx", aliasesCAttack1);
     animsCAttack2.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/kc_attack2.tsx", aliasesCAttack2);
     animsCDefeat.LoadFromTSX("assets/Textures/Spritesheets/Knight/Cheese/kc_defeat.tsx", aliasesCDefeat);
@@ -98,6 +98,15 @@ bool KnightBoss::Start()
 
     bounceStarted = false;
 
+    BossFightPrincessKnight* controller = Engine::GetInstance().scene->GetBossFightController();
+
+    if (controller != nullptr)
+    {
+        SetFightController(controller);
+        controller->knight = this; // La princesa se registra a sí misma en el controlador
+        LOG("Knight enlazada automáticamente al entrar a la sala.");
+    }
+
     return true;
 }
 
@@ -136,6 +145,7 @@ bool KnightBoss::Update(float dt)
         if (currentAnim && currentAnim->HasFinished())
         {
             OnTransformFinished();
+            FinishAction();
         }
 
         break;
@@ -183,16 +193,28 @@ void KnightBoss::StartEntrance()
 
 void KnightBoss::UpdateEntrance(float dt)
 {
-    velocity.x = -12.0f;
-    velocity.y = 0;
+    //velocity.x = -12.0f;
+    //velocity.y = 0;
 
-    if (stateTimer >= 1.5f)
+    //if (stateTimer >= 1.5f)
+    //{
+    //    velocity.x = 0;
+
+    //    busy = false;
+
+    //    SetKnightState(KnightState::IDLE);
+    //}
+
+    //if (stateTimer >= 1.5f)
+    //{
+    //    velocity.x = 0;
+    //    busy = false;
+    //    SetKnightState(KnightState::IDLE);
+    //    FinishAction(); // Avisa al controlador para pasar a KNIGHT_TRANSFORM
+    //}
+    if (currentAnim && currentAnim->GetCurrentFrameIndex() == 18)
     {
-        velocity.x = 0;
-
-        busy = false;
-
-        SetKnightState(KnightState::IDLE);
+        FinishAction(); 
     }
 }
 
@@ -266,10 +288,9 @@ void KnightBoss::UpdateLunge(float dt)
 
         busy = false;
 
-        SetKnightState(KnightState::RECOVER);
+        SetKnightState(KnightState::CIDLE);
 
-        /*if (fightController)
-            FinishAction();*/
+        FinishAction();
     }
 }
 
@@ -336,7 +357,7 @@ void KnightBoss::UpdateBounce(float dt)
 
         busy = false;
 
-        SetKnightState(KnightState::RECOVER);
+        SetKnightState(KnightState::CIDLE);
 
         /*FinishAction();*/
     }
@@ -404,6 +425,7 @@ void KnightBoss::Draw(float dt)
 {
     if (currentAnim == nullptr)
         return;
+
 
     double rotation = 0.0;
 
@@ -505,7 +527,7 @@ void KnightBoss::ChangeCurrentAnimation()
     {
         currentAnim = &animsNSlide;
         currentTexture = textureNSlide;
-
+        
         
         break;
     }
@@ -545,7 +567,12 @@ void KnightBoss::ChangeCurrentAnimation()
         
         break;
     }
-
+    case KnightState::CIDLE:
+    {
+        currentAnim = &animsCIdle;
+        currentTexture = textureCIdle;
+        break;
+    }
     case KnightState::DEATH:
     {
         currentAnim = &animsCDefeat;
@@ -585,9 +612,7 @@ void KnightBoss::StartFight()
 
 void KnightBoss::OnTransformFinished()
 {
-    LOG("Transform finished -> Phase 1 start");
-
-    SetKnightState(KnightState::IDLE);
+    LOG("Transform finished -> Ready for Controller phase trigger");
 
     phase = PHASE_1;
 
@@ -608,11 +633,25 @@ void KnightBoss::ReturnToBase(Vector2D pos)
     busy = false;
 }
 
+void KnightBoss::StartIntroEntrance(float speedMultiplier)
+{
+    busy = true;
+    actionFinished = false;
+    stateTimer = 0.0f;
+
+    // Forzamos el estado de la entrada deslizante
+    SetKnightState(KnightState::ENTRANCE_DASH);
+
+    // Ajustamos la velocidad de entrada basándonos en tu UpdateEntrance original multiplicada por el float
+    velocity.x = -12.0f * speedMultiplier;
+    velocity.y = 0.0f;
+
+    LOG("Knight iniciando deslizamiento de la intro con animsNSlide");
+}
+
 void KnightBoss::FinishAction()
 {
     actionFinished = true;
     busy = false;
 
-    if (fightController)
-        fightController->OnBossFinishedAttack(BossTurn::KNIGHT);
 }

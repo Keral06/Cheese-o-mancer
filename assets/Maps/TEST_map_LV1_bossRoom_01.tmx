@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="68" height="38" tilewidth="128" tileheight="128" infinite="0" nextlayerid="22" nextobjectid="235">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="68" height="38" tilewidth="128" tileheight="128" infinite="0" nextlayerid="23" nextobjectid="238">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -7,8 +7,18 @@
   <image source="tileset_lv1_dungeon_base_04.png" width="3840" height="3537"/>
  </tileset>
  <tileset firstgid="814" source="dungeon_jaulas.tsx"/>
+ <tileset firstgid="815" source="torch_animated.tsx"/>
  <group id="20" name="Parallax" offsetx="-1024" offsety="0">
+  <properties>
+   <property name="Background" type="bool" value="true"/>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <layer id="18" name="Towers" width="68" height="38">
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+    <property name="Parallax" type="float" value="0"/>
+   </properties>
    <data>
     <tile/>
     <tile/>
@@ -2597,6 +2607,11 @@
    </data>
   </layer>
   <layer id="19" name="windows" width="68" height="38">
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+    <property name="Parallax" type="float" value="0"/>
+   </properties>
    <data>
     <tile/>
     <tile/>
@@ -5185,7 +5200,12 @@
    </data>
   </layer>
   <objectgroup id="21" name="Jails">
-   <object id="234" gid="814" x="1559.31" y="3930.36" width="5080.71" height="2716"/>
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+    <property name="Parallax" type="float" value="0.3"/>
+   </properties>
+   <object id="234" gid="814" x="1587.31" y="2442.36" width="5080.71" height="2716"/>
   </objectgroup>
  </group>
  <layer id="16" name="Background" width="68" height="38">
@@ -10371,6 +10391,9 @@
   </data>
  </layer>
  <layer id="17" name="Assets" width="68" height="38">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -12488,7 +12511,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="815"/>
    <tile/>
    <tile/>
    <tile/>
@@ -12540,7 +12563,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="815"/>
    <tile/>
    <tile/>
    <tile/>
@@ -15588,6 +15611,18 @@
   </object>
   <object id="231" name="Verdugo" type="Verdugo" x="4165" y="3985">
    <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="22" name="Particles">
+  <object id="236" type="Fire" x="1037.03" y="3816.73" width="245.939" height="202.546">
+   <properties>
+    <property name="loop" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="237" type="Fire" x="7691.03" y="3816.73" width="245.939" height="202.546">
+   <properties>
+    <property name="loop" type="bool" value="true"/>
+   </properties>
   </object>
  </objectgroup>
 </map>

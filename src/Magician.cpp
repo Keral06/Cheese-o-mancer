@@ -186,11 +186,11 @@ void Magician::Draw(float dt) {
 	const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 	int x, y;
-	pbody->GetPosition(x, y);
-	position.setX((float)x);
-	position.setY((float)y);
+	pbody->GetPosition(xInicial, yInicial);
+	position.setX((float)xInicial);
+	position.setY((float)yInicial);
 
-	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
+	Engine::GetInstance().render->DrawTexture(texture, xInicial - texW / 2, yInicial - texH / 2, &animFrame);
 
 }
 bool Magician::CleanUp()

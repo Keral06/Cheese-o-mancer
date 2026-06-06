@@ -113,9 +113,18 @@ bool Rat::Update(float dt)
 
 void Rat::OnCollision(PhysBody* physA, PhysBody* physB)
 {
-    if (physB->ctype == ColliderType::PLAYER) {
+    if (isDead) {
+        if (physB->ctype == ColliderType::PLATFORM && pbody != nullptr) {
+            Engine::GetInstance().physics->SetLinearVelocity(pbody, { 0.0f, 0.0f });
 
-        // daño directo
+            b2Body_SetGravityScale(pbody->body, 0.0f);
+
+            pbody->listener = nullptr;
+        }
+        return;
+    }
+
+    if (physB->ctype == ColliderType::PLAYER) {
         Player* player = dynamic_cast<Player*>(physB->listener);
 
         if (player && damageTimer <= 0) {
@@ -137,19 +146,28 @@ void Rat::Die() {
 
     deathPosition = GetPosition();
 
-    // eliminar físicas
-    if (pbody != nullptr) {
-        pbody->listener = nullptr;
-        Engine::GetInstance().physics->DeletePhysBody(pbody);
-        pbody = nullptr;
-    }
-
     if (attackHitbox != nullptr) {
         Engine::GetInstance().physics->DeletePhysBody(attackHitbox);
         attackHitbox = nullptr;
     }
 
-    // spawn coin
+    if (pbody != nullptr) {
+        Engine::GetInstance().physics->DeletePhysBody(pbody);
+        pbody = nullptr;
+
+        pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+            (int)deathPosition.getX(),
+            (int)deathPosition.getY(),
+            texW / 2,
+            texH / 2,
+            bodyType::DYNAMIC
+        );
+
+        pbody->ctype = ColliderType::NPC;
+        pbody->listener = this;
+    }
+
+    // coin
     auto newCoin = Engine::GetInstance().entityManager->CreateEntity(EntityType::COIN);
     auto coinEntity = std::static_pointer_cast<Coins>(newCoin);
 
@@ -180,4 +198,42 @@ void Rat::Patrol()
         velocity.x = -speed/2;
 
     SetState(EnemyState::WALKING);
+}
+
+void Rat::Draw(float dt)
+{
+    int x = (int)position.getX();
+    int y = (int)position.getY();
+
+    if (pbody != nullptr) {
+        pbody->GetPosition(x, y);
+        position.setX((float)x);
+        position.setY((float)y);
+    }
+
+    anims.Update(dt);
+    SDL_Rect animFrame = anims.GetCurrentFrame();
+
+
+    SDL_FlipMode flip = facingLeft ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+
+    int drawX = x - texW / 2;
+    int drawY = y - texH / 2;
+
+
+    if (isDead) {
+        drawY -= 64;
+    }
+
+    Engine::GetInstance().render->DrawTexture(
+        texture,
+        drawX,
+        drawY,
+        &animFrame,
+        1.0f,
+        0.0,
+        INT_MAX,
+        INT_MAX,
+        flip
+    );
 }

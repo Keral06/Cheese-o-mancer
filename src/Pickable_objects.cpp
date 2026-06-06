@@ -35,7 +35,12 @@ bool Pics::Awake() {
 bool Pics::Start() {
 
 	//here i make them different depending on what it is
-	
+	if (AlreadyPicked())
+	{
+		beenPicked = true;
+		active = false;
+		return true;
+	}
 	InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 
 	//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
@@ -498,3 +503,28 @@ void Pics::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 
 }
 
+bool Pics::AlreadyPicked()
+{
+	
+
+	if (name == "Dawn") return Engine::GetInstance().scene->dawn;
+	if (name == "Day") return Engine::GetInstance().scene->day;
+	if (name == "Dusk") return Engine::GetInstance().scene->dusk;
+	if (name == "Night") return Engine::GetInstance().scene->night;
+
+	if (name == "Spring") return Engine::GetInstance().scene->springWater;
+	if (name == "Horsekin") return Engine::GetInstance().scene->HorsekinManure;
+	if (name == "TreeRoot") return Engine::GetInstance().scene->Gargantuan;
+
+	if (name == "Bloody" || name == "Rusty" || name == "Moldy" || name == "Core") {
+	
+		if (Engine::GetInstance().scene->inventario.tieneObjeto("Artifact"))return true;
+	
+	}
+	if (name == "Bloody") return Engine::GetInstance().scene->inventario.tieneObjeto("Bloody");
+	if (name == "Rusty") return Engine::GetInstance().scene->inventario.tieneObjeto("Rusty");
+	if (name == "Moldy") return Engine::GetInstance().scene->inventario.tieneObjeto("Moldy");
+	if (name == "Core") return Engine::GetInstance().scene->inventario.tieneObjeto("Core");
+
+	return false;
+}

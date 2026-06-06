@@ -90,7 +90,9 @@ public:
 
     void FinishAction();
 
-private:
+    void AdjustHitboxY(int offsetPxl);
+
+public:
 
     // ===============================
     // INTERNAL UPDATES
@@ -138,7 +140,7 @@ private:
     AnimationSet animsDefeat;
     AnimationSet animsMagic;
     AnimationSet animsMove;
-
+    AnimationSet animsCTransform;
     
 
     SDL_Texture* textureNIdle = nullptr;
@@ -147,11 +149,15 @@ private:
     SDL_Texture* textureMagic = nullptr;
     SDL_Texture* textureCIdle = nullptr;
     SDL_Texture* textureMove = nullptr;
+    SDL_Texture* textureTransform = nullptr;
 
     SDL_Texture* spikeTexture = nullptr;
 
     AnimationSet* currentAnim;
     SDL_Texture* currentTexture;
+
+    float offsetX = 0.0f;
+    float offsetY = 0.0f;
 
     std::vector<Vector2D> spawnedFlowers;
     float flowerSpawnTimer = 0.0f;
@@ -172,5 +178,6 @@ private:
     bool bordersSpawned = false;
     bool waveStarted = false;
 
-    
+    bool isTransforming = false;
+    bool isTransformed = false;
 };

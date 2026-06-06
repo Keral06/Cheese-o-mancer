@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.12.1" name="kn_slide" tilewidth="512" tileheight="640" tilecount="19" columns="19">
- <image source="../../../../../resources/spritesheets/Knight/KnightNormal/KnightN_sliding.png" width="9728" height="640"/>
+<tileset version="1.10" tiledversion="1.11.2" name="kn_slide" tilewidth="512" tileheight="640" tilecount="20" columns="5">
+ <image source="KnightN_sliding.png" width="2560" height="2560"/>
  <tile id="0">
   <properties>
    <property name="loop" type="bool" value="false"/>
@@ -25,7 +25,7 @@
    <frame tileid="15" duration="100"/>
    <frame tileid="16" duration="100"/>
    <frame tileid="17" duration="100"/>
-   <frame tileid="18" duration="100"/>
+   <frame tileid="18" duration="10000"/>
   </animation>
  </tile>
 </tileset>

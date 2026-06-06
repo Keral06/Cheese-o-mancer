@@ -4,6 +4,7 @@
 #include <list>
 #include <cmath>           // for floor in METERS_TO_PIXELS
 #include <box2d/box2d.h>   // Box2D 3.x single header
+#include <vector>
 
 #define GRAVITY_X 0.0f
 #define GRAVITY_Y -30.0f
@@ -110,7 +111,8 @@ public:
 
     // --- Impulse helper (handy for jumps/dashes)
     void   ApplyLinearImpulseToCenter(PhysBody* p, float ix, float iy, bool wake = true) const;
-
+    std::vector<PhysBody*> QueryArea(SDL_Rect rect);
+    static bool QueryCallback(b2ShapeId shapeId, void* context);
 private:
     // helpers
     static b2BodyType ToB2Type(bodyType t);
@@ -130,6 +132,8 @@ private:
     static void DrawPointStub(b2Vec2 p, float size, b2HexColor c, void* ctx);
     static void DrawStringStub(b2Vec2 p, const char* s, b2HexColor c, void* ctx);
     static void DrawTransformStub(b2Transform xf, void* ctx);
+
+    
 
 private:
 

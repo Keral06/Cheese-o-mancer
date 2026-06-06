@@ -65,6 +65,8 @@ bool Verdugo::Start()
     textureA4b = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Cheese Executoner/ataque4b.png");
     textureDeath = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Cheese Executoner/death.png");
 
+    
+
     //Add physics to the enemy - initialize physics body
     pbody = Engine::GetInstance().physics->CreateRectangle(position.getX(), position.getY(), texW, texH, bodyType::DYNAMIC);
 
@@ -82,7 +84,7 @@ bool Verdugo::Start()
     Vector2D tilePos = Engine::GetInstance().map->WorldToMap((int)pos.getX(), (int)pos.getY());
     //Reset pathfinding
     pathfinding->ResetPath(tilePos);
-
+    
     CreateAttackHitbox(GetPosition().getX(),GetPosition().getY(), 70,200);
 
     phase = PHASE_INTROV;
@@ -101,7 +103,8 @@ bool Verdugo::Start()
 
     attackInProgress = false;
     isAttacking = false;
-
+    velocity.x = 0;
+    velocity.y = 0;
  
     Engine::GetInstance().scene->cards.push("Justice", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Justice.png"), nullptr);
 
@@ -123,6 +126,7 @@ bool Verdugo::Update(float dt)
         EnterEndState();
         return true;
     }
+
 
     switch (phase)
     {
@@ -163,7 +167,7 @@ void Verdugo::UpdateIntro(float dt)
     {
         float dist = CalculateDistance();
 
-        LOG("%f",dist);
+        //LOG("%f",dist);
 
         if (dist < 10.0f) // ajusta el trigger
         {
@@ -214,7 +218,11 @@ void Verdugo::UpdateIntro(float dt)
 
 void Verdugo::UpdatePhase1(float dt)
 {
-    
+    if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
+    {
+        // Accede a tu instancia de Verdugo y llama al debug
+        DebugChangePhase();
+    }
 
     if (health <= 100)
     {
@@ -316,23 +324,10 @@ void Verdugo::StartTransformation()
     LOG("TRANSFORMACIÓN INICIADA");
 }
 
-void Verdugo::UpdateTransformation(float dt)
-{
-    currentAnimSet->Update(dt);
-
-    if (currentAnimSet->HasFinished())
-    {
-        phase = PHASE_2V;
-
-        state = ATAQUE1;
-        currentAnimSet->Resets();
-
-        LOG("PHASE 2 ACTIVADA");
-    }
-}
-
 void Verdugo::UpdatePhase2(float dt)
 {
+    if (phase != PHASE_2V) return;
+
     float distance = CalculateDistance();
 
     facingLeft = Engine::GetInstance().scene->GetPlayerPosition().getX() > GetPosition().getX();
@@ -895,3 +890,33 @@ void Verdugo::SpawnWeakWall()
     }
 }
 
+void Verdugo::DebugChangePhase()
+{
+    LOG("DEBUG: Saltando a FASE 2 directamente");
+
+    // Forzamos el estado de vida y llamamos a la función de transformación
+    health = 50; // O el valor que dispare tu condición
+    StartTransformation();
+}
+
+void Verdugo::UpdateTransformation(float dt)
+{
+    // 1. Asegurar inmovilidad total durante la transformación
+    velocity.x = 0;
+    velocity.y = 0;
+
+    // 2. Actualizar animación
+    currentAnimSet->Update(dt);
+
+    // 3. Solo cuando termine, pasamos a la fase 2
+    if (currentAnimSet->HasFinished())
+    {
+        phase = PHASE_2V;
+        state = ATAQUE1; // O el estado inicial de tu fase 2
+        currentAnimSet->Resets();
+
+        attackInProgress = false; // IMPORTANTE: Reseteamos para que no crea que sigue atacando
+
+        LOG("PHASE 2 ACTIVADA y lista para combate");
+    }
+}

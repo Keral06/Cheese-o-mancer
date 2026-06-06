@@ -510,6 +510,20 @@ void Physics::DrawSolidCapsuleStub(b2Vec2, b2Vec2, float, b2HexColor, void*) {}
 void Physics::DrawPointStub(b2Vec2, float, b2HexColor, void*) {}
 void Physics::DrawStringStub(b2Vec2, const char*, b2HexColor, void*) {}
 void Physics::DrawTransformStub(b2Transform, void*) {}
+
+std::vector<PhysBody*> Physics::QueryArea(SDL_Rect rect) {
+    std::vector<PhysBody*> foundBodies;
+
+    b2AABB aabb;
+    aabb.lowerBound = { PIXEL_TO_METERS(rect.x), PIXEL_TO_METERS(rect.y) };
+    aabb.upperBound = { PIXEL_TO_METERS(rect.x + rect.w), PIXEL_TO_METERS(rect.y + rect.h) };
+
+    // Pasamos el vector directamente como el contexto (void*)
+    // En la 3.x, muchos métodos esperan la función y el contexto separados
+    b2World_OverlapAABB(world, aabb, b2DefaultQueryFilter(), Physics::QueryCallback, &foundBodies);
+
+    return foundBodies;
+}
 void PhysBody::SetPosition(int x, int y)
 {
     if (B2_IS_NULL(body)) {
@@ -518,4 +532,18 @@ void PhysBody::SetPosition(int x, int y)
     b2Vec2 pos = { PIXEL_TO_METERS(x), PIXEL_TO_METERS(y) };
     b2Body_SetTransform(body, pos, b2MakeRot(0));
     b2Body_SetAwake(body, true);
+}
+
+// Función estática (implementada fuera de QueryArea)
+bool Physics::QueryCallback(b2ShapeId shapeId, void* context) {
+    auto* bodyList = static_cast<std::vector<PhysBody*>*>(context);
+
+    b2BodyId bodyId = b2Shape_GetBody(shapeId);
+    PhysBody* pbody = (PhysBody*)b2Body_GetUserData(bodyId);
+
+    if (pbody != nullptr) {
+        bodyList->push_back(pbody);
+    }
+
+    return true;
 }

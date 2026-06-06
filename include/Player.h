@@ -62,6 +62,7 @@ public:
 	void DismountVerticalJump();
 
 	void ResetCheeseState();
+	void ResetEnemiesHitStatus();
 private:
 
 	void GetPhysicsValues();
@@ -77,7 +78,7 @@ public:
 	PlayerState state;
 	PlayerState lastState;
 	//Declare player parameters
-	float speed = 15.0f;
+	float speed = 19.5f; // Valor original: 15.0f
 	float godmodeSpeed = 40.0f;
 	SDL_Texture* texture = NULL;
 	int texW, texH;
@@ -98,7 +99,7 @@ public:
 
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
-	float jumpForce = 950.0f; // The force to apply when jumping
+	float jumpForce = 1425.0f; // The force to apply when jumping ----- Valor original: 950.0f
 	bool isJumping = false; // Flag to check if the player is currently jumping
 	bool isMoving = false;
 	bool secondJump = false;
@@ -146,7 +147,7 @@ public:
 	/*SDL_Rect& lastFrame;*/
          
 	bool hasDamagePlus = false;
-
+	int currentAttackId = 0;
 
 private: 
 	b2Vec2 velocity;
@@ -174,7 +175,6 @@ private:
 	PhysBody* feetHitbox = nullptr;
 
 	bool hitboxActive = false;
-	bool hasHit = false;
 	bool playerInHitbox = false;
 
 	int attackDuration = 20;

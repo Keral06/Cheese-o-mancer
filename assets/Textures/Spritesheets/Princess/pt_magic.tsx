@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.12.1" name="pt_magic" tilewidth="768" tileheight="1280" tilecount="12" columns="4">
+<tileset version="1.10" tiledversion="1.11.2" name="pt_magic" tilewidth="768" tileheight="1280" tilecount="12" columns="4">
  <image source="sprite_princessT_02_magic.png" width="3072" height="3840"/>
  <tile id="0">
   <properties>
-   <property name="loop" type="bool" value="false"/>
+   <property name="loop" type="bool" value="true"/>
    <property name="name" value="magic"/>
   </properties>
   <animation>

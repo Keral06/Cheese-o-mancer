@@ -8,7 +8,7 @@
 #include "Input.h"
 #include "Scene.h"
 #include "Log.h"
-
+#include "EntityManager.h"
 #include "PrincessBoss.h"
 #include "KnightBoss.h"
 
@@ -52,48 +52,55 @@ bool BossFightPrincessKnight::Start()
 {
     LOG("BossFightPrincessKnight START");
 
-    // TODO:
-    // Buscar bosses en escena
-    // TEMP:
-    // Crear bosses manualmente
+    // Limpiamos los punteros por seguridad. Se rellenarán solos cuando los bosses spawneen.
+    princess = nullptr;
+    knight = nullptr;
 
-
-
-    princess = new PrincessBoss();
-    knight = new KnightBoss();
-
-    princess->Start();
-    knight->Start();
-
-    princess->SetFightController(this);
-    knight->SetFightController(this);
-
-    
     return true;
 }
 
 // ===============================
-// UPDATE
+// UPDATE MAIN FSM
 // ===============================
-
 bool BossFightPrincessKnight::Update(float dt)
 {
-    // ===============================
-    // DEBUG START
-    // ===============================
-
-    if (!fightStarted && debugStartFight)
+    // Si no ha empezado la intro, medimos la distancia entre el Jugador y la Princesa
+    if (fightState == BossFightState::IDLE && !introTriggered)
     {
-        /*if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
+        Player* player = Engine::GetInstance().scene->GetPlayer();
+
+        // Nos aseguramos de que el jugador y la princesa ya estén enlazados en memoria
+        if (player != nullptr && princess != nullptr)
         {
-            StartFight();
-        }*/
+            Vector2D playerPos = player->position; // O el método que uses para su posición
+            Vector2D princessPos = princess->GetPosition();
+
+            /*LOG("DEBUG CONTROLLER | Player Ptr: %p | Pos X: %f | Princess X: %f",
+                (void*)player,
+                player->position.getX(),
+                princess->GetPosition().getX());*/
+
+            float distance = abs(princessPos.getX() - playerPos.getX());
+            
+            // Si el jugador se acerca a 10 píxeles (o unidades de tu mapa)
+            if (distance <= 1350.0f)
+            {
+                LOG("Jugador cerca de la Princesa. Arrancando Intro...");
+                introTriggered = true;
+
+                // 1. Hacemos Zoom a la cámara (Ajusta el método según tu módulo de Render/Camera)
+                Engine::GetInstance().render->SetZoomSmooth(0.5f, 800);
+                LOG("CAMARA: Aplicando ZOOM a la escena.");
+
+                // 2. Cambiamos al estado INTRO (esperando el diálogo)
+                SetFightState(BossFightState::INTRO);
+            }
+        }
     }
 
     // ===============================
-    // MAIN FSM
+    // MAQUINA DE ESTADOS PRINCIPAL
     // ===============================
-
     switch (fightState)
     {
     case BossFightState::IDLE:
@@ -101,25 +108,20 @@ bool BossFightPrincessKnight::Update(float dt)
 
     case BossFightState::INTRO:
     case BossFightState::KNIGHT_ENTRANCE:
+    case BossFightState::KNIGHT_DIAL_BEFORE_TRANSFORM:
     case BossFightState::KNIGHT_TRANSFORM:
     case BossFightState::PRINCESS_TRANSFORM:
-
         UpdateIntro(dt);
         break;
 
     case BossFightState::PHASE_1:
     case BossFightState::PHASE_2:
     case BossFightState::PHASE_3:
-
         UpdatePhase(dt);
         break;
 
     case BossFightState::DEATH:
-
         UpdateDeath(dt);
-        break;
-
-    case BossFightState::FINISHED:
         break;
     }
 
@@ -165,130 +167,169 @@ void BossFightPrincessKnight::StartFight()
 // ===============================
 // INTRO UPDATE
 // ===============================
-
 void BossFightPrincessKnight::UpdateIntro(float dt)
 {
     switch (fightState)
     {
-        // =========================
-        // INTRO
-        // =========================
-
+        // ==========================================
+        // PASO 1: ESPERANDO AL PRIMER DIÁLOGO
+        // ==========================================
     case BossFightState::INTRO:
     {
-        if (!introStarted)
+        if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
         {
-            introStarted = true;
+            LOG("Primer diálogo completado. ¡El Caballero SPAWNEA en medio!");
 
-            knight->ResetActionFinished();
+            if (knight != nullptr && princess != nullptr)
+            {
+                princessBasePos = princess->GetPosition();
 
-            knight->StartEntrance();
+                // Calculamos el medio entre la Princesa y el Jugador
+                Player* player = Engine::GetInstance().scene->GetPlayer();
+                float playerX = player ? player->position.getX() : princessBasePos.getX() - 300.0f;
+                knightTargetX = (princessBasePos.getX() + playerX) * 0.5f;
 
-            LOG("Knight Entrance Started");
+                // Teletransportamos al Caballero directamente al centro exacto
+                knightBasePos = Vector2D(knightTargetX, knight->GetPosition().getY());
+                knight->ReturnToBase(knightBasePos);
+
+                // Activamos la animación del Slide/Lunge inicial
+                knight->SetKnightState(KnightState::ENTRANCE_DASH);
+                knight->ResetActionFinished();
+
+                // Quitamos el Zoom de la cámara suavemente
+                Engine::GetInstance().render->SetZoomSmooth(0.3f, 800);
+
+                // CAMBIO AQUÍ: En vez de ir a la transformación, pasamos al nuevo diálogo
+                SetFightState(BossFightState::KNIGHT_ENTRANCE);
+                LOG("BossFight State: Esperando al segundo diálogo pre-transformación...");
+            }
         }
-
-        if (knight->HasFinishedAction())
-        {
-            knight->ResetActionFinished();
-
-            SetFightState(BossFightState::KNIGHT_TRANSFORM);
-        }
-
         break;
     }
 
-    // =========================
-    // KNIGHT TRANSFORM
-    // =========================
+    // ========================================================
+    // PASO 2: EL CABALLERO LLEGA AL FINAL DEL SLIDE
+    // ========================================================
+    case BossFightState::KNIGHT_ENTRANCE:
+    {
+        // En cuanto el caballero llega al frame final del slide...
+        if (knight->HasFinishedAction())
+        {
+            LOG("El Caballero ha frenado en el centro. Se queda estático en el slide.");
 
+            knight->ResetActionFinished();
+
+            
+            
+            SetFightState(BossFightState::KNIGHT_DIAL_BEFORE_TRANSFORM);
+        }
+        break;
+    }
+
+    // ========================================================
+    // PASO 3: SEGUNDO DIÁLOGO (ESPERANDO EN LA POSE DEL SLIDE)
+    // ========================================================
+    case BossFightState::KNIGHT_DIAL_BEFORE_TRANSFORM:
+    {
+        
+            if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+            {
+                LOG("Segundo diálogo completado. ¡Empieza la transformación!");
+
+                // Al pasar a KNIGHT_TRANSFORM, tu código ya llamará a knight->StartTransform()
+                // lo que sacará al caballero del slide y cargará los sprites de mutación.
+                SetFightState(BossFightState::KNIGHT_TRANSFORM);
+            }
+        
+        break;
+    }
     case BossFightState::KNIGHT_TRANSFORM:
     {
-        if (!knight->IsBusy())
+        if (knight->GetState() != KnightState::TRANSFORM)
         {
             knight->ResetActionFinished();
-
             knight->StartTransform();
-
-            LOG("Knight Transform Started");
+            LOG("Intro: Caballero empieza a transformarse de manera segura.");
         }
 
         if (knight->HasFinishedAction())
         {
+            LOG("Controller: Caballero transformado correctamente. Pasamos a la Princesa.");
             knight->ResetActionFinished();
-
             SetFightState(BossFightState::PRINCESS_TRANSFORM);
         }
-
         break;
     }
-
-    // =========================
-    // PRINCESS TRANSFORM
-    // =========================
-
+    // 4. TRANSFORMACIÓN DE LA PRINCESA Y COMIENZO DE LA PELEA
     case BossFightState::PRINCESS_TRANSFORM:
     {
-        if (!princess->IsBusy())
+        //LOG("%d", princess->IsBusy());
+
+        if (!princessTranformed)
         {
             princess->ResetActionFinished();
-
             princess->StartTransform();
-
-            LOG("Princess Transform Started");
+            LOG("Intro: Princesa empieza a transformarse.");
+            princessTranformed = true;
         }
 
         if (princess->HasFinishedAction())
         {
+            princess->currentAnim->Resets();
             princess->ResetActionFinished();
-
             introFinished = true;
 
-            LOG("INTRO FINISHED");
+            LOG("--- INTRO FINALIZADA: EMPIEZA EL COMBATE REAL (FASE 1) ---");
 
+            currentPhase = 1;
             SetFightState(BossFightState::PHASE_1);
 
+            // El Caballero rompe el hielo y hace el primer turno de la pelea
             StartKnightTurn();
         }
-
         break;
     }
     }
 }
 
 // ===============================
-// PHASE UPDATE
+// PHASE UPDATE (Comprobación de término de acción)
 // ===============================
-
 void BossFightPrincessKnight::UpdatePhase(float dt)
 {
+    // 1. Si estamos esperando el delay entre turnos
     if (waitingNextTurn)
     {
         turnDelayTimer -= dt;
-
         if (turnDelayTimer <= 0.0f)
         {
             waitingNextTurn = false;
 
-            if (currentTurn == BossTurn::KNIGHT)
-            {
-                StartPrincessTurn();
-            }
-            else
-            {
-                StartKnightTurn();
-            }
+            // Alternancia estricta
+            if (currentTurn == BossTurn::KNIGHT) StartPrincessTurn();
+            else StartKnightTurn();
         }
+        return;
     }
 
-    // TODO:
-    // Check phase transitions
+    // 2. Monitorear si el boss actual ha terminado su ataque
+    if (currentTurn == BossTurn::KNIGHT && knight->HasFinishedAction())
+    {
+        knight->ResetActionFinished();
+        knight->ReturnToBase(knightBasePos);
+        EndCurrentTurn(); // Activa el delay seguro antes de pasar al siguiente
+    }
+    else if (currentTurn == BossTurn::PRINCESS && princess->HasFinishedAction())
+    {
+        princess->ResetActionFinished();
+        //princess->ReturnToBase(princessBasePos);
+        EndCurrentTurn();
+    }
 
-    // Example:
-    //
-    // if (princess->GetHealth() <= ...)
-    // {
-    //      NextPhase();
-    // }
+    // TODO: Aquí añadirías la lógica para cambiar de fase cuando la vida baje:
+    // if (vida <= 0 && currentPhase < 3) { NextPhase(); }
+    // else if (vida <= 0 && currentPhase == 3) { SetFightState(BossFightState::DEATH); }
 }
 
 // ===============================
@@ -304,34 +345,50 @@ void BossFightPrincessKnight::UpdateDeath(float dt)
 // ===============================
 // START KNIGHT TURN
 // ===============================
-
 void BossFightPrincessKnight::StartKnightTurn()
 {
     currentTurn = BossTurn::KNIGHT;
+    knight->ResetActionFinished();
 
-    int r = rand() % 2;
-
-    if (r == 0)
-        knight->StartLungeAttack();
-    else
-        knight->StartBounceAttack();
+    // Filtro de ataques por fase
+    if (currentPhase == 1 || currentPhase == 2)
+    {
+        // Fase 1 y 2: Solo Lunge. Pasamos multiplicador de velocidad (Fase 2 es más rápida)
+        float speedMult = (currentPhase == 2) ? 1.5f : 1.0f;
+        knight->StartLungeAttack(speedMult);
+    }
+    else if (currentPhase == 3)
+    {
+        // Fase 3: Todos los ataques aleatorios (Lunge a velocidad normal o Bounce)
+        int r = rand() % 2;
+        if (r == 0) knight->StartLungeAttack(1.0f);
+        else knight->StartBounceAttack();
+    }
 }
 
 // ===============================
 // START PRINCESS TURN
 // ===============================
-
 void BossFightPrincessKnight::StartPrincessTurn()
 {
     currentTurn = BossTurn::PRINCESS;
+    princess->ResetActionFinished();
 
-    int r = rand() % 2;
-
-    if (r == 0)
+    if (currentPhase == 1 || currentPhase == 2)
+    {
+        // Fase 1 y 2: Solo Spike Attack
         princess->StartSpikeAttack();
-    else
-        princess->StartFlowerAttack(20);
+    }
+    else if (currentPhase == 3)
+    {
+        // Fase 3: Todos los ataques aleatorios
+        int r = rand() % 2;
+        if (r == 0) princess->StartSpikeAttack();
+        else princess->StartFlowerAttack(20);
+    }
 }
+
+
 
 // ===============================
 // END CURRENT TURN
@@ -397,17 +454,5 @@ bool BossFightPrincessKnight::IsFightActive() const
         fightState != BossFightState::FINISHED;
 }
 
-void BossFightPrincessKnight::OnBossFinishedAttack(BossTurn who)
-{
-    if (who == BossTurn::KNIGHT)
-    {
-        knight->ReturnToBase(knightBasePos);
-        StartPrincessTurn();
-    }
-    else
-    {
-        princess->ReturnToBase(princessBasePos);
-        StartKnightTurn();
-    }
-}
+
 

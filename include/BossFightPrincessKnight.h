@@ -16,6 +16,7 @@ enum class BossFightState
 
     INTRO,
     KNIGHT_ENTRANCE,
+    KNIGHT_DIAL_BEFORE_TRANSFORM,
     KNIGHT_TRANSFORM,
     PRINCESS_TRANSFORM,
 
@@ -62,7 +63,13 @@ public:
 
     bool IsFightActive() const;
 
-    void OnBossFinishedAttack(BossTurn who);
+
+    // ===============================
+    // REFERENCES
+    // ===============================
+
+    PrincessBoss* princess;
+    KnightBoss* knight;
 
 private:
 
@@ -74,12 +81,8 @@ private:
     void UpdatePhase(float dt);
     void UpdateDeath(float dt);
 
-    // ===============================
-    // REFERENCES
-    // ===============================
 
-    PrincessBoss* princess;
-    KnightBoss* knight;
+    
 
     // ===============================
     // STATES
@@ -120,4 +123,8 @@ private:
 
     Vector2D knightBasePos;
     Vector2D princessBasePos;
+
+    bool introTriggered = false;
+    float knightTargetX = 1800.0f;
+    bool princessTranformed = false;
 };

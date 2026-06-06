@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="26" nextobjectid="388">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="27" nextobjectid="399">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -9,8 +9,18 @@
  <tileset firstgid="814" source="Dungeon Parallax_Torre_Background.tsx"/>
  <tileset firstgid="6864" source="Dungeon Parallax_Torre_Jails1.tsx"/>
  <tileset firstgid="12914" source="Dungeon Parallax_Torre_Jails2.tsx"/>
+ <tileset firstgid="18964" source="torch_animated.tsx"/>
  <group id="24" name="PARALLAX" parallaxx="0.9" parallaxy="0.9">
+  <properties>
+   <property name="Background" type="bool" value="true"/>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <layer id="22" name="Bg Parallax" width="93" height="115" offsetx="-1308" offsety="-1823.27" parallaxx="0.8" parallaxy="0.95">
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+    <property name="Parallax" type="float" value="0.8"/>
+   </properties>
    <data>
     <tile/>
     <tile/>
@@ -10710,6 +10720,10 @@
    </data>
   </layer>
   <layer id="23" name="Bg Jails" width="93" height="115" offsetx="-24" offsety="-648" parallaxx="0.9" parallaxy="0.9">
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
    <data>
     <tile/>
     <tile/>
@@ -21409,6 +21423,10 @@
    </data>
   </layer>
   <layer id="25" name="Bg Jails 2" width="93" height="115" offsetx="0" offsety="-640" parallaxx="0.8" parallaxy="0.9">
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
    <data>
     <tile/>
     <tile/>
@@ -54829,7 +54847,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="374"/>
+   <tile gid="18964"/>
    <tile/>
    <tile/>
    <tile gid="707"/>
@@ -55424,7 +55442,7 @@
    <tile gid="185"/>
    <tile gid="185"/>
    <tile gid="185"/>
-   <tile gid="185"/>
+   <tile gid="18964"/>
    <tile gid="185"/>
    <tile gid="185"/>
    <tile gid="185"/>
@@ -56751,7 +56769,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="18964"/>
    <tile/>
    <tile/>
    <tile/>
@@ -56998,7 +57016,7 @@
    <tile gid="185"/>
    <tile gid="185"/>
    <tile gid="185"/>
-   <tile gid="185"/>
+   <tile gid="18964"/>
    <tile gid="185"/>
    <tile gid="185"/>
    <tile gid="185"/>
@@ -58461,7 +58479,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="18964"/>
    <tile/>
    <tile/>
    <tile/>
@@ -58704,6 +58722,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="18964"/>
    <tile/>
    <tile/>
    <tile/>
@@ -58719,8 +58738,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="18964"/>
    <tile/>
    <tile/>
    <tile/>
@@ -61090,14 +61108,14 @@
    <tile gid="185"/>
    <tile gid="185"/>
    <tile gid="185"/>
+   <tile gid="18964"/>
    <tile gid="185"/>
    <tile gid="185"/>
    <tile gid="185"/>
    <tile gid="185"/>
    <tile gid="185"/>
    <tile gid="185"/>
-   <tile gid="185"/>
-   <tile gid="185"/>
+   <tile gid="18964"/>
    <tile gid="185"/>
    <tile gid="185"/>
    <tile gid="185"/>
@@ -63694,14 +63712,14 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="18964"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="18964"/>
    <tile/>
    <tile/>
    <tile/>
@@ -85807,6 +85825,63 @@
   </object>
   <object id="376" name="Rat" type="Rat" x="10080" y="7136">
    <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="26" name="Particles">
+  <object id="388" type="Fire" x="6025.03" y="13782.7" width="245.939" height="202.546">
+   <properties>
+    <property name="loop" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="389" type="Fire" x="5135.7" y="13784.1" width="245.939" height="202.546">
+   <properties>
+    <property name="loop" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="390" type="Fire" x="5132.03" y="10201.7" width="245.939" height="202.546">
+   <properties>
+    <property name="loop" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="391" type="Fire" x="6027.03" y="10203.7" width="245.939" height="202.546">
+   <properties>
+    <property name="loop" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="392" type="Fire" x="5134.36" y="4573.39" width="245.939" height="202.546">
+   <properties>
+    <property name="loop" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="393" type="Fire" x="6033.03" y="2390.73" width="245.939" height="202.546">
+   <properties>
+    <property name="loop" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="394" type="Fire" x="9231.03" y="4200.73" width="245.939" height="202.546">
+   <properties>
+    <property name="loop" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="395" type="Fire" x="9225.03" y="6882.73" width="245.939" height="202.546">
+   <properties>
+    <property name="loop" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="396" type="Fire" x="11275" y="6882.73" width="245.939" height="202.546">
+   <properties>
+    <property name="loop" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="397" type="Fire" x="1935.03" y="6630.73" width="245.939" height="202.546">
+   <properties>
+    <property name="loop" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="398" type="Fire" x="1291.03" y="1632.73" width="245.939" height="202.546">
+   <properties>
+    <property name="loop" type="bool" value="true"/>
+   </properties>
   </object>
  </objectgroup>
 </map>

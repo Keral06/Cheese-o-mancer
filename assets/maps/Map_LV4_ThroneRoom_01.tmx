@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="89" height="50" tilewidth="128" tileheight="128" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="89" height="50" tilewidth="128" tileheight="128" infinite="0" nextlayerid="11" nextobjectid="16">
  <tileset firstgid="1" source="test2_tileset.tsx"/>
+ <tileset firstgid="4" source="ThroneRoom_1.tsx"/>
+ <tileset firstgid="5" source="ThroneRoom_2.tsx"/>
+ <tileset firstgid="6" source="ThroneRoom_3.tsx"/>
+ <tileset firstgid="7" source="ThroneRoom_4.tsx"/>
+ <tileset firstgid="8" source="ThroneRoom_Foreground.tsx"/>
  <layer id="1" name="Tile Layer 1" width="89" height="50">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -55,4 +60,29 @@
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 </data>
  </layer>
+ <group id="6" name="Arch" offsetx="0" offsety="-5.33333">
+  <objectgroup id="2" name="Arch1" parallaxx="0.9">
+   <object id="2" gid="4" x="640" y="6400" width="9000" height="5000"/>
+  </objectgroup>
+  <objectgroup id="3" name="Arch2" parallaxx="0.925">
+   <object id="3" gid="5" x="768" y="6400" width="9000" height="5000"/>
+  </objectgroup>
+  <objectgroup id="4" name="Arch3" parallaxx="0.975">
+   <object id="4" gid="6" x="1024" y="6400" width="9000" height="5000"/>
+  </objectgroup>
+  <objectgroup id="5" name="Arch4">
+   <object id="5" gid="7" x="1152" y="6400" width="9000" height="5000"/>
+  </objectgroup>
+ </group>
+ <objectgroup id="9" name="Floor">
+  <object id="11" x="16" y="5768" width="11376" height="632"/>
+ </objectgroup>
+ <objectgroup id="10" name="Wall">
+  <object id="12" x="0" y="3840" width="1536" height="896"/>
+  <object id="13" x="1520" y="4696"/>
+  <object id="15" x="9728" y="3840" width="1664" height="896"/>
+ </objectgroup>
+ <objectgroup id="8" name="Foreground column" offsetx="-512" offsety="-4" parallaxx="1.2">
+  <object id="9" gid="8" x="2776" y="6392" width="9000" height="5000"/>
+ </objectgroup>
 </map>
