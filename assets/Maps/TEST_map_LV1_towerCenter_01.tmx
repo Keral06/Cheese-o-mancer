@@ -9,7 +9,7 @@
  <tileset firstgid="814" source="Dungeon Parallax_Torre_Background.tsx"/>
  <tileset firstgid="6864" source="Dungeon Parallax_Torre_Jails1.tsx"/>
  <tileset firstgid="12914" source="Dungeon Parallax_Torre_Jails2.tsx"/>
- <tileset firstgid="18964" source="torch_animated.tsx"/>
+ <tileset firstgid="18964" source="sprite_torch_01.tsx"/>
  <group id="24" name="PARALLAX" parallaxx="0.9" parallaxy="0.9">
   <properties>
    <property name="Background" type="bool" value="true"/>
@@ -54847,7 +54847,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="18964"/>
+   <tile gid="18965"/>
    <tile/>
    <tile/>
    <tile gid="707"/>
@@ -55442,7 +55442,7 @@
    <tile gid="185"/>
    <tile gid="185"/>
    <tile gid="185"/>
-   <tile gid="18964"/>
+   <tile gid="18965"/>
    <tile gid="185"/>
    <tile gid="185"/>
    <tile gid="185"/>
@@ -56769,7 +56769,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="18964"/>
+   <tile gid="18965"/>
    <tile/>
    <tile/>
    <tile/>
@@ -57016,7 +57016,7 @@
    <tile gid="185"/>
    <tile gid="185"/>
    <tile gid="185"/>
-   <tile gid="18964"/>
+   <tile gid="18965"/>
    <tile gid="185"/>
    <tile gid="185"/>
    <tile gid="185"/>
@@ -58479,7 +58479,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="18964"/>
+   <tile gid="18965"/>
    <tile/>
    <tile/>
    <tile/>
@@ -58722,7 +58722,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="18964"/>
+   <tile gid="18965"/>
    <tile/>
    <tile/>
    <tile/>
@@ -58738,7 +58738,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="18964"/>
+   <tile gid="18965"/>
    <tile/>
    <tile/>
    <tile/>
@@ -61108,14 +61108,14 @@
    <tile gid="185"/>
    <tile gid="185"/>
    <tile gid="185"/>
-   <tile gid="18964"/>
+   <tile gid="18965"/>
    <tile gid="185"/>
    <tile gid="185"/>
    <tile gid="185"/>
    <tile gid="185"/>
    <tile gid="185"/>
    <tile gid="185"/>
-   <tile gid="18964"/>
+   <tile gid="18965"/>
    <tile gid="185"/>
    <tile gid="185"/>
    <tile gid="185"/>
@@ -63712,14 +63712,14 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="18964"/>
+   <tile gid="18965"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="18964"/>
+   <tile gid="18965"/>
    <tile/>
    <tile/>
    <tile/>

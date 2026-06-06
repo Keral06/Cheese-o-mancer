@@ -7,7 +7,7 @@
   <image source="tileset_lv1_dungeon_base_04.png" width="3840" height="3537"/>
  </tileset>
  <tileset firstgid="814" source="dungeon_jaulas.tsx"/>
- <tileset firstgid="815" source="torch_animated.tsx"/>
+ <tileset firstgid="815" source="sprite_torch_01.tsx"/>
  <group id="20" name="Parallax" offsetx="-1024" offsety="0">
   <properties>
    <property name="Background" type="bool" value="true"/>
@@ -12511,7 +12511,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="815"/>
+   <tile gid="816"/>
    <tile/>
    <tile/>
    <tile/>
@@ -12563,7 +12563,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="815"/>
+   <tile gid="816"/>
    <tile/>
    <tile/>
    <tile/>

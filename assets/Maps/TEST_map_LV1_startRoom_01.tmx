@@ -116,8 +116,7 @@
    </animation>
   </tile>
  </tileset>
- <tileset firstgid="878" source="../Textures/Spritesheets/Torch/sprite_torch_01.tsx"/>
- <tileset firstgid="880" source="torch_animated.tsx"/>
+ <tileset firstgid="878" source="sprite_torch_01.tsx"/>
  <objectgroup id="13" name="fons" visible="0"/>
  <objectgroup id="24" name="BG Parallax" parallaxx="0.1" parallaxy="0.1">
   <properties>
@@ -34221,7 +34220,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -36034,7 +36033,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -36252,7 +36251,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -36267,7 +36266,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -36280,7 +36279,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -36293,7 +36292,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -36310,7 +36309,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -36332,7 +36331,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -40967,7 +40966,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -40989,7 +40988,7 @@
    <tile gid="52"/>
    <tile gid="53"/>
    <tile gid="144"/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -41001,7 +41000,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -41013,7 +41012,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -41025,7 +41024,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -41037,7 +41036,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -41049,7 +41048,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -41062,7 +41061,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -41076,7 +41075,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -41088,7 +41087,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -41100,7 +41099,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -41114,7 +41113,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -42983,7 +42982,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -43006,7 +43005,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
@@ -43025,7 +43024,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="880"/>
+   <tile gid="879"/>
    <tile/>
    <tile/>
    <tile/>
