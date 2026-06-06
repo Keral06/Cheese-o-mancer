@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="68" height="38" tilewidth="128" tileheight="128" infinite="0" nextlayerid="23" nextobjectid="238">
+<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="68" height="38" tilewidth="128" tileheight="128" infinite="0" nextlayerid="24" nextobjectid="240">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -8,11 +8,16 @@
  </tileset>
  <tileset firstgid="814" source="dungeon_jaulas.tsx"/>
  <tileset firstgid="815" source="sprite_torch_01.tsx"/>
+ <tileset firstgid="817" source="Dungeon Parallax_Background.tsx"/>
  <group id="20" name="Parallax" offsetx="-1024" offsety="0">
   <properties>
    <property name="Background" type="bool" value="true"/>
    <property name="Draw" type="bool" value="true"/>
   </properties>
+  <objectgroup id="23" name="Bg" parallaxx="0.8">
+   <object id="238" gid="817" x="1536" y="4608" width="4440" height="3807"/>
+   <object id="239" gid="817" x="6016" y="4608" width="4440" height="3807"/>
+  </objectgroup>
   <layer id="18" name="Towers" width="68" height="38">
    <properties>
     <property name="Background" type="bool" value="true"/>
@@ -5199,13 +5204,13 @@
     <tile/>
    </data>
   </layer>
-  <objectgroup id="21" name="Jails">
+  <objectgroup id="21" name="Jails" parallaxx="0.6" parallaxy="0.8">
    <properties>
     <property name="Background" type="bool" value="true"/>
     <property name="Draw" type="bool" value="true"/>
     <property name="Parallax" type="float" value="0.3"/>
    </properties>
-   <object id="234" gid="814" x="1587.31" y="2442.36" width="5080.71" height="2716"/>
+   <object id="234" gid="814" x="1280" y="3927.03" width="5080.71" height="2716"/>
   </objectgroup>
  </group>
  <layer id="16" name="Background" width="68" height="38">

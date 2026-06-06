@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="27" nextobjectid="399">
+<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="27" nextobjectid="399">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -10719,7 +10719,7 @@
     <tile/>
    </data>
   </layer>
-  <layer id="23" name="Bg Jails" width="93" height="115" offsetx="-24" offsety="-648" parallaxx="0.9" parallaxy="0.9">
+  <layer id="23" name="Bg Jails" width="93" height="115" offsetx="-1024" offsety="-640" parallaxx="0.9" parallaxy="0.9">
    <properties>
     <property name="Background" type="bool" value="true"/>
     <property name="Draw" type="bool" value="true"/>
@@ -21422,7 +21422,7 @@
     <tile/>
    </data>
   </layer>
-  <layer id="25" name="Bg Jails 2" width="93" height="115" offsetx="0" offsety="-640" parallaxx="0.8" parallaxy="0.9">
+  <layer id="25" name="Bg Jails 2" width="93" height="115" offsetx="-1836" offsety="-688" parallaxx="0.8" parallaxy="0.9">
    <properties>
     <property name="Background" type="bool" value="true"/>
     <property name="Draw" type="bool" value="true"/>
