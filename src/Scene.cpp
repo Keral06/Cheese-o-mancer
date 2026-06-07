@@ -1579,7 +1579,7 @@ void Scene::LoadMap(std::string map)
 	Engine::GetInstance().entityManager->CleanUp();
 
 	if (map == "TEST_map_LV1_startRoom_01.tmx") {
-		Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/level2music.wav");
+		Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/DOWNTIME_ratmosphere.wav");
 	}
 	else if (map == "TEST_map_LV1_tortureRoom_02.tmx") {
 		Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/COMBATdowninthedungeons.wav");
