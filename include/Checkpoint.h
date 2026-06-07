@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "Animation.h"
 #include <SDL3/SDL.h>
+#include <string>
 
 struct SDL_Texture;
 
@@ -25,9 +26,9 @@ public:
 private:
 	SDL_Texture* texture = nullptr;
 	int texW, texH;
-	/*Animation idleAnim;
-	Animation activateAnim;
-	Animation* currentAnim = nullptr;*/
+
+	AnimationSet anims;
+	std::string currentAnimName = "static1";
 
 	PhysBody* pbody = nullptr;
 	int fxId = -1;

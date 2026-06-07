@@ -677,8 +677,10 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 		break;
 	case ColliderType::SAVE:
 	{
-		if (physB->objectName != "Player")
-			Engine::GetInstance().audio->PlayFx(checkpointfx);
+		// EL CHECKPOINT YA GESTIONA SU AUDIO
+		// 
+		// if (physB->objectName != "Player")
+		// 	Engine::GetInstance().audio->PlayFx(checkpointfx); 
 
 		if (pbody && !B2_IS_NULL(pbody->body))
 			respawnPosition = b2Body_GetPosition(pbody->body);
