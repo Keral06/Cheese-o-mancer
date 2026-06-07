@@ -239,6 +239,8 @@ private:
 	std::string tilePosDebug = "[0,0]";
 	SDL_Texture* helpTexture = nullptr;
 	SDL_Texture* map1Texture = nullptr;
+	SDL_Texture* map2Texture = nullptr;
+	SDL_Texture* mapToShow = nullptr;
 	
 	bool showMap = false;
 	SDL_Texture* introTexture = nullptr;

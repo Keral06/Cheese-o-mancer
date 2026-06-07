@@ -903,14 +903,38 @@ void Scene::UpdateLevel(float dt) {
 		}
 	}
 
-	if (inventoryOn && inventario.tieneObjeto("Map")) {
+	if (inventoryOn) {
 		if (Engine::GetInstance().input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
 			Vector2D mousePos = Engine::GetInstance().input->GetMousePosition();
 			int mx = mousePos.getX();
 			int my = mousePos.getY();
-			if (mx >= rectInvMap.x && mx <= rectInvMap.x + rectInvMap.w &&
-				my >= rectInvMap.y && my <= rectInvMap.y + rectInvMap.h) {
-				showMap = !showMap;
+
+			int inicio = currentInvPage * 3;
+			int fin = inicio + 3;
+			if (fin > inventario.objetos.size()) fin = inventario.objetos.size();
+
+			int startX = 700;
+			int startY = 230;
+			int offsetX = 160;
+
+			for (int j = inicio; j < fin; j++) {
+				int posEnPantalla = j - inicio;
+
+				SDL_Rect cajaObjeto = { startX + (posEnPantalla * offsetX), startY, 160, 160 };
+
+				if (mx >= cajaObjeto.x && mx <= cajaObjeto.x + cajaObjeto.w &&
+					my >= cajaObjeto.y && my <= cajaObjeto.y + cajaObjeto.h) {
+
+					if (inventario.objetos[j].imagenDescripcion != nullptr) {
+
+						if (mapToShow == inventario.objetos[j].imagenDescripcion) {
+							mapToShow = nullptr;
+						}
+						else {
+							mapToShow = inventario.objetos[j].imagenDescripcion;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -1245,10 +1269,10 @@ void  Scene::PostUpdateLevel() {
 	
 	
 	}
-	if (showMap && map1Texture != nullptr)
+	if (mapToShow != nullptr)
 	{
 		SDL_FRect centrar = { 0, 0, 1280, 720 };
-		SDL_RenderTexture(Engine::GetInstance().render->renderer, map1Texture, NULL, &centrar);
+		SDL_RenderTexture(Engine::GetInstance().render->renderer, mapToShow, NULL, &centrar);
 	}
 	Engine::GetInstance().uiManager->PostUpdate();
 
@@ -1584,6 +1608,7 @@ void Scene::LoadMap(std::string map)
 	CreateInventoryUI();
 	helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_TutorialControls.png");
 	map1Texture = Engine::GetInstance().textures->Load("assets/UI/Map/UI_Map_Level1.png");
+	map2Texture = Engine::GetInstance().textures->Load("assets/UI/Map/UI_Map_level2_.png");
 	heartTexture = Engine::GetInstance().textures->Load("assets/Textures/PREV/heart4.png");
 	panelTexture = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_01.png");
 	heart1Texture = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_Cheese1_01.png");
@@ -1934,7 +1959,12 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 					el->SetTexture(BeenBought);
 				}
 			}
-			inventario.push("Map", iconMap, nullptr);
+			if (Engine::GetInstance().map->mapFileName.find("LV2") != std::string::npos) {
+				inventario.push("Map Nivel 2", iconMap, map2Texture);
+			}
+			else {
+				inventario.push("Map Nivel 1", iconMap, map1Texture);
+			}
 			for (auto& entity : Engine::GetInstance().entityManager->entities) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
