@@ -178,6 +178,7 @@ private:
 	//Funciones Store
 	void CreateStoreLevel1();
 	void CreateStoreLevel2();
+	void CreateStoreLevel3();
 
 	//Funciones para el inventario
 	void CreateInventoryUI();
@@ -240,6 +241,7 @@ private:
 	SDL_Texture* helpTexture = nullptr;
 	SDL_Texture* map1Texture = nullptr;
 	SDL_Texture* map2Texture = nullptr;
+	SDL_Texture* map3Texture = nullptr;
 	SDL_Texture* mapToShow = nullptr;
 	
 	bool showMap = false;

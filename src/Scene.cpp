@@ -1609,6 +1609,7 @@ void Scene::LoadMap(std::string map)
 	helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_TutorialControls.png");
 	map1Texture = Engine::GetInstance().textures->Load("assets/UI/Map/UI_Map_Level1.png");
 	map2Texture = Engine::GetInstance().textures->Load("assets/UI/Map/UI_Map_level2_.png");
+	map3Texture = Engine::GetInstance().textures->Load("assets/UI/Map/UI_Map_level3_.png");
 	heartTexture = Engine::GetInstance().textures->Load("assets/Textures/PREV/heart4.png");
 	panelTexture = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_01.png");
 	heart1Texture = Engine::GetInstance().textures->Load("assets/UI/LifeBar/UI_LifeBar_Cheese1_01.png");
@@ -1877,6 +1878,71 @@ void Scene::CreateStoreLevel2() {
 	storePaperDamage = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Damage_.png");
 }
 
+void Scene::CreateStoreLevel3() {
+
+	int x = 200;
+	int y = 120;
+
+	// MAP
+	SDL_Texture* MapNormal;
+	SDL_Texture* MapClicked;
+	MapClicked = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemMap1_01.png");
+	MapNormal = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemMap2_01.png");
+	auto btnMAP = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 35, "MAP", { 350, y, 170, 170 }, this, SDL_Rect{ 0,0,0,0 }, MapNormal, MapClicked);
+	btnMAP->visible = false;
+
+	// KEY
+	SDL_Texture* KeyNormal;
+	SDL_Texture* KeyClicked;
+	KeyNormal = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemKey2_01.png");
+	KeyClicked = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemKey1_01.png");
+	auto btnKEY = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 36, "KEY", { x, y + 150, 170, 170 }, this, SDL_Rect{ 0,0,0,0 }, KeyNormal, KeyClicked);
+	btnKEY->visible = false;
+
+	// LIFE
+	SDL_Texture* LifeNormal;
+	SDL_Texture* LifeClicked;
+	LifeNormal = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemLife2_01.png");
+	LifeClicked = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemLife1_01.png");
+	auto btnLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 37, "TEMPORARY LIFE", { 350, y + 250, 170, 170 }, this, SDL_Rect{ 0,0,0,0 }, LifeNormal, LifeClicked);
+	btnLIFE->visible = false;
+
+	// PERMANENT LIFE
+	SDL_Texture* PermLife;
+	SDL_Texture* PermLifeClicked;
+	PermLife = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemPermanentLife1_.png");
+	PermLifeClicked = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemPermanentLife2_.png");
+	auto btnPERMLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 50, "PERMANENT LIFE", { 450, y + 150, 170, 170 }, this, SDL_Rect{ 0,0,0,0 }, PermLife, PermLifeClicked);
+	btnPERMLIFE->visible = false;
+
+	// BUYMAP
+	SDL_Texture* BuyNormal;
+	SDL_Texture* BuyClicked;
+	BuyNormal = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ButtonBuy1_01.png");
+	BuyClicked = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ButtonBuy2_01.png");
+	auto btnBUYMAP = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 39, "BUYMAP", { 750, y + 280, 300, 150 }, this, SDL_Rect{ 0,0,0,0 }, BuyNormal, BuyClicked);
+	btnBUYMAP->visible = false;
+
+	// BUYKEY
+	auto btnBUYKEY = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 40, "BUYKEY", { 750, y + 280, 300, 150 }, this, SDL_Rect{ 0,0,0,0 }, BuyNormal, BuyClicked);
+	btnBUYKEY->visible = false;
+
+	// BUYLIFE
+	auto btnBUYLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 41, "BUYLIFE", { 750, y + 280, 300, 150 }, this, SDL_Rect{ 0,0,0,0 }, BuyNormal, BuyClicked);
+	btnBUYLIFE->visible = false;
+
+	// BUY PERMANENT LIFE
+	auto btnBUYPERMLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 51, "BUYPERMLIFE", { 750, y + 280, 300, 150 }, this, SDL_Rect{ 0,0,0,0 }, BuyNormal, BuyClicked);
+	btnBUYPERMLIFE->visible = false;
+
+	
+	storeBag = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Bag_02.png");
+	storePaperMap = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Map.png");
+	storePaperLife = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Life.png");
+	storePaperKey = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Key.png");
+	storePaperPermLife = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_PermanentLife_.png");
+}
+
 void Scene::SetStore(bool store, int storeID) {
 	storeOn = store;
 	if (storeOn) {
@@ -1890,6 +1956,13 @@ void Scene::SetStore(bool store, int storeID) {
 		else if (storeID == 2) {
 			for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
 				if (element->id == 35 || element->id == 36 || element->id == 37 || element->id == 43) {
+					element->visible = storeOn;
+				}
+			}
+		}
+		else if (storeID == 3) {
+			for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
+				if (element->id == 35 || element->id == 36 || element->id == 37 || element->id == 50) {
 					element->visible = storeOn;
 				}
 			}
@@ -1959,7 +2032,10 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 					el->SetTexture(BeenBought);
 				}
 			}
-			if (Engine::GetInstance().map->mapFileName.find("LV2") != std::string::npos) {
+			if (Engine::GetInstance().map->mapFileName.find("LV3") != std::string::npos) {
+				inventario.push("Map Nivel 3", iconMap, map3Texture);
+			}
+			else if (Engine::GetInstance().map->mapFileName.find("LV2") != std::string::npos) {
 				inventario.push("Map Nivel 2", iconMap, map2Texture);
 			}
 			else {

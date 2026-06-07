@@ -64,6 +64,22 @@ bool HANDMAN::Start() {
         Dialogue yesbought("assets/Dialogues/Hanged_Man_LVL2/HangedMan_LeavingBuying_Dialogues.txt", "assets/Dialogues/Hanged_Man_LVL2/HangedMan_LeavingBuying_Names.txt");
         this->hasBought = yesbought; //dialogo salir habiendo comprado
     }
+    else if (storeID == 3) {
+        Dialogue firstStime("assets/Dialogues/Hanged_Man_LVL3/HangedMan_FirstInteraction_Dialogues.txt", "assets/Dialogues/Hanged_Man_LVL3/HangedMan_FirstInteraction_Names.txt");
+        this->dialogue = firstStime; //dialogo al descubrirlo por primera vez en el nivel 2
+        Dialogue dialogueHandman("assets/Dialogues/Hanged_Man_LVL3/HangedMan_SalesBeforeBoss_Dialogues.txt", "assets/Dialogues/Hanged_Man_LVL3/HangedMan_SalesBeforeBoss_Names.txt");
+        dialogueHANDMAN = dialogueHandman; //dialogo antes de beat el boss2
+        Dialogue hasbeensold("assets/Dialogues/Hanged_Man_LVL2/Hanged_Man_Dialogues_Buying.txt", "assets/Dialogues/Hanged_Man_LVL2/Hanged_Man_Names_Buying.txt");
+        this->hasBeenSold = hasbeensold; //dialogo has comprado algo
+        Dialogue hasNoMoney("assets/Dialogues/Hanged_Man_LVL3/HangedMan_NoMoney_Dialogues.txt", "assets/Dialogues/Hanged_Man_LVL3/HangedMan_NoMoney_Names.txt");
+        this->hasNoMoney = hasNoMoney; //dialogo no tiene dinero
+        Dialogue hasBeatBoss("assets/Dialogues/Hanged_Man_LVL3/HangedMan_SalesAfterBoss_Dialogues.txt", "assets/Dialogues/Hanged_Man_LVL3/HangedMan_SalesAfterBoss_Names.txt");
+        this->BeatBoss = hasBeatBoss; //dialogo has beat al boss
+        Dialogue notbought("assets/Dialogues/Hanged_Man_LVL3/HangedMan_LeavingNoBuying_Dialogues.txt", "assets/Dialogues/Hanged_Man_LVL3/HangedMan_LeavingNoBuying_Names.txt");
+        this->hasNotBought = notbought; //dialogo salir sin haber comprado
+        Dialogue yesbought("assets/Dialogues/Hanged_Man_LVL3/HangedMan_LeavingBuying_Dialogues.txt", "assets/Dialogues/Hanged_Man_LVL3/HangedMan_LeavingBuying_Names.txt");
+        this->hasBought = yesbought; //dialogo salir habiendo comprado
+    }
 
     std::unordered_map<int, std::string> aliases = {
            {70, "selling"}
@@ -117,6 +133,9 @@ bool HANDMAN::Update(float dt)
             bossDefeated = Engine::GetInstance().scene->beatBoss;
         }
         else if (storeID == 2) {
+            bossDefeated = Engine::GetInstance().scene->beatPrincess;
+        }
+        else if (storeID == 3) {
             bossDefeated = Engine::GetInstance().scene->beatPrincess;
         }
         if (isWaitingForAnimation) {
