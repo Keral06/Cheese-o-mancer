@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="22" nextobjectid="280">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="22" nextobjectid="280">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -15375,8 +15375,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="10"/>
-   <tile gid="11"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -15461,8 +15461,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="40"/>
-   <tile gid="41"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -15547,8 +15547,8 @@
    <tile/>
    <tile gid="72"/>
    <tile gid="73"/>
-   <tile gid="70"/>
-   <tile gid="71"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile gid="72"/>
@@ -15633,8 +15633,8 @@
    <tile/>
    <tile gid="102"/>
    <tile gid="103"/>
-   <tile gid="100"/>
-   <tile gid="101"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile gid="102"/>
@@ -16033,8 +16033,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="8"/>
-   <tile gid="9"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -16119,8 +16119,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="38"/>
-   <tile gid="39"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -16205,8 +16205,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="68"/>
-   <tile gid="69"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -16291,8 +16291,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="98"/>
-   <tile gid="99"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -22403,7 +22403,7 @@
   </data>
  </layer>
  <objectgroup id="17" name="Items">
-  <object id="258" name="Live" type="Live" x="768" y="5120" width="256" height="384"/>
+  <object id="258" name="Live" type="Live" x="768" y="5248" width="256" height="384"/>
  </objectgroup>
  <objectgroup id="18" name="Checkpoint">
   <object id="259" name="Flag" type="Flag" x="644" y="4040">
@@ -22464,7 +22464,7 @@
   <object id="190" x="3072" y="128" width="1920" height="128"/>
   <object id="191" x="2944" y="256" width="128" height="128"/>
   <object id="192" x="2816" y="384" width="128" height="1024"/>
-  <object id="193" x="3072" y="1408" width="128" height="1024"/>
+  <object id="193" x="3072" y="1536" width="128" height="896"/>
   <object id="195" x="6144" y="2688" width="128" height="640"/>
   <object id="196" x="6016" y="2560" width="128" height="128"/>
   <object id="197" x="5888" y="2432" width="128" height="128"/>
@@ -22512,6 +22512,9 @@
   </object>
  </objectgroup>
  <layer id="21" name="Foreground" width="86" height="52" parallaxx="1.2">
+  <properties>
+   <property name="Draw" type="bool" value="false"/>
+  </properties>
   <data>
    <tile/>
    <tile/>

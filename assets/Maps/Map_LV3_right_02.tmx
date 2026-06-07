@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="84" height="110" tilewidth="128" tileheight="128" infinite="0" nextlayerid="23" nextobjectid="415">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="84" height="110" tilewidth="128" tileheight="128" infinite="0" nextlayerid="23" nextobjectid="415">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -46263,7 +46263,7 @@
   <object id="377" x="7552" y="4096" width="1536" height="128"/>
  </objectgroup>
  <objectgroup id="19" name="spikes"/>
- <objectgroup id="9" name="Walls">
+ <objectgroup id="9" name="Walls" visible="0">
   <object id="378" x="8832" y="2432" width="1280" height="128"/>
   <object id="379" x="8832" y="0" width="128" height="2432"/>
   <object id="380" x="7680" y="0" width="128" height="640"/>

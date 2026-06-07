@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="27" nextobjectid="399">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="27" nextobjectid="400">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -78277,8 +78277,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="10"/>
-   <tile gid="11"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -78370,8 +78370,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="40"/>
-   <tile gid="41"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -78463,8 +78463,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="70"/>
-   <tile gid="71"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -78556,8 +78556,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="100"/>
-   <tile gid="101"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -85683,14 +85683,14 @@
   <object id="379" x="12740" y="6696" width="16" height="8"/>
  </objectgroup>
  <objectgroup id="21" name="Items">
-  <object id="387" name="Live" type="Live" x="4400" y="10468" width="256" height="384"/>
+  <object id="387" name="Live" type="Live" x="4391.33" y="10683.3" width="256" height="384"/>
  </objectgroup>
  <objectgroup id="19" name="WeakWalls">
   <object id="382" x="8832" y="6528" width="128" height="1024"/>
   <object id="383" x="2432" y="6272" width="128" height="1024"/>
  </objectgroup>
  <objectgroup id="18" name="Checkpoint">
-  <object id="363" name="Flag" type="Flag" x="10757.6" y="4684.85">
+  <object id="363" name="Flag" type="Flag" x="10804" y="4716">
    <point/>
   </object>
  </objectgroup>
@@ -85804,7 +85804,10 @@
   <object id="381" x="7312" y="1920" width="489" height="128"/>
  </objectgroup>
  <objectgroup id="8" name="Entities">
-  <object id="322" name="Player" type="Player" x="1020.61" y="14355.9">
+  <object id="322" name="Player" type="Player" x="8600.61" y="4515.9">
+   <point/>
+  </object>
+  <object id="399" name="Player" type="Player" x="944.61" y="14355.9">
    <point/>
   </object>
   <object id="362" name="CowWeb" type="CowWeb" x="1667.52" y="4401.45">

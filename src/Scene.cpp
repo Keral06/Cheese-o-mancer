@@ -49,7 +49,7 @@ bool Scene::Start()
 {
 	srand(time(NULL));
 	LoadScene(currentScene);
-	LoadVideo(&video, "assets/Screens/animatica-provisional.mpg");
+	LoadVideo(&video, "assets/Screens/endAnimatic_TEST2.mpg");
 
 	bossFightController = new BossFightPrincessKnight();
 	bossFightController->Start();
@@ -143,7 +143,7 @@ bool Scene::Update(float dt)
 		UpdateFinalWin(dt);
 		break;
 	case SceneID::CUTSCENE:
-		PlayVideo("assets/Screens/animatica-provisional.mpg");
+		PlayVideo("assets/Screens/endAnimatic_TEST2.mpg");
 		break;
 	}
 	if (isPaused) {
