@@ -110,6 +110,11 @@ public:
 	bool isCollidedWall = false;
 	bool isCollidedFloor = false;
 	int floorContacts = 0;
+
+	// Temporizador para las partículas de los pies
+	float stepParticleTimer = 0.0f;
+	float stepParticleCooldown = 0.25f; // Spawnea una partícula cada 0.25 segundos al andar
+
 	bool facingLeft = false;
 	std::vector<std::shared_ptr<FireBall>> fireballs;
 	

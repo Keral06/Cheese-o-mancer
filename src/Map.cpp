@@ -119,11 +119,19 @@ bool Map::Update(float dt)
         }
     }
 
-    // DRAW PARTÍCULAS
-    for (auto p : mapParticles) {
-        p->draw(); // El draw de este sistema ya llama internamente al update de la partícula
-    }
+    // DRAW Y LIMPIEZA DE PARTÍCULAS
+    for (auto it = mapParticles.begin(); it != mapParticles.end(); ) {
+        (*it)->draw();
 
+        // Si el emisor ya acabó su duración y no le quedan partículas vivas, lo borramos
+        if (!(*it)->isActive() && (*it)->getParticleCount() == 0) {
+            delete* it;
+            it = mapParticles.erase(it);
+        }
+        else {
+            ++it;
+        }
+    }
     return ret;
 }
 
@@ -1354,4 +1362,40 @@ void Map::ParseObjectGroupsRecursive(pugi::xml_node parentNode)
         }
     
     }
+}
+
+
+int Map::GetTileFromLayer(std::string layerName, int worldX, int worldY)
+{
+    if (!mapLoaded) return 0;
+
+    // Convertimos la posición del mundo a casillas de Tiled (i, j)
+    Vector2D tileCoords = WorldToMap(worldX, worldY);
+    int i = (int)tileCoords.getX();
+    int j = (int)tileCoords.getY();
+
+    // Seguridad por si miramos fuera del mapa
+    if (i < 0 || i >= mapData.width || j < 0 || j >= mapData.height) return 0;
+
+    // Buscamos la capa
+    for (const auto& layer : mapData.layers) {
+        if (layer->name == layerName) {
+            // Devolvemos el GID limpio
+            return layer->Get(i, j) & 0x1FFFFFFF;
+        }
+    }
+    return 0; // Si no encuentra la capa o está vacío
+}
+
+void Map::SpawnParticle(ParticleExample::PatticleStyle style, int x, int y, float duration)
+{
+    ParticleExample* p = new ParticleExample();
+    p->setRenderer(Engine::GetInstance().render->renderer);
+    p->setPosition(x, y);
+    p->setStyle(style);
+
+    // Le decimos que solo viva X segundos
+    p->setDuration(duration);
+
+    mapParticles.push_back(p);
 }

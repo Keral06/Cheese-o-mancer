@@ -221,6 +221,9 @@ public:
     int GetTileHeight() {
     return mapData.tileHeight;
 }
+    int GetTileFromLayer(std::string layerName, int worldX, int worldY);
+    void SpawnParticle(ParticleExample::PatticleStyle style, int x, int y, float duration);
+
     //L15 TODO 2: Define a method to load entities from the map XML
     void LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_ptr<Enemy>>& enemies);
     std::vector<std::shared_ptr<Checkpoint>> checkpoints;

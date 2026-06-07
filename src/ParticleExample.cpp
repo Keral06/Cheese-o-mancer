@@ -22,7 +22,7 @@ void ParticleExample::setStyle(PatticleStyle style)
 
     case ParticleExample::FIRE:
     {
-        initWithTotalParticles(10);
+        initWithTotalParticles(5);
 
         // duration
         _duration = DURATION_INFINITY;
@@ -84,7 +84,8 @@ void ParticleExample::setStyle(PatticleStyle style)
         if (_texture == nullptr || _texture == getDefaultTexture()) {
             _texture = Engine::GetInstance().textures->Load("assets/Textures/Particles/Moho/Moho_Particle_2.png");
         }
-        initWithTotalParticles(100); // Menos partículas que el fuego, no queremos saturar
+
+        initWithTotalParticles(20); 
 
         _duration = DURATION_INFINITY;
         this->_emitterMode = Mode::GRAVITY;
@@ -100,8 +101,8 @@ void ParticleExample::setStyle(PatticleStyle style)
         _life = 2.0f; // Que duren poco
         _lifeVar = 0.5f;
 
-        _startSize = 5.0f; // Esporas pequeñitas
-        _startSizeVar = 2.0f;
+        _startSize = 25.0f; // Esporas pequeñitas
+        _startSizeVar = 22.0f;
         _endSize = START_SIZE_EQUAL_TO_END_SIZE;
 
         _emissionRate = _totalParticles / _life;
@@ -112,6 +113,9 @@ void ParticleExample::setStyle(PatticleStyle style)
         _endColor = { 0.1f, 0.5f, 0.1f, 0.0f }; // Se desvanecen
 
         _posVar = { 10.0f, 30.0f }; // Dispersión a lo largo del muro
+
+        SDL_SetTextureBlendMode(_texture, SDL_BLENDMODE_ADD);
+
         break;
     }
 

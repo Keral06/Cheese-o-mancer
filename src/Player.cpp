@@ -163,9 +163,49 @@ bool Player::Update(float dt)
 				Move();
 				Jump();
 
+				// --- INICIO LÓGICA PARTÍCULAS ---
+				// 1. LÓGICA SUELO: Solo si anda por el suelo y no está enganchado a la pared
+				if (isWalking && isCollidedFloor && !isWallWalking) {
+					stepParticleTimer += dt;
+
+					if (stepParticleTimer >= stepParticleCooldown) {
+						stepParticleTimer = 0.0f;
+
+						int lookX = (int)position.getX() + (facingLeft ? 25 : -25);
+						int lookY = (int)position.getY() + (texH / 2);
+
+						int tileID = Engine::GetInstance().map->GetTileFromLayer("MetadataSuelos", lookX, lookY);
+						int idMoho = 1;
+
+						if (tileID == idMoho) {
+							int spawnY = lookY - 20;
+							Engine::GetInstance().map->SpawnParticle(ParticleExample::MOHO, lookX, spawnY, 0.15f);
+						}
+					}
+				}
+				// 2. LÓGICA PARED: Solo si está enganchado (isWallWalking) y moviéndose (velocidad distinta a 0)
+				else if (isWallWalking && (velocity.x != 0.0f || velocity.y != 0.0f)) {
+					stepParticleTimer += dt;
+
+					if (stepParticleTimer >= stepParticleCooldown) {
+						stepParticleTimer = 0.0f;
+
+						// Para la pared, generamos la partícula en el centro del cuerpo (position.getY())
+						// y un poco hacia atrás (espalda) para que el rastro quede pegado al muro
+						int spawnX = (int)position.getX() + (facingLeft ? 25 : -25); //Si pegar mas a la pared, aumenta el 25 de (facingLeft ? 25 : -25) a 40 o 50 para empujarlas hacia afuera del sprite
+						int spawnY = (int)position.getY();
+
+						// Duración rápida para hacer el efecto de "puff" al trepar
+						Engine::GetInstance().map->SpawnParticle(ParticleExample::MOHO, spawnX, spawnY, 0.15f);
+					}
+				}
+				// 3. SI SE PARA: Reseteamos el temporizador
+				else {
+					stepParticleTimer = stepParticleCooldown;
+				}
+				// ------
 			}
 			else {
-
 				currentAnimSet->SetCurrent("idle");
 			}
 		}
