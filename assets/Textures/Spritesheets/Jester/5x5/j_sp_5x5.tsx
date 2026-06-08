@@ -4,7 +4,7 @@
  <tile id="0">
   <properties>
    <property name="loop" type="bool" value="false"/>
-   <property name="name" value="ballroll"/>
+   <property name="name" value="ballkick"/>
   </properties>
   <animation>
    <frame tileid="0" duration="100"/>

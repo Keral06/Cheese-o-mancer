@@ -58,7 +58,7 @@ bool Player::Start() {
 	std::unordered_map<int, std::string> aliases3x3 = { {0,"idle"},{17,"idleOnCheese"} };
 	std::unordered_map<int, std::string> aliases3x4 = { {0,"attack2"},{6,"attack3"},{16,"attack1"} };
 	std::unordered_map<int, std::string> aliases4x4 = { {0,"ballroll"} };
-	std::unordered_map<int, std::string> aliases5x5 = { {0,"ballattack"} };
+	std::unordered_map<int, std::string> aliases5x5 = { {0,"ballkick"} };
 	float limitUp = Engine::GetInstance().render->camera.h / 4;
 	Engine::GetInstance().render->camera.y = limitUp;
 
@@ -215,6 +215,7 @@ bool Player::Update(float dt)
 		}
 		Attack();
 		HandleAttack();
+		CheckKickFrame();
 		SpawnCheeseBall();
 		if (state == ONCHEESE && currentAnimSet->HasFinished())
 		{
@@ -879,6 +880,7 @@ void Player::ThrowFireBall(Side side) {
 
 void Player::ChangeCurrentAnimation() {
 
+	if (isKicking) return;
 	if (state == ATTACKING) return;
 	if (state == lastState) return;
 
@@ -1139,7 +1141,7 @@ void Player::HandleMountedMovement()
 	movingBall = false;
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		if (!facingLeft) {
-			cheeseSpeed = 10.0f;
+			cheeseSpeed = 13.0f;
 			cheeseTime = 300.0f;
 		}
 		if (cheeseTime < 200.0f && cheeseTime >= 100.0f) {
@@ -1226,38 +1228,17 @@ void Player::HandleMountedMovement()
 
 void Player::DismountAndLaunch()
 {
-	if (!isMounted || !mountedBall) return;
+	if (!isMounted || !mountedBall || isKicking) return;
 
-	mountedBall->canSmash = false;
-	mountedBall->StartLifespan();
-	// Reactivar player
-	//pbody->body->SetEnabled(true);
+	isKicking = true;
 
-	// Posicionar player ligeramente arriba
-	int x, y;
-	mountedBall->pbody->GetPosition(x, y);
-	SetPosition(Vector2D(x, y - mountedBall->radius - texH));
+	// Cambiamos a la animación de chute
+	currentAnimSet = &anims5x5;
+	texture = texture5x5;
+	currentAnimSet->SetCurrent("ballkick"); // Asegúrate de tener este alias en tus anims
+	currentAnimSet->Resets();
 
-	// Lanzar bola en parábola
-	float forceX = facingLeft ? -2000.0f : 2000.0f;
-	float forceY = -6.0f;
-
-	Engine::GetInstance().physics->ApplyLinearImpulseToCenter(
-		mountedBall->pbody,
-		forceX,
-		forceY,
-		true
-	);
-
-	// romper vínculo
-	mountedBall->ismounted = false;
-	mountedBall = nullptr;
-	isMounted = false;
-	cheeseSpeed = 10.0f;
-	state = DEFAULT;
-
-	ResetCheeseState();
-
+	
 }
 
 void Player::DismountVerticalJump()
@@ -1333,5 +1314,62 @@ void Player::ResetCheeseState()
 	doVerticalJump = false;
 	if (mountedBall) {
 		mountedBall->firstjump = false;
+	}
+}
+
+void Player::CheckKickFrame()
+{
+	if (!isKicking) return;
+
+	// Comprobamos si hemos llegado al frame 5
+	if (currentAnimSet->GetCurrentFrameIndex() == 2 && !mountedBall == NULL)
+	{
+		
+		// --- 1. INICIO DEL CHUTE (Frame 0) ---
+		if (currentAnimSet->GetCurrentFrameIndex() == 0)
+		{
+			b2Body_SetAwake(pbody->body, true);
+			// Cambiamos la escala de gravedad a 0 para que flote
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+
+			// Eliminamos velocidad vertical para que no siga subiendo/cayendo
+			b2Vec2 vel = b2Body_GetLinearVelocity(pbody->body);
+			vel.y = 0.0f;
+			b2Body_SetLinearVelocity(pbody->body, vel);
+		}
+
+		// --- LÓGICA DE LANZAMIENTO ORIGINAL ---
+		mountedBall->canSmash = false;
+		mountedBall->StartLifespan();
+
+		int x, y;
+		mountedBall->pbody->GetPosition(x, y);
+		SetPosition(Vector2D(x, y - mountedBall->radius - texH));
+
+		float forceX = facingLeft ? -2000.0f : 2000.0f;
+		float forceY = -6.0f;
+
+		Engine::GetInstance().physics->ApplyLinearImpulseToCenter(mountedBall->pbody, forceX, forceY, true);
+
+		mountedBall->ismounted = false;
+		mountedBall = nullptr;
+		isMounted = false;
+		state = DEFAULT;
+		ResetCheeseState();
+
+		LOG("Bola chutada en el frame 5");
+	}
+
+	if (currentAnimSet->HasFinished()) {
+		isKicking = false;
+
+		// RESTAURAR GRAVEDAD: 2.25f es el valor que usas en Player::Start()
+		b2Body_SetGravityScale(pbody->body, 2.25f);
+
+		// Limpieza de punteros
+		mountedBall = nullptr;
+		isMounted = false;
+		state = DEFAULT;
+		ResetCheeseState();
 	}
 }

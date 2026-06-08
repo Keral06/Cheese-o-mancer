@@ -63,6 +63,7 @@ public:
 
 	void ResetCheeseState();
 	void ResetEnemiesHitStatus();
+	void CheckKickFrame();
 private:
 
 	void GetPhysicsValues();
@@ -155,6 +156,7 @@ public:
 	int currentAttackId = 0;
 
 	bool pendingCheeseSpawn = false;
+	bool isKicking = false;
 
 private: 
 	b2Vec2 velocity;
