@@ -47,7 +47,8 @@ enum class ColliderType {
 	CHEESEBALLINTERACT,
     WEAKWALL,
     NPC,
-    MOHOWALL
+    MOHOWALL,
+    ARENA_TRIGGER
     // ..
 };
 

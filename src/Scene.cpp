@@ -22,6 +22,7 @@
 #include "ParticleSystem.h"
 #include "ParticleExample.h"
 #include "BossFightPrincessKnight.h"
+#include "Rat.h"
 
 Scene::Scene() : Module()
 {
@@ -2674,4 +2675,38 @@ void Scene::StopVideo() {
 	video.plm = nullptr;
 	video.texture = nullptr;
 	video.buffer = nullptr;
+}
+
+void Scene::StartMiniBoss() {
+	LOG("¡El jugador ha pisado el Trigger! Iniciando MiniBoss...");
+	for (auto& entity : Engine::GetInstance().entityManager->entities) {
+		if (entity->name == "Rat") {
+			Rat* rat = static_cast<Rat*>(entity.get());
+			if (rat->isArenaRat) {
+				rat->hasEntered = true;
+			}
+		}
+	}
+}
+
+void Scene::CheckMiniBossStatus() {
+	if (miniBossFinished) return;
+
+	int ratasVivas = 0;
+	for (auto& entity : Engine::GetInstance().entityManager->entities) {
+		if (entity->name == "Rat") {
+			Rat* rat = static_cast<Rat*>(entity.get());
+			if (rat->isArenaRat && !rat->isDefeated) {
+				ratasVivas++;
+			}
+		}
+	}
+
+	if (ratasVivas == 0) {
+		miniBossFinished = true;
+		LOG("¡Oleada superada! Destruyendo el muro...");
+
+		// El mapa busca el muro de la capa Walls por su nombre de Tiled y lo elimina
+		Engine::GetInstance().map->DestroyBodyByName("WallBeforeWheel");
+	}
 }

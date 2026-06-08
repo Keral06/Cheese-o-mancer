@@ -364,6 +364,11 @@ public:
 	bool DefeatedHighPrietest = false;
 	bool hasBeenWhistledblowed = false;
 
+	// MiniBoss
+	void StartMiniBoss();
+	void CheckMiniBossStatus();
+	bool miniBossFinished = false;
+
 	//Well's echo bools
 
 	bool hasTalkedWell = false;
