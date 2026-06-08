@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="23" nextobjectid="280">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="23" nextobjectid="285">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -22485,6 +22485,12 @@
   <object id="223" x="10624" y="4864" width="384" height="128"/>
   <object id="224" x="10968" y="4992" width="40" height="1280"/>
   <object id="256" x="5248" y="512" width="5760" height="128"/>
+  <object id="280" x="2304" y="2430" width="128" height="900">
+   <properties>
+    <property name="MiniBossFinished" type="bool" value="false"/>
+    <property name="name" value="WallBeforeWheel"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="8" name="Entities">
   <object id="97" name="Player" type="Player" x="9888.64" y="1523.58">
@@ -22510,6 +22516,33 @@
   </object>
   <object id="279" name="Rat" type="Rat" x="8096" y="6176">
    <point/>
+  </object>
+  <object id="281" name="Rat" type="Rat" x="3137.94" y="3139.64">
+   <properties>
+    <property name="hasEntered" type="bool" value="false"/>
+    <property name="isDefeated" type="bool" value="false"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="282" name="Rat" type="Rat" x="5809.09" y="3093.94">
+   <properties>
+    <property name="hasEntered" type="bool" value="false"/>
+    <property name="isDefeated" type="bool" value="false"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="283" name="Rat" type="Rat" x="5296" y="3100">
+   <properties>
+    <property name="hasEntered" type="bool" value="false"/>
+    <property name="isDefeated" type="bool" value="false"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="284" x="3130.3" y="1796.97" width="2039.39" height="127.273">
+   <properties>
+    <property name="hasEntered" type="bool" value="false"/>
+    <property name="name" value="miniBoss"/>
+   </properties>
   </object>
  </objectgroup>
  <layer id="21" name="Foreground" width="86" height="52" parallaxx="1.2">
