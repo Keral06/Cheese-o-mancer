@@ -638,7 +638,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 			isCollidedFloor = true;
 
 			if (isMounted) {
-				DismountAndLaunch();
+				//DismountAndLaunch();
 			}
 		}
 	
@@ -1070,37 +1070,42 @@ void Player::UpdateAttackHitbox()
 
 void Player::SpawnCheeseBall()
 {
+	// 1. Al pulsar C, solo activamos la espera
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_C) == KEY_DOWN && !isMounted && Engine::GetInstance().scene->cheese == true)
 	{
-		ResetCheeseState();
+		pendingCheeseSpawn = true;
+		state = ONCHEESE; // Cambiamos estado para que ChangeCurrentAnimation ponga la de saltar al queso
+	}
+
+	// 2. Si estamos esperando a que la animación termine
+	if (pendingCheeseSpawn && currentAnimSet->GetCurrentFrameIndex() == 3)
+	{
+		pendingCheeseSpawn = false; // Reseteamos el flag
+
+		// --- AQUÍ VA TU LÓGICA DE CREACIÓN ---
 		auto entity = Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEESEBALL);
 		auto cb = std::dynamic_pointer_cast<CheeseBall>(entity);
 
-		if (!cb)
+		if (cb)
 		{
-			LOG("Error: CheeseBall cast failed");
-			return;
+			cb->ismounted = true;
+			int px, py;
+			pbody->GetPosition(px, py);
+
+			Vector2D spawnPos(px, py + texH / 2 + cb->radius - 200);
+			cb->SetPosition(spawnPos);
+			cb->Start();
+
+			int bx, by;
+			cb->pbody->GetPosition(bx, by);
+			SetPosition(Vector2D(bx, by - cb->radius - texH / 2));
+			cb->SetVelocityy({velocity.x, velocity.y});
+			mountedBall = cb;
+			isMounted = true;
+			mountedBall->firstjump = true;
+			cheeseTime = 300.0f;
+			//Engine::GetInstance().physics->SetLinearVelocity(pbody, { 0,0 });
 		}
-		cb->ismounted = true;
-		int px, py;
-		pbody->GetPosition(px, py);
-
-		Vector2D spawnPos(px, py + texH / 2 + cb->radius - 200);
-		cb->SetPosition(spawnPos);
-		cb->Start();
-
-
-		int bx, by;
-		cb->pbody->GetPosition(bx, by);
-		SetPosition(Vector2D(bx, by - cb->radius - texH / 2));
-
-		mountedBall = cb;
-		isMounted = true;
-		mountedBall->firstjump = true;
-		state = ONCHEESE;
-		cheeseTime = 300.0f;
-		Engine::GetInstance().physics->SetLinearVelocity(pbody, { 0,0 });
-
 	}
 }
 
@@ -1224,6 +1229,7 @@ void Player::DismountAndLaunch()
 	if (!isMounted || !mountedBall) return;
 
 	mountedBall->canSmash = false;
+	mountedBall->StartLifespan();
 	// Reactivar player
 	//pbody->body->SetEnabled(true);
 

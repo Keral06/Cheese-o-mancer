@@ -154,6 +154,8 @@ public:
 	bool hasDamagePlus = false;
 	int currentAttackId = 0;
 
+	bool pendingCheeseSpawn = false;
+
 private: 
 	b2Vec2 velocity;
 	AnimationSet anims2x3;
