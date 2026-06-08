@@ -1174,7 +1174,7 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
             for (int i = 0; i < mapData.width; i++) {
                 for (int j = 0; j < mapData.height; j++) {
 
-                    // evitar bugs si voltean tiles (Solo definimos unsigned int)
+                    // Evitar bugs si voltean tiles
                     unsigned int rawGid = mapLayer->Get(i, j);
                     int gid = rawGid & 0x1FFFFFFF;
 
@@ -1184,7 +1184,7 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
 
                             int relativeId = gid - tileSet->firstGid;
 
-                            // Comprobamos si este tile tiene una animacion guardada
+                            // Comprobamos si este tile tiene una animación guardada
                             if (tileSet->animations.find(relativeId) != tileSet->animations.end()) {
                                 TileAnimation& anim = tileSet->animations[relativeId];
                                 int frameLocalId = anim.frames[anim.currentFrame].tileId;
@@ -1196,11 +1196,23 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
                             SDL_Rect tileRect = tileSet->GetRect(gid);
                             Vector2D mapCoord = MapToWorld(i, j);
 
-                            // Calculamos la posicion exacta (Y ajustado por si el tile es mas alto)
+                            // Calculamos la posición base en el mundo
                             int drawX = (int)mapCoord.getX();
                             int drawY = (int)mapCoord.getY() + mapData.tileHeight - tileSet->tileHeight;
 
-                            // --- NUEVA LÓGICA DE FLIP ---
+                            // ====================================================
+                            // --- NUEVA LÓGICA DE PARALLAX PARA CAPAS DE TILES ---
+                            // ====================================================
+                            // Como DrawTexture suma de forma automática la cámara para pintar en pantalla,
+                            // restamos o sumamos la proporción de la velocidad multiplicada por (parallax - 1.0f).
+                            float camX = Engine::GetInstance().render->camera.x;
+                            float camY = Engine::GetInstance().render->camera.y;
+
+                            drawX += (int)(camX * (mapLayer->parallaxX - 1.0f));
+                            drawY += (int)(camY * (mapLayer->parallaxY - 1.0f));
+                            // ====================================================
+
+                            // Lógica de inversión (Flips)
                             bool flipHorizontal = (rawGid & 0x80000000) != 0;
                             bool flipVertical = (rawGid & 0x40000000) != 0;
 
@@ -1209,16 +1221,17 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
                             else if (flipHorizontal) flip = SDL_FLIP_HORIZONTAL;
                             else if (flipVertical) flip = SDL_FLIP_VERTICAL;
 
-                            // Le pasamos mapLayer->parallaxX como scale, y añadimos angle, pivots y el flip
+                            // IMPORTANTE: En el 5º parámetro pasamos '1.0f' fijo para la escala visual del tamaño,
+                            // ya que el parallaxX de Tiled controla la velocidad de scroll, no el tamaño de los bloques.
                             Engine::GetInstance().render->DrawTexture(
                                 tileSet->texture,
                                 drawX,
                                 drawY,
                                 &tileRect,
-                                mapLayer->parallaxX, // scale
-                                0.0,                 // angle
-                                INT_MAX, INT_MAX,    // pivotX, pivotY
-                                flip                 // <--- APLICAMOS EL FLIP AQUÍ
+                                1.0f,                // Escala de tamaño (fijo a 1.0f)
+                                0.0,                 // Ángulo
+                                INT_MAX, INT_MAX,    // Pivotes
+                                flip                 // Modo flip
                             );
                         }
                     }
