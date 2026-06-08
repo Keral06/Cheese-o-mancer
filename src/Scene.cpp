@@ -1108,7 +1108,8 @@ void  Scene::PostUpdateLevel() {
 		Engine::GetInstance().map->SaveEntities(player);
 		savedLevel = 1;
 	}
-
+	//Foreground
+	Engine::GetInstance().map->DrawForeground();
 
 	// Dibujar Mapa
 

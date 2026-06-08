@@ -62,7 +62,7 @@ struct MapLayer
     float parallaxX = 1.0f;
     float parallaxY = 1.0f;
 
-    std::vector<int> tiles;
+    std::vector<unsigned int> tiles;
     Properties properties;
     // L07: TODO 6: Short function to get the gid value of i,j
     unsigned int Get(int i, int j) const
@@ -88,7 +88,7 @@ struct ObjectGroup
         int height;
         int x;
         int y;
-        int gid = 0;
+        unsigned int gid = 0;
         Properties properties;
     };
 
@@ -214,6 +214,7 @@ public:
     Vector2D GetMapSizeInPixels();
     void DrawLayer(std::string layerName);
     void DrawObjectLayerParallax(std::string layerName, float parallaxSpeed);
+    void DrawForeground();
     int GetTileWidth() {
     return mapData.tileWidth;
 }
