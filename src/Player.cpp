@@ -222,6 +222,8 @@ bool Player::Update(float dt)
 			state = IDLE_ON_CHEESE;
 		}
 		ChangeCurrentAnimation();
+
+		
 		ApplyPhysics();
 	}
 	if (Engine::GetInstance().scene->ObjectObserved == false) {
@@ -518,6 +520,7 @@ void Player::Jump() {
 
 void Player::ApplyPhysics() {
 	if (isMounted) return;
+	
 	// Preserve vertical speed while jumping
 	if (isJumping == true) {
 		velocity.y = Engine::GetInstance().physics->GetYVelocity(pbody);
@@ -1140,14 +1143,15 @@ void Player::HandleMountedMovement()
 	b2Vec2 vel = b2Body_GetLinearVelocity(mountedBall->pbody->body);
 	movingBall = false;
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+
 		if (!facingLeft) {
 			cheeseSpeed = 13.0f;
 			cheeseTime = 300.0f;
 		}
-		if (cheeseTime < 200.0f && cheeseTime >= 100.0f) {
+		if (cheeseTime < 200.0f && cheeseTime >= 100.0f && !isKicking) {
 			vel.x = -cheeseSpeed * 2.0f;
 		}
-		else if (cheeseTime < 100.0f) {
+		else if (cheeseTime < 100.0f && !isKicking) {
 			vel.x = -cheeseSpeed * 3.5f;
 		}
 		else {
@@ -1163,11 +1167,11 @@ void Player::HandleMountedMovement()
 			cheeseSpeed = 10.0f;
 			cheeseTime = 300.0f;
 		}
-		if (cheeseTime < 200.0f && cheeseTime >= 100.0f) {
+		if (cheeseTime < 200.0f && cheeseTime >= 100.0f && !isKicking) {
 			vel.x = cheeseSpeed * 2.0f;
 			mountedBall->canSmash = false;
 		}
-		else if (cheeseTime < 100.0f) {
+		else if (cheeseTime < 100.0f && !isKicking) {
 			vel.x = cheeseSpeed * 3.5f;
 			mountedBall->canSmash = true;
 		}
@@ -1189,6 +1193,9 @@ void Player::HandleMountedMovement()
 	else
 		state = IDLE_ON_CHEESE;
 
+	if (isKicking) {
+		vel.y = 0.0f;
+	}
 	mountedBall->SetVelocityy(vel);
 
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
@@ -1322,7 +1329,7 @@ void Player::CheckKickFrame()
 	if (!isKicking) return;
 
 	// Comprobamos si hemos llegado al frame 5
-	if (currentAnimSet->GetCurrentFrameIndex() == 2 && !mountedBall == NULL)
+	if (currentAnimSet->GetCurrentFrameIndex() == 8 && !mountedBall == NULL)
 	{
 		
 		// --- 1. INICIO DEL CHUTE (Frame 0) ---
@@ -1331,7 +1338,6 @@ void Player::CheckKickFrame()
 			b2Body_SetAwake(pbody->body, true);
 			// Cambiamos la escala de gravedad a 0 para que flote
 			b2Body_SetGravityScale(pbody->body, 0.0f);
-
 			// Eliminamos velocidad vertical para que no siga subiendo/cayendo
 			b2Vec2 vel = b2Body_GetLinearVelocity(pbody->body);
 			vel.y = 0.0f;
