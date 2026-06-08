@@ -641,9 +641,9 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                         player->Start();
                     }
 
-                    if (Engine::GetInstance().scene->GetLastScene() != SceneID::INTRO_SCREEN &&
-                        Engine::GetInstance().scene->GetLastScene() != SceneID::MAIN_MENU &&
-                        Engine::GetInstance().scene->firstDoor == false) {
+                    if (//Engine::GetInstance().scene->GetLastScene() != SceneID::INTRO_SCREEN &&
+                        //Engine::GetInstance().scene->GetLastScene() != SceneID::MAIN_MENU &&
+                        !Engine::GetInstance().scene->firstDoor) {
 
                         auto obj = Engine::GetInstance().map->GetObjectByProperty("Doors", "name", Engine::GetInstance().scene->nextSpawnPoint);
                         if (obj != nullptr) {
