@@ -79,6 +79,44 @@ void ParticleExample::setStyle(PatticleStyle style)
         break;
     }
 
+    case ParticleExample::SOUP:
+    {
+        _texture = Engine::GetInstance().textures->Load("assets/Textures/Particles/soup.png");
+
+        initWithTotalParticles(9);
+
+        _duration = DURATION_INFINITY;
+
+        this->_emitterMode = Mode::GRAVITY;
+        this->modeA.gravity = { 0.0f, -10.0f };
+        this->modeA.speed = 10.0f;
+        this->modeA.speedVar = 5.0f;
+
+        _angle = 90.0f;
+        _angleVar = 360.0f;
+
+        _life = 3.0f;
+        _lifeVar = 2.0f;
+
+        _startSize = 30.0f;
+        _startSizeVar = 15.0f;
+
+        _endSize = 20.0f;
+
+        _emissionRate = _totalParticles / _life;
+
+        _startColor = { 0.2f, 0.8f, 0.2f, 1.0f };
+        _startColorVar = { 0.1f, 0.1f, 0.1f, 0.2f };
+
+        _endColor = { 0.2f, 0.2f, 0.1f, 0.5f };
+        _endColorVar = { 0.1f, 0.1f, 0.1f, 0.2f };
+
+        _posVar = { 10.0f, 20.0f };
+
+        SDL_SetTextureBlendMode(_texture, SDL_BLENDMODE_BLEND);
+        break;
+	}
+
     case ParticleExample::MOHO:
     {
         // 1. Elegir una de las 4 texturas de moho de forma aleatoria
