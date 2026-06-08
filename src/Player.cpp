@@ -1078,10 +1078,6 @@ void Player::HandleAttack()
 	if (attackRequested) {
 		attackRequested = false;
 		if (!isAttacking) {
-			// INCREMENTAR EL ID: Cada vez que el usuario inicia un ataque nuevo,
-			// el identificador cambia, haciendo que los enemigos vuelvan a ser vulnerables.
-			currentAttackId++;
-
 			attackCombo = (!isCollidedFloor) ? 3 : 1;
 			StartAttack(attackCombo);
 		}
@@ -1141,6 +1137,11 @@ void Player::StartAttack(int combo)
 {
 	isAttacking = true;
 	state = ATTACKING;
+
+	// --- LA CLAVE ESTÁ AQUÍ ---
+	// Incrementamos el ID cada vez que se lanza un golpe, sea o no parte de un combo.
+	currentAttackId++;
+	// --------------------------
 
 	currentAnimSet = &anims3x4;
 	texture = texture3x4;
