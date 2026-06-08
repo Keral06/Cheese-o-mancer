@@ -623,6 +623,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                     auto offsetY = tempProperties.GetProperty("offsetY");
                     int width = objectNode.attribute("width").as_int();
                     int height = objectNode.attribute("height").as_int();
+                    auto interactionProp = tempProperties.GetProperty("requiresInteraction");
 
                     door->SetDoorData(
                         mapProp ? mapProp->valueString : "",
@@ -630,7 +631,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                         offsetX ? offsetX->valueInt : 0,
                         offsetY ? offsetY->valueInt : 0,
                         width,
-                        height
+                        height,
+                        interactionProp ? interactionProp->value : false
                     );
                     door->Start();
                 }
@@ -685,14 +687,14 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                         }
                     }
 
-                    if (objectNode.attribute("score")) {
+                    /*if (objectNode.attribute("score")) {
                         Engine::GetInstance().scene->score = objectNode.attribute("score").as_int();
                         LOG("Score cargado desde XML: %d", Engine::GetInstance().scene->score);
                     }
                     if (objectNode.attribute("timer")) {
                         Engine::GetInstance().scene->levelTimer = objectNode.attribute("timer").as_float();
                         LOG("Timer cargado desde XML: %f", Engine::GetInstance().scene->levelTimer);
-                    }
+                    }*/
                 }
                 else if (entityType == "Enemy") {
                     std::shared_ptr<Enemy> enemy = std::dynamic_pointer_cast<Enemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY));

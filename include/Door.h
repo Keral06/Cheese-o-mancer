@@ -25,8 +25,11 @@ public:
         int offsetX,
         int offsetY,
         int width,
-        int height
+        int height,
+        bool requiresInteraction
     );
+
+    void OnCollisionEnd(PhysBody* physA, PhysBody* physB) override;
 
 public:
 
@@ -43,4 +46,6 @@ public:
 private:
 
     PhysBody* pbody = nullptr;
+    bool requiresInteraction = false;
+    bool playerInside = false;
 };
