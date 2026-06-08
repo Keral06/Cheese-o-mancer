@@ -315,12 +315,6 @@ void Enemy::Attack() {
 }
 
 void Enemy::DecreaseHealth(int amount) {
-	//if (name == "Jailer" && state == EnemyState::ATTACKING) {
-	//	health -= amount;
-	//	LOG("Jailer ignorando knockback (Super Armor)");
-	//	if (health <= 0) Die();
-	//	return;
-	//}
 
 	health -= amount;
 	if (health > 0) {

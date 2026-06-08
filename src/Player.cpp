@@ -412,13 +412,25 @@ void Player::Move() {
 	// =====================
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		velocity.x = -speed;
+		// Si estamos pegados a una pared a la IZQUIERDA, no forzamos la velocidad contra ella
+		if (isCollidedWall && wallSide == -1) {
+			velocity.x = 0;
+		}
+		else {
+			velocity.x = -speed;
+		}
 		isWalking = true;
 		facingLeft = true;
 	}
 	else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		velocity.x = speed;
+		// Si estamos pegados a una pared a la DERECHA, no forzamos la velocidad contra ella
+		if (isCollidedWall && wallSide == 1) {
+			velocity.x = 0;
+		}
+		else {
+			velocity.x = speed;
+		}
 		isWalking = true;
 		facingLeft = false;
 	}
@@ -758,6 +770,14 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 	case ColliderType::PARED:
 	{
 		isCollidedWall = true;
+
+		int px, py, wx, wy;
+		pbody->GetPosition(px, py);
+		physB->GetPosition(wx, wy);
+
+		if (px > wx) wallSide = -1;
+		else wallSide = 1;
+
 		if (isMounted) {
 			DismountAndLaunch();
 		}
@@ -870,6 +890,7 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 	case ColliderType::PARED:
 		LOG("End Collision PARED");
 		isCollidedWall = false;
+		wallSide = 0;
 		break;
 	case ColliderType::SAVE:
 		LOG("End Collision SAVE");
