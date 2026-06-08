@@ -115,6 +115,7 @@ public:
 	bool isdead = false;
 	bool isWalking = false;
 	bool isCollidedWall = false;
+	int wallSide = 0;
 	bool isCollidedFloor = false;
 	int floorContacts = 0;
 

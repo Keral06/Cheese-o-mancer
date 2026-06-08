@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="29" nextobjectid="400">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="29" nextobjectid="401">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -85650,6 +85650,7 @@
     <property name="name" value="Door_1_2_3"/>
     <property name="offsetX" type="int" value="200"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="false"/>
     <property name="targetMap" value="TEST_map_LV1_pantryRoom_01.tmx"/>
     <property name="targetSpawn" value="Door_1_3_2"/>
    </properties>
@@ -85659,6 +85660,7 @@
     <property name="name" value="Door_1_2_2"/>
     <property name="offsetX" type="int" value="200"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="false"/>
     <property name="targetMap" value="TEST_map_LV1_pantryRoom_01.tmx"/>
     <property name="targetSpawn" value="Door_1_3_1"/>
    </properties>
@@ -85668,6 +85670,7 @@
     <property name="name" value="Door_1_2_1"/>
     <property name="offsetX" type="int" value="800"/>
     <property name="offsetY" type="int" value="-500"/>
+    <property name="requiresInteraction" type="bool" value="false"/>
     <property name="targetMap" value="TEST_map_LV1_startRoom_01.tmx"/>
     <property name="targetSpawn" value="Door_1_1_1"/>
    </properties>
@@ -85677,11 +85680,22 @@
     <property name="name" value="Door_1_2_4"/>
     <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="false"/>
     <property name="targetMap" value="TEST_map_LV1_tortureRoom_02.tmx"/>
     <property name="targetSpawn" value="Door_1_4_2"/>
    </properties>
   </object>
   <object id="379" x="12740" y="6696" width="16" height="8"/>
+  <object id="400" x="5504" y="13824" width="384" height="512">
+   <properties>
+    <property name="name" value="Door_1_2_5"/>
+    <property name="offsetX" type="int" value="400"/>
+    <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="true"/>
+    <property name="targetMap" value="Map_LV3_left_01.tmx"/>
+    <property name="targetSpawn" value="Door_3_3_4"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="21" name="Items">
   <object id="387" name="Live" type="Live" x="4391.33" y="10683.3" width="256" height="384"/>

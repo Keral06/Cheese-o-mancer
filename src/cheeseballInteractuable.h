@@ -43,6 +43,9 @@ private:
 	int texW, texH;
 	const char* tsxPath;
 
+	bool waitingForAnim = false;
+	float waitTimer = 0.0f;
+
 public:
 	SDL_Texture* CheeseBallTexture = nullptr;
 	SDL_Texture* InteractTexture = nullptr;

@@ -219,3 +219,37 @@ void GameManager::LoadGame() {
         LOG("No se encontro un archivo de guardado o hubo un error: %s", result.description());
     }
 }
+void GameManager::StartNewGame() {
+    Scene* scene = Engine::GetInstance().scene.get();
+    scene->levelTimer = 0.0f;
+    scene->score = 0;
+    scene->lives = 4;
+    scene->maxLives = 4;
+    scene->extralife = false;
+    scene->hasDamagePlus = false;
+    scene->savedLevel = 1;
+
+    scene->inventario.objetos.clear();
+    scene->misiones.objetos.clear();
+    scene->cards.cards.clear();
+
+    scene->list = false;
+    scene->cardsInventoryOn = false;
+    scene->inventoryOn = false;
+
+    scene->currentMission = 0;
+    scene->currentInvPage = 0;
+    scene->currentCardIndex = 0;
+
+    scene->hasTalkedMagician = false;
+    scene->beatBoss = false;
+    scene->beatPrincess = false;
+    scene->cheese = false;
+
+    Player* player = scene->GetPlayer();
+    if (player != nullptr) {
+        player->extralife = false;
+        player->isDeadDefinitive = false;
+    }
+
+}

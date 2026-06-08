@@ -123,19 +123,19 @@ bool Map::Update(float dt)
         }
 
         // 3 OBJETOS FRONTALES (Background == false o no existe)
-        for (const auto& group : mapData.objectgroups) {
-            auto drawProp = group->properties.GetProperty("Draw");
-            auto bgProp = group->properties.GetProperty("Background");
+        //for (const auto& group : mapData.objectgroups) {
+        //    auto drawProp = group->properties.GetProperty("Draw");
+        //    auto bgProp = group->properties.GetProperty("Background");
 
-            // Solo dibuja si NO tiene la propiedad Background, o si la tiene pero es falsa
-            if (drawProp && drawProp->value == true && (bgProp == NULL || bgProp->value == false)) {
-                float parallax = 1.0f;
-                auto parallaxProp = group->properties.GetProperty("Parallax");
-                if (parallaxProp) parallax = parallaxProp->valueFloat;
+        //    // Solo dibuja si NO tiene la propiedad Background, o si la tiene pero es falsa
+        //    if (drawProp && drawProp->value == true && (bgProp == NULL || bgProp->value == false)) {
+        //        float parallax = 1.0f;
+        //        auto parallaxProp = group->properties.GetProperty("Parallax");
+        //        if (parallaxProp) parallax = parallaxProp->valueFloat;
 
-                DrawObjectLayerParallax(group->name, parallax);
-            }
-        }
+        //        DrawObjectLayerParallax(group->name, parallax);
+        //    }
+        //}
     }
 
     // DRAW Y LIMPIEZA DE PARTÍCULAS
@@ -623,6 +623,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                     auto offsetY = tempProperties.GetProperty("offsetY");
                     int width = objectNode.attribute("width").as_int();
                     int height = objectNode.attribute("height").as_int();
+                    auto interactionProp = tempProperties.GetProperty("requiresInteraction");
 
                     door->SetDoorData(
                         mapProp ? mapProp->valueString : "",
@@ -630,7 +631,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                         offsetX ? offsetX->valueInt : 0,
                         offsetY ? offsetY->valueInt : 0,
                         width,
-                        height
+                        height,
+                        interactionProp ? interactionProp->value : false
                     );
                     door->Start();
                 }
@@ -685,14 +687,14 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                         }
                     }
 
-                    if (objectNode.attribute("score")) {
+                    /*if (objectNode.attribute("score")) {
                         Engine::GetInstance().scene->score = objectNode.attribute("score").as_int();
                         LOG("Score cargado desde XML: %d", Engine::GetInstance().scene->score);
                     }
                     if (objectNode.attribute("timer")) {
                         Engine::GetInstance().scene->levelTimer = objectNode.attribute("timer").as_float();
                         LOG("Timer cargado desde XML: %f", Engine::GetInstance().scene->levelTimer);
-                    }
+                    }*/
                 }
                 else if (entityType == "Enemy") {
                     std::shared_ptr<Enemy> enemy = std::dynamic_pointer_cast<Enemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY));
@@ -1172,8 +1174,8 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
             for (int i = 0; i < mapData.width; i++) {
                 for (int j = 0; j < mapData.height; j++) {
 
-                    // evitar bugs si voltean tiles
-                    int rawGid = mapLayer->Get(i, j);
+                    // evitar bugs si voltean tiles (Solo definimos unsigned int)
+                    unsigned int rawGid = mapLayer->Get(i, j);
                     int gid = rawGid & 0x1FFFFFFF;
 
                     if (gid != 0) {
@@ -1198,13 +1200,25 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
                             int drawX = (int)mapCoord.getX();
                             int drawY = (int)mapCoord.getY() + mapData.tileHeight - tileSet->tileHeight;
 
-                            // Le pasamos mapLayer->parallaxX como 5º parametro (speed)
+                            // --- NUEVA LÓGICA DE FLIP ---
+                            bool flipHorizontal = (rawGid & 0x80000000) != 0;
+                            bool flipVertical = (rawGid & 0x40000000) != 0;
+
+                            SDL_FlipMode flip = SDL_FLIP_NONE;
+                            if (flipHorizontal && flipVertical) flip = (SDL_FlipMode)(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL);
+                            else if (flipHorizontal) flip = SDL_FLIP_HORIZONTAL;
+                            else if (flipVertical) flip = SDL_FLIP_VERTICAL;
+
+                            // Le pasamos mapLayer->parallaxX como scale, y añadimos angle, pivots y el flip
                             Engine::GetInstance().render->DrawTexture(
                                 tileSet->texture,
                                 drawX,
                                 drawY,
                                 &tileRect,
-                                mapLayer->parallaxX
+                                mapLayer->parallaxX, // scale
+                                0.0,                 // angle
+                                INT_MAX, INT_MAX,    // pivotX, pivotY
+                                flip                 // <--- APLICAMOS EL FLIP AQUÍ
                             );
                         }
                     }
@@ -1212,6 +1226,7 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
             }
         }
     }
+
     // L19 TODO 1: Calculate Camera position in Tiles
     Vector2D Map::GetCameraPositionInTiles() {
 
@@ -1290,40 +1305,44 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
                 //LOG("PARALLAX DEBUG: Capa '%s' encontrada. Tiene %d objetos.", layerName.c_str(), group->objects.size());
 
                 for (const auto& object : group->objects) {
-                    // Limpiamos el GID por si la imagen está rotada/espejada en Tiled
-                    int cleanGid = object->gid & 0x1FFFFFFF;
 
-                    //LOG("PARALLAX DEBUG: Objeto '%s' procesando... cleanGid: %d", object->name.c_str(), cleanGid);
+                    unsigned int rawGid = object->gid; // <--- Asegurar unsigned
+                    int cleanGid = rawGid & 0x1FFFFFFF;
 
                     if (cleanGid != 0) {
                         TileSet* tileSet = GetTilesetFromTileId(cleanGid);
 
-                        if (tileSet != nullptr) {
-                            //LOG("PARALLAX DEBUG: Tileset encontrado. Textura cargada: %s", (tileSet->texture != nullptr ? "SI" : "NO (¡Puntero Nulo!)"));
+                        if (tileSet != nullptr && tileSet->texture != nullptr) {
+                            SDL_Rect tileRect = tileSet->GetRect(cleanGid);
 
-                            if (tileSet != nullptr && tileSet->texture != nullptr) {
-                                SDL_Rect tileRect = tileSet->GetRect(cleanGid);
-
-                                // --- PARCHE DE TAMAÑO ---
-                                // Si Tiled omitió el tamaño, usamos el del Tileset original
-                                int finalWidth = object->width;
-                                int finalHeight = object->height;
-                                if (finalWidth == 0 || finalHeight == 0) {
-                                    finalWidth = tileRect.w;
-                                    finalHeight = tileRect.h;
-                                }
-
-                                Engine::GetInstance().render->DrawParallax(
-                                    tileSet->texture,
-                                    object->x,
-                                    object->y - finalHeight, // Usamos el height corregido
-                                    finalWidth,              // Usamos el width corregido
-                                    finalHeight,             // Usamos el height corregido
-                                    &tileRect,
-                                    parallaxSpeed,
-                                    0, 0, 0, SDL_FLIP_NONE
-                                );
+                            // --- PARCHE DE TAMAÑO ---
+                            int finalWidth = object->width;
+                            int finalHeight = object->height;
+                            if (finalWidth == 0 || finalHeight == 0) {
+                                finalWidth = tileRect.w;
+                                finalHeight = tileRect.h;
                             }
+
+                            // --- NUEVA LÓGICA DE FLIP ---
+                            bool flipHorizontal = (rawGid & 0x80000000) != 0;
+                            bool flipVertical = (rawGid & 0x40000000) != 0;
+
+                            SDL_FlipMode flip = SDL_FLIP_NONE;
+                            if (flipHorizontal && flipVertical) flip = (SDL_FlipMode)(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL);
+                            else if (flipHorizontal) flip = SDL_FLIP_HORIZONTAL;
+                            else if (flipVertical) flip = SDL_FLIP_VERTICAL;
+
+                            Engine::GetInstance().render->DrawParallax(
+                                tileSet->texture,
+                                object->x,
+                                object->y - finalHeight,
+                                finalWidth,
+                                finalHeight,
+                                &tileRect,
+                                parallaxSpeed,
+                                0, 0, 0,
+                                flip // <--- APLICAMOS EL FLIP EN VEZ DE SDL_FLIP_NONE
+                            );
                         }
                     }
                 }
@@ -1353,7 +1372,7 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
                 LoadProperties(node, mapLayer->properties);
 
                 for (pugi::xml_node tileNode = node.child("data").child("tile"); tileNode != NULL; tileNode = tileNode.next_sibling("tile")) {
-                    mapLayer->tiles.push_back(tileNode.attribute("gid").as_int());
+                    mapLayer->tiles.push_back(tileNode.attribute("gid").as_uint());
                 }
 
                 mapData.layers.push_back(mapLayer);
@@ -1383,7 +1402,7 @@ void Map::ParseObjectGroupsRecursive(pugi::xml_node parentNode)
                 object->y = objectNode.attribute("y").as_int();
                 object->width = objectNode.attribute("width").as_int();
                 object->height = objectNode.attribute("height").as_int();
-                object->gid = objectNode.attribute("gid").as_int(0);
+                object->gid = objectNode.attribute("gid").as_uint(0);
                 LoadProperties(objectNode, object->properties);
 
                 objectGroup->objects.push_back(object);
@@ -1443,6 +1462,36 @@ void Map::DestroyBodyByName(std::string name)
         }
         else {
             ++it;
+        }
+    }
+}
+
+void Map::DrawForeground() {
+    if (!mapLoaded) return;
+
+    // 1. DIBUJAR CAPAS DE TILES MARCADAS COMO FOREGROUND
+    for (const auto& mapLayer : mapData.layers) {
+        auto isForeground = mapLayer->properties.GetProperty("Foreground");
+        bool drawForeground = (isForeground != nullptr && isForeground->value == true);
+
+        if (drawForeground) {
+            if (mapLayer->properties.GetProperty("Draw") != NULL && mapLayer->properties.GetProperty("Draw")->value == true) {
+                DrawLayer(mapLayer->name);
+            }
+        }
+    }
+
+    // 2. DIBUJAR OBJETOS PARALLAX FRONTALES (Lo que antes era el bloque 3 del Update)
+    for (const auto& group : mapData.objectgroups) {
+        auto drawProp = group->properties.GetProperty("Draw");
+        auto bgProp = group->properties.GetProperty("Background");
+
+        if (drawProp && drawProp->value == true && (bgProp == NULL || bgProp->value == false)) {
+            float parallax = 1.0f;
+            auto parallaxProp = group->properties.GetProperty("Parallax");
+            if (parallaxProp) parallax = parallaxProp->valueFloat;
+
+            DrawObjectLayerParallax(group->name, parallax);
         }
     }
 }

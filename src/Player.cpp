@@ -3,6 +3,7 @@
 // =====================
 
 #include "Player.h"
+#include "GameManager.h"
 #include "Engine.h"
 #include "Textures.h"
 #include "Audio.h"
@@ -32,6 +33,7 @@ Player::Player() : Entity(EntityType::PLAYER)
 {
 	name = "Player";
 	pbody = nullptr;
+	godMode = false;
 }
 
 Player::~Player() {
@@ -50,7 +52,7 @@ bool Player::Awake() {
 }
 
 bool Player::Start() {
-
+	godMode = false;
 	state = RUNNING;
 	lastState = RUNNING;
 	// load
@@ -237,6 +239,24 @@ bool Player::Update(float dt)
 
 		
 		ApplyPhysics();
+
+		// MOSTRAR QUESO (Asegúrate de que esto quede dentro de if(!isPaused) )
+		if (isShowingCheese) {
+			showCheeseTimer -= dt;
+
+			// Mantenemos la textura activa (pero sin reiniciar el fotograma)
+			currentAnimSet = &animsShowCheese;
+			texture = textureShowCheese;
+
+			b2Vec2 vel = b2Body_GetLinearVelocity(pbody->body);
+			vel.x = 0.0f;
+			b2Body_SetLinearVelocity(pbody->body, vel);
+
+			if (showCheeseTimer <= 0.0f) {
+				isShowingCheese = false;
+				lastState = DEFAULT; // <--- Esto obliga al jugador a volver al IDLE normal al terminar
+			}
+		}
 	}
 	if (Engine::GetInstance().scene->ObjectObserved == false) {
 
@@ -392,13 +412,25 @@ void Player::Move() {
 	// =====================
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		velocity.x = -speed;
+		// Si estamos pegados a una pared a la IZQUIERDA, no forzamos la velocidad contra ella
+		if (isCollidedWall && wallSide == -1) {
+			velocity.x = 0;
+		}
+		else {
+			velocity.x = -speed;
+		}
 		isWalking = true;
 		facingLeft = true;
 	}
 	else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		velocity.x = speed;
+		// Si estamos pegados a una pared a la DERECHA, no forzamos la velocidad contra ella
+		if (isCollidedWall && wallSide == 1) {
+			velocity.x = 0;
+		}
+		else {
+			velocity.x = speed;
+		}
 		isWalking = true;
 		facingLeft = false;
 	}
@@ -414,8 +446,8 @@ void Player::Move() {
 	// GOD MODE (VERTICAL)
 	// =====================
 	if (godMode)
-	{
-		Engine::GetInstance().scene->lives = Engine::GetInstance().scene->maxLives;
+	{/*
+		Engine::GetInstance().scene->lives = Engine::GetInstance().scene->maxLives;*/
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
 			velocity.y = -godmodeSpeed;
@@ -738,6 +770,14 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 	case ColliderType::PARED:
 	{
 		isCollidedWall = true;
+
+		int px, py, wx, wy;
+		pbody->GetPosition(px, py);
+		physB->GetPosition(wx, wy);
+
+		if (px > wx) wallSide = -1;
+		else wallSide = 1;
+
 		if (isMounted) {
 			DismountAndLaunch();
 		}
@@ -763,7 +803,8 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 
 		if (pbody && !B2_IS_NULL(pbody->body))
 			respawnPosition = b2Body_GetPosition(pbody->body);
-
+		Engine::GetInstance().scene->SaveLevel();
+		Engine::GetInstance().gameManager->SaveGame();
 		hasHealed = false;
 		LOG("Checkpoint reached.");
 		break;
@@ -849,6 +890,7 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 	case ColliderType::PARED:
 		LOG("End Collision PARED");
 		isCollidedWall = false;
+		wallSide = 0;
 		break;
 	case ColliderType::SAVE:
 		LOG("End Collision SAVE");
@@ -1463,10 +1505,14 @@ void Player::CheckKickFrame()
 void Player::PlayShowCheese()
 {
 	isShowingCheese = true;
-	showCheeseTimer = 2000.0f; // 2 segundos mostrando el queso
+	showCheeseTimer = 2000.0f;
 
-	// Frenamos al jugador en seco usando la sintaxis correcta de tu Box2D
 	b2Vec2 vel = b2Body_GetLinearVelocity(pbody->body);
 	vel.x = 0.0f;
 	b2Body_SetLinearVelocity(pbody->body, vel);
+
+	// ASIGNAMOS LA ANIMACIÓN AQUÍ, SOLO UNA VEZ PARA QUE NO SE CONGELE
+	currentAnimSet = &animsShowCheese;
+	texture = textureShowCheese;
+	currentAnimSet->SetCurrent("show_cheese");
 }

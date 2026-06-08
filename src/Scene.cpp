@@ -23,6 +23,7 @@
 #include "ParticleExample.h"
 #include "BossFightPrincessKnight.h"
 #include "Rat.h"
+#include "GameManager.h"
 
 Scene::Scene() : Module()
 {
@@ -772,10 +773,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 	case 1:
 		LOG("Main Menu: MyButton clicked!");
 		continueGame = false;
-		score = 0;
-		extralife = false;
-		maxLives = 4;
-		lives = 4;
+		Engine::GetInstance().gameManager->StartNewGame();
 		ChangeScene(SceneID::IN_GAME);
 		
 		break;
@@ -1106,7 +1104,8 @@ void  Scene::PostUpdateLevel() {
 		Engine::GetInstance().map->SaveEntities(player);
 		savedLevel = 1;
 	}
-
+	//Foreground
+	Engine::GetInstance().map->DrawForeground();
 
 	// Dibujar Mapa
 
@@ -1669,7 +1668,11 @@ void Scene::LoadMap(std::string map)
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, enemies);
 
-	if (firstMapLoad)
+	if (continueGame == true) {
+		Engine::GetInstance().gameManager->LoadGame();
+	}
+
+	if (firstMapLoad && !continueGame) 
 	{
 		showHelp = true;
 		firstMapLoad = false;
@@ -1677,44 +1680,37 @@ void Scene::LoadMap(std::string map)
 	else
 	{
 		showHelp = false;
+		firstMapLoad = false;
 	}
 
-	if (continueGame == false) {
+	//if (continueGame == false) {
+	//	levelTimer = 0.0f;
+	//	Engine::GetInstance().scene->score = 0;
+	//	showMap = false;
+	//	inventoryOn = false;
+	//	Engine::GetInstance().scene->extralife = false;
+	//	Engine::GetInstance().scene->maxLives = 4;
+	//	Engine::GetInstance().scene->lives = 4;
 
-		levelTimer = 0.0f;/*
-		Engine::GetInstance().scene->score = 0;*/
-		showMap = false;
-		inventoryOn = false;/*
-		Engine::GetInstance().scene->extralife = false;
-		Engine::GetInstance().scene->maxLives = 4;
-		Engine::GetInstance().scene->lives = 4;*/
-		//firstDoor = true;       
-		//cheese = false;     
-		//nextSpawnPoint = "";
-		//nextMap = "";
-		if (player) {
-			/*Engine::GetInstance().scene->lives = 4;*/
+	//	// IMPORTANTE: Resetea el queso y la partida aquí
+	//	cheese = false;
+	//	if (player) {
+	//		player->extralife = false;
+	//		player->isDeadDefinitive = false;
+	//	}
 
-			/*
-			player->extralife = false;
-			player->hasCheese = false;
-			player->hasMap1 = false;
-			player->hasTalkedMagician = false;
-			player->isDeadDefinitive = false;*/
-		}
+	//	/*Vector2D startPos = Engine::GetInstance().map->GetStartPoint("Checkpoints", "Player");
 
-		/*Vector2D startPos = Engine::GetInstance().map->GetStartPoint("Checkpoints", "Player");
-
-		if (startPos.getX() != 0 || startPos.getY() != 0) {
-			player->SetPosition(startPos);
-			player->respawnPosition = { PIXEL_TO_METERS(startPos.getX()), PIXEL_TO_METERS(startPos.getY()) };
-		}*/
-	}
-	else {
-		//showHelp = false;
-		showMap = false;
-		inventoryOn = false;
-	}
+	//	if (startPos.getX() != 0 || startPos.getY() != 0) {
+	//		player->SetPosition(startPos);
+	//		player->respawnPosition = { PIXEL_TO_METERS(startPos.getX()), PIXEL_TO_METERS(startPos.getY()) };
+	//	}*/
+	//}
+	//else {
+	//	//showHelp = false;
+	//	showMap = false;
+	//	inventoryOn = false;
+	//}
 
 }
 

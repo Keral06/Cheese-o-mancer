@@ -4594,12 +4594,13 @@
  </layer>
  <objectgroup id="17" name="Items"/>
  <objectgroup id="18" name="Checkpoint"/>
- <objectgroup id="11" name="Doors" visible="0">
+ <objectgroup id="11" name="Doors">
   <object id="313" name="Door" type="Door" x="0" y="4224" width="128" height="768">
    <properties>
     <property name="name" value="Door_2_1_1"/>
     <property name="offsetX" type="int" value="200"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="false"/>
     <property name="targetMap" value="TEST_map_LV1_tortureRoom_02.tmx"/>
     <property name="targetSpawn" value="Door_1_4_2"/>
    </properties>
@@ -4609,6 +4610,7 @@
     <property name="name" value="Door_2_1_2"/>
     <property name="offsetX" type="int" value="0"/>
     <property name="offsetY" type="int" value="-60"/>
+    <property name="requiresInteraction" type="bool" value="false"/>
     <property name="targetMap" value="Map_LV2_encreuada_02.tmx"/>
     <property name="targetSpawn" value="Door_2_2_1"/>
    </properties>

@@ -65,74 +65,60 @@ bool CheeseBallInteract::Start() {
 bool CheeseBallInteract::Update(float dt)
 {
 	if (!active) return true;
-	if (Engine::GetInstance().scene->cheese)return true;
 
 	Draw(dt);
 	CheeseBallTexture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/Cheese_wheel/Cheese_flat_asset.png");
-			if (isGettingTouched) {
-				Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
+	// FASE 2: Esperamos a que la animación fluida termine para lanzar el tutorial
+	if (waitingForAnim) {
+		waitTimer -= dt;
+		if (waitTimer <= 0.0f) {
+			waitingForAnim = false;
 
+			// AHORA SÍ, LANZAMOS EL TUTORIAL
+			Engine::GetInstance().scene->helpTextures.push_back(Engine::GetInstance().textures->Load("assets/UI/UI_Tutorial/UI_TutorialControls3_.png"));
+			Engine::GetInstance().scene->showHelp = true;
+			Engine::GetInstance().scene->actualHelpTexture = 1;
+			Engine::GetInstance().scene->SetHelpUI(true);
+		}
+		return true;
+	}
 
-				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+	// Si ya lo cogiste y no hay nada esperando, no hace nada
+	if (Engine::GetInstance().scene->cheese) return true;
 
+	// FASE 1: Diálogo e interacción
+	if (isGettingTouched) {
+		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
-					
-					if (dialogue.AvanzarDialogo(dt)) {
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+			if (dialogue.AvanzarDialogo(dt)) {
+				if (Engine::GetInstance().scene->cheese == false) {
+					Engine::GetInstance().scene->cheese = true;
+					Engine::GetInstance().scene->cards.push("WheelOfFortune", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_WheelOfFortune.png"), nullptr);
 
-						if (Engine::GetInstance().scene->cheese == false) {
-							Engine::GetInstance().scene->cheese = true;
-
-
-							Engine::GetInstance().scene->cards.push("WheelOfFortune", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_WheelOfFortune.png"), nullptr);
-
-							Engine::GetInstance().scene->helpTextures.push_back(Engine::GetInstance().textures->Load("assets/UI/UI_Tutorial/UI_TutorialControls3_.png"));
-							Engine::GetInstance().scene->showHelp = true;
-							Engine::GetInstance().scene->actualHelpTexture = 1;
-							Engine::GetInstance().scene->SetHelpUI(Engine::GetInstance().scene->showHelp);
-
-							if (py != nullptr) {
-								py->PlayShowCheese();
-
-							}
-
-							return true;
-
-						}
-
-							
-						/*if (Engine::GetInstance().scene->doublejump == false) {
-						
-							Engine::GetInstance().scene->doublejump = true;
-						
-						}
-						if (Engine::GetInstance().scene->moho == false) {
-
-							Engine::GetInstance().scene->moho = true;
-
-						}*/
-
+					// Activamos la animación
+					if (py != nullptr) {
+						py->PlayShowCheese();
 					}
-						
-						return true;
-				}
 
-				
-				
-
-				if (dialogue.hasStarted && !dialogue.hasEnded) {
-					dialogue.Draw(dt);
-					return true;
+					// Iniciamos el cronómetro (1900 ms para que congele la pose justo al final)
+					waitingForAnim = true;
+					waitTimer = 1900.0f;
 				}
 			}
+			return true;
+		}
 
-
-
-
-
+		if (dialogue.hasStarted && !dialogue.hasEnded) {
+			dialogue.Draw(dt);
+			return true;
+		}
+	}
 
 	return true;
 }
+
 void CheeseBallInteract::Draw(float dt) {
 
 	
