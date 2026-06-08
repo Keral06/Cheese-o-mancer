@@ -75,29 +75,20 @@ bool CheeseBallInteract::Update(float dt)
 				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 
-					if (dialogue.hasStarted) {
-						dialogue.NextDialogue();
-						dialogue.Draw(dt);
-
-						if (dialogue.hasEnded) {
-							dialogue.CleanUp();
-							if (py != nullptr) {
+					
+							if (dialogue.AvanzarDialogo(dt)) {
 								
 								Engine::GetInstance().scene->cheese = true;
 							
 
 								Engine::GetInstance().scene->cards.push("WheelOfFortune", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_WheelOfFortune.png"), nullptr);
 							}
-						}
+						
 						return true;
-					}
-
-					
-					dialogue.BeginDialogue();
-					dialogue.Draw(dt);
-
-					return true;
 				}
+
+				
+				
 
 				if (dialogue.hasStarted && !dialogue.hasEnded) {
 					dialogue.Draw(dt);
