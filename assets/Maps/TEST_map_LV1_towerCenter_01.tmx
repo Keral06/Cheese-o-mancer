@@ -85804,9 +85804,6 @@
   <object id="381" x="7312" y="1920" width="489" height="128"/>
  </objectgroup>
  <objectgroup id="8" name="Entities">
-  <object id="322" name="Player" type="Player" x="8600.61" y="4515.9">
-   <point/>
-  </object>
   <object id="399" name="Player" type="Player" x="944.61" y="14355.9">
    <point/>
   </object>

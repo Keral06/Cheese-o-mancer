@@ -1578,20 +1578,30 @@ void Scene::LoadMap(std::string map)
 
 	Engine::GetInstance().entityManager->CleanUp();
 
-	if (map == "TEST_map_LV1_startRoom_01.tmx") {
-		Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/DOWNTIME_ratmosphere.wav");
-	}
-	else if (map == "TEST_map_LV1_tortureRoom_02.tmx") {
+	if (map == "TEST_map_LV1_startRoom_01.tmx"||"TEST_map_LV1_towerCenter_01.tmx"||"TEST_map_LV1_pantryRoom_01.tmx"||"TEST_map_LV1_tortureRoom_02.tmx"|| "Map_LV2_transition_02.tmx") {
 		Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/COMBATdowninthedungeons.wav");
 	}
-	else if (map == "TEST_map_LV1_pantryRoom_01.tmx"||"Map_LV2_encreuada_02.tmx"|| "Map_LV2_botanica_02.tmx"|| "Map_LV2_justes_02.tmx") {
-		Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/DOWNTIME_ratmosphere.wav");
-	}
-	else if (map == "TEST_map_LV1_bossRoom_01.tmx" || "Map_LV2_bossTower.tmx") {
+	else if (map == "TEST_map_LV1_bossRoom_01.tmx") {
 		Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/COMBATdanceofthedungeons.wav");
 	}
+	else if (map == "Map_LV2_encreuada_02.tmx" || "Map_LV2_botanica_02.tmx" || "Map_LV2_justes_02.tmx"|| "Map_LV2_towersBotanica_02.tmx"||"Map_LV2_towersEncreuada_02.tmx"||"Map_LV2_towersJustes_02.tmx") {
+		Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/toqueenslanding.wav");
+	}
+	else if (map == "Map_LV2_bossTower.tmx") {
+		Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/theprincessandtheknight.wav");
+	}
+	else if (map == "Map_LV3_temple_01.tmx") {
+		Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/echur.wav");
+	}
+	else if (map == "Map_LV3_right_02.tmx"|| "Map_LV3_left_01.tmx") {
+		Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/hallwy.wav");
+	}
+	else if (map == "Map_LV4_Bridge_and_PharusTower_01.tmx" || "Map_LV4_QueenTower_01.tmx"||"Map_LV4_QueenTower_Ext_01.tmx" || "Map_LV4_QueenTower_Int_01.tmx" || "Map_LV4_QueenTower_TopFloor_01.tmx") {
+		Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/climbing.wav");
+	}
 	else {
-		Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/level2music.wav");
+		//Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/PREV/level2music.wav");
+		Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/DOWNTIME_ratmosphere.wav");
 	}
 	
 	isPaused = false;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="107" height="104" tilewidth="128" tileheight="128" infinite="0" nextlayerid="24" nextobjectid="441">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="107" height="104" tilewidth="128" tileheight="128" infinite="0" nextlayerid="24" nextobjectid="444">
  <tileset firstgid="1" name="tileset_lv1_torture_02" tilewidth="128" tileheight="128" tilecount="810" columns="30">
   <image source="tileset_lv1_torture_02.png" width="3840" height="3537"/>
  </tileset>
@@ -44637,11 +44637,8 @@
   <object id="273" x="6272" y="4992" width="128" height="128"/>
   <object id="274" x="6400" y="5120" width="128" height="128"/>
   <object id="275" x="6528" y="5248" width="128" height="1152"/>
-  <object id="276" x="6656" y="6144" width="1024" height="128"/>
-  <object id="277" x="7680" y="6144" width="128" height="256"/>
-  <object id="278" x="7808" y="6016" width="128" height="128"/>
-  <object id="279" x="7936" y="5888" width="128" height="128"/>
-  <object id="280" x="8064" y="5760" width="3072" height="128"/>
+  <object id="276" x="6656" y="6144" width="1280" height="128"/>
+  <object id="279" x="7936" y="6016" width="3072" height="128"/>
   <object id="328" x="11136" y="9088" width="256" height="128"/>
   <object id="329" x="9984" y="8448" width="384" height="128"/>
   <object id="330" x="9984" y="9600" width="256" height="128"/>
@@ -44651,7 +44648,7 @@
   <object id="341" x="9856" y="7424" width="128" height="4224"/>
   <object id="342" x="9984" y="7296" width="640" height="128"/>
   <object id="343" x="11136" y="7936" width="256" height="128"/>
-  <object id="344" x="11392" y="6144" width="128" height="5376"/>
+  <object id="344" x="11392" y="6400" width="128" height="5120"/>
   <object id="345" x="11520" y="11008" width="128" height="256"/>
   <object id="346" x="11648" y="10752" width="128" height="256"/>
   <object id="347" x="11776" y="10496" width="128" height="256"/>
@@ -44673,8 +44670,8 @@
   <object id="439" x="10624" y="1920" width="128" height="128"/>
   <object id="376" x="4480" y="2560" width="1920" height="128"/>
   <object id="377" x="1920" y="2688" width="2566.67" height="128"/>
-  <object id="378" x="11136" y="5888" width="128" height="128"/>
-  <object id="379" x="11264" y="6016" width="128" height="128"/>
+  <object id="378" x="11136" y="6272" width="256" height="128"/>
+  <object id="441" x="11008" y="6144" width="128" height="128"/>
   <object id="380" x="7168" y="11904" width="128" height="896"/>
   <object id="409" x="11008" y="12416" width="128" height="128"/>
  </objectgroup>
