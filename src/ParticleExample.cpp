@@ -81,11 +81,11 @@ void ParticleExample::setStyle(PatticleStyle style)
 
     case ParticleExample::MOHO:
     {
-        if (_texture == nullptr || _texture == getDefaultTexture()) {
-            _texture = Engine::GetInstance().textures->Load("assets/Textures/Particles/Moho/Moho_Particle_2.png");
-        }
+        // 1. Elegir una de las 4 texturas de moho de forma aleatoria
+        int randMoho = (rand() % 4) + 1; // Genera un número del 1 al 4
+        std::string path = "assets/Textures/Particles/Moho/Moho_Particle_" + std::to_string(randMoho) + ".png";
 
-        initWithTotalParticles(20); 
+        initWithTotalParticles(35); 
 
         _duration = DURATION_INFINITY;
         this->_emitterMode = Mode::GRAVITY;
@@ -98,12 +98,12 @@ void ParticleExample::setStyle(PatticleStyle style)
         _angle = 90.0f;
         _angleVar = 360.0f; // Que salgan en todas direcciones
 
-        _life = 2.0f; // Que duren poco
+        _life = 3.0f; // Que duren poco
         _lifeVar = 0.5f;
 
-        _startSize = 25.0f; // Esporas pequeñitas
-        _startSizeVar = 22.0f;
-        _endSize = START_SIZE_EQUAL_TO_END_SIZE;
+        _startSize = 60.0f; // Esporas pequeñitas
+        _startSizeVar = 60.0f;
+        _endSize = 20.0f;
 
         _emissionRate = _totalParticles / _life;
 
@@ -119,6 +119,212 @@ void ParticleExample::setStyle(PatticleStyle style)
         break;
     }
 
+    case ParticleExample::MOHO_SALTO:
+    {
+        // 1. Elegir una de las 4 texturas de moho de forma aleatoria
+        int randMoho = (rand() % 4) + 1; // Genera un número del 1 al 4
+        std::string path = "assets/Textures/Particles/Moho/Moho_Particle_" + std::to_string(randMoho) + ".png";
+
+        // Cargamos la textura aleatoria
+        _texture = Engine::GetInstance().textures->Load(path.c_str());
+
+        // Más partículas que en el moho normal para que se note el impacto
+        initWithTotalParticles(30);
+
+        _duration = DURATION_INFINITY;
+        this->_emitterMode = Mode::GRAVITY;
+
+        // Gravedad suave para que floten, pero velocidad inicial más alta
+        this->modeA.gravity = { 0.0f, 5.0f };
+        this->modeA.speed = 50.0f; // Salen disparadas al aterrizar
+        this->modeA.speedVar = 20.0f;
+
+        _angle = 90.0f;
+        _angleVar = 360.0f; // Explosión en todas direcciones
+
+        _life = 0.6f;
+        _lifeVar = 0.2f;
+
+        _startSize = 120.0f; // Esporas un poco más grandes al impactar
+        _startSizeVar = 120.0f;
+        _endSize = 30.0f;   // Crecen un poco al disiparse
+
+        _emissionRate = _totalParticles / 0.1f; // Explosión rápida
+
+        _startColor = { 0.2f, 0.8f, 0.2f, 1.0f };
+        _startColorVar = { 0.1f, 0.1f, 0.1f, 0.0f };
+        _endColor = { 0.1f, 0.5f, 0.1f, 0.0f };
+
+        _posVar = { 150.0f, 130.0f }; // Dispersión un poco más amplia por el impacto
+
+        SDL_SetTextureBlendMode(_texture, SDL_BLENDMODE_BLEND);
+        break;
+    }
+
+    case ParticleExample::POLVO:
+    {
+        // 1. Elegir una de las 3 texturas de polvo de forma aleatoria
+        int randDust = (rand() % 3) + 1; // Da 1, 2 o 3
+        std::string path = "assets/Textures/Particles/Polvo/polvo_trans" + std::to_string(randDust) + ".png";
+
+        // Sobrescribimos la textura por defecto con la aleatoria
+        _texture = Engine::GetInstance().textures->Load(path.c_str());
+
+        // 2. Comportamiento del polvo
+        initWithTotalParticles(1); // Pocas partículas por "puff" para no saturar
+
+        _duration = DURATION_INFINITY;
+        this->_emitterMode = Mode::GRAVITY;
+
+        // Queremos que el polvo se eleve un poquito y se esparza a los lados
+        this->modeA.gravity = { 0.0f, -5.0f }; // Sube ligeramente
+        this->modeA.speed = 15.0f;
+        this->modeA.speedVar = 10.0f;
+
+        _angle = 90.0f;
+        _angleVar = 360.0f; // Que salga en todas direcciones
+
+        _life = 0.4f; // Desaparece rápido (es un rastro de pisada)
+        _lifeVar = 0.1f;
+
+        _startSize = 70.0f;
+        _startSizeVar = 5.0f;
+        _endSize = 115.0f; // ¡El polvo se expande a medida que desaparece!
+        _endSizeVar = 5.0f;
+
+        //_emissionRate = _totalParticles / _life;
+        _emissionRate = _totalParticles / 0.1f; // ¡Expulsa todas en 0.1 segundos!
+
+        // Mantener el color original de tu PNG, pero lo desvanecemos al final
+        _startColor = { 1.0f, 1.0f, 1.0f, 0.8f };
+        _startColorVar = { 0.0f, 0.0f, 0.0f, 0.1f };
+        _endColor = { 1.0f, 1.0f, 1.0f, 0.0f };
+
+        _posVar = { 8.0f, 2.0f }; // Dispersión horizontal en la base de los pies
+
+        // No emiten luz, usan transparencia normal
+        SDL_SetTextureBlendMode(_texture, SDL_BLENDMODE_BLEND);
+
+        break;
+    }
+
+    case ParticleExample::POLVO_SALTO:
+    {
+        int randDust = (rand() % 3) + 1;
+        std::string path = "assets/Textures/Particles/Polvo/polvo_trans" + std::to_string(randDust) + ".png";
+        _texture = Engine::GetInstance().textures->Load(path.c_str());
+
+        initWithTotalParticles(14); // Más partículas para el impacto
+        _duration = DURATION_INFINITY;
+        this->_emitterMode = Mode::GRAVITY;
+
+        this->modeA.gravity = { 0.0f, -10.0f }; // Sube un poco más que el polvo normal
+        this->modeA.speed = 30.0f; // Salen disparadas más rápido
+        this->modeA.speedVar = 15.0f;
+
+        _angle = 90.0f;
+        _angleVar = 360.0f;
+        _life = 0.5f;
+        _lifeVar = 0.1f;
+
+        _startSize = 100.0f; // ¡Más grandes!
+        _startSizeVar = 40.0f;
+        _endSize = 40.0f;   // Se expanden mucho más al desaparecer
+        _endSizeVar = 10.0f;
+
+        _emissionRate = _totalParticles / 0.1f; // Explosión instantánea
+
+        _startColor = { 1.0f, 1.0f, 1.0f, 0.8f };
+        _startColorVar = { 0.0f, 0.0f, 0.0f, 0.1f };
+        _endColor = { 1.0f, 1.0f, 1.0f, 0.0f };
+
+        _posVar = { 15.0f, 5.0f }; // Área de dispersión más ancha
+        SDL_SetTextureBlendMode(_texture, SDL_BLENDMODE_BLEND);
+        break;
+    }
+
+    case ParticleExample::HIERBAJO:
+    {
+
+        _texture = Engine::GetInstance().textures->Load("assets/Textures/Particles/hierbajo.png");
+
+        initWithTotalParticles(1); // Con 5 hojitas por pisada es suficiente
+
+        _duration = DURATION_INFINITY;
+        this->_emitterMode = Mode::GRAVITY;
+
+        // Queremos que las hojas salten hacia arriba y luego caigan por gravedad
+        this->modeA.gravity = { 0.0f, 60.0f }; // Gravedad fuerte hacia abajo
+        this->modeA.speed = -80.0f; // Impulso inicial fuerte hacia arriba
+        this->modeA.speedVar = 30.0f;
+
+        _angle = 90.0f;
+        _angleVar = 45.0f; // Salen como en un cono/abanico hacia arriba
+
+        _life = 0.5f;
+        _lifeVar = 0.2f;
+
+        _startSize = 50.0f; // Tamaño de la hojita
+        _startSizeVar = 4.0f;
+        _endSize = START_SIZE_EQUAL_TO_END_SIZE; // Las hojas no se encogen ni crecen
+
+        // Rotación para que las hojas giren mientras saltan
+        _startSpin = 0.0f;
+        _startSpinVar = 360.0f;
+        _endSpin = 360.0f;
+        _endSpinVar = 360.0f;
+
+        //_emissionRate = _totalParticles / _life;
+        _emissionRate = _totalParticles / 0.1f; // ¡Expulsa todas en 0.1 segundos!
+
+        _startColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+        _startColorVar = { 0.0f, 0.0f, 0.0f, 0.0f };
+        _endColor = { 1.0f, 1.0f, 1.0f, 0.0f }; // Se desvanecen al tocar el suelo
+
+        _posVar = { 10.0f, 0.0f };
+
+        // Transparencia normal
+        SDL_SetTextureBlendMode(_texture, SDL_BLENDMODE_BLEND);
+
+        break;
+    }
+
+    case ParticleExample::HIERBAJO_SALTO:
+    {
+        _texture = Engine::GetInstance().textures->Load("assets/Textures/Particles/hierbajo.png");
+
+        initWithTotalParticles(8); // Más hojas saltando
+
+        _duration = DURATION_INFINITY;
+        this->_emitterMode = Mode::GRAVITY;
+
+        this->modeA.gravity = { 0.0f, 80.0f }; // Gravedad fuerte
+        this->modeA.speed = -100.0f; // Salto vertical más brusco
+        this->modeA.speedVar = 40.0f;
+
+        _angle = 90.0f;
+        _angleVar = 60.0f; // Abanico más amplio
+        _life = 0.6f;
+        _lifeVar = 0.2f;
+
+        _startSize = 50.0f; // Hojas más grandes
+        _startSizeVar = 20.0f;
+        _endSize = START_SIZE_EQUAL_TO_END_SIZE;
+
+        _startSpin = 0.0f;
+        _startSpinVar = 360.0f;
+        _endSpin = 360.0f;
+        _endSpinVar = 360.0f;
+
+        _emissionRate = _totalParticles / 0.1f;
+
+        _startColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+        _startColorVar = { 0.0f, 0.0f, 0.0f, 0.0f };
+        _endColor = { 1.0f, 1.0f, 1.0f, 0.0f };
+        _posVar = { 15.0f, 0.0f };
+        SDL_SetTextureBlendMode(_texture, SDL_BLENDMODE_BLEND);
+        break;
+    }
 
     //case ParticleExample::FIRE_WORK:
     //{

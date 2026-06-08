@@ -221,6 +221,7 @@ public:
     int GetTileHeight() {
     return mapData.tileHeight;
 }
+
     int GetTileFromLayer(std::string layerName, int worldX, int worldY);
     void SpawnParticle(ParticleExample::PatticleStyle style, int x, int y, float duration);
 
@@ -239,6 +240,13 @@ public:
     std::vector<int> killedEnemies;
     std::vector<PhysBody*> mapBodies;
     std::vector<ParticleExample*> mapParticles;
+
+
+    bool IsMoho(int gid);
+    bool IsPolvo(int gid);
+    bool IsHierba(int gid);
+
+
 public: 
     std::string mapFileName;
     std::string mapPath;

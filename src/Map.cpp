@@ -30,6 +30,24 @@
 #include "KnightBoss.h"
 #include "PrincessBoss.h"
 #include "HighPriestess.h"
+#include <algorithm>
+
+
+bool Map::IsMoho(int gid) {
+    static const std::vector<int> ids = { 881 }; // todos los GIDs de moho
+    return std::find(ids.begin(), ids.end(), gid) != ids.end();
+}
+
+bool Map::IsPolvo(int gid) {
+    static const std::vector<int> ids = { 882, 18967, 2135, 1636, 819 }; // todos los de polvo
+    return std::find(ids.begin(), ids.end(), gid) != ids.end();
+}
+
+bool Map::IsHierba(int gid) {
+    static const std::vector<int> ids = { 883 }; // todos los de hierba
+    return std::find(ids.begin(), ids.end(), gid) != ids.end();
+}
+
 
 Map::Map() : Module(), mapLoaded(false)
 {
@@ -641,8 +659,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                         player->Start();
                     }
 
-                    if (Engine::GetInstance().scene->GetLastScene() != SceneID::INTRO_SCREEN &&
-                        Engine::GetInstance().scene->GetLastScene() != SceneID::MAIN_MENU &&
+                    if (/*Engine::GetInstance().scene->GetLastScene() != SceneID::INTRO_SCREEN &&
+                        Engine::GetInstance().scene->GetLastScene() != SceneID::MAIN_MENU &&*/
                         Engine::GetInstance().scene->firstDoor == false) {
 
                         auto obj = Engine::GetInstance().map->GetObjectByProperty("Doors", "name", Engine::GetInstance().scene->nextSpawnPoint);

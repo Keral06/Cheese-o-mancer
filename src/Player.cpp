@@ -163,47 +163,52 @@ bool Player::Update(float dt)
 				Move();
 				Jump();
 
-				// --- INICIO LÓGICA PARTÍCULAS ---
-				// 1. LÓGICA SUELO: Solo si anda por el suelo y no está enganchado a la pared
+				// 1. LÓGICA SUELO
 				if (isWalking && isCollidedFloor && !isWallWalking) {
 					stepParticleTimer += dt;
 
-					if (stepParticleTimer >= stepParticleCooldown) {
+					int lookX = (int)position.getX() + (facingLeft ? 25 : -25);
+					int lookY = (int)position.getY() + (texH / 2);
+					int tileID = Engine::GetInstance().map->GetTileFromLayer("MetadataSuelos", lookX, lookY);
+
+					// Determinamos si el suelo actual es de polvo/hierba (cooldown largo) o moho (cooldown corto)
+					bool esSueloEspecial = Engine::GetInstance().map->IsPolvo(tileID) || Engine::GetInstance().map->IsHierba(tileID);
+					float currentCooldown = esSueloEspecial ? 500.0f : 250.0f;
+
+					if (stepParticleTimer >= currentCooldown) {
 						stepParticleTimer = 0.0f;
+						int spawnY = lookY - 20;
 
-						int lookX = (int)position.getX() + (facingLeft ? 25 : -25);
-						int lookY = (int)position.getY() + (texH / 2);
-
-						int tileID = Engine::GetInstance().map->GetTileFromLayer("MetadataSuelos", lookX, lookY);
-						int idMoho = 1;
-
-						if (tileID == idMoho) {
-							int spawnY = lookY - 20;
+						if (Engine::GetInstance().map->IsMoho(tileID)) {
 							Engine::GetInstance().map->SpawnParticle(ParticleExample::MOHO, lookX, spawnY, 0.15f);
+						}
+						else if (Engine::GetInstance().map->IsPolvo(tileID)) {
+							Engine::GetInstance().map->SpawnParticle(ParticleExample::POLVO, lookX, spawnY, 0.15f);
+						}
+						else if (Engine::GetInstance().map->IsHierba(tileID)) {
+							Engine::GetInstance().map->SpawnParticle(ParticleExample::HIERBAJO, lookX, spawnY + 10, 0.15f);
 						}
 					}
 				}
-				// 2. LÓGICA PARED: Solo si está enganchado (isWallWalking) y moviéndose (velocidad distinta a 0)
+				// 2. LÓGICA PARED
 				else if (isWallWalking && (velocity.x != 0.0f || velocity.y != 0.0f)) {
 					stepParticleTimer += dt;
 
-					if (stepParticleTimer >= stepParticleCooldown) {
+					if (stepParticleTimer >= 250.0f) { // 250ms para la pared
 						stepParticleTimer = 0.0f;
 
-						// Para la pared, generamos la partícula en el centro del cuerpo (position.getY())
-						// y un poco hacia atrás (espalda) para que el rastro quede pegado al muro
-						int spawnX = (int)position.getX() + (facingLeft ? 25 : -25); //Si pegar mas a la pared, aumenta el 25 de (facingLeft ? 25 : -25) a 40 o 50 para empujarlas hacia afuera del sprite
+						int spawnX = (int)position.getX() + (facingLeft ? 25 : -25);
 						int spawnY = (int)position.getY();
 
-						// Duración rápida para hacer el efecto de "puff" al trepar
 						Engine::GetInstance().map->SpawnParticle(ParticleExample::MOHO, spawnX, spawnY, 0.15f);
 					}
 				}
-				// 3. SI SE PARA: Reseteamos el temporizador
-				else {
-					stepParticleTimer = stepParticleCooldown;
+				// 3. SI SE PARA
+				else if (!isWalking) {
+					// Lo ponemos a 1000.0f para que el primer paso sea instantáneo
+					stepParticleTimer = 1000.0f;
 				}
-				// ------
+				// --- FIN LÓGICA PARTÍCULAS ---
 			}
 			else {
 				currentAnimSet->SetCurrent("idle");
@@ -630,22 +635,64 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 	ColliderType other = physB->ctype;
 
 	// =========================
-	// 0. COLISIÓN DE LOS PIES
-	// =========================
+		// 0. COLISIÓN DE LOS PIES
+		// =========================
 	if (physA == feetHitbox)
 	{
 		if (other == ColliderType::PLATFORM)
 		{
+			// Comprobamos si venimos del aire antes de actualizar los booleanos
+			bool justLanded = !isCollidedFloor;
+
 			floorContacts++;
 			isJumping = false;
 			firstJump = true;
 			isCollidedFloor = true;
 
+			// --- INICIO PARTICULAS DE ATERRIZAJE ---
+			if (justLanded && !isWallWalking) {
+
+				int bx, by;
+				pbody->GetPosition(bx, by);
+				int lookX = bx;
+				int lookY = by + (texH / 2) + 10;
+
+				int tileID = Engine::GetInstance().map->GetTileFromLayer("MetadataSuelos", lookX, lookY);
+
+				int idMoho = 1;
+				int idPolvo = 2;
+				int idHierbajo = 3;
+
+				// 1. Suelo de Polvo / Tierra
+				if (tileID == idPolvo) {
+					Engine::GetInstance().map->SpawnParticle(ParticleExample::POLVO_SALTO, lookX - 35, lookY - 30, 0.15f);
+					Engine::GetInstance().map->SpawnParticle(ParticleExample::POLVO_SALTO, lookX + 35, lookY - 30, 0.15f);
+				}
+				// 2. Suelo de Césped
+				else if (tileID == idHierbajo) {
+					Engine::GetInstance().map->SpawnParticle(ParticleExample::HIERBAJO_SALTO, lookX - 30, lookY - 20, 0.15f);
+					Engine::GetInstance().map->SpawnParticle(ParticleExample::HIERBAJO_SALTO, lookX + 30, lookY - 20, 0.15f);
+				}
+				// 3. Suelo de Moho
+				else if (tileID == idMoho) {
+					// Si creas el estilo MOHO_SALTO úsalo aquí. De momento usa el normal.
+					Engine::GetInstance().map->SpawnParticle(ParticleExample::MOHO_SALTO, lookX - 30, lookY - 30, 0.15f);
+					Engine::GetInstance().map->SpawnParticle(ParticleExample::MOHO_SALTO, lookX + 30, lookY - 30, 0.15f);
+				}
+				// 4. SUELO POR DEFECTO (Piedra, vacío, etc.)
+				else {
+					// Impacto de polvo potente siempre que aterrices en suelo sin metadato
+					Engine::GetInstance().map->SpawnParticle(ParticleExample::POLVO_SALTO, lookX - 35, lookY - 30, 0.15f);
+					Engine::GetInstance().map->SpawnParticle(ParticleExample::POLVO_SALTO, lookX + 35, lookY - 30, 0.15f);
+				}
+			}
+			// --- FIN PARTICULAS DE ATERRIZAJE ---
+
 			if (isMounted) {
 				//DismountAndLaunch();
 			}
 		}
-	
+
 		return;
 	}
 
