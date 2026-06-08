@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="120" tilewidth="128" tileheight="128" infinite="0" nextlayerid="23" nextobjectid="31">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="100" height="120" tilewidth="128" tileheight="128" infinite="0" nextlayerid="23" nextobjectid="31">
  <tileset firstgid="1" source="test2_tileset.tsx"/>
  <tileset firstgid="4" source="cloud_2.tsx"/>
  <tileset firstgid="5" source="cloud_1.tsx"/>
@@ -12,29 +12,66 @@
  <tileset firstgid="12" source="tileset_lv2_sky_parallax_6.tsx"/>
  <tileset firstgid="13" source="cloud_3.tsx"/>
  <tileset firstgid="14" source="tileset_lvl4_General_01.tsx"/>
- <group id="6" name="Sky" offsetx="-3456" offsety="-2560" parallaxx="0.1" parallaxy="0.5">
+ <group id="6" name="Sky" offsetx="-5088" offsety="-6176" parallaxx="0.1" parallaxy="0.5">
+  <properties>
+   <property name="Background" type="bool" value="true"/>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <objectgroup id="7" name="Sky 1" parallaxx="0.9">
-   <object id="9" gid="7" x="-3747.41" y="12066.7" width="16452.1" height="5288.19"/>
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
+   <object id="9" gid="7" x="-9197.29" y="16462" width="22068.7" height="7397.54"/>
+  </objectgroup>
+  <objectgroup id="5" name="Night_sky_bg" parallaxx="0.9">
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
+   <object id="4" gid="6" x="-5646.76" y="9402.68" width="25702.4" height="9507.48"/>
   </objectgroup>
   <group id="16" name="Clouds" parallaxy="0.9">
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
    <objectgroup id="8" name="Sky 2" parallaxx="0.8" parallaxy="0.9">
-    <object id="10" gid="8" x="-2048" y="9472" width="10116.7" height="3963.8"/>
+    <properties>
+     <property name="Background" type="bool" value="true"/>
+     <property name="Draw" type="bool" value="true"/>
+    </properties>
+    <object id="10" gid="8" x="-1339.4" y="15177.4" width="14896.1" height="6460.41"/>
    </objectgroup>
    <objectgroup id="9" name="Sky 3" parallaxx="0.7" parallaxy="0.7">
-    <object id="11" gid="9" x="-2064" y="8416" width="10116.7" height="3811.8"/>
+    <properties>
+     <property name="Background" type="bool" value="true"/>
+     <property name="Draw" type="bool" value="true"/>
+    </properties>
+    <object id="11" gid="9" x="-1776" y="14813.3" width="14896.1" height="6796.6"/>
    </objectgroup>
    <objectgroup id="10" name="Sky 4" parallaxx="0.6" parallaxy="0.7">
-    <object id="12" gid="10" x="-2218.42" y="8466.91" width="10116.7" height="3251.8"/>
+    <properties>
+     <property name="Background" type="bool" value="true"/>
+     <property name="Draw" type="bool" value="true"/>
+    </properties>
+    <object id="12" gid="10" x="-3526.08" y="14888.2" width="16464.1" height="4788.04"/>
    </objectgroup>
    <objectgroup id="12" name="Sky 5" parallaxx="0.5" parallaxy="0.8">
-    <object id="13" gid="11" x="-2232" y="8280" width="10116.7" height="3251.8"/>
-    <object id="18" gid="12" x="-796" y="9136" width="8528" height="3204"/>
+    <properties>
+     <property name="Background" type="bool" value="true"/>
+     <property name="Draw" type="bool" value="true"/>
+    </properties>
+    <object id="13" gid="11" x="-1662.17" y="14759.3" width="14896.1" height="6580.04"/>
+    <object id="18" gid="12" x="-1699.33" y="15079.2" width="14572.9" height="4717.66"/>
    </objectgroup>
-   <objectgroup id="11" name="Sky 6" parallaxx="0.4" parallaxy="0.8"/>
+   <objectgroup id="11" name="Sky 6" parallaxx="0.4" parallaxy="0.8">
+    <properties>
+     <property name="Background" type="bool" value="true"/>
+     <property name="Draw" type="bool" value="true"/>
+    </properties>
+   </objectgroup>
   </group>
-  <objectgroup id="5" name="Night_sky_bg" parallaxx="0.9">
-   <object id="4" gid="6" x="-3832" y="6792.07" width="16489.1" height="6133.53"/>
-  </objectgroup>
  </group>
  <group id="15" name="Things I dont want yet" visible="0">
   <objectgroup id="4" name="clouds 2">
@@ -24078,11 +24115,23 @@
  </objectgroup>
  <objectgroup id="21" name="spikes"/>
  <group id="3" name="Foreground clouds" offsetx="3328" offsety="-3712" parallaxx="1.1" parallaxy="0.5">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+   <property name="Foreground" type="bool" value="true"/>
+  </properties>
   <objectgroup id="13" name="clouds 3" parallaxx="0.8">
-   <object id="16" gid="13" x="-4104.03" y="8885.59" width="8799.36" height="2765.16"/>
+   <properties>
+    <property name="Draw" type="bool" value="true"/>
+    <property name="Foreground" type="bool" value="true"/>
+   </properties>
+   <object id="16" gid="13" x="-568.03" y="8949.59" width="13199.4" height="2765.16"/>
   </objectgroup>
   <objectgroup id="2" name="clouds 2" parallaxx="0.9">
-   <object id="17" gid="4" x="-3905.6" y="9224.2" width="9240" height="2970"/>
+   <properties>
+    <property name="Draw" type="bool" value="true"/>
+    <property name="Foreground" type="bool" value="true"/>
+   </properties>
+   <object id="17" gid="4" x="398.4" y="9384.2" width="10616" height="3450"/>
   </objectgroup>
  </group>
 </map>

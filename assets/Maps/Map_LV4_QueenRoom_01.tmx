@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="20" tilewidth="128" tileheight="128" infinite="0" nextlayerid="13" nextobjectid="23">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="40" height="20" tilewidth="128" tileheight="128" infinite="0" nextlayerid="13" nextobjectid="23">
  <tileset firstgid="1" source="test2_tileset.tsx"/>
  <tileset firstgid="4" source="tileset_lvl4_General_01.tsx"/>
  <tileset firstgid="1188" source="hab reina foreground cortinas.tsx"/>
  <tileset firstgid="1189" source="habitacion reina.tsx"/>
  <objectgroup id="7" name="Background" parallaxx="0.9">
-  <object id="2" gid="1189" x="128" y="2455" width="4188" height="2094"/>
+  <properties>
+   <property name="Background" type="bool" value="true"/>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
+  <object id="2" gid="1189" x="128" y="2455" width="4500.27" height="2094"/>
  </objectgroup>
  <layer id="3" name="Bg Assets" width="40" height="20">
   <properties>
@@ -1621,6 +1625,13 @@
    <tile gid="4"/>
   </data>
  </layer>
+ <objectgroup id="6" name="Foreground Cortinas" parallaxx="1.1">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+   <property name="Foreground" type="bool" value="true"/>
+  </properties>
+  <object id="1" gid="1188" x="358.593" y="2380.57" width="3662.56" height="1857.87"/>
+ </objectgroup>
  <layer id="8" name="map" width="40" height="20">
   <properties>
    <property name="Draw" type="bool" value="true"/>
@@ -2428,9 +2439,6 @@
    <tile gid="83"/>
   </data>
  </layer>
- <objectgroup id="6" name="Foreground Cortinas" visible="0" parallaxx="1.1">
-  <object id="1" gid="1188" x="568" y="2432" width="4232" height="1924"/>
- </objectgroup>
  <objectgroup id="9" name="Doors"/>
  <objectgroup id="10" name="Entities">
   <object id="5" name="Player" type="Player" x="1168.31" y="2026.77">

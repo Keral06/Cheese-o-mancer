@@ -270,7 +270,7 @@ bool Scene::PostUpdate()
 
 	case SceneID::IN_GAME:
 		PostUpdateLevel();
-		SaveLevel();
+		//SaveLevel();
 		break;
 	
 	case SceneID::GAME_OVER:
@@ -1670,7 +1670,9 @@ void Scene::LoadMap(std::string map)
 
 	if (continueGame == true) {
 		Engine::GetInstance().gameManager->LoadGame();
+		continueGame = false;
 	}
+	
 
 	if (firstMapLoad && !continueGame) 
 	{
