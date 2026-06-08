@@ -23,6 +23,7 @@ bool Rat::Start()
     offsetAttackHitboxX = 40;
     offsetAttackHitboxY = -texH/2;
     type = EnemyType::MELEE;
+	health = 60; // 3 hits
     
     texName = "assets/Textures/Spritesheets/Rata/sprite_rat_02.png";
     spriteSheetName = "";

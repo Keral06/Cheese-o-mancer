@@ -3718,7 +3718,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 					if (GivesArtifact.AvanzarDialogo(dt)) {
 
 
-						SDL_Texture* help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
+						SDL_Texture* help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ArtifactAssembled2_.png");
 						Engine::GetInstance().scene->inventario.push("Artifact", help, nullptr);
 						Engine::GetInstance().scene->inventario.eliminarObjeto("Bloody");
 						Engine::GetInstance().scene->inventario.eliminarObjeto("Moldy");

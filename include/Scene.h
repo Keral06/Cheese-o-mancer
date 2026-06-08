@@ -60,8 +60,13 @@ public:
 	int selectedTeleportingLevel = 0;
 	SDL_Texture* teleportBg = nullptr;
 	int currentMission = 0;
+	int actualHelpTexture = 0;
 	Scene();
+	// help
 
+	void HelpUI();
+
+	void SetHelpUI(bool aaa);
 	// Destructor
 	virtual ~Scene();
 
@@ -171,6 +176,8 @@ private:
 	void TarotUI();
 
 	void SetTarotUI(bool aaa);
+	
+	
 
 	bool tarot = false;
 	
@@ -232,6 +239,7 @@ public:
 	void CreateTeleportUI();
 	void SetTeleport(bool teleport);
 	void HandleTeleportUIEvents(UIElement* uiElement);
+	std::vector<SDL_Texture*> helpTextures;
 	
 private:
 
@@ -240,6 +248,7 @@ private:
 	std::string tilePosDebug = "[0,0]";
 	SDL_Texture* helpTexture = nullptr;
 	SDL_Texture* map1Texture = nullptr;
+	
 	SDL_Texture* map2Texture = nullptr;
 	SDL_Texture* map3Texture = nullptr;
 	SDL_Texture* mapToShow = nullptr;

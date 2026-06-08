@@ -63,4 +63,6 @@ protected:
 
     int damageTimer = 0;
     int damageCooldown = 60;
+
+    bool isDead = false;
 };

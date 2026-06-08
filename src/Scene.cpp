@@ -390,7 +390,18 @@ void Scene::LoadGame()
 }
 bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 {
-
+	if (uiElement->id == 70) {
+		actualHelpTexture++;
+		if (actualHelpTexture >= helpTextures.size()) actualHelpTexture = 0;
+		Engine::GetInstance().render->DrawTextureNoCamera(helpTextures[actualHelpTexture], 730, 162, 200, 400);
+		return true;
+	}
+	if (uiElement->id == 71) {
+		actualHelpTexture--;
+		if (actualHelpTexture < 0) actualHelpTexture = helpTextures.size() - 1;
+		Engine::GetInstance().render->DrawTextureNoCamera(helpTextures[actualHelpTexture], 730, 162, 200, 400);
+		return true;
+	}
 	if (uiElement->id == 67) {
 		
 		SetInventory(!inventoryOn);
@@ -870,6 +881,7 @@ void Scene::UpdateLevel(float dt) {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
 	{
 		showHelp = !showHelp;
+		SetHelpUI(showHelp);
 	}
 	//INVENTARIO
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
@@ -958,6 +970,7 @@ void Scene::UpdateLevel(float dt) {
 
 
 	}
+	
 	if (isPaused||showHelp||inventoryOn) {
 		return;
 	}
@@ -1100,10 +1113,10 @@ void  Scene::PostUpdateLevel() {
 	// Dibujar Mapa
 
 	// Dibujar Ayuda
-	if (showHelp && helpTexture != nullptr)
-	{
-		SDL_FRect centrar = { 0, 0, 1280, 720 };
-		SDL_RenderTexture(Engine::GetInstance().render->renderer, helpTexture, NULL, &centrar);
+	if (showHelp) {
+
+		SDL_FRect centrar = { 0, 0, 1200, 600 };
+		SDL_RenderTexture(Engine::GetInstance().render->renderer, helpTextures[actualHelpTexture], NULL, &centrar);
 	}
 	
 
@@ -1614,6 +1627,7 @@ void Scene::LoadMap(std::string map)
 	isPaused = false;
 	CreatePauseUI();
 	MissionUI();
+	HelpUI();
 	CreateTeleportUI();
 	InventariIconUI();
 	if (map.find("LV2") != std::string::npos) {
@@ -1623,7 +1637,11 @@ void Scene::LoadMap(std::string map)
 		CreateStoreLevel1();
 	}
 	CreateInventoryUI();
-	helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_TutorialControls.png");
+	if (helpTextures.size() == 0) {
+		helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_Tutorial/UI_TutorialControls1_.png");
+		helpTextures.push_back(helpTexture);
+	}
+	
 	map1Texture = Engine::GetInstance().textures->Load("assets/UI/Map/UI_Map_Level1.png");
 	map2Texture = Engine::GetInstance().textures->Load("assets/UI/Map/UI_Map_level2_.png");
 	map3Texture = Engine::GetInstance().textures->Load("assets/UI/Map/UI_Map_level3_.png");
@@ -2613,6 +2631,55 @@ void Scene::SetTarotUI(bool on) {
 
 
 	}
+}
+
+// FUNCIONES HELP UI
+
+void Scene::HelpUI() {
+
+	arrowRight = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_BurronRight_.png");
+	arrowLeft = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_ButtonLeft_.png");
+	arrowRight2 = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_BurronRight2_.png");
+	arrowLeft2 = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_ButtonLeft2_.png");
+	cardsBase = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_Base_.png");
+	if (helpTextures.size() == 0) {
+		helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_Tutorial/UI_TutorialControls1_.png");
+		helpTextures.push_back(helpTexture);
+	}
+
+	auto previousMission = Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 70, "",
+		{ 100, 350, 50, 50 }, this, SDL_Rect{ 0,0,0,0 },
+		arrowLeft2, arrowLeft
+	);
+	if (previousMission) previousMission->visible = false;
+
+	auto nextMission = Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 71, "",
+		{ 1100, 350, 50, 50 }, this, SDL_Rect{ 0,0,0,0 },
+		arrowRight2, arrowRight
+	);
+	if (nextMission) nextMission->visible = false;
+
+}
+
+void Scene::SetHelpUI(bool on) {
+	for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
+		if (element->id == 70 || element->id == 71) {
+			element->visible = on;
+		}
+	}
+	if (on) {
+		
+		SDL_FRect centrar = { 0, 0, 1200, 600 };
+		SDL_RenderTexture(Engine::GetInstance().render->renderer, helpTextures[actualHelpTexture], NULL, &centrar);
+	}
+		
+
+		
+
+
+	
 }
 
 //FUNCIONS DELS VIDEOS
