@@ -29,6 +29,7 @@
 #include "Bee.h"
 #include "KnightBoss.h"
 #include "PrincessBoss.h"
+#include "HighPriestess.h"
 
 Map::Map() : Module(), mapLoaded(false)
 {
@@ -698,6 +699,12 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                     princess->Start();
                     princess->mapID = id;
                 }
+                else if (entityType == "HighPriestess") {
+                    std::shared_ptr<HighPriestess> highPriestess = std::dynamic_pointer_cast<HighPriestess>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HIGHPRIESTESSS));
+                    highPriestess->position = Vector2D(x, y);
+                    highPriestess->Start();
+                    highPriestess->mapID = id;
+                }
                 else if (entityType == "Jailer") {
                     std::shared_ptr<Jailer> jailer = std::dynamic_pointer_cast<Jailer>(Engine::GetInstance().entityManager->CreateEntity(EntityType::JAILER));
                     jailer->position = Vector2D(x, y);
@@ -1010,14 +1017,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                             retired->Start();
                             retired->mapID = id;
                             }
-                else if (entityType == "HighPriestess") {
-                                std::shared_ptr<HighPriestess> highPriestess = std::dynamic_pointer_cast<HighPriestess>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HIGHPRIESTESS));
-                                highPriestess->position = Vector2D(x, y);
-                                highPriestess->xInicial = (int)x;
-                                highPriestess->yInicial = (int)y;
-                                highPriestess->Start();
-                                highPriestess->mapID = id;
-                                }
+                
                 else if (entityType == "Pics") {
                     auto pics = std::dynamic_pointer_cast<Pics>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PICS));
                     pics->position = Vector2D(x, y);

@@ -69,7 +69,7 @@ bool Scene::PreUpdate()
 bool Scene::Update(float dt)
 {
 	if (isPlayingVideo) {
-		LOG("Video dt: %f", dt);
+		//LOG("Video dt: %f", dt);
 		plm_decode(video.plm, dt / 1000.0f);	//passar d milisegons a segons
 
 		if (video.texture && video.buffer) {
@@ -2629,7 +2629,7 @@ void Scene::OnVideoFrame(plm_t* mpeg, plm_frame_t* frame, void* user) {
 	VideoData* video = static_cast<VideoData*>(user);
 
 	if (video->buffer) {
-		LOG("Decoding video frame");
+		//LOG("Decoding video frame");
 		plm_frame_to_rgba(frame, video->buffer, video->width * 4);
 	}
 }
