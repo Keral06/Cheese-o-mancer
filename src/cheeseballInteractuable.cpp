@@ -66,7 +66,7 @@ bool CheeseBallInteract::Update(float dt)
 	if (Engine::GetInstance().scene->cheese)return true;
 
 	Draw(dt);
-	CheeseBallTexture = Engine::GetInstance().textures->Load("resources/spritesheets/Jester/Cheese_wheel/Cheese_flat_asset.png");
+	CheeseBallTexture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/Cheese_wheel/Cheese_flat_asset.png");
 			if (isGettingTouched) {
 				Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
