@@ -237,6 +237,24 @@ bool Player::Update(float dt)
 
 		
 		ApplyPhysics();
+
+		// MOSTRAR QUESO (Asegúrate de que esto quede dentro de if(!isPaused) )
+		if (isShowingCheese) {
+			showCheeseTimer -= dt;
+
+			// Mantenemos la textura activa (pero sin reiniciar el fotograma)
+			currentAnimSet = &animsShowCheese;
+			texture = textureShowCheese;
+
+			b2Vec2 vel = b2Body_GetLinearVelocity(pbody->body);
+			vel.x = 0.0f;
+			b2Body_SetLinearVelocity(pbody->body, vel);
+
+			if (showCheeseTimer <= 0.0f) {
+				isShowingCheese = false;
+				lastState = DEFAULT; // <--- Esto obliga al jugador a volver al IDLE normal al terminar
+			}
+		}
 	}
 	if (Engine::GetInstance().scene->ObjectObserved == false) {
 
@@ -1463,10 +1481,14 @@ void Player::CheckKickFrame()
 void Player::PlayShowCheese()
 {
 	isShowingCheese = true;
-	showCheeseTimer = 2000.0f; // 2 segundos mostrando el queso
+	showCheeseTimer = 2000.0f;
 
-	// Frenamos al jugador en seco usando la sintaxis correcta de tu Box2D
 	b2Vec2 vel = b2Body_GetLinearVelocity(pbody->body);
 	vel.x = 0.0f;
 	b2Body_SetLinearVelocity(pbody->body, vel);
+
+	// ASIGNAMOS LA ANIMACIÓN AQUÍ, SOLO UNA VEZ PARA QUE NO SE CONGELE
+	currentAnimSet = &animsShowCheese;
+	texture = textureShowCheese;
+	currentAnimSet->SetCurrent("show_cheese");
 }
