@@ -50,6 +50,7 @@ bool Rat::Update(float dt)
         }
         return true;
     }
+
     if (pbody != nullptr && !b2Body_IsEnabled(pbody->body)) {
         b2Body_Enable(pbody->body);
     }
@@ -59,63 +60,36 @@ bool Rat::Update(float dt)
         return true;
     }
 
-    if (health <= 0 && !coinDropped) {
-        coinDropped = true;
-        SetState(EnemyState::DYING);
-        Die();
-        return true;
-    }
-
-    repathTimer++;
-    if (damageTimer > 0) {
-        damageTimer--;
-    }
+    if (damageTimer > 0) damageTimer--;
 
     GetPhysicsValues();
-
     distanceToPlayer = CalculateDistance();
 
-    // =====================
-    // MOVERSE
-    // =====================
-
-    if (distanceToPlayer < detectionRange) {
-        if (!isKnockback) {
-            PerformPathfinding();
-            Move();
-            SetState(EnemyState::RUNNING);
-            if (velocity.y < -0.1f) {
-                SetState(EnemyState::JUMPING);
-            }
-            else if (velocity.y > 0.1f) {
-                SetState(EnemyState::FALLING);
-            }
-        }
-        else {
-            knockbackTimer--;
-
-            
-            SetState(EnemyState::FALLING);
-            
-
-            if (knockbackTimer < 0) {
-                knockbackTimer = knockbackDuration;
-                isKnockback = false;
-            }
-
+    if (isKnockback) {
+        knockbackTimer--;
+        if (knockbackTimer <= 0) {
+            isKnockback = false;
+            knockbackTimer = knockbackDuration;
+            Engine::GetInstance().physics->SetLinearVelocity(pbody, 0.0f, 0.0f);
+            velocity = { 0.0f, 0.0f };
         }
     }
     else {
-       Patrol();
+        if (distanceToPlayer < detectionRange) {
+            PerformPathfinding();
+            Move();
+            SetState(EnemyState::RUNNING);
+        }
+        else {
+            Patrol();
+            SetState(EnemyState::WALKING);
+        }
     }
 
     ApplyPhysics();
 
-    if (velocity.x < 0)
-        facingLeft = true;
-    else if (velocity.x > 0)
-        facingLeft = false;
-
+    if (velocity.x < -0.1f) facingLeft = true;
+    else if (velocity.x > 0.1f) facingLeft = false;
     Draw(dt);
 
     return true;
@@ -134,12 +108,16 @@ void Rat::OnCollision(PhysBody* physA, PhysBody* physB)
         return;
     }
 
+    if (physB->ctype == ColliderType::DANGER) {
+        this->DecreaseHealth(100);
+    }
+
     if (physB->ctype == ColliderType::PLAYER) {
         Player* player = dynamic_cast<Player*>(physB->listener);
-
         if (player && damageTimer <= 0) {
             Engine::GetInstance().scene->lives--;
-            LOG("Player hurt!");
+            damageTimer = 60; 
+            LOG("Daño recibido!");
         }
     }
 }

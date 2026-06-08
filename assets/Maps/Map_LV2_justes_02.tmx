@@ -1,11 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="167" height="97" tilewidth="128" tileheight="128" infinite="0" nextlayerid="39" nextobjectid="380">
+<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="167" height="97" tilewidth="128" tileheight="128" infinite="0" nextlayerid="46" nextobjectid="390">
  <tileset firstgid="1" name="tileset_lv2_general_02" tilewidth="128" tileheight="128" tilecount="1558" columns="38">
   <image source="tileset_lv2_general_02.png" width="4864" height="5367"/>
  </tileset>
  <tileset firstgid="1559" name="tileset_lv2_Justes_02" tilewidth="128" tileheight="128" tilecount="1800" columns="50">
   <image source="tileset_lv2_Justes_02.png" width="6400" height="4608"/>
  </tileset>
+ <tileset firstgid="3359" source="tileset_lv2_sky_parallax_1.tsx"/>
+ <tileset firstgid="3360" source="tileset_lv2_sky_parallax_2.tsx"/>
+ <tileset firstgid="3361" source="tileset_lv2_sky_parallax_3.tsx"/>
+ <tileset firstgid="3362" source="Level2/tileset_lv2_sky_parallax_4.tsx"/>
+ <tileset firstgid="3363" source="tileset_lv2_sky_parallax_4.tsx"/>
+ <tileset firstgid="3364" source="Level2/tileset_lv2_sky_parallax_5.tsx"/>
+ <tileset firstgid="3365" source="Level2/tileset_lv2_sky_parallax_6.tsx"/>
+ <group id="39" name="Sky" offsetx="-876" offsety="2112" parallaxx="0.1" parallaxy="0.1">
+  <objectgroup id="40" name="Sky1" parallaxx="0.4" parallaxy="0.4">
+   <object id="380" gid="3359" x="-5565.17" y="-142.211" width="11883.5" height="3819.71"/>
+  </objectgroup>
+  <objectgroup id="41" name="Sky2" parallaxx="0.5" parallaxy="0.5">
+   <object id="384" gid="3360" x="-5476.4" y="-60.9394" width="11883.5" height="3819.71"/>
+  </objectgroup>
+  <objectgroup id="42" name="Sky3" parallaxx="0.6" parallaxy="0.6">
+   <object id="385" gid="3361" x="-5394.15" y="6.20725" width="11883.5" height="3819.71"/>
+  </objectgroup>
+  <objectgroup id="43" name="Sky4" parallaxx="0.7" parallaxy="0.7">
+   <object id="386" gid="3362" x="-5298.32" y="86.9351" width="11883.5" height="3819.71"/>
+   <object id="387" gid="3363" x="-5298.32" y="46.1915" width="11883.5" height="3819.71"/>
+  </objectgroup>
+  <objectgroup id="44" name="Sky5" parallaxx="0.8" parallaxy="0.8">
+   <object id="388" gid="3364" x="-5229.65" y="167.663" width="11883.5" height="3819.71"/>
+  </objectgroup>
+  <objectgroup id="45" name="Sky6" parallaxx="0.9" parallaxy="0.9">
+   <object id="389" gid="3365" x="-2723.15" y="234.81" width="6790.6" height="3819.71"/>
+  </objectgroup>
+ </group>
  <layer id="16" name="Background" width="167" height="97">
   <properties>
    <property name="Draw" type="bool" value="true"/>
@@ -97299,7 +97327,7 @@
   <object id="317" x="3456" y="6912" width="896" height="128"/>
   <object id="318" x="2560" y="8448" width="640" height="128"/>
   <object id="319" x="8576" y="6144" width="2560" height="128"/>
-  <object id="320" x="13184" y="6528" width="1152" height="128"/>
+  <object id="320" x="14916.5" y="5436.24" width="1955.69" height="217.299"/>
   <object id="321" x="16000" y="6016" width="1152" height="128"/>
   <object id="322" x="18176" y="5632" width="2560" height="128"/>
   <object id="345" x="128" y="5120" width="896" height="128"/>

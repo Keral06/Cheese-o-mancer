@@ -129,6 +129,10 @@ void Enemy::PerformPathfinding() {
 
 	pathfinding->PropagateAStar(SQUARED);
 
+	if (pathfinding->pathTiles.empty()) {
+		LOG("AVISO: Rata en %f, %f no encuentra camino al jugador", position.getX(), position.getY());
+	}
+
 }
 
 void Enemy::GetPhysicsValues() {
@@ -170,8 +174,11 @@ void Enemy::Move() {
 
 void Enemy::ApplyPhysics() {
 
-	// Apply velocity via helper
+	if (isKnockback) {
+		return;
+	}
 	Engine::GetInstance().physics->SetLinearVelocity(pbody, velocity);
+
 	if (attackHitbox != nullptr)
 	{
 		float offsetX = facingLeft ?
@@ -310,28 +317,24 @@ void Enemy::Attack() {
 void Enemy::DecreaseHealth(int amount) {
 	health -= amount;
 
-	SetState(EnemyState::HIT);
-
-	if (pbody != nullptr) {
-
-		b2Vec2 vel = Engine::GetInstance().physics->GetLinearVelocity(pbody);
-
-		float dir = facingLeft ? 1.0f : -1.0f;
-
-		vel.x = dir * knockbackForce;
-		vel.y = -10.0f; // pequeño salto
-
-		Engine::GetInstance().physics->SetLinearVelocity(pbody, vel);
-
+	if (health > 0) {
+		SetState(EnemyState::HIT);
 		isKnockback = true;
 		knockbackTimer = knockbackDuration;
-	}
+		repathTimer = repathDelay; 
 
-	if (health <= 0) {
+		if (pbody != nullptr) {
+			Engine::GetInstance().physics->SetLinearVelocity(pbody, 0.0f, 0.0f);
+			float dir = facingLeft ? 1.0f : -1.0f;
+			Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, dir * 300.0f, -150.0f, true);
+		}
+	}
+	else {
 		SetState(EnemyState::DYING);
 		Die();
 	}
 }
+
 void Enemy::Die() {
 	
 	toDelete = true;
