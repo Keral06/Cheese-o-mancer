@@ -57,3 +57,28 @@ bool ListaMisiones::Visualizada() {
 
 
 }
+void ListaMisiones::SaveState(pugi::xml_node& node) {
+    for (int j = 0; j < objetos.size(); j++) {
+        pugi::xml_node misionNode = node.append_child("mision");
+        misionNode.append_attribute("nombre") = objetos[j].nombre.c_str();
+        misionNode.append_attribute("visualizada") = objetos[j].visualizada;
+        misionNode.append_attribute("completed") = objetos[j].completed;
+    }
+}
+
+void ListaMisiones::LoadState(pugi::xml_node node) {
+    for (pugi::xml_node misionNode = node.child("mision"); misionNode; misionNode = misionNode.next_sibling("mision")) {
+        std::string nom = misionNode.attribute("nombre").as_string();
+
+        for (int j = 0; j < objetos.size(); j++) {
+            if (objetos[j].nombre == nom) {
+                objetos[j].visualizada = misionNode.attribute("visualizada").as_bool();
+                objetos[j].completed = misionNode.attribute("completed").as_bool();
+                if (objetos[j].completed) {
+                    objetos[j].imagen = objetos[j].imagenFinalizada;
+                }
+                break;
+            }
+        }
+    }
+}

@@ -760,6 +760,10 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 	case 1:
 		LOG("Main Menu: MyButton clicked!");
 		continueGame = false;
+		score = 0;
+		extralife = false;
+		maxLives = 4;
+		lives = 4;
 		ChangeScene(SceneID::IN_GAME);
 		
 		break;
@@ -1658,19 +1662,19 @@ void Scene::LoadMap(std::string map)
 
 	if (continueGame == false) {
 
-		levelTimer = 0.0f;
-		Engine::GetInstance().scene->score = 0;
+		levelTimer = 0.0f;/*
+		Engine::GetInstance().scene->score = 0;*/
 		showMap = false;
-		inventoryOn = false;
+		inventoryOn = false;/*
 		Engine::GetInstance().scene->extralife = false;
 		Engine::GetInstance().scene->maxLives = 4;
-		Engine::GetInstance().scene->lives = 4;
+		Engine::GetInstance().scene->lives = 4;*/
 		//firstDoor = true;       
 		//cheese = false;     
 		//nextSpawnPoint = "";
 		//nextMap = "";
 		if (player) {
-			Engine::GetInstance().scene->lives = 4;
+			/*Engine::GetInstance().scene->lives = 4;*/
 
 			/*
 			player->extralife = false;

@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "pugixml.hpp"
 
 struct SDL_Texture;
 
@@ -30,4 +31,6 @@ public:
     void Completed(std::string nom);
     bool tieneObjeto(std::string nom);
     bool Visualizada();
+    void SaveState(pugi::xml_node& node);
+    void LoadState(pugi::xml_node node);
 };
