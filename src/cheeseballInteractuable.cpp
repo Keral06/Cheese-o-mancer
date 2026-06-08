@@ -41,8 +41,8 @@ bool CheeseBallInteract::Start() {
 		pbody = Engine::GetInstance().physics->CreateRectangleSensor(
 			(int)position.getX(),
 			(int)position.getY(),
-			texW / 2,
-			texH / 2,
+			texW,
+			texH,
 			bodyType::DYNAMIC
 		);
 		b2Body_SetGravityScale(pbody->body, 0.0f);

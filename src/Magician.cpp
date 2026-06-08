@@ -142,7 +142,14 @@ bool Magician::Update(float dt) {
 	if (isGettingTouched) {
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
-
+		if (Engine::GetInstance().scene->beatBoss == true && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+			BeatBoss.AvanzarDialogo(dt);
+			return true;
+		}
+		if (AfterCheese.hasStarted && !AfterCheese.hasEnded) {
+			AfterCheese.Draw(dt);
+			return true;
+		}
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedMagician == false) {
 			
 				if (dialogueMagicianStart.AvanzarDialogo(dt)) {

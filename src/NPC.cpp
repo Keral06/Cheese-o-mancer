@@ -1687,7 +1687,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 			pbody = Engine::GetInstance().physics->CreateRectangleSensor(
 				(int)position.getX(),
 				(int)position.getY(),
-				texW / 2,
+				texW *3,
 				texH / 2,
 				bodyType::DYNAMIC
 			);
