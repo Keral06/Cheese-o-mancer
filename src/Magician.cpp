@@ -121,6 +121,7 @@ bool Magician::Update(float dt) {
 
 	Draw(dt);
 	if (firstTime == true) {
+		
 		if (!dialogueMagicianStart.hasStarted && Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN) {
 			dialogueMagicianStart.BeginDialogue();
 			Engine::GetInstance().scene->SetInventariIcon(true);

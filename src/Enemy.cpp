@@ -315,18 +315,24 @@ void Enemy::Attack() {
 }
 
 void Enemy::DecreaseHealth(int amount) {
-	health -= amount;
+	//if (name == "Jailer" && state == EnemyState::ATTACKING) {
+	//	health -= amount;
+	//	LOG("Jailer ignorando knockback (Super Armor)");
+	//	if (health <= 0) Die();
+	//	return;
+	//}
 
+	health -= amount;
 	if (health > 0) {
 		SetState(EnemyState::HIT);
 		isKnockback = true;
 		knockbackTimer = knockbackDuration;
-		repathTimer = repathDelay; 
+		repathTimer = repathDelay;
 
 		if (pbody != nullptr) {
 			Engine::GetInstance().physics->SetLinearVelocity(pbody, 0.0f, 0.0f);
 			float dir = facingLeft ? 1.0f : -1.0f;
-			Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, dir * 300.0f, -150.0f, true);
+			Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, dir * 150.0f, -20.0f, true);
 		}
 	}
 	else {
@@ -334,7 +340,6 @@ void Enemy::DecreaseHealth(int amount) {
 		Die();
 	}
 }
-
 void Enemy::Die() {
 	
 	toDelete = true;

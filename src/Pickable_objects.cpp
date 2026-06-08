@@ -256,6 +256,8 @@ void Pics::CheckBoolOfPlayer() {
 		break;
 	case 1:
 		Engine::GetInstance().scene->dawn = true;
+		help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemPoem2_.png");
+		Engine::GetInstance().scene->inventario.push("Dawn", help, nullptr);
 		if (Engine::GetInstance().scene->dawn == true && Engine::GetInstance().scene->day == true && Engine::GetInstance().scene->dusk == true && Engine::GetInstance().scene->night == true) {
 			Engine::GetInstance().scene->hasAllPoems = true;
 
@@ -263,6 +265,8 @@ void Pics::CheckBoolOfPlayer() {
 		break;
 	case 2:
 		Engine::GetInstance().scene->day = true;
+		help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemPoem2_.png");
+		Engine::GetInstance().scene->inventario.push("Day", help, nullptr);
 		if (Engine::GetInstance().scene->dawn == true && Engine::GetInstance().scene->day == true && Engine::GetInstance().scene->dusk == true && Engine::GetInstance().scene->night == true) {
 			Engine::GetInstance().scene->hasAllPoems = true;
 
@@ -270,6 +274,8 @@ void Pics::CheckBoolOfPlayer() {
 		break;
 	case 3:
 		Engine::GetInstance().scene->dusk = true;
+		help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemPoem2_.png");
+		Engine::GetInstance().scene->inventario.push("Dusk", help, nullptr);
 		if (Engine::GetInstance().scene->dawn == true && Engine::GetInstance().scene->day == true && Engine::GetInstance().scene->dusk == true && Engine::GetInstance().scene->night == true) {
 			Engine::GetInstance().scene->hasAllPoems = true;
 
@@ -277,6 +283,8 @@ void Pics::CheckBoolOfPlayer() {
 		break;
 	case 4:
 		Engine::GetInstance().scene->night = true;
+		help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemPoem2_.png");
+		Engine::GetInstance().scene->inventario.push("Night", help, nullptr);
 		if (Engine::GetInstance().scene->dawn == true && Engine::GetInstance().scene->day == true && Engine::GetInstance().scene->dusk == true && Engine::GetInstance().scene->night == true) {
 			Engine::GetInstance().scene->hasAllPoems = true;
 
@@ -322,7 +330,7 @@ void Pics::CheckBoolOfPlayer() {
 		//Artifact
 	case 11:
 		if (Engine::GetInstance().scene->inventario.tieneObjeto("Bloody"))return;
-		help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
+		help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ArtifactBloody2_.png");
 		Engine::GetInstance().scene->inventario.push("Bloody", help, nullptr);
 		
 		//bloody
@@ -333,7 +341,7 @@ void Pics::CheckBoolOfPlayer() {
 		break;
 	case 12:
 		if (Engine::GetInstance().scene->inventario.tieneObjeto("Rusty"))return;
-		help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
+		help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ArtifactRusty2_png");
 		Engine::GetInstance().scene->inventario.push("Rusty", help, nullptr); //rusty
 		if (Engine::GetInstance().scene->inventario.tieneObjeto("Bloody") && Engine::GetInstance().scene->inventario.tieneObjeto("Rusty") && Engine::GetInstance().scene->inventario.tieneObjeto("Moldy") && Engine::GetInstance().scene->inventario.tieneObjeto("Core")) {
 			Engine::GetInstance().scene->hasAllFragments = true;
@@ -342,7 +350,7 @@ void Pics::CheckBoolOfPlayer() {
 			break; 
 	case 13:
 		if (Engine::GetInstance().scene->inventario.tieneObjeto("Moldy"))return;
-		help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
+		help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ArtifactMoldy2.png");
 		Engine::GetInstance().scene->inventario.push("Moldy", help, nullptr);
 		if (Engine::GetInstance().scene->inventario.tieneObjeto("Bloody") && Engine::GetInstance().scene->inventario.tieneObjeto("Rusty") && Engine::GetInstance().scene->inventario.tieneObjeto("Moldy") && Engine::GetInstance().scene->inventario.tieneObjeto("Core")) {
 			Engine::GetInstance().scene->hasAllFragments = true;
@@ -352,7 +360,7 @@ void Pics::CheckBoolOfPlayer() {
 	
 	case 14:
 		if (Engine::GetInstance().scene->inventario.tieneObjeto("Core"))return;
-		help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
+		help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ArtifactCore2_.png");
 		Engine::GetInstance().scene->inventario.push("Core", help, nullptr);//core
 		if (Engine::GetInstance().scene->inventario.tieneObjeto("Bloody") && Engine::GetInstance().scene->inventario.tieneObjeto("Rusty") && Engine::GetInstance().scene->inventario.tieneObjeto("Moldy") && Engine::GetInstance().scene->inventario.tieneObjeto("Core")) {
 			Engine::GetInstance().scene->hasAllFragments = true;
