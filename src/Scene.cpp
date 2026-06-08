@@ -761,6 +761,10 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 	case 1:
 		LOG("Main Menu: MyButton clicked!");
 		continueGame = false;
+		score = 0;
+		extralife = false;
+		maxLives = 4;
+		lives = 4;
 		ChangeScene(SceneID::IN_GAME);
 		
 		break;
@@ -1659,19 +1663,19 @@ void Scene::LoadMap(std::string map)
 
 	if (continueGame == false) {
 
-		levelTimer = 0.0f;
-		Engine::GetInstance().scene->score = 0;
+		levelTimer = 0.0f;/*
+		Engine::GetInstance().scene->score = 0;*/
 		showMap = false;
-		inventoryOn = false;
+		inventoryOn = false;/*
 		Engine::GetInstance().scene->extralife = false;
 		Engine::GetInstance().scene->maxLives = 4;
-		Engine::GetInstance().scene->lives = 4;
+		Engine::GetInstance().scene->lives = 4;*/
 		//firstDoor = true;       
 		//cheese = false;     
 		//nextSpawnPoint = "";
 		//nextMap = "";
 		if (player) {
-			Engine::GetInstance().scene->lives = 4;
+			/*Engine::GetInstance().scene->lives = 4;*/
 
 			/*
 			player->extralife = false;
@@ -1918,14 +1922,6 @@ void Scene::CreateStoreLevel3() {
 	auto btnLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 37, "TEMPORARY LIFE", { 350, y + 250, 170, 170 }, this, SDL_Rect{ 0,0,0,0 }, LifeNormal, LifeClicked);
 	btnLIFE->visible = false;
 
-	// PERMANENT LIFE
-	SDL_Texture* PermLife;
-	SDL_Texture* PermLifeClicked;
-	PermLife = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemPermanentLife1_.png");
-	PermLifeClicked = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemPermanentLife2_.png");
-	auto btnPERMLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 50, "PERMANENT LIFE", { 450, y + 150, 170, 170 }, this, SDL_Rect{ 0,0,0,0 }, PermLife, PermLifeClicked);
-	btnPERMLIFE->visible = false;
-
 	// BUYMAP
 	SDL_Texture* BuyNormal;
 	SDL_Texture* BuyClicked;
@@ -1942,16 +1938,12 @@ void Scene::CreateStoreLevel3() {
 	auto btnBUYLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 41, "BUYLIFE", { 750, y + 280, 300, 150 }, this, SDL_Rect{ 0,0,0,0 }, BuyNormal, BuyClicked);
 	btnBUYLIFE->visible = false;
 
-	// BUY PERMANENT LIFE
-	auto btnBUYPERMLIFE = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 51, "BUYPERMLIFE", { 750, y + 280, 300, 150 }, this, SDL_Rect{ 0,0,0,0 }, BuyNormal, BuyClicked);
-	btnBUYPERMLIFE->visible = false;
 
 	
 	storeBag = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Bag_02.png");
 	storePaperMap = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Map.png");
 	storePaperLife = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Life.png");
 	storePaperKey = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Key.png");
-	storePaperPermLife = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_PermanentLife_.png");
 }
 
 void Scene::SetStore(bool store, int storeID) {
@@ -1973,7 +1965,7 @@ void Scene::SetStore(bool store, int storeID) {
 		}
 		else if (storeID == 3) {
 			for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
-				if (element->id == 35 || element->id == 36 || element->id == 37 || element->id == 50) {
+				if (element->id == 35 || element->id == 36 || element->id == 37) {
 					element->visible = storeOn;
 				}
 			}

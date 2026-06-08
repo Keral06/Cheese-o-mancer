@@ -40,3 +40,17 @@ void Inventario::eliminarObjeto(std::string nom) {
         }
     }
 }
+
+void Inventario::SaveState(pugi::xml_node& node) {
+    for (int j = 0; j < objetos.size(); j++) {
+        pugi::xml_node itemNode = node.append_child("item");
+        itemNode.append_attribute("nombre") = objetos[j].nombre.c_str();
+    }
+}
+
+void Inventario::LoadState(pugi::xml_node node) {
+    objetos.clear();
+    for (pugi::xml_node itemNode = node.child("item"); itemNode; itemNode = itemNode.next_sibling("item")) {
+        std::string nom = itemNode.attribute("nombre").as_string();
+    }
+}

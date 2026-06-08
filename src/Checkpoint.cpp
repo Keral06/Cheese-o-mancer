@@ -7,6 +7,7 @@
 #include "Physics.h"
 #include "Player.h"
 #include "Map.h"
+#include "GameManager.h"
 
 Checkpoint::Checkpoint() : Entity(EntityType::CHECKPOINT)
 {
@@ -99,6 +100,7 @@ void Checkpoint::OnCollision(PhysBody* physA, PhysBody* physB)
 		if (rawPlayer != nullptr) {
 			std::shared_ptr<Player> playerPtr(rawPlayer, [](Player*) {});
 			Engine::GetInstance().map->SaveEntities(playerPtr);
+			Engine::GetInstance().gameManager->SaveGame();
 		}
 	}
 }

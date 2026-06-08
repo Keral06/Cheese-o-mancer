@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
-
+#include "GameManager.h"
 #include "Engine.h"
 #include "Window.h"
 #include "Input.h"

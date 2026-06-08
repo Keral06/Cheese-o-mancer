@@ -7,6 +7,7 @@
 #include "PerfTimer.h"
 #include "pugixml.hpp"
 
+
 // Modules
 class Window;
 class Input;
@@ -18,6 +19,7 @@ class EntityManager;
 class Map;
 //L08 TODO 2: Add Physics module
 class Physics;
+class GameManager;
 class UIManager;
 class Engine
 {
@@ -101,7 +103,7 @@ public:
 	// L08: TODO 2: Add Physics module
 	std::shared_ptr<Physics> physics;
 	std::shared_ptr<UIManager> uiManager;
-
+	std::shared_ptr<GameManager> gameManager;
 private: 
 
 	// Delta time
