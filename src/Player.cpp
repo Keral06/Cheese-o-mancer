@@ -740,7 +740,12 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 		LOG("Checkpoint reached.");
 		break;
 	}
-
+	case ColliderType::ARENA_TRIGGER:
+	{
+		Engine::GetInstance().scene->StartMiniBoss();
+		b2Body_Disable(physB->body);
+		break;
+	}
 	case ColliderType::DANGER:
 	case ColliderType::ENEMY:
 	case ColliderType::FIREBALL:

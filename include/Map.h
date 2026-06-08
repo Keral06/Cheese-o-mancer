@@ -246,6 +246,7 @@ public:
     bool IsPolvo(int gid);
     bool IsHierba(int gid);
 
+    void DestroyBodyByName(std::string name);
 
 public: 
     std::string mapFileName;

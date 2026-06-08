@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="23" nextobjectid="285">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="23" nextobjectid="287">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -22485,7 +22485,7 @@
   <object id="223" x="10624" y="4864" width="384" height="128"/>
   <object id="224" x="10968" y="4992" width="40" height="1280"/>
   <object id="256" x="5248" y="512" width="5760" height="128"/>
-  <object id="280" x="2304" y="2430" width="128" height="900">
+  <object id="286" name="WallBeforeWheel" type="WallBeforeWheel" x="2308.73" y="2425.76" width="128" height="900">
    <properties>
     <property name="MiniBossFinished" type="bool" value="false"/>
     <property name="name" value="WallBeforeWheel"/>
@@ -22494,9 +22494,6 @@
  </objectgroup>
  <objectgroup id="8" name="Entities">
   <object id="97" name="Player" type="Player" x="9888.64" y="1523.58">
-   <point/>
-  </object>
-  <object id="272" name="WallBeforeWheel" type="WallBeforeWheel" x="2400" y="3204">
    <point/>
   </object>
   <object id="273" name="Notice from the Royal Halls" type="Notice from the Royal Halls" x="7100" y="5412">
@@ -22538,7 +22535,7 @@
    </properties>
    <point/>
   </object>
-  <object id="284" x="3130.3" y="1796.97" width="2039.39" height="127.273">
+  <object id="284" name="miniBoss" type="miniBoss" x="3130.3" y="1796.97" width="2039.39" height="127.273">
    <properties>
     <property name="hasEntered" type="bool" value="false"/>
     <property name="name" value="miniBoss"/>

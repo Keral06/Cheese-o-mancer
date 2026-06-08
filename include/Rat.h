@@ -14,6 +14,10 @@ public:
     void Die();
     void Patrol();
     void Draw(float dt) override;
+
+    bool hasEntered = true;
+    bool isArenaRat = false;
+    bool isDefeated = false;
 protected:
 
     bool coinDropped = false;
@@ -25,4 +29,5 @@ protected:
 
     int damageCooldown = 60;
     int damageTimer = 0;
+
 };

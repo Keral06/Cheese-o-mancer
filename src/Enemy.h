@@ -100,6 +100,11 @@ public:
 	int knockbackDuration = 50;
 	int lastAttackId = -1;
 
+	// Variables para arena
+	bool hasEntered = true;
+	bool isDefeated = false;
+	bool isArenaRat = false;
+
 	Vector2D deathPosition;
 protected:
 	b2Vec2 velocity;

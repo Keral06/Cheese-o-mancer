@@ -419,6 +419,21 @@ bool Map::Load(std::string path, std::string fileName)//
                 }
                 continue;
             }
+            else if (objectGroup->name == "Entities") {
+                for (const auto& object : objectGroup->objects) {
+                    if (object->name == "miniBoss") {
+                        int w = object->width > 0 ? object->width : 50;
+                        int h = object->height > 0 ? object->height : 50;
+                        PhysBody* triggerBody = Engine::GetInstance().physics->CreateRectangleSensor(
+                            object->x + w / 2, object->y + h / 2, w, h, STATIC
+                        );
+                        triggerBody->ctype = ColliderType::ARENA_TRIGGER;
+                        mapBodies.push_back(triggerBody);
+                    }
+                }
+                continue;
+            }
+
             else {
                 continue;
             }
@@ -453,8 +468,6 @@ bool Map::Load(std::string path, std::string fileName)//
                 }
             }
         }
-
-       
 
         ret = true;
 
@@ -696,6 +709,16 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                 else if (entityType == "Rat") {
                     std::shared_ptr<Rat> rat = std::dynamic_pointer_cast<Rat>(Engine::GetInstance().entityManager->CreateEntity(EntityType::RAT));
                     rat->position = Vector2D(x, y);
+
+                    Properties tempProps;
+                    LoadProperties(objectNode, tempProps);
+                    auto propEntered = tempProps.GetProperty("hasEntered");
+
+                    if (propEntered && propEntered->value == false) {
+                        rat->hasEntered = false;
+                        rat->isArenaRat = true;
+                    }
+
                     rat->Start();
                     rat->mapID = id;
                 }
@@ -793,14 +816,14 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                     sketches->Start();
                     sketches->mapID = id;
                 }
-                else if (entityType == "WallBeforeWheel") {
-                    std::shared_ptr<WallBeforeWheel> wallBeforeWheel = std::dynamic_pointer_cast<WallBeforeWheel>(Engine::GetInstance().entityManager->CreateEntity(EntityType::WALLBEFOREWHEEL));
-                    wallBeforeWheel->position = Vector2D(x, y);
-                    wallBeforeWheel->xInicial = (int)x;
-                    wallBeforeWheel->yInicial = (int)y;
-                    wallBeforeWheel->Start();
-                    wallBeforeWheel->mapID = id;
-                }
+                //else if (entityType == "WallBeforeWheel") {
+                //    std::shared_ptr<WallBeforeWheel> wallBeforeWheel = std::dynamic_pointer_cast<WallBeforeWheel>(Engine::GetInstance().entityManager->CreateEntity(EntityType::WALLBEFOREWHEEL));
+                //    wallBeforeWheel->position = Vector2D(x, y);
+                //    wallBeforeWheel->xInicial = (int)x;
+                //    wallBeforeWheel->yInicial = (int)y;
+                //    wallBeforeWheel->Start();
+                //    wallBeforeWheel->mapID = id;
+                //}
                 else if (entityType == "LockedDoor") {
                     std::shared_ptr<LockedDoor> lockedDoor = std::dynamic_pointer_cast<LockedDoor>(Engine::GetInstance().entityManager->CreateEntity(EntityType::LOCKEDDOOR));
                     lockedDoor->position = Vector2D(x, y);
@@ -1416,4 +1439,17 @@ void Map::SpawnParticle(ParticleExample::PatticleStyle style, int x, int y, floa
     p->setDuration(duration);
 
     mapParticles.push_back(p);
+}
+
+void Map::DestroyBodyByName(std::string name)
+{
+    for (auto it = mapBodies.begin(); it != mapBodies.end(); ) {
+        if ((*it) != nullptr && (*it)->objectName == name) {
+            Engine::GetInstance().physics->DeletePhysBody(*it);
+            it = mapBodies.erase(it);
+        }
+        else {
+            ++it;
+        }
+    }
 }

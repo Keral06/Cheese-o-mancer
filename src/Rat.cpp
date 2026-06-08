@@ -44,6 +44,16 @@ bool Rat::Start()
 
 bool Rat::Update(float dt)
 {
+    if (!hasEntered) {
+        if (pbody != nullptr && b2Body_IsEnabled(pbody->body)) {
+            b2Body_Disable(pbody->body);
+        }
+        return true;
+    }
+    if (pbody != nullptr && !b2Body_IsEnabled(pbody->body)) {
+        b2Body_Enable(pbody->body);
+    }
+
     if (isDead) {
         Draw(dt);
         return true;
@@ -142,6 +152,7 @@ void Rat::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 //Muerte
 void Rat::Die() {
     isDead = true;
+    isDefeated = true;
     SetState(EnemyState::DYING);
 
     deathPosition = GetPosition();
@@ -176,6 +187,10 @@ void Rat::Die() {
         coinEntity->xInicial = (int)pos.getX();
         coinEntity->yInicial = (int)pos.getY();
         coinEntity->Start();
+    }
+
+    if (isArenaRat) {
+        Engine::GetInstance().scene->CheckMiniBossStatus();
     }
 }
 
