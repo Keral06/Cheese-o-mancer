@@ -3,6 +3,7 @@
 // =====================
 
 #include "Player.h"
+#include "GameManager.h"
 #include "Engine.h"
 #include "Textures.h"
 #include "Audio.h"
@@ -32,6 +33,7 @@ Player::Player() : Entity(EntityType::PLAYER)
 {
 	name = "Player";
 	pbody = nullptr;
+	godMode = false;
 }
 
 Player::~Player() {
@@ -50,7 +52,7 @@ bool Player::Awake() {
 }
 
 bool Player::Start() {
-
+	godMode = false;
 	state = RUNNING;
 	lastState = RUNNING;
 	// load
@@ -432,8 +434,8 @@ void Player::Move() {
 	// GOD MODE (VERTICAL)
 	// =====================
 	if (godMode)
-	{
-		Engine::GetInstance().scene->lives = Engine::GetInstance().scene->maxLives;
+	{/*
+		Engine::GetInstance().scene->lives = Engine::GetInstance().scene->maxLives;*/
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
 			velocity.y = -godmodeSpeed;
@@ -781,7 +783,8 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 
 		if (pbody && !B2_IS_NULL(pbody->body))
 			respawnPosition = b2Body_GetPosition(pbody->body);
-
+		Engine::GetInstance().scene->SaveLevel();
+		Engine::GetInstance().gameManager->SaveGame();
 		hasHealed = false;
 		LOG("Checkpoint reached.");
 		break;
