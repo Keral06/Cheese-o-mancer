@@ -73,6 +73,13 @@ bool Player::Start() {
 	texture3x4 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/3x4/j_3x4.png");
 	texture4x4 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/4x4/j_ballroll.png");
 	texture5x5 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/5x5/j_5x5.png");
+
+
+	textureShowCheese = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/4x4/Jester_Show_That_Cheese_spritesheet.png");
+	std::unordered_map<int, std::string> aliasesShowCheese = { {0, "show_cheese"} };
+	animsShowCheese.LoadFromTSX("assets/Textures/Spritesheets/Jester/4x4/j_sp_cheese_show.tsx", aliasesShowCheese);
+
+
 	//L03: TODO 2: Initialize Player parameters
 	texture = texture3x3;
 	currentAnimSet = &anims3x3;
@@ -289,6 +296,27 @@ bool Player::Update(float dt)
 			isJumping = true;
 		}
 	}
+
+	// MOSTRAR QUESO
+	if (isShowingCheese) {
+		showCheeseTimer -= dt;
+
+		// Forzamos la animación Y LA TEXTURA
+		currentAnimSet = &animsShowCheese;
+		texture = textureShowCheese; // <--- ¡ESTA ES LA LÍNEA MÁGICA QUE FALTABA!
+		currentAnimSet->SetCurrent("show_cheese");
+
+		// Frenamos al jugador constantemente por si estaba cayendo/resbalando
+		b2Vec2 vel = b2Body_GetLinearVelocity(pbody->body);
+		vel.x = 0.0f;
+		b2Body_SetLinearVelocity(pbody->body, vel);
+
+		// Si el temporizador llega a 0, devolvemos el control
+		if (showCheeseTimer <= 0.0f) {
+			isShowingCheese = false;
+		}
+	}
+
 	return true;
 }
 
@@ -1430,4 +1458,15 @@ void Player::CheckKickFrame()
 		state = DEFAULT;
 		ResetCheeseState();
 	}
+}
+
+void Player::PlayShowCheese()
+{
+	isShowingCheese = true;
+	showCheeseTimer = 2000.0f; // 2 segundos mostrando el queso
+
+	// Frenamos al jugador en seco usando la sintaxis correcta de tu Box2D
+	b2Vec2 vel = b2Body_GetLinearVelocity(pbody->body);
+	vel.x = 0.0f;
+	b2Body_SetLinearVelocity(pbody->body, vel);
 }

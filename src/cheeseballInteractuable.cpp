@@ -74,17 +74,17 @@ bool CheeseBallInteract::Update(float dt)
 
 				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
+					if (dialogue.AvanzarDialogo(dt)) {
 
-					
-							if (dialogue.AvanzarDialogo(dt)) {
-								
-								Engine::GetInstance().scene->cheese = true;
-							
+						Engine::GetInstance().scene->cheese = true;
+						Engine::GetInstance().scene->cards.push("WheelOfFortune", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_WheelOfFortune.png"), nullptr);
 
-								Engine::GetInstance().scene->cards.push("WheelOfFortune", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_WheelOfFortune.png"), nullptr);
-							}
-						
-						return true;
+						if (py != nullptr) {
+							py->PlayShowCheese();
+						}
+					}
+
+					return true;
 				}
 
 				

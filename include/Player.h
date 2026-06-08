@@ -45,6 +45,7 @@ public:
 	void UpdateFireballs(float dt);
 	static bool isPlayerProtectedquestion();
 	static bool IsPlayerProtected;
+
 	void Attack();
 
 	void HandleAttack();
@@ -62,8 +63,13 @@ public:
 	void DismountVerticalJump();
 
 	void ResetCheeseState();
+
 	void ResetEnemiesHitStatus();
+
 	void CheckKickFrame();
+
+	void PlayShowCheese();
+
 private:
 
 	void GetPhysicsValues();
@@ -217,4 +223,11 @@ private:
 	bool pendingCheeseJump = false;
 	bool waitingAttackAnimEnd = false;
 	int jumpTriggerOffset = 7;
+
+
+	SDL_Texture* textureShowCheese = nullptr;
+	AnimationSet animsShowCheese;
+	bool isShowingCheese = false;
+	float showCheeseTimer = 0.0f;
+
 };
