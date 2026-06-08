@@ -87038,7 +87038,7 @@
  <objectgroup id="17" name="Items"/>
  <objectgroup id="18" name="Checkpoint"/>
  <objectgroup id="11" name="Doors">
-  <object id="434" name="Door" type="Door" x="14987.4" y="6784" width="1129.21" height="1024">
+  <object id="434" name="Door" type="Door" x="15217.5" y="7112.12" width="722.301" height="695.879">
    <properties>
     <property name="name" value="Door_2_7_3"/>
     <property name="offsetX" type="int" value="200"/>
@@ -87157,7 +87157,7 @@
   <object id="438" name="Player" type="Player" x="5884" y="2348">
    <point/>
   </object>
-  <object id="440" name="Handman" type="Handman" x="11709.3" y="3726.18">
+  <object id="440" name="Handman" type="Handman" x="16933.3" y="9066.18">
    <properties>
     <property name="LevelAt" type="int" value="2"/>
     <property name="storeID" type="int" value="2"/>
