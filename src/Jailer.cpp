@@ -61,7 +61,7 @@ bool Jailer::Start()
     jailerState = JAILER_IDLE;
     lastJailerState = JAILER_IDLE;
 
-    health = 5;
+	health = 100; // 5 golpes de 20 de daño
     detectionRange = 10;
     speed = 10;
     damageTimer = 0;
@@ -85,53 +85,43 @@ void Jailer::Attack()
 
 bool Jailer::Update(float dt)
 {
-    if (health <= 0 && jailerState != JAILER_DEATH)
-    {
+    if (attackCooldownTimer > 0.0f) {
+        attackCooldownTimer -= dt;
+    }
+
+    if (isKnockback) {
+        knockbackTimer--;
+        if (knockbackTimer <= 0) {
+            isKnockback = false;
+            knockbackTimer = knockbackDuration;
+            Engine::GetInstance().physics->SetLinearVelocity(pbody, 0.0f, 0.0f);
+        }
+    }
+
+    if (health <= 0 && jailerState != JAILER_DEATH) {
         SetJailerState(JAILER_DEATH);
     }
 
     if (jailerState == JAILER_DEATH) {
         anims.Update(dt);
         Draw(dt);
-        if (anims.HasFinished()) {
-            LOG("Animación de muerte terminada");
-        }
         return true;
     }
 
-    GetPhysicsValues();
-    distanceToPlayer = CalculateDistance();
+    if (!isKnockback) {
+        GetPhysicsValues();
+        distanceToPlayer = CalculateDistance();
 
-    justExitedAttack = false;
-
-    if (attackCooldownTimer > 0.0f)
-        attackCooldownTimer -= dt;
-
-    if (damageTimer > 0)
-        damageTimer--;
-
-    switch (jailerState)
-    {
-    case JAILER_IDLE:
-        UpdateIdle(dt);
-        break;
-
-    case JAILER_CHASE:
-        UpdateChase(dt);
-        break;
-
-    case JAILER_ATTACK:
-        UpdateAttack(dt);
-        break;
-
-    case JAILER_RETURN:
-        UpdateReturn(dt);
-        break;
+        switch (jailerState) {
+        case JAILER_IDLE:   UpdateIdle(dt);   break;
+        case JAILER_CHASE:  UpdateChase(dt);  break;
+        case JAILER_ATTACK: UpdateAttack(dt); break;
+        case JAILER_RETURN: UpdateReturn(dt); break;
+        }
     }
 
     ApplyPhysics();
     Draw(dt);
-
     return true;
 }
 
@@ -156,11 +146,11 @@ void Jailer::UpdateChase(float dt)
     PerformPathfinding();
     Move();
 
-    if (justExitedAttack)
-        return;
+    if (justExitedAttack) {
+        justExitedAttack = false;
+    }
 
-    if (attackCooldownTimer <= 0.0f &&
-        distanceToPlayer <= attackRange)
+    if (attackCooldownTimer <= 0.0f && distanceToPlayer <= attackRange)
     {
         SetJailerState(JAILER_ATTACK);
         Attack();
@@ -170,27 +160,16 @@ void Jailer::UpdateChase(float dt)
 
 void Jailer::UpdateAttack(float dt)
 {
-    velocity.x = 0;
-    velocity.y = 0;
-
+    velocity.x = 0; velocity.y = 0;
     anims2.Update(dt);
-
     attackTimer++;
 
-    if (attackTimer >= hitboxStart && attackTimer <= hitboxEnd)
-    {
-        if (!hitboxActive) {
-            hitboxActive = true;
-            hasHit = false;
-            LOG("Hitbox ACTIVADA");
-        }
+    if (attackTimer >= hitboxStart && attackTimer <= hitboxEnd) {
+        hitboxActive = true;
     }
-    else
-    {
-        if (hitboxActive) {
-            hitboxActive = false;
-            LOG("Hitbox DESACTIVADA");
-        }
+    else {
+        hitboxActive = false;
+        hasHit = false;
     }
 
     if (hitboxActive && playerInHitbox && !hasHit) {
@@ -199,15 +178,13 @@ void Jailer::UpdateAttack(float dt)
         LOG("JAILER HITBOX DAMAGE");
     }
 
-    if (anims2.HasFinished())
-    {
-        LOG("ATTACK FINISHED -> CHASE");
+    if (anims2.HasFinished()) {
         attackCooldownTimer = attackCooldown;
         justExitedAttack = true;
         hitboxActive = false;
+        hasHit = false;
         anims2.Resets();
         SetJailerState(JAILER_CHASE);
-        return;
     }
 }
 
@@ -346,22 +323,31 @@ void Jailer::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
     }
 }
 
-void Jailer::Die()
-{
-    SetJailerState(JAILER_DEATH);
+void Jailer::Die() {
+    isDead = true;
+    SetState(EnemyState::DYING);
 
-    anims.SetCurrent("transform");
-
-    if (pbody != nullptr) {
-        pbody->listener = nullptr;
-        Engine::GetInstance().physics->DeletePhysBody(pbody);
-        pbody = nullptr;
-    }
+    int bx, by;
+    pbody->GetPosition(bx, by);
 
     if (attackHitbox != nullptr) {
         Engine::GetInstance().physics->DeletePhysBody(attackHitbox);
         attackHitbox = nullptr;
     }
 
-    LOG("Jailer ha sido derrotado. Iniciando animación de muerte.");
+    if (pbody != nullptr) {
+        Engine::GetInstance().physics->DeletePhysBody(pbody);
+        pbody = nullptr;
+
+        pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+            bx,
+            by,
+            (int)texW,
+            (int)texH,
+            bodyType::STATIC
+        );
+
+        pbody->ctype = ColliderType::NPC;
+        pbody->listener = this;
+    }
 }
