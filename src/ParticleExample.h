@@ -12,6 +12,7 @@ public:
     {
         NONE,
         FIRE,
+        SOUP,
         MOHO,
         POLVO,     
         HIERBAJO,

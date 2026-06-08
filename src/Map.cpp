@@ -1088,6 +1088,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                 p->setPosition((int)(x + (w / 2.0f)), (int)(y + (h / 2.0f)));
 
                 if (pType == "Fire" || pType == "FIRE") p->setStyle(ParticleExample::FIRE);
+                else if (pType == "Soup" || pType == "SOUP") p->setStyle(ParticleExample::SOUP);
                 else if (pType == "Moho" || pType == "MOHO") p->setStyle(ParticleExample::MOHO);
                 else if (pType == "Smoke" || pType == "SMOKE") p->setStyle(ParticleExample::SMOKE);
                 else if (pType == "Rain" || pType == "RAIN") p->setStyle(ParticleExample::RAIN);
