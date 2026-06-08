@@ -12,7 +12,9 @@
 CheeseBallInteract::CheeseBallInteract() : NPC(EntityType::CHEESEBALLINTERACT)
 {
 	pbody = nullptr;
-	dialogue = Dialogue("Assets/Dialogues/Interactuables/Justice_Dialogues_FindCheeseWheel.txt");
+	if(Engine::GetInstance().scene->cheese==false)dialogue = Dialogue("Assets/Dialogues/Interactuables/Justice_Dialogues_FindCheeseWheel.txt");
+	/*else if(Engine::GetInstance().scene->doublejump == false) { dialogue = Dialogue("Assets/Dialogues/Interactuables/Justice_Dialogues_FindCheeseWheel2.txt"); }
+	else if (Engine::GetInstance().scene->moho == false) { dialogue = Dialogue("Assets/Dialogues/Interactuables/Justice_Dialogues_FindCheeseWheel3.txt"); }*/
 }
 
 
@@ -76,13 +78,32 @@ bool CheeseBallInteract::Update(float dt)
 
 
 					
-							if (dialogue.AvanzarDialogo(dt)) {
-								
-								Engine::GetInstance().scene->cheese = true;
-							
+					if (dialogue.AvanzarDialogo(dt)) {
 
-								Engine::GetInstance().scene->cards.push("WheelOfFortune", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_WheelOfFortune.png"), nullptr);
-							}
+						if (Engine::GetInstance().scene->cheese == false) {
+							Engine::GetInstance().scene->cheese = true;
+
+
+							Engine::GetInstance().scene->cards.push("WheelOfFortune", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_WheelOfFortune.png"), nullptr);
+
+							Engine::GetInstance().scene->helpTextures.push_back(Engine::GetInstance().textures->Load("assets/UI/UI_Tutorial/UI_TutorialControls3_.png"));
+							Engine::GetInstance().scene->showHelp = true;
+							Engine::GetInstance().scene->actualHelpTexture = 1;
+							Engine::GetInstance().scene->SetHelpUI(Engine::GetInstance().scene->showHelp);
+							return true;
+						}
+						/*if (Engine::GetInstance().scene->doublejump == false) {
+						
+							Engine::GetInstance().scene->doublejump = true;
+						
+						}
+						if (Engine::GetInstance().scene->moho == false) {
+
+							Engine::GetInstance().scene->moho = true;
+
+						}*/
+
+					}
 						
 						return true;
 				}
