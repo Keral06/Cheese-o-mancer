@@ -90,8 +90,17 @@ bool CheeseBallInteract::Update(float dt)
 							Engine::GetInstance().scene->showHelp = true;
 							Engine::GetInstance().scene->actualHelpTexture = 1;
 							Engine::GetInstance().scene->SetHelpUI(Engine::GetInstance().scene->showHelp);
+
+							if (py != nullptr) {
+								py->PlayShowCheese();
+
+							}
+
 							return true;
+
 						}
+
+							
 						/*if (Engine::GetInstance().scene->doublejump == false) {
 						
 							Engine::GetInstance().scene->doublejump = true;
