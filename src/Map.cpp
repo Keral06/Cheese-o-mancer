@@ -816,14 +816,6 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                     sketches->Start();
                     sketches->mapID = id;
                 }
-                //else if (entityType == "WallBeforeWheel") {
-                //    std::shared_ptr<WallBeforeWheel> wallBeforeWheel = std::dynamic_pointer_cast<WallBeforeWheel>(Engine::GetInstance().entityManager->CreateEntity(EntityType::WALLBEFOREWHEEL));
-                //    wallBeforeWheel->position = Vector2D(x, y);
-                //    wallBeforeWheel->xInicial = (int)x;
-                //    wallBeforeWheel->yInicial = (int)y;
-                //    wallBeforeWheel->Start();
-                //    wallBeforeWheel->mapID = id;
-                //}
                 else if (entityType == "LockedDoor") {
                     std::shared_ptr<LockedDoor> lockedDoor = std::dynamic_pointer_cast<LockedDoor>(Engine::GetInstance().entityManager->CreateEntity(EntityType::LOCKEDDOOR));
                     lockedDoor->position = Vector2D(x, y);

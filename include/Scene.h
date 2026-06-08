@@ -297,7 +297,7 @@ public:
 	std::string nextSpawnPoint = "Door_1_1";
 	std::string nextDoor = "";
 	bool firstDoor = true;
-	bool cheese = true;
+	bool cheese = false;
 
 	bool isFading = false;
 	bool fadeIn = false;   // true = fade in, false = fade out
