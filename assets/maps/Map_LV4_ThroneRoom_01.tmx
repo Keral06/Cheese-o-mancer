@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="89" height="50" tilewidth="128" tileheight="128" infinite="0" nextlayerid="18" nextobjectid="29">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="89" height="50" tilewidth="128" tileheight="128" infinite="0" nextlayerid="18" nextobjectid="29">
  <tileset firstgid="1" source="test2_tileset.tsx"/>
  <tileset firstgid="4" source="ThroneRoom_1.tsx"/>
  <tileset firstgid="5" source="ThroneRoom_2.tsx"/>
@@ -11,14 +11,32 @@
  <tileset firstgid="1194" source="cloud_1.tsx"/>
  <tileset firstgid="1195" source="cloud_2.tsx"/>
  <group id="15" name="Night">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <objectgroup id="12" name="Night sky" parallaxx="0.3" parallaxy="0.3">
-   <object id="16" gid="1193" x="-2732" y="2646" width="8667.56" height="2786"/>
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+    <property name="Parallax" type="float" value="0.3"/>
+   </properties>
+   <object id="16" gid="1193" x="-4188" y="3243.96" width="13723.6" height="4411.14"/>
   </objectgroup>
-  <objectgroup id="13" name="night clouds" parallaxx="0.5" parallaxy="0.5">
-   <object id="20" gid="1194" x="-575.515" y="4347.3" width="7000" height="2250"/>
+  <objectgroup id="13" name="night clouds" parallaxx="0.5" parallaxy="0.6">
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+    <property name="Parallax" type="float" value="0.5"/>
+   </properties>
+   <object id="20" gid="1194" x="-1109.58" y="5342.48" width="11083.3" height="3562.48"/>
   </objectgroup>
-  <objectgroup id="14" name="night clouds 2" parallaxx="0.6" parallaxy="0.6">
-   <object id="22" gid="1195" x="-129.212" y="4758.58" width="7000" height="2250"/>
+  <objectgroup id="14" name="night clouds 2" parallaxx="0.6" parallaxy="0.7">
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+    <property name="Parallax" type="float" value="0.6"/>
+   </properties>
+   <object id="22" gid="1195" x="1218.79" y="5010.58" width="7000" height="2250"/>
   </objectgroup>
  </group>
  <layer id="11" name="Background" width="89" height="50">
@@ -8936,16 +8954,31 @@
   </data>
  </layer>
  <group id="6" name="Arch" offsetx="0" offsety="-5.33333">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <objectgroup id="2" name="Arch1" parallaxx="0.9">
+   <properties>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
    <object id="2" gid="4" x="640" y="6400" width="9000" height="5000"/>
   </objectgroup>
   <objectgroup id="3" name="Arch2" parallaxx="0.925">
+   <properties>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
    <object id="3" gid="5" x="768" y="6400" width="9000" height="5000"/>
   </objectgroup>
   <objectgroup id="4" name="Arch3" parallaxx="0.975">
+   <properties>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
    <object id="4" gid="6" x="1024" y="6400" width="9000" height="5000"/>
   </objectgroup>
   <objectgroup id="5" name="Arch4">
+   <properties>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
    <object id="5" gid="7" x="1152" y="6400" width="9000" height="5000"/>
   </objectgroup>
  </group>

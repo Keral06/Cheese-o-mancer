@@ -42444,6 +42444,7 @@
     <property name="name" value="Door_2_2_7"/>
     <property name="offsetX" type="int" value="200"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="true"/>
     <property name="targetMap" value="Map_LV2_towersEncreuada_02.tmx"/>
     <property name="targetSpawn" value="Door_2_5_4"/>
    </properties>
@@ -42453,6 +42454,7 @@
     <property name="name" value="Door_2_2_2"/>
     <property name="offsetX" type="int" value="200"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="false"/>
     <property name="targetMap" value="Map_LV2_justes_02.tmx"/>
     <property name="targetSpawn" value="Door_2_3_1"/>
    </properties>
@@ -42462,6 +42464,7 @@
     <property name="name" value="Door_2_2_8"/>
     <property name="offsetX" type="int" value="200"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="true"/>
     <property name="targetMap" value="Map_LV2_towersEncreuada_02.tmx"/>
     <property name="targetSpawn" value="Door_2_5_5"/>
    </properties>
@@ -42471,6 +42474,7 @@
     <property name="name" value="Door_2_2_6"/>
     <property name="offsetX" type="int" value="200"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="true"/>
     <property name="targetMap" value="Map_LV2_towersEncreuada_02.tmx"/>
     <property name="targetSpawn" value="Door_2_5_3"/>
    </properties>
@@ -42480,6 +42484,7 @@
     <property name="name" value="Door_2_2_4"/>
     <property name="offsetX" type="int" value="200"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="true"/>
     <property name="targetMap" value="Map_LV2_towersEncreuada_02.tmx"/>
     <property name="targetSpawn" value="Door_2_5_1"/>
    </properties>
@@ -42489,6 +42494,7 @@
     <property name="name" value="Door_2_2_9"/>
     <property name="offsetX" type="int" value="200"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="true"/>
     <property name="targetMap" value="Map_LV2_towersEncreuada_02.tmx"/>
     <property name="targetSpawn" value="Door_2_5_7"/>
    </properties>
@@ -42498,6 +42504,7 @@
     <property name="name" value="Door_2_2_5"/>
     <property name="offsetX" type="int" value="200"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="true"/>
     <property name="targetMap" value="Map_LV2_towersEncreuada_02.tmx"/>
     <property name="targetSpawn" value="Door_2_5_2"/>
    </properties>
@@ -42507,6 +42514,7 @@
     <property name="name" value="Door_2_2_3"/>
     <property name="offsetX" type="int" value="-300"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="false"/>
     <property name="targetMap" value="Map_LV2_botanica_02.tmx"/>
     <property name="targetSpawn" value="Door_2_9_1"/>
    </properties>
@@ -42516,6 +42524,7 @@
     <property name="name" value="Door_2_2_1"/>
     <property name="offsetX" type="int" value="-300"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="false"/>
     <property name="targetMap" value="Map_LV2_transition_02.tmx"/>
     <property name="targetSpawn" value="Door_2_1_2"/>
    </properties>

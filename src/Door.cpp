@@ -33,6 +33,16 @@ bool Door::Start()
 
 bool Door::Update(float dt)
 {
+    if (requiresInteraction &&
+        playerInside &&
+        Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+    {
+        Engine::GetInstance().scene->nextSpawnPoint = targetDoor;
+        Engine::GetInstance().scene->firstDoor = false;
+        Engine::GetInstance().scene->nextMap = targetMap;
+        Engine::GetInstance().scene->StartFadeOut(0.5f);
+    }
+
     return true;
 }
 
@@ -53,7 +63,8 @@ void Door::SetDoorData(
     int offsetX,
     int offsetY,
     int width,
-    int height
+    int height,
+    bool requiresInteraction
 )
 {
     this->targetMap = targetMap;
@@ -62,12 +73,18 @@ void Door::SetDoorData(
     this->offsetY = offsetY;
     this->width = width;
     this->height = height;
+    this->requiresInteraction = requiresInteraction;
 }
 
 void Door::OnCollision(PhysBody* physA, PhysBody* physB)
 {
     if (physB->ctype != ColliderType::PLAYER)
         return;
+
+    if (requiresInteraction){
+        playerInside = true;
+        return;
+    }
 
     LOG("Door triggered -> loading map: %s", targetMap.c_str());
 
@@ -79,4 +96,11 @@ void Door::OnCollision(PhysBody* physA, PhysBody* physB)
    Engine::GetInstance().scene->nextMap = targetMap;
     // Cambiar de mapa
    Engine::GetInstance().scene->StartFadeOut(0.5f);
+}
+
+void Door::OnCollisionEnd(PhysBody* physA, PhysBody* physB){
+    if (physB->ctype != ColliderType::PLAYER)
+        return;
+
+    playerInside = false;
 }

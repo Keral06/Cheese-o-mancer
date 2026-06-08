@@ -30483,6 +30483,7 @@
     <property name="name" value="Door_2_5_1"/>
     <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="true"/>
     <property name="targetMap" value="Map_LV2_encreuada_02.tmx"/>
     <property name="targetSpawn" value="Door_2_2_4"/>
    </properties>
@@ -30492,6 +30493,7 @@
     <property name="name" value="Door_2_5_2"/>
     <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="true"/>
     <property name="targetMap" value="Map_LV2_encreuada_02.tmx"/>
     <property name="targetSpawn" value="Door_2_2_5"/>
    </properties>
@@ -30501,6 +30503,7 @@
     <property name="name" value="Door_2_5_3"/>
     <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="true"/>
     <property name="targetMap" value="Map_LV2_encreuada_02.tmx"/>
     <property name="targetSpawn" value="Door_2_2_6"/>
    </properties>
@@ -30510,6 +30513,7 @@
     <property name="name" value="Door_2_5_4"/>
     <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="true"/>
     <property name="targetMap" value="Map_LV2_encreuada_02.tmx"/>
     <property name="targetSpawn" value="Door_2_2_7"/>
    </properties>
@@ -30519,6 +30523,7 @@
     <property name="name" value="Door_2_5_5"/>
     <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="true"/>
     <property name="targetMap" value="Map_LV2_encreuada_02.tmx"/>
     <property name="targetSpawn" value="Door_2_2_8"/>
    </properties>
@@ -30528,6 +30533,7 @@
     <property name="name" value="Door_2_5_6"/>
     <property name="offsetX" type="int" value="200"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="false"/>
     <property name="targetMap" value="Map_LV2_towersJustes_02.tmx"/>
     <property name="targetSpawn" value="Door_2_4_5"/>
    </properties>
@@ -30537,6 +30543,7 @@
     <property name="name" value="Door_2_5_7"/>
     <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="true"/>
     <property name="targetMap" value="Map_LV2_encreuada_02.tmx"/>
     <property name="targetSpawn" value="Door_2_2_9"/>
    </properties>
@@ -30546,6 +30553,7 @@
     <property name="name" value="Door_2_5_8"/>
     <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="false"/>
     <property name="targetMap" value="Map_LV2_towersBotanica_02.tmx"/>
     <property name="targetSpawn" value="Door_2_7_1"/>
    </properties>

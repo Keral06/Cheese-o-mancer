@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="107" height="104" tilewidth="128" tileheight="128" infinite="0" nextlayerid="26" nextobjectid="444">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="107" height="104" tilewidth="128" tileheight="128" infinite="0" nextlayerid="26" nextobjectid="444">
  <tileset firstgid="1" name="tileset_lv1_torture_02" tilewidth="128" tileheight="128" tilecount="810" columns="30">
   <image source="tileset_lv1_torture_02.png" width="3840" height="3537"/>
  </tileset>
@@ -44556,6 +44556,7 @@
     <property name="name" value="Door_1_4_2"/>
     <property name="offsetX" type="int" value="200"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="false"/>
     <property name="targetMap" value="TEST_map_LV1_towerCenter_01.tmx"/>
     <property name="targetSpawn" value="Door_1_2_4"/>
    </properties>
@@ -44565,6 +44566,7 @@
     <property name="name" value="Door_1_4_1"/>
     <property name="offsetX" type="int" value="200"/>
     <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="false"/>
     <property name="targetMap" value="TEST_map_LV1_bossRoom_01.tmx"/>
     <property name="targetSpawn" value="Door_1_5_2"/>
    </properties>
@@ -44574,6 +44576,7 @@
     <property name="name" value="Door_1_4_2"/>
     <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="-50"/>
+    <property name="requiresInteraction" type="bool" value="false"/>
     <property name="targetMap" value="Map_LV2_transition_02.tmx"/>
     <property name="targetSpawn" value="Door_2_1_1"/>
    </properties>
