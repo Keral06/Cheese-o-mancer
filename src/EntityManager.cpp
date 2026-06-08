@@ -29,6 +29,8 @@
 #include "KnightBoss.h"
 #include "FlowerBomb.h"
 #include "SpikeHazard.h"
+#include "MagoBoss.h"
+#include "Uva.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -255,6 +257,12 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::HIGHPRIESTESS:
 		entity = std::make_shared<HighPriestess>();
+		break;
+	case EntityType::MAGOBOSS:
+		entity = std::make_shared<MagoBoss>();
+		break;
+	case EntityType::UVA:
+		entity = std::make_shared<Uva>();
 		break;
 	default:
 		break;
