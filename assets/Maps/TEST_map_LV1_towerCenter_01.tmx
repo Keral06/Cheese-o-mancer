@@ -85679,6 +85679,7 @@
   </object>
   <object id="378" name="Door" type="Door" x="11648" y="6272" width="128" height="1280">
    <properties>
+    <property name="isLocked" type="bool" value="true"/>
     <property name="name" value="Door_1_2_4"/>
     <property name="offsetX" type="int" value="-200"/>
     <property name="offsetY" type="int" value="0"/>
