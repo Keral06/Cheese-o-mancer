@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="59" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="30" nextobjectid="365">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="59" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="30" nextobjectid="365">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -15011,7 +15011,7 @@
   <object id="357" name="Player" type="Player" x="853" y="7304">
    <point/>
   </object>
-  <object id="364" name="HighPriestesss" type="HighPriestesss" x="3776" y="2168">
+  <object id="364" name="HighPriestesss" type="HighPriestesss" x="3776" y="2180">
    <point/>
   </object>
  </objectgroup>
