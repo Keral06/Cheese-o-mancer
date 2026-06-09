@@ -57,7 +57,7 @@ bool Player::Start() {
 	lastState = RUNNING;
 	// load
 	std::unordered_map<int, std::string> aliases2x3 = { {2,"run"},{16,"jump"},{28,"hoponcheese"} };
-	std::unordered_map<int, std::string> aliases3x3 = { {0,"idle"},{17,"idleOnCheese"}, {34,"hurt"} };
+	std::unordered_map<int, std::string> aliases3x3 = { {0,"idle"},{17,"idleOnCheese"}, {34,"hurt"}, {51,"death"}};
 	std::unordered_map<int, std::string> aliases3x4 = { {0,"attack2"},{6,"attack3"},{16,"attack1"} };
 	std::unordered_map<int, std::string> aliases4x4 = { {0,"ballroll"} };
 	std::unordered_map<int, std::string> aliases5x5 = { {0,"ballkick"} };
@@ -136,6 +136,7 @@ bool Player::Start() {
 	hurtfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Jester/Jester_hurt1.wav");
 
 	respawnPosition = { PIXEL_TO_METERS(position.getX()), PIXEL_TO_METERS(position.getY()) };
+	Engine::GetInstance().render->SetZoomSmooth(0.3f, 0.0f);
 	
 	return true;
 }
@@ -154,13 +155,32 @@ bool Player::Update(float dt)
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) {
 		AddPoints(100);
 	}
+
 	bool isPaused = Engine::GetInstance().scene->isPaused || Engine::GetInstance().scene->showHelp;
-	const SDL_Rect& animFrame = currentAnimSet->GetCurrentFrame();
+
 	if (!isPaused) {
-		if (animFrame.x == 160 && animFrame.y == 96 && isdead) {
-			Reset();
+
+		// ======================================================
+		// --- BLOQUEO ABSOLUTO DE MUERTE (AL PRINCIPIO) --------
+		// ======================================================
+		if (isdead) {
+			GetPhysicsValues();
+			velocity.x = 0; // Evita que el Jester resbale muerto
+			ApplyPhysics();
+
+			Draw(dt);
+			CameraRender(dt);
+			UpdateFireballs(dt);
+
+			if (currentAnimSet->HasFinished()) {
+				isDeathAnimFinished = true;
+			}
+			return true; // Abortamos el frame aquí para ignorar el teclado por completo
 		}
+		// ======================================================
+
 		GetPhysicsValues();
+
 		if (isMounted && mountedBall)
 		{
 			int bx, by;
@@ -200,7 +220,6 @@ bool Player::Update(float dt)
 					int lookY = (int)position.getY() + (texH / 2);
 					int tileID = Engine::GetInstance().map->GetTileFromLayer("MetadataSuelos", lookX, lookY);
 
-					// Determinamos si el suelo actual es de polvo/hierba (cooldown largo) o moho (cooldown corto)
 					bool esSueloEspecial = Engine::GetInstance().map->IsPolvo(tileID) || Engine::GetInstance().map->IsHierba(tileID);
 					float currentCooldown = esSueloEspecial ? 500.0f : 250.0f;
 
@@ -223,7 +242,7 @@ bool Player::Update(float dt)
 				else if (isWallWalking && (velocity.x != 0.0f || velocity.y != 0.0f)) {
 					stepParticleTimer += dt;
 
-					if (stepParticleTimer >= 250.0f) { // 250ms para la pared
+					if (stepParticleTimer >= 250.0f) {
 						stepParticleTimer = 0.0f;
 
 						int spawnX = (int)position.getX() + (facingLeft ? 25 : -25);
@@ -234,46 +253,37 @@ bool Player::Update(float dt)
 				}
 				// 3. SI SE PARA
 				else if (!isWalking) {
-					// Lo ponemos a 1000.0f para que el primer paso sea instantáneo
 					stepParticleTimer = 1000.0f;
 				}
-				// --- FIN LÓGICA PARTÍCULAS ---
 			}
 			else {
 				currentAnimSet->SetCurrent("idle");
 			}
 		}
+
 		if (isMounted && Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
 		{
 			DismountAndLaunch();
 		}
-		Attack();
-		HandleAttack();
-		CheckKickFrame();
-		SpawnCheeseBall();
+
 		if (state == ONCHEESE && currentAnimSet->HasFinished())
 		{
 			state = IDLE_ON_CHEESE;
 		}
-		ChangeCurrentAnimation();
 
-		
+		ChangeCurrentAnimation();
 		ApplyPhysics();
 
 		if (isPlayingMagicCheese) {
 			magicCheeseAnims.Update(dt);
-
-			// Si la animación termina, la desactivamos para que desaparezca
 			if (magicCheeseAnims.HasFinished()) {
 				isPlayingMagicCheese = false;
 			}
 		}
 
-		// MOSTRAR QUESO (Asegúrate de que esto quede dentro de if(!isPaused) )
 		if (isShowingCheese) {
 			showCheeseTimer -= dt;
 
-			// Mantenemos la textura activa (pero sin reiniciar el fotograma)
 			currentAnimSet = &animsShowCheese;
 			texture = textureShowCheese;
 
@@ -283,18 +293,20 @@ bool Player::Update(float dt)
 
 			if (showCheeseTimer <= 0.0f) {
 				isShowingCheese = false;
-				lastState = DEFAULT; // <--- Esto obliga al jugador a volver al IDLE normal al terminar
+				lastState = DEFAULT;
 			}
 		}
 	}
+
 	if (Engine::GetInstance().scene->ObjectObserved == false) {
-
 		Draw(dt);
-
 	}
 
 	CameraRender(dt);
+
 	if (!isPaused) {
+		// (El viejo bloque 'if(isdead)' que estaba aquí ha sido eliminado con éxito)
+
 		if (IsProtected && !isKnockback) {
 			protectionTimer -= dt;
 			if (protectionTimer <= 0.0f) {
@@ -304,7 +316,6 @@ bool Player::Update(float dt)
 		}
 		IsPlayerProtected = IsProtected;
 
-		//Miramos si se ha clicado el boton para crear la fireball
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN) {
 			ThrowFireBall(Side::RIGHT);
 			LOG("Created Fireball");
@@ -343,28 +354,22 @@ bool Player::Update(float dt)
 		}
 	}
 
-	// MOSTRAR QUESO
 	if (isShowingCheese) {
 		showCheeseTimer -= dt;
 
-		// Forzamos la animación Y LA TEXTURA
 		currentAnimSet = &animsShowCheese;
 		texture = textureShowCheese;
 		currentAnimSet->SetCurrent("show_cheese");
 
-		// --- MAGIA DEL QUESO ---
-		// Lo activamos solo una vez mientras dura el temporizador
 		if (!isPlayingMagicCheese) {
 			isPlayingMagicCheese = true;
 			magicCheeseAnims.SetCurrent("get_cheese_magic");
 		}
 
-		// Frenamos al jugador constantemente por si estaba cayendo/resbalando 
 		b2Vec2 vel = b2Body_GetLinearVelocity(pbody->body);
 		vel.x = 0.0f;
 		b2Body_SetLinearVelocity(pbody->body, vel);
 
-		// Si el temporizador llega a 0, devolvemos el control
 		if (showCheeseTimer <= 0.0f) {
 			isShowingCheese = false;
 			currentAnimName = "idle";
@@ -372,25 +377,20 @@ bool Player::Update(float dt)
 		}
 	}
 
-	// 1. ACTUALIZAMOS LOS FOTOGRAMAS DE LA MAGIA SI ESTÁ ACTIVA (¡Te faltaba este bloque!)
 	if (isPlayingMagicCheese) {
 		magicCheeseAnims.Update(dt);
 		if (magicCheeseAnims.HasFinished()) {
-			isPlayingMagicCheese = false; // Se apaga sola cuando termina
+			isPlayingMagicCheese = false;
 		}
 	}
 
-	// 2. DIBUJAMOS LA MAGIA
 	if (isPlayingMagicCheese && magicCheeseTexture != nullptr) {
 		const SDL_Rect& magicFrame = magicCheeseAnims.GetCurrentFrame();
 
-		// --- AJUSTES DE POSICIÓN ---
-		int baseOffsetX = -100;  // El offset que te funcionaba bien mirando a la izquierda
+		int baseOffsetX = -100;
 		int offsetY = 80;
-
 		int currentOffsetX = baseOffsetX;
 
-		// Si NO está mirando a la izquierda (es decir, mira a la derecha), invertimos el offset
 		if (!facingLeft) {
 			currentOffsetX = -baseOffsetX;
 		}
@@ -398,15 +398,11 @@ bool Player::Update(float dt)
 		int drawX = (int)position.getX() - (magicFrame.w / 2) + currentOffsetX;
 		int drawY = (int)position.getY() - magicFrame.h + offsetY;
 
-		// --- FLIPPEAR LA TEXTURA ---
-		// Si Engine::GetInstance().render->DrawTexture admite SDL_FlipMode, usa esta línea:
 		SDL_FlipMode flipMagic = facingLeft ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 		Engine::GetInstance().render->DrawTexture(magicCheeseTexture, drawX, drawY, &magicFrame, 1.0f, 0.0, 2147483647, 2147483647, flipMagic);
-
-
 	}
 
-	return true; // <-- FINAL DE TU FUNCIÓN UPDATE
+	return true;
 }
 
 void Player::UpdateFireballs(float dt) {
@@ -911,7 +907,19 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 			{
 				isdead = true;
 				isDeadDefinitive = true;
-				currentAnimSet->SetCurrent("jump");
+
+				state = DYING;
+				isAttacking = false;
+				hitboxActive = false;
+				isKnockback = false;
+
+				currentAnimSet = &anims3x3;
+				texture = texture3x3;
+				currentAnimSet->SetCurrent("death");
+				currentAnimSet->Resets();
+
+				Engine::GetInstance().physics->SetLinearVelocity(pbody, 0.0f, Engine::GetInstance().physics->GetYVelocity(pbody));
+				Engine::GetInstance().render->SetZoomSmooth(1.5f, 1500.0f);
 			}
 			else
 			{
@@ -1070,6 +1078,7 @@ void Player::Reset()
 	b2Body_SetTransform(pbody->body, initialPos, rotation);
 	Engine::GetInstance().physics->SetLinearVelocity(pbody, { 0.0f, 0.0f });
 	isdead = false;
+	isDeathAnimFinished = false;
 	isJumping = false;
 	isCollidedFloor = true;
 	firstJump = true;
@@ -1078,6 +1087,7 @@ void Player::Reset()
 	Engine::GetInstance().render->camera.y = limitUp;
 	IsProtected = false;
 	currentAnimSet->SetCurrent("jump");
+	Engine::GetInstance().render->SetZoomSmooth(0.3f, 0.0f);
 
 }
 
@@ -1111,6 +1121,7 @@ void Player::ChangeCurrentAnimation() {
 	if (isKicking) return;
 	if (state == ATTACKING) return;
 	if (state == HURT) return;
+	if (state == DYING) return;
 	if (state == lastState) return;
 
 	lastState = state;
@@ -1154,6 +1165,11 @@ void Player::ChangeCurrentAnimation() {
 		currentAnimSet = &anims3x3;
 		texture = texture3x3;
 		currentAnimSet->SetCurrent("hurt");
+		break;
+	case DYING:
+		currentAnimSet = &anims3x3;
+		texture = texture3x3;
+		currentAnimSet->SetCurrent("death");
 		break;
 	default:
 		break;

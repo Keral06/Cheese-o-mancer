@@ -980,9 +980,10 @@ void Scene::UpdateLevel(float dt) {
 		levelTimer += dt / 1000.0f;
 	}
 
-	if (player && Engine::GetInstance().scene->lives <= 0) {
-		ChangeScene(SceneID::GAME_OVER);
-		return;
+	if (player && player->isDead()) {
+		if (player->isDeathAnimFinished) {
+			ChangeScene(SceneID::GAME_OVER);
+		}
 	}
 
 	//Lógica de cambio de mapa (F1-F4)

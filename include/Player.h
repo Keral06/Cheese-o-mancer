@@ -18,6 +18,7 @@ enum PlayerState {
 	IDLE_ON_CHEESE,
 	RUNNING_ON_CHEESE,
 	HURT,
+	DYING,
 	DEFAULT
 
 };
@@ -115,6 +116,7 @@ public:
 	bool firstJump = true;
 	bool godMode = false;
 	bool isdead = false;
+	bool isDeathAnimFinished = false;
 	bool isWalking = false;
 	bool isCollidedWall = false;
 	int wallSide = 0;

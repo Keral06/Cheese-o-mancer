@@ -45,6 +45,8 @@ bool Rat::Start()
 
 bool Rat::Update(float dt)
 {
+    if (Engine::GetInstance().scene->GetPlayer()->isDead()) return true;
+
     if (!hasEntered) {
         if (pbody != nullptr && b2Body_IsEnabled(pbody->body)) {
             b2Body_Disable(pbody->body);
