@@ -428,6 +428,15 @@ public:
 		bool ratmissionfinished = false;
 		int whereIsRat = 1;
 
+		// Contador Enemigos
+		int ratsKilled = 0;
+		int jailersKilled = 0;
+		int beesKilled = 0;
+		int horsesKilled = 0;
+
+		void RegisterEnemyKill(std::string enemyName);
+		bool HasKilledOneOfEachType();
+
 private:
 	//all video stuff
 	struct VideoData {
