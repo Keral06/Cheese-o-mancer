@@ -32,6 +32,7 @@ enum class ColliderType {
     PLAYERATTACK,
     CHEESEBALL,
     ITEM,
+    BOSSATTACK,
     PLATFORM,
     ENEMY,
     COIN,

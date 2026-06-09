@@ -64,6 +64,10 @@ public:
 	bool isInBossfight = false;
 	
 	Scene();
+
+	void ShowInteract();
+
+	bool interaction = false;
 	// help
 
 	// ratas!!
@@ -220,7 +224,7 @@ private:
 	SDL_Texture* cardsIconclic = nullptr;
 	SDL_Texture* cardsIcon2clic = nullptr;
 
-
+	SDL_Texture* InteractTexture = nullptr;
 	SDL_Texture* cardsIcon = nullptr;
 	SDL_Texture* cardsIcon2 = nullptr;
 	SDL_Texture* cardsBase = nullptr;
@@ -315,6 +319,10 @@ private:
 	SDL_Texture* storePaperKey = nullptr;
 	SDL_Texture* storePaperDamage = nullptr;
 	int selectedStoreItem = 0;
+
+	SDL_Texture* inventoryPaperKey1 = nullptr;
+	SDL_Texture* inventoryPaperKey2 = nullptr;
+	SDL_Texture* inventoryPaperKey3 = nullptr;
 
 
 public:

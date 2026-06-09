@@ -157,6 +157,10 @@ bool CheeseBall::Update(float dt)
 
 void CheeseBall::OnCollision(PhysBody* physA, PhysBody* physB)
 {
+    if (physB->ctype == ColliderType::MOHOWALL) {
+        isOnMoho = true;
+    }
+
     if (physB->ctype == ColliderType::WEAKWALL)
     {
         if (physB->listener != nullptr)
@@ -222,6 +226,9 @@ void CheeseBall::OnCollision(PhysBody* physA, PhysBody* physB)
 
 void CheeseBall::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 {
+    if (physB->ctype == ColliderType::MOHOWALL) {
+        isOnMoho = false;
+    }
 }
 
 bool CheeseBall::CleanUp()

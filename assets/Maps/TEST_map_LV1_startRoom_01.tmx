@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="175" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="37" nextobjectid="489">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="175" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="37" nextobjectid="490">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -55397,7 +55397,10 @@
   <object id="435" name="Magician" type="Magician" x="18493.3" y="3832.49">
    <point/>
   </object>
-  <object id="436" name="Player" type="Player" x="14674" y="6018">
+  <object id="436" name="Hermit" type="Hermit" x="13858" y="7174">
+   <point/>
+  </object>
+  <object id="489" name="Player" type="Player" x="14664" y="5956">
    <point/>
   </object>
  </objectgroup>

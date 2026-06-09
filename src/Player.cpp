@@ -454,88 +454,48 @@ void Player::Move() {
 	isWalking = false;
 
 	// ==========================================
-	// --- 1. LÓGICA DE PARED (WallWalking) ---
-	// ==========================================
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT && isOnSpecialWall)
-	{
-		isWallWalking = true;
-		isJumping = false;
-	}
-	else {
-		isWallWalking = false;
-	}
-
-	// ==========================================
-	// --- 2. LÓGICA DE INERCIA AL ATACAR ---
+	// --- 1. LÓGICA DE INERCIA AL ATACAR ---
 	// ==========================================
 	if (isAttacking) {
-		if (isCollidedFloor && !isWallWalking) {
+		if (isCollidedFloor) {
 			velocity.x *= 0.85f;
 			if (abs(velocity.x) < 0.5f) velocity.x = 0.0f;
 		}
-		else if (isWallWalking) {
-			velocity.x = 0.0f;
-			velocity.y = 0.0f;
-		}
-
 		return;
 	}
 
 	// ==========================================
-	// --- 3. MOVERSE POR LA PARED ---
+	// --- 2. INPUT HORIZONTAL NORMAL ---
 	// ==========================================
-	if (isWallWalking)
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		velocity.y = 0;
-		velocity.x = 0;
-
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-			velocity.y = -speed;
-
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-			velocity.y = speed;
-
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-			velocity.x = -speed;
-
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			velocity.x = speed;
-	}
-	// ==========================================
-	// --- 4. INPUT HORIZONTAL NORMAL ---
-	// ==========================================
-	else
-	{
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-		{
-			if (isCollidedWall && wallSide == -1) {
-				velocity.x = 0;
-			}
-			else {
-				velocity.x = -speed;
-			}
-			isWalking = true;
-			facingLeft = true;
-		}
-		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-		{
-			if (isCollidedWall && wallSide == 1) {
-				velocity.x = 0;
-			}
-			else {
-				velocity.x = speed;
-			}
-			isWalking = true;
-			facingLeft = false;
-		}
-		else
-		{
+		if (isCollidedWall && wallSide == -1) {
 			velocity.x = 0;
 		}
+		else {
+			velocity.x = -speed;
+		}
+		isWalking = true;
+		facingLeft = true;
+	}
+	else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
+		if (isCollidedWall && wallSide == 1) {
+			velocity.x = 0;
+		}
+		else {
+			velocity.x = speed;
+		}
+		isWalking = true;
+		facingLeft = false;
+	}
+	else
+	{
+		velocity.x = 0;
 	}
 
 	// ==========================================
-	// --- 5. EXTRAS (Zoom y GodMode) ---
+	// --- 3. EXTRAS (Zoom y GodMode) ---
 	// ==========================================
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_U) == KEY_REPEAT)
 	{
@@ -561,13 +521,13 @@ void Player::Move() {
 	}
 
 	// ==========================================
-	// --- 6. STATE MACHINE ---
+	// --- 4. STATE MACHINE ---
 	// ==========================================
 	if (state == ONCHEESE) {
 		return;
 	}
 
-	if (!isCollidedFloor && !isWallWalking)
+	if (!isCollidedFloor)
 	{
 		state = JUMPING;
 	}
@@ -588,9 +548,9 @@ void Player::Move() {
 	}
 
 	// ==========================================
-	// --- 7. SONIDO PASOS ---
+	// --- 5. SONIDO PASOS ---
 	// ==========================================
-	if (isWalking && isCollidedFloor && !isWallWalking)
+	if (isWalking && isCollidedFloor)
 	{
 		int randNum = rand() % 4;
 		switch (randNum) {
@@ -1454,52 +1414,79 @@ void Player::HandleMountedMovement()
 
 	b2Vec2 vel = b2Body_GetLinearVelocity(mountedBall->pbody->body);
 	movingBall = false;
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 
-		if (!facingLeft) {
-			cheeseSpeed = 13.0f;
-			cheeseTime = 300.0f;
-		}
-		if (cheeseTime < 200.0f && cheeseTime >= 100.0f && !isKicking) {
-			vel.x = -cheeseSpeed * 2.0f;
-		}
-		else if (cheeseTime < 100.0f && !isKicking) {
-			vel.x = -cheeseSpeed * 3.5f;
-		}
-		else {
+	// ==========================================
+	// --- LÓGICA DE ESCALADA CON BOLA ---
+	// ==========================================
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT && mountedBall->isOnMoho) {
+		isWallWalking = true;
+		vel.x = 0.0f;
+		vel.y = 0.0f;
 
-			vel.x = -cheeseSpeed;
+		// Subir o bajar con W/S
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+			vel.y = -cheeseSpeed * 1.5f;
 
-		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+			vel.y = cheeseSpeed * 1.5f;
+
+		// Anulamos la gravedad de la bola para que no caiga mientras escalamos
+		b2Body_SetGravityScale(mountedBall->pbody->body, 0.0f);
 		movingBall = true;
-		facingLeft = true;
 	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		if (facingLeft) {
-			cheeseSpeed = 10.0f;
-			cheeseTime = 300.0f;
-		}
-		if (cheeseTime < 200.0f && cheeseTime >= 100.0f && !isKicking) {
-			vel.x = cheeseSpeed * 2.0f;
-			mountedBall->canSmash = false;
-		}
-		else if (cheeseTime < 100.0f && !isKicking) {
-			vel.x = cheeseSpeed * 3.5f;
-			mountedBall->canSmash = true;
-		}
-		else {
+	else {
+		isWallWalking = false;
 
-			vel.x = cheeseSpeed;
-			mountedBall->canSmash = false;
+		// Restauramos la gravedad normal de la bola al soltar la E
+		b2Body_SetGravityScale(mountedBall->pbody->body, 1.0f);
 
+		// ==========================================
+		// --- LÓGICA HORIZONTAL ORIGINAL (A y D) ---
+		// ==========================================
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+
+			if (!facingLeft) {
+				cheeseSpeed = 13.0f;
+				cheeseTime = 300.0f;
+			}
+			if (cheeseTime < 200.0f && cheeseTime >= 100.0f && !isKicking) {
+				vel.x = -cheeseSpeed * 2.0f;
+			}
+			else if (cheeseTime < 100.0f && !isKicking) {
+				vel.x = -cheeseSpeed * 3.5f;
+			}
+			else {
+				vel.x = -cheeseSpeed;
+			}
+			movingBall = true;
+			facingLeft = true;
 		}
-		movingBall = true;
-		facingLeft = false;
-
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			if (facingLeft) {
+				cheeseSpeed = 10.0f;
+				cheeseTime = 300.0f;
+			}
+			if (cheeseTime < 200.0f && cheeseTime >= 100.0f && !isKicking) {
+				vel.x = cheeseSpeed * 2.0f;
+				mountedBall->canSmash = false;
+			}
+			else if (cheeseTime < 100.0f && !isKicking) {
+				vel.x = cheeseSpeed * 3.5f;
+				mountedBall->canSmash = true;
+			}
+			else {
+				vel.x = cheeseSpeed;
+				mountedBall->canSmash = false;
+			}
+			movingBall = true;
+			facingLeft = false;
+		}
 	}
+
 	if (state == ONCHEESE) {
 		return;
 	}
+
 	if (movingBall)
 		state = RUNNING_ON_CHEESE;
 	else

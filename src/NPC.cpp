@@ -119,7 +119,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool HiddenScrapOfPaper::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
+		
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -171,7 +171,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool  HiddenScrapOfPaper::Update(float dt) {
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+			
 
 
 
@@ -205,6 +205,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		{
 		case ColliderType::PLAYER:
 			isGettingTouched = true;
+			Engine::GetInstance().scene->interaction = true;
 			break;
 		}
 
@@ -212,7 +213,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	void  HiddenScrapOfPaper::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
-
+		Engine::GetInstance().scene->interaction = false;
 
 
 	}
@@ -236,8 +237,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool DiscardedScroll::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
-
+		
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -289,8 +289,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool DiscardedScroll::Update(float dt) {
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+			
 
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
@@ -325,6 +324,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		{
 		case ColliderType::PLAYER:
 			isGettingTouched = true;
+			Engine::GetInstance().scene->interaction = true;
 			break;
 		}
 
@@ -332,7 +332,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	void DiscardedScroll::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
-
+		Engine::GetInstance().scene->interaction = false;
 
 
 	}
@@ -357,7 +357,6 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool Sketches::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -408,8 +407,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool Sketches::Update(float dt) {
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+			
 
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
@@ -443,7 +441,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		switch (physB->ctype)
 		{
 		case ColliderType::PLAYER:
-			isGettingTouched = true;
+			isGettingTouched = true; Engine::GetInstance().scene->interaction = true;
 			break;
 		}
 
@@ -451,7 +449,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	void Sketches::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
-
+		Engine::GetInstance().scene->interaction = false;
 
 
 	}
@@ -476,7 +474,6 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool WallBeforeWheel::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -528,8 +525,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool WallBeforeWheel::Update(float dt) {
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+			
 
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->cheese == true) {
@@ -563,7 +559,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		switch (physB->ctype)
 		{
 		case ColliderType::PLAYER:
-			isGettingTouched = true;
+			isGettingTouched = true; Engine::GetInstance().scene->interaction = true;
 			break; case ColliderType::CHEESEBALL:
 				CleanUp();
 				break;
@@ -575,7 +571,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	void WallBeforeWheel::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
-
+		Engine::GetInstance().scene->interaction = false;
 
 	}
 
@@ -599,7 +595,6 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool LockedDoor::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -651,8 +646,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool LockedDoor::Update(float dt) {
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+			
 
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
@@ -686,7 +680,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		switch (physB->ctype)
 		{
 		case ColliderType::PLAYER:
-			isGettingTouched = true;
+			isGettingTouched = true; Engine::GetInstance().scene->interaction = true;
 			break;
 		}
 
@@ -694,7 +688,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	void LockedDoor::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
-
+		Engine::GetInstance().scene->interaction = false;
 
 
 	}
@@ -719,8 +713,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool DestructDoor::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
-		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
+	//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
 
@@ -771,8 +764,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool DestructDoor::Update(float dt) {
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+			
 
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
@@ -806,14 +798,14 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		switch (physB->ctype)
 		{
 		case ColliderType::PLAYER:
-			isGettingTouched = true;
+			isGettingTouched = true; Engine::GetInstance().scene->interaction = true;
 			break;
 		}
 
 
 	}
 	void DestructDoor::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
-		isGettingTouched = false;
+		isGettingTouched = false; Engine::GetInstance().scene->interaction = false;
 
 
 
@@ -839,8 +831,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool NormalFlag::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
-
+	
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -892,9 +883,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool NormalFlag::Update(float dt) {
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
-
+			
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
@@ -926,7 +915,8 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		switch (physB->ctype)
 		{
 		case ColliderType::PLAYER:
-			isGettingTouched = true;
+			isGettingTouched = true; Engine::GetInstance().scene->interaction = true;
+
 			break;
 		}
 
@@ -934,6 +924,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	void NormalFlag::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
+		Engine::GetInstance().scene->interaction = false;
 
 
 
@@ -959,8 +950,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool CheeseFlag::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
-
+		
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -1012,8 +1002,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool  CheeseFlag::Update(float dt) {
 		if (isGettingTouched) {
-			InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
-
+			
 
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
@@ -1046,7 +1035,8 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		switch (physB->ctype)
 		{
 		case ColliderType::PLAYER:
-			isGettingTouched = true;
+			isGettingTouched = true; Engine::GetInstance().scene->interaction = true;
+
 			break;
 		}
 
@@ -1055,6 +1045,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	void  CheeseFlag::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
+		Engine::GetInstance().scene->interaction = false;
 
 
 	}
@@ -1079,7 +1070,6 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool NoteRoyalHalls::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -1165,7 +1155,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		switch (physB->ctype)
 		{
 		case ColliderType::PLAYER:
-			isGettingTouched = true;
+			isGettingTouched = true; Engine::GetInstance().scene->interaction = true;
 			break;
 		}
 
@@ -1175,6 +1165,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		isGettingTouched = false;
 
 
+		Engine::GetInstance().scene->interaction = false;
 
 	}
 
@@ -1198,8 +1189,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool Compass::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
-
+		
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -1251,8 +1241,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool Compass::Update(float dt) {
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+			
 
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
@@ -1284,7 +1273,8 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		switch (physB->ctype)
 		{
 		case ColliderType::PLAYER:
-			isGettingTouched = true;
+			isGettingTouched = true; Engine::GetInstance().scene->interaction = true;
+
 			break;
 		}
 
@@ -1293,6 +1283,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	void Compass::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
+		Engine::GetInstance().scene->interaction = false;
 
 
 	}
@@ -1317,8 +1308,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool Portrait::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
-
+		
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -1370,9 +1360,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool Portrait::Update(float dt) {
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
-
+			
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
@@ -1404,7 +1392,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		switch (physB->ctype)
 		{
 		case ColliderType::PLAYER:
-			isGettingTouched = true;
+			isGettingTouched = true; Engine::GetInstance().scene->interaction = true;
 			break;
 		}
 
@@ -1413,6 +1401,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	void Portrait::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
+		Engine::GetInstance().scene->interaction = false;
 
 
 	}
@@ -1436,7 +1425,6 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		return true;
 	}
 	bool UnfinishedPortrait::Start() {
-		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -1488,8 +1476,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool UnfinishedPortrait::Update(float dt) {
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+			
 
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
@@ -1523,7 +1510,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		switch (physB->ctype)
 		{
 		case ColliderType::PLAYER:
-			isGettingTouched = true;
+			isGettingTouched = true; Engine::GetInstance().scene->interaction = true;
 			break;
 		}
 
@@ -1531,6 +1518,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	void UnfinishedPortrait::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
+		Engine::GetInstance().scene->interaction = false;
 
 
 
@@ -1556,7 +1544,6 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool HungSword::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -1642,7 +1629,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		switch (physB->ctype)
 		{
 		case ColliderType::PLAYER:
-			isGettingTouched = true;
+			isGettingTouched = true; Engine::GetInstance().scene->interaction = isGettingTouched;
 			break;
 		}
 
@@ -1651,7 +1638,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	void HungSword::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
-
+		Engine::GetInstance().scene->interaction = isGettingTouched;
 
 	}
 
@@ -1675,8 +1662,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool CowWeb::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
-
+		
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -1728,8 +1714,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool CowWeb::Update(float dt) {
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+			
 
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
@@ -1763,7 +1748,8 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		switch (physB->ctype)
 		{
 		case ColliderType::PLAYER:
-			isGettingTouched = true;
+			isGettingTouched = true; 
+			Engine::GetInstance().scene->interaction = isGettingTouched;
 			break;
 		}
 
@@ -1771,7 +1757,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	void CowWeb::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
-
+		Engine::GetInstance().scene->interaction = isGettingTouched;
 
 
 	}
@@ -1793,8 +1779,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool CommemorativeMonument::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
-
+		
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -1846,8 +1831,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool CommemorativeMonument::Update(float dt) {
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+			
 
 
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
@@ -1882,6 +1866,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		{
 		case ColliderType::PLAYER:
 			isGettingTouched = true;
+			Engine::GetInstance().scene->interaction = isGettingTouched;
 			break;
 		}
 
@@ -1889,7 +1874,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	void CommemorativeMonument::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
-
+		Engine::GetInstance().scene->interaction = isGettingTouched;
 
 
 	}
@@ -1915,8 +1900,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool Nohuely::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
-
+		
 		std::unordered_map<int, std::string> aliases = { {70, "idle"} };
 
 		anims.LoadFromTSX("assets/Textures/Spritesheets/Lady Nohely NPC/ladyNohuely_sit.tsx", aliases);
@@ -1973,8 +1957,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool Nohuely::Update(float dt) {
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+			
 			if (hasTalkedBefore && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 				dialogue.AvanzarDialogo(dt, nameNPC);
@@ -2032,6 +2015,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		{
 		case ColliderType::PLAYER:
 			isGettingTouched = true;
+			Engine::GetInstance().scene->interaction = isGettingTouched;
 			break;
 		}
 
@@ -2040,7 +2024,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	void Nohuely::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
-
+		Engine::GetInstance().scene->interaction = isGettingTouched;
 
 	}
 	milkmaid::milkmaid() :NPC(EntityType::MILKMAID) {
@@ -2064,8 +2048,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool milkmaid::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
-
+		
 		std::unordered_map<int, std::string> aliases = {{70, "idle"}};
 
 		anims.LoadFromTSX("assets/Textures/Spritesheets/Milkmaid_NPC/milkmaid_idle.tsx", aliases);
@@ -2122,8 +2105,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool milkmaid::Update(float dt) {
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+			
 			if (hasTalkedBefore && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 				secondDialogue.AvanzarDialogo(dt, nameNPC);
@@ -2171,6 +2153,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		{
 		case ColliderType::PLAYER:
 			isGettingTouched = true;
+			Engine::GetInstance().scene->interaction = isGettingTouched;
 			break;
 		}
 
@@ -2179,7 +2162,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	void milkmaid::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
-
+		Engine::GetInstance().scene->interaction = isGettingTouched;
 
 	}
 
@@ -2202,8 +2185,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool TowGuard::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
-
+		
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -2255,8 +2237,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool TowGuard::Update(float dt) {
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+			
 			if (hasTalkedBefore && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 				secondDialogue.AvanzarDialogo(dt, nameNPC);
@@ -2304,6 +2285,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		{
 		case ColliderType::PLAYER:
 			isGettingTouched = true;
+			Engine::GetInstance().scene->interaction = isGettingTouched;
 			break;
 		}
 
@@ -2311,7 +2293,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	void TowGuard::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
-
+		Engine::GetInstance().scene->interaction = isGettingTouched;
 
 
 	}
@@ -2340,8 +2322,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool death::Start() {
 
-		InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
-
+		
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128;
 		texH = 128;
@@ -2393,8 +2374,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	bool death::Update(float dt) {
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+			
 			if (hasTalkedBefore && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 
@@ -2458,6 +2438,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		{
 		case ColliderType::PLAYER:
 			isGettingTouched = true;
+			Engine::GetInstance().scene->interaction = isGettingTouched;
 			randomNumber = (rand() % 100) + 1;
 			break;
 		}
@@ -2466,7 +2447,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 	}
 	void death::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
-
+		Engine::GetInstance().scene->interaction = isGettingTouched;
 
 
 	}
@@ -2512,8 +2493,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 		anims.SetCurrent("idle");
 
 		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.png");
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
-
+		
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128*3;
 		texH = 128*4 ;
@@ -2594,7 +2574,6 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 				int i = 3383;
 
@@ -2768,7 +2747,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		{
 		case ColliderType::PLAYER:
 			isGettingTouched = true;
-			
+			Engine::GetInstance().scene->interaction = isGettingTouched;
 			break;
 		}
 
@@ -2776,7 +2755,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	}
 	void Hermit::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
-
+		Engine::GetInstance().scene->interaction = isGettingTouched;
 
 
 	}
@@ -2821,8 +2800,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		anims.SetCurrent("idle");
 
 		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.png");
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
-
+	
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128*3;
 		texH = 128*3;
@@ -2874,7 +2852,6 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		}
 
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 			
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedWell == false) { //primer dialogo solo sale una vez
 
@@ -2991,7 +2968,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		{
 		case ColliderType::PLAYER:
 			isGettingTouched = true;
-
+			Engine::GetInstance().scene->interaction = isGettingTouched;
 			break;
 		}
 
@@ -2999,7 +2976,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	}
 	void Well::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
-
+		Engine::GetInstance().scene->interaction = isGettingTouched;
 
 
 	}
@@ -3049,8 +3026,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		anims.SetCurrent("idle");
 
 		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hierophant/sprite_hierophant_01.png");
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
-
+		
 		texW = 128*3;
 		texH = 128*4;
 		pbody = nullptr;
@@ -3111,8 +3087,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		Draw(dt);
 
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+			
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->talkedTiredPreacher == false) { //primer dialogo solo sale una vez
 
 
@@ -3263,7 +3238,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		{
 		case ColliderType::PLAYER:
 			isGettingTouched = true;
-
+			Engine::GetInstance().scene->interaction = isGettingTouched;
 			break;
 		}
 
@@ -3272,7 +3247,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	void Hierophant::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
-
+		Engine::GetInstance().scene->interaction = isGettingTouched;
 
 	}
 
@@ -3365,8 +3340,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		anims.SetCurrent("idle");
 
 		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Little Finley_NPC/Finley_spritesheet.png");
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
-
+		
 		texW = 128*2;
 		texH = 128*3;
 		pbody = nullptr;
@@ -3413,8 +3387,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		Draw(dt);
 
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+		
 			switch (hidingPlace) {
 			
 			case 0:
@@ -3587,7 +3560,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		{
 		case ColliderType::PLAYER:
 			isGettingTouched = true;
-
+			Engine::GetInstance().scene->interaction = isGettingTouched;
 			break;
 		}
 
@@ -3595,7 +3568,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	}
 	void Timmy::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
-
+		Engine::GetInstance().scene->interaction = isGettingTouched;
 
 
 	}
@@ -3642,8 +3615,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		anims.SetCurrent("idle");
 
 
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
-
+		
 		texW = 128;
 		texH = 128;
 		pbody = nullptr;
@@ -3689,9 +3661,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		Draw(dt);
 
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
-
+			
 
 			//trusted dialogue
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasShownPoemToWell == true && Engine::GetInstance().scene->talkedTwiceEmpress == false) {
@@ -3823,7 +3793,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		{
 		case ColliderType::PLAYER:
 			isGettingTouched = true;
-
+			Engine::GetInstance().scene->interaction = isGettingTouched;
 			break;
 		}
 
@@ -3831,7 +3801,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	}
 	void Empress::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
-
+		Engine::GetInstance().scene->interaction = isGettingTouched;
 
 
 	}
@@ -3883,8 +3853,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		anims.SetCurrent("idle");
 
 		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/rat king/sprite_ratking_01_idle.png");
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
-
+	
 		texW = 384;
 		texH = 384;
 		pbody = nullptr;
@@ -3926,8 +3895,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		Draw(dt);
 
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+			
 
 
 			//INITIAL dialogue
@@ -4049,17 +4017,18 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		{
 		case ColliderType::PLAYER:
 			isGettingTouched = true;
-
+			Engine::GetInstance().scene->interaction = isGettingTouched;
 			break;
 		case ColliderType::CHEESEBALL:
 			Engine::GetInstance().scene->ratmissionfinished=true;
+
 			break;
 		}
 
 	}
 	void RatKing::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
-
+		Engine::GetInstance().scene->interaction = isGettingTouched;
 
 
 	}
@@ -4112,8 +4081,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		anims.SetCurrent("idle");
 
 		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Frustated Sculptor_NPC/Frustated_Sculptor.png");
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
-
+		
 		texW = 384;
 		texH = 384+ 128;
 		pbody = nullptr;
@@ -4155,9 +4123,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		Draw(dt);
 
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
-
+		
 
 			//INITIAL dialogue
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedSculptor == false) {
@@ -4259,7 +4225,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		{
 		case ColliderType::PLAYER:
 			isGettingTouched = true;
-
+			Engine::GetInstance().scene->interaction = isGettingTouched;
 			break;
 		
 		}
@@ -4268,7 +4234,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	void Sculptor::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
 
-
+		Engine::GetInstance().scene->interaction = isGettingTouched;
 
 	}
 
@@ -4318,8 +4284,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		anims.SetCurrent("idle");
 
 		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Retired Knight_NPC/spritesheet.png");
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
-
+		
 		texW = 384;
 		texH = 384;
 		pbody = nullptr;
@@ -4362,8 +4327,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		Draw(dt);
 
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+			
 
 
 			//INITIAL dialogue
@@ -4468,14 +4432,14 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		{
 		case ColliderType::PLAYER:
 			isGettingTouched = true;
-
+			Engine::GetInstance().scene->interaction = isGettingTouched;
 			break;
 		}
 
 	}
 	void RetiredKnight::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isGettingTouched = false;
-
+		Engine::GetInstance().scene->interaction = isGettingTouched;
 
 
 	}
@@ -4505,8 +4469,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 	bool HighPriestess::Start()
 	{
-		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
-
+		
 		// De momento solo idle
 		std::unordered_map<int, std::string> aliases = {
 				  {0, "idle"}
@@ -4560,8 +4523,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		if (!active) return true;
 
 		if (isGettingTouched) {
-			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-		
+			
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedPreach == false) {
 			
 			
@@ -4628,12 +4590,14 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		switch (physB->ctype)
 		{
 		case ColliderType::PLAYER:
-			isGettingTouched = true;
+			isGettingTouched = true; 
+			Engine::GetInstance().scene->interaction = isGettingTouched;
 			break;
 		}
 	}
 
 	void HighPriestess::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 	{
-		isGettingTouched = false;
+		isGettingTouched = false; 
+		Engine::GetInstance().scene->interaction = isGettingTouched;
 	}

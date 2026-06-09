@@ -35,6 +35,7 @@ public:
     bool canSmash = false;
     bool firstjump = true;
     bool stop = false;
+    bool isOnMoho = false;
    
     AnimationSet animBreak;
     AnimationSet animExplode;
