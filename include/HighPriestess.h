@@ -37,4 +37,10 @@ private:
     AnimationSet* currentAnimTrack = nullptr;
     SDL_Texture* currentTexture = nullptr;
     EnemyState lastState; // Para optimizar el cambio de animación
+
+
+    bool isImmobilized = false;
+    bool waitingForChoice = false;
+    std::string currentAnimName = "none";
+
 };

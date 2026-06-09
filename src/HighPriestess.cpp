@@ -4,6 +4,8 @@
 #include "Textures.h"
 #include "Physics.h"
 #include "Render.h"
+#include "Player.h"
+#include "Scene.h"
 
 HighPriestesss::HighPriestesss() : Enemy() {
     name = "HighPriestesss";
@@ -31,6 +33,20 @@ bool HighPriestesss::Start() {
     animTurn.LoadFromTSX("assets/Textures/Spritesheets/High Priestess/high_priestess_turn.tsx", aliasTurn);
     animDeath.LoadFromTSX("assets/Textures/Spritesheets/High Priestess/priestess_death.tsx", aliasDeath);
 
+    // 1. Cargar el spritesheet
+    texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/High Priestess/sprite_high_priestess_boss_01.png");
+
+    // 2. Definir las animaciones
+    std::unordered_map<int, std::string> aliases = {
+        {0, "inmobilization_start"},
+        {10, "inmobilization_idle"},
+        {30, "spare"},
+        {40, "death"},
+        {41, "death_static"}
+    };
+
+    anims.LoadFromTSX("assets/Textures/Spritesheets/High Priestess/high_priestess_boss.tsx", aliases);
+
     // 3. Configuración del estado inicial
     health = 3;
     state = EnemyState::IDLE;
@@ -56,6 +72,29 @@ bool HighPriestesss::Update(float dt) {
         isVulnerable = true;
         SetState(EnemyState::WALKING); // Alias de vulnerable
     }
+
+    // --- TRANSICIONES DE FASE FINAL ---
+    if (currentAnimName == "inmobilization_start" && anims.HasFinished()) {
+        anims.SetCurrent("inmobilization_idle");
+        currentAnimName = "inmobilization_idle";
+        waitingForChoice = true; // Ahora el jugador puede elegir
+    }
+    else if (currentAnimName == "spare" && anims.HasFinished()) {
+        // Termina la animación de Spare -> GAME OVER DIRECTO
+        // Buscamos al jugador en la escena actual para activar su muerte definitiva
+        Player* player = Engine::GetInstance().scene->GetPlayer();
+
+        if (player != nullptr) {
+            player->isDeadDefinitive = true;
+        }
+    }
+
+    else if (currentAnimName == "death" && anims.HasFinished()) {
+        // Termina de morir -> Se queda en el suelo
+        anims.SetCurrent("death_static");
+        currentAnimName = "death_static";
+    }
+
 
     // Cambiar de track de animación si ha cambiado el estado
     ChangeCurrentAnimation();

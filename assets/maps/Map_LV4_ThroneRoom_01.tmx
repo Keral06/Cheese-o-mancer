@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="89" height="50" tilewidth="128" tileheight="128" infinite="0" nextlayerid="20" nextobjectid="30">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="89" height="50" tilewidth="128" tileheight="128" infinite="0" nextlayerid="21" nextobjectid="31">
  <tileset firstgid="1" source="test2_tileset.tsx"/>
  <tileset firstgid="4" source="ThroneRoom_1.tsx"/>
  <tileset firstgid="5" source="ThroneRoom_2.tsx"/>
@@ -4496,6 +4496,18 @@
    <tile/>
   </data>
  </layer>
+ <objectgroup id="20" name="Doors">
+  <object id="30" name="Door" type="Door" x="11264" y="4736" width="128" height="1024">
+   <properties>
+    <property name="name" value="Door_4_6_1"/>
+    <property name="offsetX" type="int" value="-384"/>
+    <property name="offsetY" type="int" value="0"/>
+    <property name="requiresInteraction" type="bool" value="false"/>
+    <property name="targetMap" value="Map_LV4_Bridge_and_PharusTower_01.tmx"/>
+    <property name="targetSpawn" value="Door_4_5_2"/>
+   </properties>
+  </object>
+ </objectgroup>
  <layer id="19" name="Tubs" width="89" height="50">
   <data>
    <tile/>
@@ -16712,6 +16724,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="90"/>
    <tile/>
    <tile/>
    <tile/>
@@ -16800,6 +16813,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="90"/>
    <tile/>
    <tile/>
    <tile/>
@@ -16888,6 +16902,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="90"/>
    <tile/>
    <tile/>
    <tile/>
@@ -16976,6 +16991,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="90"/>
    <tile/>
    <tile/>
    <tile/>
@@ -17064,6 +17080,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="90"/>
    <tile/>
    <tile/>
    <tile/>
@@ -17152,6 +17169,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="90"/>
    <tile/>
    <tile/>
    <tile/>
@@ -17240,6 +17258,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="90"/>
    <tile/>
    <tile/>
    <tile/>
@@ -17328,14 +17347,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="90"/>
    <tile/>
    <tile/>
    <tile/>
@@ -17904,7 +17916,7 @@
  <objectgroup id="16" name="Walls">
   <object id="24" x="9856" y="4608" width="1536" height="128"/>
   <object id="25" x="9856" y="3840" width="128" height="768"/>
-  <object id="26" x="1280" y="3840" width="128" height="896"/>
+  <object id="26" x="1280" y="3840" width="128" height="1920"/>
   <object id="27" x="0" y="4608" width="1280" height="128"/>
  </objectgroup>
  <objectgroup id="8" name="Foreground column" offsetx="-512" offsety="-4">
