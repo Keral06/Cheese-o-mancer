@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="26" nextobjectid="300">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="26" nextobjectid="301">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -22404,13 +22404,9 @@
   </data>
  </layer>
  <objectgroup id="17" name="Items">
-  <object id="258" name="Live" type="Live" x="768" y="5248" width="256" height="384"/>
+  <object id="258" name="Live" type="Live" x="900" y="5309.33" width="256" height="384"/>
  </objectgroup>
- <objectgroup id="18" name="Checkpoints">
-  <object id="259" name="Flag" type="Flag" x="644" y="4040">
-   <point/>
-  </object>
- </objectgroup>
+ <objectgroup id="18" name="Checkpoints"/>
  <objectgroup id="11" name="Doors">
   <object id="231" name="Door" type="Door" x="10882.3" y="640" width="125.697" height="1152">
    <properties>
@@ -26978,9 +26974,6 @@
   <object id="273" name="Notice from the Royal Halls" type="Notice from the Royal Halls" x="7100" y="5412">
    <point/>
   </object>
-  <object id="274" name="Key" type="Key" x="1616" y="4920">
-   <point/>
-  </object>
   <object id="275" name="interactball" type="interactball" x="4064" y="3000">
    <point/>
   </object>
@@ -26999,7 +26992,7 @@
     <property name="name" value="miniBoss"/>
    </properties>
   </object>
-  <object id="287" name="Player" type="Player" x="9896" y="1476">
+  <object id="287" name="Player" type="Player" x="10037.9" y="1577.33">
    <point/>
   </object>
   <object id="298" name="Rat" type="Rat" x="2832" y="3232">
@@ -35982,7 +35975,7 @@
   <object id="291" type="Soup" x="5774" y="6078" width="740" height="144"/>
   <object id="292" type="Soup" x="2572.67" y="5838" width="740" height="168"/>
   <object id="293" type="Soup" x="8707.33" y="5975.33" width="740" height="150.667"/>
-  <object id="294" type="Stars" x="3884.56" y="2871.56" width="339.97" height="242.091"/>
+  <object id="294" type="Stars" x="3830.56" y="2771.56" width="461.97" height="372.091"/>
   <object id="295" type="Stars" x="7123.35" y="5381.62" width="249.97" height="132.758"/>
  </objectgroup>
 </map>

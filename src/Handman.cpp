@@ -196,7 +196,7 @@ bool HANDMAN::Update(float dt)
         if (bossDefeated && BeatBoss.hasStarted && !BeatBoss.hasEnded) {
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
                
-                if (BeatBoss.AvanzarDialogo(dt)) {
+                if (BeatBoss.AvanzarDialogo(dt, nameNPC)) {
                     /*firstTimeBossKill = false;*/
                     isStoreOn = true;
                     currentState = H_SHOP_START;
