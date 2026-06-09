@@ -7,6 +7,7 @@
 #include "Engine.h"
 #include "Input.h"
 #include "Scene.h"
+#include "Textures.h"
 #include "Log.h"
 #include "EntityManager.h"
 #include "PrincessBoss.h"
@@ -47,6 +48,19 @@ BossFightPrincessKnight::BossFightPrincessKnight()
     Dialogue Defeat("assets/Dialogues/The_Lovers_Bossfight/Lovers_Death_Dialogues.txt", "assets/Dialogues/The_Lovers_Bossfight/Lovers_Death_Names.txt");
     this->Defeat = Defeat;
     Dialogue DefeatWell("assets/Dialogues/The_Lovers_Bossfight/Lovers_Choice_Dialogues.txt", "assets/Dialogues/The_Lovers_Bossfight/Lovers_Choice_Names.txt");
+    if (Engine::GetInstance().scene->cards.tieneObjeto("Sun") == false) {
+
+        Engine::GetInstance().scene->cards.push("Sun", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Sun.png"), Engine::GetInstance().textures->Load("assets/UI/Tarot/Inverted/UI_TarotCard_Sun_inverted.png"));
+
+
+    }
+
+    if (Engine::GetInstance().scene->cards.tieneObjeto("Moon") == false) {
+
+        Engine::GetInstance().scene->cards.push("Moon", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Moon.png"), Engine::GetInstance().textures->Load("assets/UI/Tarot/Inverted/UI_TarotCard_Moon_inverted.png"));
+
+
+    }
     this->DefeatWell = DefeatWell;
     /*Dialogue AfterFightSpare("assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Dialogues", "assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Names");
     this->AfterFightSpare = AfterFightSpare;
@@ -95,7 +109,7 @@ bool BossFightPrincessKnight::Update(float dt)
                 princess->GetPosition().getX());*/
 
             float distance = abs(princessPos.getX() - playerPos.getX());
-            
+
             // Si el jugador se acerca a 10 píxeles (o unidades de tu mapa)
             if (distance <= 1350.0f)
             {
@@ -114,7 +128,7 @@ bool BossFightPrincessKnight::Update(float dt)
                         }
 
 
-                        
+
                     }
                     if (Before.hasStarted && !Before.hasEnded) {
 
@@ -126,10 +140,10 @@ bool BossFightPrincessKnight::Update(float dt)
 
                 }
                 // 1. Hacemos Zoom a la cámara (Ajusta el método según tu módulo de Render/Camera)
-              
+
 
                 // 2. Cambiamos al estado INTRO (esperando el diálogo)
-              
+
             }
         }
     }
@@ -212,7 +226,7 @@ void BossFightPrincessKnight::UpdateIntro(float dt)
         // ==========================================
     case BossFightState::INTRO:
     {
-        if (Before.hasEnded )
+        if (Before.hasEnded)
         {
             LOG("Primer diálogo completado. ¡El Caballero SPAWNEA en medio!");
 
@@ -226,10 +240,10 @@ void BossFightPrincessKnight::UpdateIntro(float dt)
                 knightTargetX = (princessBasePos.getX() + playerX) * 0.5f;
 
                 // Teletransportamos al Caballero directamente al centro exacto
-              
+
 
                 // Activamos la animación del Slide/Lunge inicial
-               
+
 
                 // Quitamos el Zoom de la cámara suavemente
                 Engine::GetInstance().render->SetZoomSmooth(0.3f, 800);
@@ -252,9 +266,9 @@ void BossFightPrincessKnight::UpdateIntro(float dt)
                 if (Before2.hasStarted && !Before2.hasEnded) {
                     Before2.Draw(dt);
                     return;
-                
+
                 }
-               
+
                 LOG("BossFight State: Esperando al segundo diálogo pre-transformación...");
             }
         }
@@ -273,8 +287,8 @@ void BossFightPrincessKnight::UpdateIntro(float dt)
 
             knight->ResetActionFinished();
 
-            
-            
+
+
             SetFightState(BossFightState::KNIGHT_DIAL_BEFORE_TRANSFORM);
         }
         break;
@@ -285,15 +299,15 @@ void BossFightPrincessKnight::UpdateIntro(float dt)
     // ========================================================
     case BossFightState::KNIGHT_DIAL_BEFORE_TRANSFORM:
     {
-        
-            
-                LOG("Segundo diálogo completado. ¡Empieza la transformación!");
 
-                // Al pasar a KNIGHT_TRANSFORM, tu código ya llamará a knight->StartTransform()
-                // lo que sacará al caballero del slide y cargará los sprites de mutación.
-                SetFightState(BossFightState::KNIGHT_TRANSFORM);
-            
-        
+
+        LOG("Segundo diálogo completado. ¡Empieza la transformación!");
+
+        // Al pasar a KNIGHT_TRANSFORM, tu código ya llamará a knight->StartTransform()
+        // lo que sacará al caballero del slide y cargará los sprites de mutación.
+        SetFightState(BossFightState::KNIGHT_TRANSFORM);
+
+
         break;
     }
     case BossFightState::KNIGHT_TRANSFORM:
@@ -398,41 +412,42 @@ void BossFightPrincessKnight::UpdateDeath(float dt)
     if (!waitingDecisionFinished)
     {
         //Primero mira las condiciones para ver el spare o no
+
         if (Engine::GetInstance().scene->hasShownPoemToWell == true) {
-        
+
             if (DefeatWell.hasStarted == false) { DefeatWell.AvanzarDialogo(dt); return; }
 
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-            
-            
+
+
                 if (DefeatWell.AvanzarDialogo(dt)) {
-                
-                   
-                    
+
+
+
                     desicion = DefeatWell.WhatChoice();
                     waitingDecisionFinished = true;
-                    
-                 
-                
+
+
+
                 }
-            
-           
-            
+
+
+
             }
             if (DefeatWell.hasStarted && !DefeatWell.hasEnded) {
                 DefeatWell.Draw(dt);
                 return;
 
             }
-        
-        
-        
-        
+
+
+
+
         }
         else {
-        
-        
-        
+
+
+
             if (Defeat.hasStarted == false) { Defeat.AvanzarDialogo(dt); return; }
 
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
@@ -452,24 +467,29 @@ void BossFightPrincessKnight::UpdateDeath(float dt)
 
 
             }
-        
+
             if (Defeat.hasStarted && !Defeat.hasEnded) {
                 Defeat.Draw(dt);
                 return;
 
             }
-        
-        
+
+
         }
 
 
-        
+
         if (desicion)
         {
             LOG("Elección: ¡Has decidido PERDONAR a los Lovers!");
             waitingDecisionFinished = true;
             playerChoiceSpare = true;
+            if (!Engine::GetInstance().scene->cards.tieneObjeto("Lovers")) {
 
+
+                Engine::GetInstance().scene->cards.push("Lovers", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Lovers.png"), nullptr);
+
+            }
             // Los jefes se quedan en DEFEAT de forma permanente
             // Aquí puedes disparar tu diálogo "AfterFightSpare"
         }
@@ -478,6 +498,9 @@ void BossFightPrincessKnight::UpdateDeath(float dt)
         if (!desicion)
         {
             LOG("Elección: ¡Has decidido ASESINAR a los Lovers!");
+            Engine::GetInstance().scene->cards.GirarCarta("Moon");
+            Engine::GetInstance().scene->cards.GirarCarta("Sun");
+
             waitingDecisionFinished = true;
             playerChoiceSpare = false;
 
@@ -486,7 +509,7 @@ void BossFightPrincessKnight::UpdateDeath(float dt)
             {
                 princess->SetPrincessState(PrincessState::DEATH);
             }
-            
+
 
             // Aquí puedes disparar tu diálogo "AfterFightKill"
         }
@@ -508,7 +531,7 @@ void BossFightPrincessKnight::UpdateDeath(float dt)
             {
                 LOG("Animación de muerte completada. Finalizando combate.");
                 SetFightState(BossFightState::FINISHED);
-                
+
             }
         }
     }
@@ -625,6 +648,7 @@ bool BossFightPrincessKnight::IsFightActive() const
     return fightStarted &&
         fightState != BossFightState::FINISHED;
 }
+
 
 
 
