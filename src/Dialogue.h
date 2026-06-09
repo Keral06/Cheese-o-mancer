@@ -29,7 +29,7 @@ public:
 	bool PostUpdate();
 	void AddDialogue(const char* tsxPath);
 	void AddName(const char* tsxPath);
-	bool AvanzarDialogo(float dt);
+	bool AvanzarDialogo(float dt, std::string charName);
 	void Draw(float dt);
 
 private:
@@ -58,7 +58,7 @@ public:
 	bool WhatChoice();
 	
 	SDL_Texture* textureDialogue;
-	void BeginDialogue();
+	void BeginDialogue(std::string charName);
 	bool HasEnded(bool name);
 
 	bool hasEnded = false;
@@ -69,4 +69,17 @@ public:
 	bool choicesBeingMade = false;
 
 	bool choice = false;
+
+	//audio logic
+	void HandleAudio(std::string name);
+	void LoadTalkSound(std::string charName);
+	void PlayTalkSound(std::string charName);
+
+	int currentFx;
+	/*char* whoIs;*/
+	const char* who;
+	bool hasPlayed = false;
+
+	bool hasConversation = true;
+
 };

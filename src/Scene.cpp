@@ -2157,7 +2157,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
 					handman->hasBeenSold.hasEnded = false;
-					handman->hasBeenSold.BeginDialogue();
+					handman->hasBeenSold.BeginDialogue(handman->nameNPC);
 					break;
 				}
 			}
@@ -2167,7 +2167,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
 					handman->hasNoMoney.hasEnded = false;
-					handman->hasNoMoney.BeginDialogue();
+					handman->hasNoMoney.BeginDialogue(handman->nameNPC);
 					break;
 				}
 			}
@@ -2202,7 +2202,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
 					handman->hasBeenSold.hasEnded = false;
-					handman->hasBeenSold.BeginDialogue();
+					handman->hasBeenSold.BeginDialogue(handman->nameNPC);
 					break;
 				}
 			}
@@ -2212,7 +2212,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
 					handman->hasNoMoney.hasEnded = false;
-					handman->hasNoMoney.BeginDialogue();
+					handman->hasNoMoney.BeginDialogue(handman->nameNPC);
 					break;
 				}
 			}
@@ -2244,7 +2244,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
 					handman->hasBeenSold.hasEnded = false;
-					handman->hasBeenSold.BeginDialogue();
+					handman->hasBeenSold.BeginDialogue(handman->nameNPC);
 					break;
 				}
 			}
@@ -2254,7 +2254,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
 					handman->hasNoMoney.hasEnded = false;
-					handman->hasNoMoney.BeginDialogue();
+					handman->hasNoMoney.BeginDialogue(handman->nameNPC);
 					break;
 				}
 			}
@@ -2285,7 +2285,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
 					handman->hasBeenSold.hasEnded = false;
-					handman->hasBeenSold.BeginDialogue();
+					handman->hasBeenSold.BeginDialogue(handman->nameNPC);
 					break;
 				}
 			}
@@ -2295,7 +2295,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
 					handman->hasNoMoney.hasEnded = false;
-					handman->hasNoMoney.BeginDialogue();
+					handman->hasNoMoney.BeginDialogue(handman->nameNPC);
 					break;
 				}
 			}
@@ -2338,7 +2338,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
 					handman->hasBeenSold.hasEnded = false;
-					handman->hasBeenSold.BeginDialogue();
+					handman->hasBeenSold.BeginDialogue(handman->nameNPC);
 					break;
 				}
 			}
@@ -2348,7 +2348,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
 					handman->hasNoMoney.hasEnded = false;
-					handman->hasNoMoney.BeginDialogue();
+					handman->hasNoMoney.BeginDialogue(handman->nameNPC);
 					break;
 				}
 			}

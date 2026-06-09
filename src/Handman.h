@@ -76,4 +76,6 @@ public:
 	Dialogue* pendingDialogue = nullptr;
 
 	HandmanState currentState = H_IDLE;
+
+	std::string nameNPC = "Handman";
 };

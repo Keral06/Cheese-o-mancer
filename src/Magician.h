@@ -61,5 +61,7 @@ public:
 	bool isTalking = false;
 	
 	SDL_Texture* textureDialogue;
+
+	std::string nameNPC = "Magician: ";
 	
 };
