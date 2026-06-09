@@ -1,7 +1,7 @@
-#ifndef __HIGH_PRIESTESS_H__
-#define __HIGH_PRIESTESS_H__
+#pragma once
 
 #include "Enemy.h"
+#include "Animation.h"
 
 class HighPriestesss : public Enemy {
 public:
@@ -10,18 +10,31 @@ public:
 
     bool Start() override;
     bool Update(float dt) override;
-    void OnCollision(PhysBody* physA, PhysBody* physB) override;
-    void ChangeCurrentAnimation() override;
+    void Draw(float dt);
 
+    void OnCollision(PhysBody* physA, PhysBody* physB) override;
     void SpawnWave();
     void NotifyEnemyDeath();
+    void ChangeCurrentAnimation();
 
 private:
+    // Control de oleadas y vulnerabilidad
     int currentWave;
     int enemiesAlive;
     int hitsTaken;
     bool isVulnerable;
-    // Podrías añadir un timer para el estado TURN si quieres que se vuelva a proteger sola
-};
 
-#endif
+    // --- 3 Animaciones y 3 Texturas Independientes ---
+    AnimationSet animIdle;
+    AnimationSet animTurn;
+    AnimationSet animDeath;
+
+    SDL_Texture* texIdle = nullptr;
+    SDL_Texture* texTurn = nullptr;
+    SDL_Texture* texDeath = nullptr;
+
+    // Punteros de control para saber qué pintar en el frame actual
+    AnimationSet* currentAnimTrack = nullptr;
+    SDL_Texture* currentTexture = nullptr;
+    EnemyState lastState; // Para optimizar el cambio de animación
+};
