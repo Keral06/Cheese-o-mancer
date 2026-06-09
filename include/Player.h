@@ -237,4 +237,8 @@ private:
 	bool isShowingCheese = false;
 	float showCheeseTimer = 0.0f;
 
+	SDL_Texture* magicCheeseTexture = nullptr;
+	AnimationSet magicCheeseAnims;
+	bool isPlayingMagicCheese = false;
+
 };

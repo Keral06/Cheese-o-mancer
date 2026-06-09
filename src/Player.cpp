@@ -76,6 +76,12 @@ bool Player::Start() {
 	texture4x4 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/4x4/j_ballroll.png");
 	texture5x5 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/5x5/j_5x5.png");
 
+	magicCheeseTexture = Engine::GetInstance().textures->Load("Assets/Textures/Spritesheets/Get Cheese Magic/get_cheese_magic_spritesheet.png");
+	std::unordered_map<int, std::string> magicAliases = {
+		{0, "get_cheese_magic"}
+};
+	magicCheeseAnims.LoadFromTSX("assets/Textures/Spritesheets/Get Cheese Magic/get_cheese_magic.tsx", magicAliases);
+	magicCheeseAnims.SetCurrent("get_cheese_magic");
 
 	textureShowCheese = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/4x4/Jester_Show_That_Cheese_spritesheet.png");
 	std::unordered_map<int, std::string> aliasesShowCheese = { {0, "show_cheese"} };
@@ -254,6 +260,15 @@ bool Player::Update(float dt)
 		
 		ApplyPhysics();
 
+		if (isPlayingMagicCheese) {
+			magicCheeseAnims.Update(dt);
+
+			// Si la animación termina, la desactivamos para que desaparezca
+			if (magicCheeseAnims.HasFinished()) {
+				isPlayingMagicCheese = false;
+			}
+		}
+
 		// MOSTRAR QUESO (Asegúrate de que esto quede dentro de if(!isPaused) )
 		if (isShowingCheese) {
 			showCheeseTimer -= dt;
@@ -334,10 +349,17 @@ bool Player::Update(float dt)
 
 		// Forzamos la animación Y LA TEXTURA
 		currentAnimSet = &animsShowCheese;
-		texture = textureShowCheese; // <--- ¡ESTA ES LA LÍNEA MÁGICA QUE FALTABA!
+		texture = textureShowCheese;
 		currentAnimSet->SetCurrent("show_cheese");
 
-		// Frenamos al jugador constantemente por si estaba cayendo/resbalando
+		// --- MAGIA DEL QUESO ---
+		// Lo activamos solo una vez mientras dura el temporizador
+		if (!isPlayingMagicCheese) {
+			isPlayingMagicCheese = true;
+			magicCheeseAnims.SetCurrent("get_cheese_magic");
+		}
+
+		// Frenamos al jugador constantemente por si estaba cayendo/resbalando 
 		b2Vec2 vel = b2Body_GetLinearVelocity(pbody->body);
 		vel.x = 0.0f;
 		b2Body_SetLinearVelocity(pbody->body, vel);
@@ -345,10 +367,46 @@ bool Player::Update(float dt)
 		// Si el temporizador llega a 0, devolvemos el control
 		if (showCheeseTimer <= 0.0f) {
 			isShowingCheese = false;
+			currentAnimName = "idle";
+			currentAnimSet->SetCurrent("idle");
 		}
 	}
 
-	return true;
+	// 1. ACTUALIZAMOS LOS FOTOGRAMAS DE LA MAGIA SI ESTÁ ACTIVA (¡Te faltaba este bloque!)
+	if (isPlayingMagicCheese) {
+		magicCheeseAnims.Update(dt);
+		if (magicCheeseAnims.HasFinished()) {
+			isPlayingMagicCheese = false; // Se apaga sola cuando termina
+		}
+	}
+
+	// 2. DIBUJAMOS LA MAGIA
+	if (isPlayingMagicCheese && magicCheeseTexture != nullptr) {
+		const SDL_Rect& magicFrame = magicCheeseAnims.GetCurrentFrame();
+
+		// --- AJUSTES DE POSICIÓN ---
+		int baseOffsetX = -100;  // El offset que te funcionaba bien mirando a la izquierda
+		int offsetY = 80;
+
+		int currentOffsetX = baseOffsetX;
+
+		// Si NO está mirando a la izquierda (es decir, mira a la derecha), invertimos el offset
+		if (!facingLeft) {
+			currentOffsetX = -baseOffsetX;
+		}
+
+		int drawX = (int)position.getX() - (magicFrame.w / 2) + currentOffsetX;
+		int drawY = (int)position.getY() - magicFrame.h + offsetY;
+
+		// --- FLIPPEAR LA TEXTURA ---
+		// Si Engine::GetInstance().render->DrawTexture admite SDL_FlipMode, usa esta línea:
+		SDL_FlipMode flipMagic = facingLeft ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+		Engine::GetInstance().render->DrawTexture(magicCheeseTexture, drawX, drawY, &magicFrame, 1.0f, 0.0, 2147483647, 2147483647, flipMagic);
+
+
+	}
+
+	return true; // <-- FINAL DE TU FUNCIÓN UPDATE
 }
 
 void Player::UpdateFireballs(float dt) {
@@ -977,6 +1035,11 @@ bool Player::CleanUp()
 		feetHitbox->listener = nullptr;
 		Engine::GetInstance().physics->DeletePhysBody(feetHitbox);
 		feetHitbox = nullptr;
+	}
+
+	if (magicCheeseTexture != nullptr) {
+		Engine::GetInstance().textures->UnLoad(magicCheeseTexture);
+		magicCheeseTexture = nullptr;
 	}
 
 	Engine::GetInstance().textures->UnLoad(texture);
