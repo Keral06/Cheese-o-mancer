@@ -46281,7 +46281,7 @@
     <property name="targetSpawn" value="Door_3_2_3"/>
    </properties>
   </object>
-  <object id="419" x="7808" y="0" width="1024" height="640">
+  <object id="419" name="Door" type="Door" x="7808" y="0" width="1024" height="640">
    <properties>
     <property name="name" value="Door_3_1_5"/>
     <property name="offsetX" type="int" value="0"/>
