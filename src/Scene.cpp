@@ -216,7 +216,8 @@ bool Scene::PostUpdate()
 	
 	
 	}
-	else {
+	else if (misiones.Visualizada() == true && !someoneIsTalking) {
+
 	
 		for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
 			if (element->id == 68) {
@@ -224,6 +225,33 @@ bool Scene::PostUpdate()
 			}
 		}
 	}
+
+	if (cards.Visualizada() == false && !someoneIsTalking) {
+
+
+		for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
+			if (element->id == 69) {
+				element->ChangeImage(cardsIcon2clic, cardsIconclic);
+			}
+		}
+
+
+
+	}
+	else if (cards.Visualizada() == true && !someoneIsTalking) {
+
+		for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
+			if (element->id == 69) {
+				element->ChangeImage(cardsIcon2, cardsIcon);
+			}
+		}
+
+
+
+	}
+
+
+
 	switch (currentScene)
 	{
 	case SceneID::INTRO_SCREEN:
@@ -959,20 +987,9 @@ void Scene::UpdateLevel(float dt) {
 			}
 		}
 	}
-	if (cardsInventoryOn) {
-		if (cardsBase != nullptr) {
-			Engine::GetInstance().render->DrawTextureNoCamera(cardsBase, 240, 60, 800, 600);
-		}
 
-		if (cards.cards.size() > 0) {
-
-
-			Engine::GetInstance().render->DrawTextureNoCamera(cards.cards[currentCardIndex].imagen, 730, 162, 200, 400);
-		}
-
-
-	}
 	
+
 	if (isPaused||showHelp||inventoryOn) {
 		return;
 	}
@@ -1099,7 +1116,23 @@ void Scene::UnloadLevel() {
 }
 
 void  Scene::PostUpdateLevel() {
+	if (cardsInventoryOn) {
+		if (cardsBase != nullptr) {
+			SDL_Rect screenRect = { -10000, -10000, 50000, 50000 };
+			Engine::GetInstance().render->DrawRectangle(screenRect, 0, 0, 0, 150, true, false);
+			Engine::GetInstance().render->DrawTextureNoCamera(cardsBase, 240, 60, 800, 600);
+		}
 
+
+		if (cards.cards.size() > 0) {
+
+
+
+			Engine::GetInstance().render->DrawTextureNoCamera(cards.cards[currentCardIndex].imagen, 730, 162, 200, 400);
+			cards.cards[currentCardIndex].visualizada = true;
+		}
+
+	}
 	// Cargar/Guardar estado (F5/F6)
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
 		Engine::GetInstance().map->LoadEntities(player, enemies);
@@ -1649,6 +1682,10 @@ void Scene::LoadMap(std::string map)
 	if (helpTextures.size() == 0) {
 		helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_Tutorial/UI_TutorialControls1_.png");
 		helpTextures.push_back(helpTexture);
+
+		helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_Tutorial/UI_TutorialControls2_.png");
+		helpTextures.push_back(helpTexture);
+
 	}
 	
 	map1Texture = Engine::GetInstance().textures->Load("assets/UI/Map/UI_Map_Level1.png");
@@ -2651,6 +2688,9 @@ void Scene::InventariIconUI() {
 
 	cardsIcon = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Tarot_InventoryItem1_.png");
 	cardsIcon2 = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Tarot_InventoryItem2_.png");
+	cardsIconclic = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Tarot_InventoryItem1_notification.png");
+	cardsIcon2clic = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Tarot_InventoryItem2_notification.png");
+
 	auto bag = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 67, "",
 		{ 1110, 560, 160, 160 }, this, SDL_Rect{ 0,0,0,0 },
@@ -2728,6 +2768,8 @@ void Scene::HelpUI() {
 	cardsBase = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_Base_.png");
 	if (helpTextures.size() == 0) {
 		helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_Tutorial/UI_TutorialControls1_.png");
+		helpTextures.push_back(helpTexture);
+		helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_Tutorial/UI_TutorialControls2_.png");
 		helpTextures.push_back(helpTexture);
 	}
 
