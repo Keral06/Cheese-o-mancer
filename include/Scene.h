@@ -337,6 +337,8 @@ public:
 	Inventario inventario;
 	//MARC ESTOS SON LOS BOOLS DE EL PLAYER PARA CONVERSACIONES
 
+	bool finishedRetiredKnight = false;
+	bool hasTalkedPreach = false;
 	
 	bool beatBoss = false;
 	bool beatPrincess = false;	
@@ -427,6 +429,15 @@ public:
 		bool ratTalkedOnce = false;
 		bool ratmissionfinished = false;
 		int whereIsRat = 1;
+
+		// Contador Enemigos
+		int ratsKilled = 0;
+		int jailersKilled = 0;
+		int beesKilled = 0;
+		int horsesKilled = 0;
+
+		void RegisterEnemyKill(std::string enemyName);
+		bool HasKilledOneOfEachType();
 
 private:
 	//all video stuff

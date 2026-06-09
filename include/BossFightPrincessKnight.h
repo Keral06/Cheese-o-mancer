@@ -72,7 +72,7 @@ public:
     PrincessBoss* princess;
     KnightBoss* knight;
 
-private:
+public:
 
     // ===============================
     // INTERNAL UPDATE
@@ -129,7 +129,8 @@ private:
     float knightTargetX = 1800.0f;
     bool princessTranformed = false;
 
-
+    bool waitingDecisionFinished = false;
+    bool playerChoiceSpare = false;
 
     //DIALOGS
 

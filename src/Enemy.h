@@ -50,7 +50,7 @@ public:
 
 	virtual void Attack();
 
-	void DecreaseHealth(int amount);
+	virtual void DecreaseHealth(int amount);
 	virtual void Die();
 
 	void SetState(EnemyState newState);
@@ -64,6 +64,9 @@ public:
 	void MoveRanged();
 
 	void MoveMelee();
+
+	void RegisterEnemyKill(std::string enemyName);
+	bool HasKilledOneOfEachType();
 
 protected:
 	void PerformPathfinding();
