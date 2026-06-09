@@ -650,6 +650,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                     int width = objectNode.attribute("width").as_int();
                     int height = objectNode.attribute("height").as_int();
                     auto interactionProp = tempProperties.GetProperty("requiresInteraction");
+                    auto lockedProp = tempProperties.GetProperty("isLocked");
 
                     door->SetDoorData(
                         mapProp ? mapProp->valueString : "",
@@ -658,7 +659,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                         offsetY ? offsetY->valueInt : 0,
                         width,
                         height,
-                        interactionProp ? interactionProp->value : false
+                        interactionProp ? interactionProp->value : false,
+                        lockedProp ? lockedProp->value : false
                     );
                     door->Start();
                 }
