@@ -31,6 +31,7 @@ void GameManager::SaveGame() {
     world.append_attribute("lives").set_value(scene->lives);
     world.append_attribute("maxLives").set_value(scene->maxLives);
     world.append_attribute("score").set_value(scene->score);
+    world.append_attribute("levelTimer").set_value(scene->levelTimer);
 
     if (player != nullptr) {
         pugi::xml_node pos = world.append_child("Position");
@@ -135,6 +136,7 @@ void GameManager::LoadGame() {
         scene->lives = world.attribute("lives").as_int();
         scene->maxLives = world.attribute("maxLives").as_int();
         scene->score = world.attribute("score").as_int();
+        scene->levelTimer = world.attribute("levelTimer").as_float();
 
         if (player != nullptr) {
             pugi::xml_node pos = world.child("Position");
