@@ -44,10 +44,14 @@ BossFightPrincessKnight::BossFightPrincessKnight()
     Dialogue Before2("assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight2_Dialogues.txt", "assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight2_Names.txt");
     this->Before2 = Before2;
 
-   /* Dialogue Defeat("assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Dialogues", "assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Names");
-    Dialogue DefeatWell("assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Dialogues", "assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Names");
-    Dialogue AfterFightSpare("assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Dialogues", "assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Names");
-    Dialogue AfterFightKill("assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Dialogues", "assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Names");*/
+    Dialogue Defeat("assets/Dialogues/The_Lovers_Bossfight/Lovers_Death_Dialogues.txt", "assets/Dialogues/The_Lovers_Bossfight/Lovers_Death_Names.txt");
+    this->Defeat = Defeat;
+    Dialogue DefeatWell("assets/Dialogues/The_Lovers_Bossfight/Lovers_Choice_Dialogues.txt", "assets/Dialogues/The_Lovers_Bossfight/Lovers_Choice_Names.txt");
+    this->DefeatWell = DefeatWell;
+    /*Dialogue AfterFightSpare("assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Dialogues", "assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Names");
+    this->AfterFightSpare = AfterFightSpare;
+    Dialogue AfterFightKill("assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Dialogues", "assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Names");
+    this->AfterFightKill = AfterFightKill;*/
 }
 
 BossFightPrincessKnight::~BossFightPrincessKnight()
@@ -393,8 +397,75 @@ void BossFightPrincessKnight::UpdateDeath(float dt)
     // 1. ESPERANDO ELECCIÓN DEL JUGADOR
     if (!waitingDecisionFinished)
     {
+        //Primero mira las condiciones para ver el spare o no
+
+        if (Engine::GetInstance().scene->hasShownPoemToWell == true) {
         
-        if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
+            if (DefeatWell.hasStarted == false) { DefeatWell.AvanzarDialogo(dt); return; }
+
+            if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+            
+            
+                if (DefeatWell.AvanzarDialogo(dt)) {
+                
+                   
+                    
+                    desicion = DefeatWell.WhatChoice();
+                    waitingDecisionFinished = true;
+                    
+                 
+                
+                }
+            
+           
+            
+            }
+            if (DefeatWell.hasStarted && !DefeatWell.hasEnded) {
+                DefeatWell.Draw(dt);
+                return;
+
+            }
+        
+        
+        
+        
+        }
+        else {
+        
+        
+        
+            if (Defeat.hasStarted == false) { Defeat.AvanzarDialogo(dt); return; }
+
+            if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+
+
+                if (Defeat.AvanzarDialogo(dt)) {
+
+
+
+                    desicion = false;
+                    waitingDecisionFinished = true;
+
+
+
+                }
+
+
+
+            }
+        
+            if (Defeat.hasStarted && !Defeat.hasEnded) {
+                Defeat.Draw(dt);
+                return;
+
+            }
+        
+        
+        }
+
+
+        
+        if (desicion)
         {
             LOG("Elección: ¡Has decidido PERDONAR a los Lovers!");
             waitingDecisionFinished = true;
@@ -405,7 +476,7 @@ void BossFightPrincessKnight::UpdateDeath(float dt)
         }
 
         // OPCIÓN B: MATAR (KILL)
-        if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+        if (!desicion)
         {
             LOG("Elección: ¡Has decidido ASESINAR a los Lovers!");
             waitingDecisionFinished = true;
@@ -428,9 +499,11 @@ void BossFightPrincessKnight::UpdateDeath(float dt)
         {
             // Lógica final tras perdonar (ej: abrir puertas, dar recompensa pacífica)
             // Se quedan en animación DEFEAT permanentemente.
+            Engine::GetInstance().scene->hasSparedPrincessAndKnight = true;
         }
         else
         {
+            Engine::GetInstance().scene->hasSparedPrincessAndKnight = false;
             // Lógica final tras matar (esperar a que la animación de DEATH termine)
             if (princess != nullptr && princess->currentAnim->HasFinished())
             {

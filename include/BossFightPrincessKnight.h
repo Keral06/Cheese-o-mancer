@@ -132,6 +132,8 @@ public:
     bool waitingDecisionFinished = false;
     bool playerChoiceSpare = false;
 
+
+    bool desicion = false;
     //DIALOGS
 
     Dialogue Before;
