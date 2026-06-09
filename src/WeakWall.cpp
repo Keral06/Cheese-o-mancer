@@ -14,7 +14,15 @@ bool WeakWall::Start()
     pbody = Engine::GetInstance().physics->CreateRectangle(position.getX() + width/2, position.getY() + height/2, width, height, STATIC);
 
     if (drawed) {
-        texture = Engine::GetInstance().textures->Load("assets/Textures/Columna.png");
+        if (level == 1) {
+            texture = Engine::GetInstance().textures->Load("assets/Textures/Columna.png");
+        }
+        if (level == 2) {
+            texture = Engine::GetInstance().textures->Load("assets/Textures/Columna.png");
+        }
+        if (level == 3) {
+            texture = Engine::GetInstance().textures->Load("assets/Textures/Columna.png");
+        }
     }
     else {
         texture = nullptr;
