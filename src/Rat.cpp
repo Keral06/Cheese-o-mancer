@@ -45,6 +45,8 @@ bool Rat::Start()
 
 bool Rat::Update(float dt)
 {
+    if (hasBeenPicked) return true;
+
     if (Engine::GetInstance().scene->GetPlayer()->isDead()) return true;
 
     // Lógica de Arena
@@ -114,7 +116,7 @@ void Rat::OnCollision(PhysBody* physA, PhysBody* physB)
 
             b2Body_SetGravityScale(pbody->body, 0.0f);
 
-            pbody->listener = nullptr;
+            //pbody->listener = nullptr;
         }
         return;
     }

@@ -66,6 +66,8 @@ bool Bee::Start()
 
 bool Bee::Update(float dt)
 {
+    if (hasBeenPicked) return true;
+
     if (Engine::GetInstance().scene->GetPlayer()->isDead()) return true;
 
     // 1. ZONA SEGURA DE MUERTE
@@ -243,7 +245,8 @@ void Bee::OnCollision(PhysBody* physA, PhysBody* physB)
         if (physB->ctype == ColliderType::PLATFORM && pbody != nullptr) {
             Engine::GetInstance().physics->SetLinearVelocity(pbody, { 0.0f, 0.0f });
             b2Body_SetGravityScale(pbody->body, 0.0f);
-            pbody->listener = nullptr;
+            //pbody->listener = nullptr;
+            hasLanded = true;
         }
         return;
     }

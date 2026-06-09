@@ -7,6 +7,7 @@
 #include "FireBall.h"
 #include "CheeseBall.h"
 
+class Enemy;
 
 enum PlayerState {
 	JUMPING,
@@ -172,6 +173,9 @@ public:
 
 	bool pendingCheeseSpawn = false;
 	bool isKicking = false;
+
+	// Mision Escultor
+	Enemy* interactableCorpse = nullptr;
 
 private: 
 	b2Vec2 velocity;
