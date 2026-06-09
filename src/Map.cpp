@@ -470,8 +470,13 @@ bool Map::Load(std::string path, std::string fileName)//
                 int w = object->width;
                 int h = object->height;
 
-                if (type == ColliderType::SAVE && (w == 0 || h == 0)) {
+                // --- RED DE SEGURIDAD ANTI-CRASH RESTAURADA ---
+                // Si CUALQUIER objeto (Moho, pared, etc) tiene tamaño 0, 
+                // le damos el tamaño de un tile por defecto para que Box2D no pete.
+                if (w <= 0) {
                     w = mapData.tileWidth;
+                }
+                if (h <= 0) {
                     h = mapData.tileHeight;
                 }
 
