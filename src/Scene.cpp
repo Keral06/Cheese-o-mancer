@@ -1929,6 +1929,7 @@ void Scene::CreateStoreLevel1() {
 	storePaperLife = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Life.png");
 	storePaperKey = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_Key.png");
 	storePaperPermLife = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_Paper_PermanentLife_.png");
+	
 }
 
 void Scene::CreateStoreLevel2() {
@@ -2194,13 +2195,16 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 			}
 			/*Engine::GetInstance().scene->inventario.push("Key", iconKey, nullptr);*/
 			std::string keyName = "Key1";
+			SDL_Texture* keyDescription = inventoryPaperKey1;
 			if (Engine::GetInstance().map->mapFileName.find("LV2") != std::string::npos) {
 				keyName = "Key2";
+				keyDescription = inventoryPaperKey2;
 			}
 			else if (Engine::GetInstance().map->mapFileName.find("LV3") != std::string::npos) {
 				keyName = "Key3";
+				keyDescription = inventoryPaperKey3;
 			}
-			Engine::GetInstance().scene->inventario.push(keyName, iconKey, nullptr);
+			Engine::GetInstance().scene->inventario.push(keyName, iconKey, keyDescription);
 
 			//FUNCION DE QUE PLAYER TIENE LA LLAVE
 			for (auto& entity : Engine::GetInstance().entityManager->entities) {
@@ -2375,6 +2379,9 @@ void Scene::SetPlayer(std::shared_ptr<Player> _player)
 
 //funciones inventario
 void Scene::CreateInventoryUI() {
+	inventoryPaperKey1 = Engine::GetInstance().textures->Load("assets/Dialogues/Inventory_Descs/Inventory_Lvl1_Key.png");
+	inventoryPaperKey2 = Engine::GetInstance().textures->Load("assets/Dialogues/Inventory_Descs/Inventory_Lvl2_Key.png"); 
+	inventoryPaperKey3 = Engine::GetInstance().textures->Load("assets/Dialogues/Inventory_Descs/Inventory_Lvl3_Key.png");
 	invPaperCombined = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Inventari_PaperAll_01.png"); 
 	iconMap = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemMap1_01.png"); 
 	iconKey = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemKey1_01.png");

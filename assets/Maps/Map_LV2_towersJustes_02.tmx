@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="122" height="104" tilewidth="128" tileheight="128" infinite="0" nextlayerid="44" nextobjectid="437">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="122" height="104" tilewidth="128" tileheight="128" infinite="0" nextlayerid="45" nextobjectid="438">
  <tileset firstgid="1" name="tileset_lv2_general_01" tilewidth="128" tileheight="128" tilecount="1558" columns="38">
   <image source="tileset_lv2_general_02.png" width="4864" height="5367"/>
  </tileset>
@@ -29,7 +29,7 @@
     <property name="Draw" type="bool" value="true"/>
     <property name="Parallx" type="float" value="0.9"/>
    </properties>
-   <object id="406" gid="1562" x="-1102.73" y="5950.1" width="10296.2" height="3309.49"/>
+   <object id="406" gid="1562" x="-16897.3" y="15129.6" width="38148" height="17960.5"/>
   </objectgroup>
   <objectgroup id="29" name="Sky 2" parallaxx="0.5" parallaxy="0.5">
    <properties>
@@ -37,7 +37,7 @@
     <property name="Draw" type="bool" value="true"/>
     <property name="Parallx" type="float" value="0.9"/>
    </properties>
-   <object id="411" gid="1565" x="-1127.36" y="5928.44" width="10296.2" height="3309.49"/>
+   <object id="411" gid="1565" x="-17176.6" y="14838.6" width="38148" height="17235.2"/>
   </objectgroup>
   <objectgroup id="30" name="Sky 3" parallaxx="0.6" parallaxy="0.6">
    <properties>
@@ -45,7 +45,7 @@
     <property name="Draw" type="bool" value="true"/>
     <property name="Parallx" type="float" value="0.9"/>
    </properties>
-   <object id="412" gid="1567" x="-1152" y="6095.05" width="10296.2" height="3309.49"/>
+   <object id="412" gid="1567" x="-17456" y="15245.1" width="38148" height="12261.8"/>
   </objectgroup>
   <objectgroup id="31" name="Sky 4" parallaxx="0.7" parallaxy="0.7">
    <properties>
@@ -53,7 +53,7 @@
     <property name="Draw" type="bool" value="true"/>
     <property name="Parallx" type="float" value="0.9"/>
    </properties>
-   <object id="413" gid="1566" x="-988.364" y="6073.39" width="10296.2" height="3309.49"/>
+   <object id="413" gid="1566" x="-17037.8" y="14954.1" width="38148" height="13194.3"/>
   </objectgroup>
   <objectgroup id="32" name="Sky 5" parallaxx="0.8" parallaxy="0.8">
    <properties>
@@ -61,7 +61,7 @@
     <property name="Draw" type="bool" value="true"/>
     <property name="Parallx" type="float" value="0.9"/>
    </properties>
-   <object id="414" gid="1564" x="-448.181" y="6240" width="10296.2" height="3309.49"/>
+   <object id="414" gid="1564" x="-15707.9" y="15360.6" width="38148" height="19643.8"/>
   </objectgroup>
   <objectgroup id="33" name="Sky 6" parallaxx="0.9" parallaxy="0.9">
    <properties>
@@ -69,62 +69,61 @@
     <property name="Draw" type="bool" value="true"/>
     <property name="Parallx" type="float" value="0.9"/>
    </properties>
-   <object id="415" gid="1563" x="1536" y="6272" width="5883.53" height="3309.49"/>
+   <object id="415" gid="1563" x="-13725.1" y="14543.1" width="29776.9" height="17822.3"/>
   </objectgroup>
  </group>
  <group id="34" name="Castle" offsetx="640" offsety="1808">
   <properties>
    <property name="Background" type="bool" value="true"/>
    <property name="Draw" type="bool" value="true"/>
-   <property name="Parallax" type="float" value="0"/>
   </properties>
-  <objectgroup id="35" name="Castle 1" parallaxx="0.4">
+  <objectgroup id="35" name="Castle 1" visible="0" parallaxx="0.4">
    <properties>
     <property name="Background" type="bool" value="true"/>
-    <property name="Draw" type="bool" value="true"/>
-    <property name="Parallax" type="float" value="0"/>
+    <property name="Draw" type="bool" value="false"/>
+    <property name="Parallax" type="float" value="0.4"/>
    </properties>
-   <object id="426" gid="1568" x="-719.752" y="5024.75" width="5910.16" height="3546.1"/>
+   <object id="426" gid="1568" x="-3429.3" y="10148.3" width="17779.6" height="10667.8"/>
   </objectgroup>
   <objectgroup id="36" name="Castle 2" parallaxx="0.5">
    <properties>
     <property name="Background" type="bool" value="true"/>
     <property name="Draw" type="bool" value="true"/>
-    <property name="Parallax" type="float" value="0"/>
+    <property name="Parallax" type="float" value="0.5"/>
    </properties>
-   <object id="427" gid="1569" x="520.392" y="4353.35" width="5910.16" height="3546.1"/>
+   <object id="427" gid="1569" x="-11648.7" y="7605.69" width="22216.6" height="13330"/>
   </objectgroup>
-  <objectgroup id="37" name="Castle 3" parallaxx="0.6">
+  <objectgroup id="37" name="Castle 3" visible="0" parallaxx="0.6">
    <properties>
     <property name="Background" type="bool" value="true"/>
-    <property name="Draw" type="bool" value="true"/>
-    <property name="Parallax" type="float" value="0"/>
+    <property name="Draw" type="bool" value="false"/>
+    <property name="Parallax" type="float" value="0.6"/>
    </properties>
-   <object id="432" gid="1570" x="1169.52" y="4802.52" width="5910.16" height="3546.1"/>
+   <object id="432" gid="1570" x="-23911" y="17371.1" width="49281.4" height="30439.2"/>
   </objectgroup>
-  <objectgroup id="38" name="Castle 4" parallaxx="0.7">
+  <objectgroup id="38" name="Castle 4" visible="0" parallaxx="0.7">
    <properties>
     <property name="Background" type="bool" value="true"/>
-    <property name="Draw" type="bool" value="true"/>
-    <property name="Parallax" type="float" value="0"/>
+    <property name="Draw" type="bool" value="false"/>
+    <property name="Parallax" type="float" value="0.7"/>
    </properties>
-   <object id="433" gid="1571" x="1969.95" y="4750.51" width="5910.16" height="3546.1"/>
+   <object id="433" gid="1571" x="-10765.7" y="9098.63" width="22216.6" height="13330"/>
   </objectgroup>
   <objectgroup id="39" name="Castle 5" parallaxx="0.8">
    <properties>
     <property name="Background" type="bool" value="true"/>
     <property name="Draw" type="bool" value="true"/>
-    <property name="Parallax" type="float" value="0"/>
+    <property name="Parallax" type="float" value="0.8"/>
    </properties>
-   <object id="434" gid="1572" x="2732.55" y="4863.99" width="5910.16" height="3546.1"/>
+   <object id="434" gid="1572" x="-10182" y="9525.2" width="22216.6" height="13330"/>
   </objectgroup>
   <objectgroup id="40" name="Castle 6" parallaxx="0.9">
    <properties>
     <property name="Background" type="bool" value="true"/>
     <property name="Draw" type="bool" value="true"/>
-    <property name="Parallax" type="float" value="0"/>
+    <property name="Parallax" type="float" value="0.9"/>
    </properties>
-   <object id="436" gid="1573" x="5282.39" y="4939.64" width="5910.16" height="3546.1"/>
+   <object id="436" gid="1573" x="-2880.01" y="9809.58" width="22216.6" height="13330"/>
   </objectgroup>
  </group>
  <layer id="16" name="Background" width="122" height="104">
@@ -12823,6 +12822,9 @@
   </data>
  </layer>
  <layer id="42" name="Windows fix" width="122" height="104">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -63600,7 +63602,7 @@
   </data>
  </layer>
  <objectgroup id="17" name="Items">
-  <object id="397" name="Double Jump" x="1280" y="5120">
+  <object id="397" name="Double Jump" x="1396" y="5200">
    <point/>
   </object>
  </objectgroup>
@@ -76431,10 +76433,10 @@
   <object id="385" x="13824" y="11904" width="1024" height="128"/>
  </objectgroup>
  <objectgroup id="8" name="Entities">
-  <object id="391" name="Player" type="Player" x="13024" y="13072">
+  <object id="391" name="Player" type="Player" x="13030.1" y="12935.6">
    <point/>
   </object>
-  <object id="392" name="Horse" type="Horse" x="5299.65" y="6071.52">
+  <object id="392" name="Horse" type="Horse" x="6875.65" y="5079.52">
    <point/>
   </object>
   <object id="393" name="Horse" type="Horse" x="1712" y="7616">
@@ -76449,6 +76451,9 @@
   <object id="396" name="Bee" type="Bee" x="13168" y="2368">
    <point/>
   </object>
+ </objectgroup>
+ <objectgroup id="44" name="Particles">
+  <object id="437" type="Stars" x="1213.68" y="5213.95" width="384.637" height="208.091"/>
  </objectgroup>
  <layer id="43" name="MetadataSuelos" width="122" height="104" visible="0">
   <data>
