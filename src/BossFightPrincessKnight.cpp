@@ -375,9 +375,6 @@ void BossFightPrincessKnight::UpdatePhase(float dt)
         EndCurrentTurn();
     }
 
-    // TODO: Aquí añadirías la lógica para cambiar de fase cuando la vida baje:
-    // if (vida <= 0 && currentPhase < 3) { NextPhase(); }
-    // else if (vida <= 0 && currentPhase == 3) { SetFightState(BossFightState::DEATH); }
 }
 
 // ===============================
@@ -386,8 +383,63 @@ void BossFightPrincessKnight::UpdatePhase(float dt)
 
 void BossFightPrincessKnight::UpdateDeath(float dt)
 {
-    // TODO:
-    // Death cinematic
+    // Detenemos a los jefes si estaban haciendo algo en Box2D
+    if (knight != nullptr)  knight->ResetActionFinished();
+    if (princess != nullptr) princess->ResetActionFinished();
+
+    // Dependiendo de tu input, usaremos teclas provisionales para la decisión:
+    // [Teclas ejemplo: 'Y' para Spare, 'X' para Kill]
+
+    // 1. ESPERANDO ELECCIÓN DEL JUGADOR
+    if (!waitingDecisionFinished)
+    {
+        
+        if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
+        {
+            LOG("Elección: ¡Has decidido PERDONAR a los Lovers!");
+            waitingDecisionFinished = true;
+            playerChoiceSpare = true;
+
+            // Los jefes se quedan en DEFEAT de forma permanente
+            // Aquí puedes disparar tu diálogo "AfterFightSpare"
+        }
+
+        // OPCIÓN B: MATAR (KILL)
+        if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+        {
+            LOG("Elección: ¡Has decidido ASESINAR a los Lovers!");
+            waitingDecisionFinished = true;
+            playerChoiceSpare = false;
+
+            // Cambiamos a la Princesa a su animación real de muerte definitiva
+            if (princess != nullptr)
+            {
+                princess->SetPrincessState(PrincessState::DEATH);
+            }
+            
+
+            // Aquí puedes disparar tu diálogo "AfterFightKill"
+        }
+    }
+    else
+    {
+        // 2. LA DECISIÓN YA FUE TOMADA
+        if (playerChoiceSpare)
+        {
+            // Lógica final tras perdonar (ej: abrir puertas, dar recompensa pacífica)
+            // Se quedan en animación DEFEAT permanentemente.
+        }
+        else
+        {
+            // Lógica final tras matar (esperar a que la animación de DEATH termine)
+            if (princess != nullptr && princess->currentAnim->HasFinished())
+            {
+                LOG("Animación de muerte completada. Finalizando combate.");
+                SetFightState(BossFightState::FINISHED);
+                
+            }
+        }
+    }
 }
 
 // ===============================

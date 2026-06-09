@@ -31,6 +31,8 @@ enum class PrincessState
 
     CASTING,
 
+    DEFEAT,
+
     DEATH
 };
 
@@ -91,6 +93,8 @@ public:
     void FinishAction();
 
     void AdjustHitboxY(int offsetPxl);
+
+    void DecreaseHealth(int amount) override;
 
 public:
 

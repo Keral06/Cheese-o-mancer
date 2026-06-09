@@ -50,7 +50,7 @@ public:
 
 	virtual void Attack();
 
-	void DecreaseHealth(int amount);
+	virtual void DecreaseHealth(int amount);
 	virtual void Die();
 
 	void SetState(EnemyState newState);
