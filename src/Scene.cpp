@@ -2421,7 +2421,7 @@ void Scene::HandleTeleportUIEvents(UIElement* uiElement) {
 	switch (uiElement->id) { // CAMBIAR targetMap por el mapa donde esté el object KingRat final con la propiedad int Level = targetLevel para cada caso
 	case 60:  // LEVEL 1
 		targetLevel = 1;
-		targetMap = "Map_LV3_temple_01.tmx";
+		targetMap = "Map_LV2_botanica_02.tmx";
 		break;
 
 	case 61:  // LEVEL 2
