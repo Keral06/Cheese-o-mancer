@@ -26,7 +26,8 @@ bool Verdugo::Start()
     std::unordered_map<int, std::string> aliasesAnimFase1 = { {0,"ataqueFase1"} };
     std::unordered_map<int, std::string> aliasesAnimIdle = { {0,"idle"}, {30,"walk"}  };
 
-    std::unordered_map<int, std::string> aliasesAnim = { {0,"transformar"} };
+    std::unordered_map<int, std::string> aliasesAnimT = { {0,"transform1"} };
+    std::unordered_map<int, std::string> aliasesAnimT2 = { {0,"transform2"} };
     std::unordered_map<int, std::string> aliasesAnim1 = { {0,"attack1"} };
     std::unordered_map<int, std::string> aliasesAnim2 = { {0,"attack2"} };
     std::unordered_map<int, std::string> aliasesAnim3a = { {0,"attack3_start"}, {12,"attack3_run"} };
@@ -39,7 +40,8 @@ bool Verdugo::Start()
     animsAtaqueFase1.LoadFromTSX("assets/Textures/Spritesheets/Executioner/AtaqueFase1.tsx", aliasesAnimFase1);
     animsIdle.LoadFromTSX("assets/Textures/Spritesheets/Executioner/Verdugo_Idle_Walk.tsx", aliasesAnimIdle);
 
-    anims.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/cexecutonerTest.tsx",aliasesAnim);
+    animsTransform1.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ce_transform1.tsx",aliasesAnimT);
+    animsTransform2.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ce_transform2.tsx", aliasesAnimT2);
     animsAtaque1.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ce_attack1.tsx", aliasesAnim1);
     animsAtaque2.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ce_attack2.tsx", aliasesAnim2);
     animsAtaque3a.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ce_attack3a.tsx", aliasesAnim3a);
@@ -48,6 +50,7 @@ bool Verdugo::Start()
     animsAtaque4a.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ce_attack4a.tsx", aliasesAnim4a);
     animsAtaque4b.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ce_attack4b.tsx", aliasesAnim4b);
     animsDeath.LoadFromTSX("assets/Textures/Spritesheets/Cheese Executoner/ce_death.tsx", aliasesAnimDeath);
+    
     texName = "assets/Textures/Spritesheets/Cheese Executoner/transformar.png";
     spriteSheetName = "";
     
@@ -64,7 +67,8 @@ bool Verdugo::Start()
     textureA4a = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Cheese Executoner/ataque4a.png");
     textureA4b = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Cheese Executoner/ataque4b.png");
     textureDeath = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Cheese Executoner/death.png");
-
+    textureT1 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Cheese Executoner/test1.png");
+    textureT2 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Cheese Executoner/test2.png");
     
 
     //Add physics to the enemy - initialize physics body
@@ -123,10 +127,10 @@ void Verdugo::Attack()
 
 bool Verdugo::Update(float dt)
 {
-    if (health <= 0 && phase != PHASE_ENDCHOICEV)
+    if (health <= 0 && !deathStarted)
     {
         EnterEndState();
-        return true;
+        deathStarted = true;
     }
 
 
@@ -335,7 +339,8 @@ void Verdugo::StartTransformation()
 
     attackInProgress = false;
 
-    state = ATAQUE3START;
+    state = TRANSFORM1;
+    currentAnimSet = &animsTransform1;
     currentAnimSet->Resets();
 
     // bloquear player aquí si tienes sistema
@@ -388,8 +393,9 @@ void Verdugo::EnterEndState()
 
     state = MUERTO;
     currentAnimSet = &animsDeath;
+    currentAnimSet->Resets();
 
-    LOG("Boss muerto -> elección perdonar / matar (futuro)");
+    LOG("Boss muerto");
 }
 
 void Verdugo::UpdateEndChoice(float dt)
@@ -602,6 +608,17 @@ void Verdugo::ChangeCurrentAnimation() {
         offsetY = 0.0f;
         break;
 
+    case TRANSFORM1:
+        currentAnimSet = &animsTransform1;
+        texture = textureT1;
+        currentAnimSet->SetCurrent("transform1");
+        break;
+
+    case TRANSFORM2:
+        currentAnimSet = &animsTransform2;
+        texture = textureT2;
+        currentAnimSet->SetCurrent("transform2");
+        break;
     default:
         break;
     }
@@ -920,22 +937,29 @@ void Verdugo::DebugChangePhase()
 
 void Verdugo::UpdateTransformation(float dt)
 {
-    // 1. Asegurar inmovilidad total durante la transformación
     velocity.x = 0;
     velocity.y = 0;
 
-    // 2. Actualizar animación
-    currentAnimSet->Update(dt);
-
-    // 3. Solo cuando termine, pasamos a la fase 2
-    if (currentAnimSet->HasFinished())
+    if (state == TRANSFORM1)
     {
-        phase = PHASE_2V;
-        state = ATAQUE1; // O el estado inicial de tu fase 2
-        currentAnimSet->Resets();
+        if (currentAnimSet->HasFinished())
+        {
+            state = TRANSFORM2;
+            currentAnimSet->Resets();
+        }
+    }
+    else if (state == TRANSFORM2)
+    {
+        if (currentAnimSet->HasFinished())
+        {
+            phase = PHASE_2V;
 
-        attackInProgress = false; // IMPORTANTE: Reseteamos para que no crea que sigue atacando
+            state = IDLEV;
+            currentAnimSet->Resets();
 
-        LOG("PHASE 2 ACTIVADA y lista para combate");
+            attackInProgress = false;
+
+            LOG("PHASE 2 ACTIVADA");
+        }
     }
 }

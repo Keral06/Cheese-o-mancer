@@ -910,6 +910,27 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                     cheeseBallInteract->position = Vector2D(x, y);
                     cheeseBallInteract->xInicial = (int)x;
                     cheeseBallInteract->yInicial = (int)y;
+                    // Load Tiled custom properties
+
+                    Properties tempProperties;
+
+                    LoadProperties(objectNode, tempProperties);
+
+
+
+                    auto where = tempProperties.GetProperty("Where");
+
+                    if (where)
+
+                    {
+
+                        cheeseBallInteract->cheesePower = where->valueInt;
+
+                     
+
+                      
+
+                    }
                     cheeseBallInteract->Start();
                     cheeseBallInteract->mapID = id;
                 }
