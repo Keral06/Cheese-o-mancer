@@ -33,8 +33,7 @@ bool Coins::Start() {
 	coinPickupFx = Engine::GetInstance().audio->LoadFx("assets/Audio/Fx/PREV/coin-collision-sound-342335.wav");
 	anims.SetCurrent("idle");
 
-	texture = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_coin_re.png");
-
+	texture = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_CoinSilver1.png");
 	
 		texW = 128;
 		texH = 128;
