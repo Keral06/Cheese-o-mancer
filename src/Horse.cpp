@@ -24,6 +24,7 @@ bool Horse::Start()
     offsetAttackHitboxX = 60;
     offsetAttackHitboxY = -texH / 2;
     knockbackDuration = 20;
+	health = 80; // 4 hits
     type = EnemyType::MELEE;
 
     texName = "assets/Textures/Spritesheets/Unicorn/sprite_unicorn_b_02.png";
@@ -63,41 +64,35 @@ bool Horse::Start()
 
 bool Horse::Update(float dt)
 {
+    if (Engine::GetInstance().scene->GetPlayer()->isDead()) return true;
+
+    // 1. ZONA SEGURA DE MUERTE
+    if (health <= 0 && !isDead) {
+        Die();
+    }
+
+    // 2. DIBUJAR CADÁVER
     if (isDead) {
         Draw(dt);
         return true;
     }
 
-    if (health <= 0 && !coinDropped) {
-        coinDropped = true;
-        SetState(EnemyState::DYING);
-        Die();
-        return true;
-    }
-
+    // 3. LÓGICA NORMAL
     repathTimer++;
-    if (damageTimer > 0) {
-        damageTimer--;
-    }
+    if (damageTimer > 0) damageTimer--;
 
     GetPhysicsValues();
-
     distanceToPlayer = CalculateDistance();
 
-
     if (!isKnockback) {
-
-        Sprint(); 
+        Sprint();
 
         if (!isSprinting && !isBraking) {
             if (distanceToPlayer < detectionRange) {
                 PerformPathfinding();
                 Move();
                 SetState(EnemyState::RUNNING);
-                if (velocity.y < -0.1f) {
-                    SetState(EnemyState::IDLE);
-                }
-                else if (velocity.y > 0.1f) {
+                if (velocity.y < -0.1f || velocity.y > 0.1f) {
                     SetState(EnemyState::IDLE);
                 }
             }
@@ -119,25 +114,29 @@ bool Horse::Update(float dt)
 
     ApplyPhysics();
 
-    if (velocity.x < 0)
-        facingLeft = true;
-    else if (velocity.x > 0)
-        facingLeft = false;
+    if (velocity.x < 0) facingLeft = true;
+    else if (velocity.x > 0) facingLeft = false;
 
     Draw(dt);
-
     return true;
 }
 
 void Horse::OnCollision(PhysBody* physA, PhysBody* physB)
 {
+    if (isDead) {
+        if (physB->ctype == ColliderType::PLATFORM && pbody != nullptr) {
+            Engine::GetInstance().physics->SetLinearVelocity(pbody, { 0.0f, 0.0f });
+            b2Body_SetGravityScale(pbody->body, 0.0f);
+            pbody->listener = nullptr;
+        }
+        return;
+    }
+
     if (physB->ctype == ColliderType::PLAYER) {
-
         Player* player = dynamic_cast<Player*>(physB->listener);
-
         if (player && damageTimer <= 0) {
             Engine::GetInstance().scene->lives--;
-            damageTimer = damageCooldown; 
+            damageTimer = damageCooldown;
         }
     }
 }
@@ -200,28 +199,32 @@ void Horse::Draw(float dt)
 void Horse::Die() {
     isDead = true;
     SetState(EnemyState::DYING);
-
     deathPosition = GetPosition();
-
-    if (pbody != nullptr) {
-        pbody->listener = nullptr;
-        Engine::GetInstance().physics->DeletePhysBody(pbody);
-        pbody = nullptr;
-    }
 
     if (attackHitbox != nullptr) {
         Engine::GetInstance().physics->DeletePhysBody(attackHitbox);
         attackHitbox = nullptr;
     }
 
-    
+    if (pbody != nullptr) {
+        Engine::GetInstance().physics->DeletePhysBody(pbody);
+        pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+            (int)deathPosition.getX(),
+            (int)deathPosition.getY(),
+            texW,
+            texH,
+            bodyType::DYNAMIC
+        );
+        pbody->ctype = ColliderType::NPC;
+        pbody->listener = this;
+    }
+
     auto newCoin = Engine::GetInstance().entityManager->CreateEntity(EntityType::COIN);
     auto coinEntity = std::static_pointer_cast<Coins>(newCoin);
 
     if (coinEntity) {
-        const Vector2D& pos = this->GetPosition();
-        coinEntity->xInicial = (int)pos.getX();
-        coinEntity->yInicial = (int)pos.getY();
+        coinEntity->xInicial = (int)deathPosition.getX();
+        coinEntity->yInicial = (int)deathPosition.getY();
         coinEntity->Start();
     }
 }

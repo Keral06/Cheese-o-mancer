@@ -41,7 +41,7 @@ public:
 	virtual void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
 	void CreateAttackHitbox(int x, int y, int w, int h);
-	
+
 	float CalculateDistance();
 	void SetPosition(Vector2D pos);
 	Vector2D GetPosition();
@@ -64,9 +64,6 @@ public:
 	void MoveRanged();
 
 	void MoveMelee();
-
-	void RegisterEnemyKill(std::string enemyName);
-	bool HasKilledOneOfEachType();
 
 protected:
 	void PerformPathfinding();
@@ -107,6 +104,9 @@ public:
 	bool hasEntered = true;
 	bool isDefeated = false;
 	bool isArenaRat = false;
+
+	// Bandera de muerte unificada para toda la herencia
+	bool isDead = false;
 
 	Vector2D deathPosition;
 protected:

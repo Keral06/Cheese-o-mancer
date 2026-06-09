@@ -15,24 +15,23 @@ public:
     void ChangeCurrentAnimation() override;
     void Draw(float dt) override;
     void Die();
-    void Sprint(); 
+    void Sprint();
 
 protected:
 
     bool coinDropped = false;
-    bool isDead = false;
 
     bool isSprinting = false;
     bool isBraking = false;
 
-    float sprintSpeed = 25.0f; 
-    int sprintDuration = 30;   
+    float sprintSpeed = 25.0f;
+    int sprintDuration = 30;
     int sprintTimer = 0;
 
-    int brakeDuration = 40;    
+    int brakeDuration = 40;
     int brakeTimer = 0;
 
-    int sprintCooldown = 120;  
+    int sprintCooldown = 120;
     int sprintCooldownTimer = 0;
     int sprintDirection = 1;
 

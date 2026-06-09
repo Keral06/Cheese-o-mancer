@@ -1,6 +1,7 @@
 #pragma once
 #include "Enemy.h"
 #include "Physics.h"
+
 class Jailer : public Enemy
 {
 public:
@@ -50,7 +51,7 @@ protected:
     JailerState jailerState;
     JailerState lastJailerState;
 
-    Vector2D spawnPosition;
+   Vector2D spawnPosition;
 
     float attackCooldown = 2.0f;
     float attackTimer = 0.0f;
@@ -63,6 +64,4 @@ protected:
 
     int damageTimer = 0;
     int damageCooldown = 60;
-
-    bool isDead = false;
 };

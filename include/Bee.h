@@ -18,6 +18,8 @@ public:
     void OnCollision(PhysBody* physA, PhysBody* physB) override;
     void OnCollisionEnd(PhysBody* physA, PhysBody* physB) override;
 
+    void Die() override;
+
 private:
 
     // =====================

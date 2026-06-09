@@ -7,6 +7,8 @@
 #include "Textures.h"
 #include "Physics.h"
 #include "scene.h"
+#include "EntityManager.h"
+#include "coins.h"
 
 // =====================
 // CONSTRUCTOR
@@ -29,6 +31,7 @@ bool Bee::Start()
     texH = 128;
 
     type = EnemyType::AIR;
+    health = 40; // 2 hits
 
     texName = "assets/Textures/Spritesheets/Bee/Bee_Enemy.png";
     spriteSheetName = "";
@@ -63,147 +66,98 @@ bool Bee::Start()
 
 bool Bee::Update(float dt)
 {
-    if (health <= 0 && beeState != BEE_DEATH)
-    {
-        SetBeeState(BeeState::BEE_DEATH);
+    if (Engine::GetInstance().scene->GetPlayer()->isDead()) return true;
+
+    // 1. ZONA SEGURA DE MUERTE
+    if (health <= 0 && !isDead) {
         Die();
+    }
+
+    // 2. DIBUJAR CADÁVER
+    if (isDead) { // Equivalente a beeState == BEE_DEATH
+        Draw(dt);
         return true;
     }
 
+    // 3. LÓGICA NORMAL
     GetPhysicsValues();
-
     float dist = CalculateDistance();
 
     switch (beeState)
     {
-        // =====================
     case BEE_PATROL:
-    {
         Patrol();
-
-        if (dist < detectionRange)
-        {
+        if (dist < detectionRange) {
             attackTimer = attackCooldown;
             SetBeeState(BeeState::BEE_HOVER);
         }
-
         break;
-    }
 
     case BEE_HOVER:
-    {
         HoverPlayer(dt);
-
         attackTimer -= dt;
-
-        if (attackTimer <= 0.0f)
-        {
-            StartCharge();
-        }
-
+        if (attackTimer <= 0.0f) StartCharge();
         break;
-    }
-    // =====================
-    case BEE_ANTICIPATION:
-    {
-        velocity.x = 0;
-        velocity.y = 0;
 
-        if (anims.HasFinished())
-        {
+    case BEE_ANTICIPATION:
+        velocity.x = 0; velocity.y = 0;
+        if (anims.HasFinished()) {
             anims.Resets();
             SetBeeState(BeeState::BEE_CHARGE);
         }
-
         break;
-    }
 
-    // =====================
     case BEE_CHARGE:
-    {
         velocity.x = chargeDir.getX() * chargeSpeed;
         velocity.y = chargeDir.getY() * chargeSpeed;
-
         SetBeeState(BeeState::BEE_CHARGE);
-
         break;
-    }
 
-    // =====================
     case BEE_HIT_WALL:
-    {
-        velocity.x = 0;
-        velocity.y = 0;
-
+        velocity.x = 0; velocity.y = 0;
         hitWallTimer -= dt;
-
         SetBeeState(BeeState::BEE_HIT_WALL);
-
-        if (hitWallTimer <= 0.0f)
-        {
+        if (hitWallTimer <= 0.0f) {
             SetBeeState(BeeState::BEE_STUNNED);
             stunTimer = 3000.0f;
         }
-
         break;
-    }
 
-    // =====================
     case BEE_STUNNED:
-    {
-        velocity.x = 0;
-        velocity.y = 0;
-
+        velocity.x = 0; velocity.y = 0;
         stunTimer -= dt;
-
         SetBeeState(BeeState::BEE_STUNNED);
-
         if (stunTimer <= 0.0f) {
             attackTimer = attackCooldown;
             SetBeeState(BeeState::BEE_HOVER);
         }
-
         break;
-    }
 
     case BEE_RETURN:
     {
         int ex, ey;
         pbody->GetPosition(ex, ey);
-
         Vector2D current(ex, ey);
-
         Vector2D dir = chargeStartPosition - current;
-
         float len = sqrtf(dir.getX() * dir.getX() + dir.getY() * dir.getY());
 
-        if (len < 5.0f)
-        {
-            velocity.x = 0;
-            velocity.y = 0;
-
+        if (len < 5.0f) {
+            velocity.x = 0; velocity.y = 0;
             SetBeeState(BeeState::BEE_PATROL);
             break;
         }
 
         dir = Vector2D(dir.getX() / len, dir.getY() / len);
-
         velocity.x = dir.getX() * speed;
         velocity.y = dir.getY() * speed;
-
         break;
     }
-    // =====================
-    case BEE_DEATH:
-        return true;
     }
 
     ApplyPhysics();
     Draw(dt);
-
     return true;
 }
-
 // =====================
 // PATROL (vuelo circular)
 // =====================
@@ -285,20 +239,27 @@ void Bee::SetBeeState(BeeState newState)
 
 void Bee::OnCollision(PhysBody* physA, PhysBody* physB)
 {
+    if (isDead) {
+        if (physB->ctype == ColliderType::PLATFORM && pbody != nullptr) {
+            Engine::GetInstance().physics->SetLinearVelocity(pbody, { 0.0f, 0.0f });
+            b2Body_SetGravityScale(pbody->body, 0.0f);
+            pbody->listener = nullptr;
+        }
+        return;
+    }
+
     if (beeState == BEE_CHARGE)
     {
         if (physB->ctype == ColliderType::PLAYER)
         {
             Player* player = dynamic_cast<Player*>(physB->listener);
-
             if (player)
-               Engine::GetInstance().scene->lives--;
+                Engine::GetInstance().scene->lives--;
 
             SetBeeState(BeeState::BEE_PATROL);
             return;
         }
 
-        // cualquier otra cosa = pared
         SetBeeState(BeeState::BEE_HIT_WALL);
         hitWallTimer = 0.2f;
     }
@@ -416,4 +377,38 @@ void Bee::HoverPlayer(float dt)
         facingLeft = false;
     else if (diffX < -facingMargin)
         facingLeft = true;
+}
+
+void Bee::Die()
+{
+    isDead = true;
+    SetBeeState(BeeState::BEE_DEATH);
+    deathPosition = GetPosition();
+
+    if (attackHitbox != nullptr) {
+        Engine::GetInstance().physics->DeletePhysBody(attackHitbox);
+        attackHitbox = nullptr;
+    }
+
+    if (pbody != nullptr) {
+        Engine::GetInstance().physics->DeletePhysBody(pbody);
+        pbody = Engine::GetInstance().physics->CreateRectangleSensor(
+            (int)deathPosition.getX(),
+            (int)deathPosition.getY(),
+            texW,
+            texH,
+            bodyType::DYNAMIC
+        );
+        pbody->ctype = ColliderType::NPC;
+        pbody->listener = this;
+    }
+
+    auto newCoin = Engine::GetInstance().entityManager->CreateEntity(EntityType::COIN);
+    auto coinEntity = std::static_pointer_cast<Coins>(newCoin);
+
+    if (coinEntity) {
+        coinEntity->xInicial = (int)deathPosition.getX();
+        coinEntity->yInicial = (int)deathPosition.getY();
+        coinEntity->Start();
+    }
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "Enemy.h"
 #include "Physics.h"
+
 class Rat : public Enemy
 {
 public:
@@ -25,9 +26,7 @@ protected:
     Vector2D patrolStart;
     Vector2D patrolEnd;
     bool goingToEnd = true;
-    bool isDead = false;
 
     int damageCooldown = 60;
     int damageTimer = 0;
-
 };

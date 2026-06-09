@@ -316,7 +316,6 @@ void Enemy::Attack() {
 }
 
 void Enemy::DecreaseHealth(int amount) {
-
 	if (state == EnemyState::DYING) return;
 
 	health -= amount;
@@ -334,9 +333,7 @@ void Enemy::DecreaseHealth(int amount) {
 	}
 	else {
 		Engine::GetInstance().scene->RegisterEnemyKill(this->name);
-
 		SetState(EnemyState::DYING);
-		Die();
 	}
 }
 

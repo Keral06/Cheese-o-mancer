@@ -3,6 +3,8 @@
 #include "Log.h"
 #include "Textures.h"
 #include "scene.h"
+#include "EntityManager.h"
+#include "coins.h"
 
 Jailer::Jailer() : Enemy()
 {
@@ -85,6 +87,21 @@ void Jailer::Attack()
 
 bool Jailer::Update(float dt)
 {
+    if (Engine::GetInstance().scene->GetPlayer()->isDead()) return true;
+
+    // 1. ZONA SEGURA DE MUERTE
+    if (health <= 0 && !isDead) {
+        Die();
+    }
+
+    // 2. DIBUJAR CADÁVER
+    if (isDead) { // Equivalente a jailerState == JAILER_DEATH
+        anims.Update(dt);
+        Draw(dt);
+        return true;
+    }
+
+    // 3. LÓGICA NORMAL
     if (attackCooldownTimer > 0.0f) {
         attackCooldownTimer -= dt;
     }
@@ -96,16 +113,6 @@ bool Jailer::Update(float dt)
             knockbackTimer = knockbackDuration;
             Engine::GetInstance().physics->SetLinearVelocity(pbody, 0.0f, 0.0f);
         }
-    }
-
-    if (health <= 0 && jailerState != JAILER_DEATH) {
-        SetJailerState(JAILER_DEATH);
-    }
-
-    if (jailerState == JAILER_DEATH) {
-        anims.Update(dt);
-        Draw(dt);
-        return true;
     }
 
     if (!isKnockback) {
@@ -309,6 +316,15 @@ void Jailer::SetJailerState(JailerState newState)
 
 void Jailer::OnCollision(PhysBody* physA, PhysBody* physB)
 {
+    if (isDead) {
+        if (physB->ctype == ColliderType::PLATFORM && pbody != nullptr) {
+            Engine::GetInstance().physics->SetLinearVelocity(pbody, { 0.0f, 0.0f });
+            b2Body_SetGravityScale(pbody->body, 0.0f);
+            pbody->listener = nullptr;
+        }
+        return;
+    }
+
     if (physA == attackHitbox && physB->ctype == ColliderType::PLAYER)
     {
         playerInHitbox = true;
@@ -325,10 +341,8 @@ void Jailer::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 
 void Jailer::Die() {
     isDead = true;
-    SetState(EnemyState::DYING);
-
-    int bx, by;
-    pbody->GetPosition(bx, by);
+    SetJailerState(JAILER_DEATH);
+    deathPosition = GetPosition();
 
     if (attackHitbox != nullptr) {
         Engine::GetInstance().physics->DeletePhysBody(attackHitbox);
@@ -337,17 +351,24 @@ void Jailer::Die() {
 
     if (pbody != nullptr) {
         Engine::GetInstance().physics->DeletePhysBody(pbody);
-        pbody = nullptr;
 
         pbody = Engine::GetInstance().physics->CreateRectangleSensor(
-            bx,
-            by,
-            (int)texW,
-            (int)texH,
-            bodyType::STATIC
+            (int)deathPosition.getX(),
+            (int)deathPosition.getY(),
+            texW,
+            texH,
+            bodyType::DYNAMIC
         );
-
         pbody->ctype = ColliderType::NPC;
         pbody->listener = this;
+    }
+
+    auto newCoin = Engine::GetInstance().entityManager->CreateEntity(EntityType::COIN);
+    auto coinEntity = std::static_pointer_cast<Coins>(newCoin);
+
+    if (coinEntity) {
+        coinEntity->xInicial = (int)deathPosition.getX();
+        coinEntity->yInicial = (int)deathPosition.getY();
+        coinEntity->Start();
     }
 }
