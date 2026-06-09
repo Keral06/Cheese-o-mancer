@@ -27252,16 +27252,23 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="1116"/>
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="957"/>
+   <tile gid="958"/>
    <tile/>
+   <tile gid="1023"/>
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="957"/>
+   <tile gid="958"/>
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="1019"/>
    <tile/>
    <tile/>
    <tile/>
@@ -27306,6 +27313,28 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="1057"/>
+   <tile gid="1058"/>
+   <tile gid="1059"/>
+   <tile gid="1057"/>
+   <tile gid="1058"/>
+   <tile gid="1059"/>
+   <tile gid="1057"/>
+   <tile gid="1058"/>
+   <tile gid="1059"/>
+   <tile gid="989"/>
+   <tile gid="990"/>
+   <tile gid="1054"/>
+   <tile gid="1055"/>
+   <tile gid="1057"/>
+   <tile gid="1058"/>
+   <tile gid="1059"/>
+   <tile gid="989"/>
+   <tile gid="990"/>
+   <tile gid="1057"/>
+   <tile gid="1058"/>
+   <tile gid="1059"/>
+   <tile gid="1051"/>
    <tile/>
    <tile/>
    <tile/>
@@ -27350,57 +27379,28 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="1089"/>
+   <tile gid="1090"/>
+   <tile gid="1091"/>
+   <tile gid="1089"/>
+   <tile gid="1090"/>
+   <tile gid="1091"/>
+   <tile gid="1089"/>
+   <tile gid="1090"/>
+   <tile gid="1091"/>
+   <tile gid="1021"/>
+   <tile gid="1022"/>
+   <tile gid="1086"/>
+   <tile gid="1087"/>
+   <tile gid="1089"/>
+   <tile gid="1090"/>
+   <tile gid="1091"/>
+   <tile gid="1021"/>
+   <tile gid="1022"/>
+   <tile gid="1089"/>
+   <tile gid="1090"/>
+   <tile gid="1091"/>
+   <tile gid="1083"/>
    <tile/>
    <tile/>
    <tile/>
@@ -28276,7 +28276,7 @@
   <object id="39" x="4352" y="3456" width="128" height="128"/>
  </objectgroup>
  <objectgroup id="21" name="spikes">
-  <object id="95" x="2048" y="16640" width="2816" height="128"/>
+  <object id="95" x="2048" y="16512" width="2816" height="256"/>
   <object id="96" x="384" y="6656" width="1280" height="128"/>
  </objectgroup>
 </map>

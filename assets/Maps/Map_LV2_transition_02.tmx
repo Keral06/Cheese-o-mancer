@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="38" height="40" tilewidth="128" tileheight="128" infinite="0" nextlayerid="24" nextobjectid="321">
+<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="38" height="40" tilewidth="128" tileheight="128" infinite="0" nextlayerid="24" nextobjectid="321">
  <tileset firstgid="1" name="tileset_lv2_general_02" tilewidth="128" tileheight="128" tilecount="1558" columns="38">
   <image source="tileset_lv2_general_02.png" width="4864" height="5367"/>
  </tileset>
@@ -4616,7 +4616,7 @@
    </properties>
   </object>
  </objectgroup>
- <layer id="23" name="Navigation" width="38" height="40">
+ <layer id="23" name="Navigation" width="38" height="40" visible="0">
   <properties>
    <property name="Draw" type="bool" value="false"/>
    <property name="Navigation" type="bool" value="true"/>
