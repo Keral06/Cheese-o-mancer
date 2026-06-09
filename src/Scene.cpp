@@ -579,9 +579,13 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::IN_GAME:
 		
 
-		if (lastscene != SceneID::IN_GAME)
+		if (lastscene == SceneID::MAIN_MENU && !continueGame)
 		{
 			firstMapLoad = true;
+		}
+		else
+		{
+			firstMapLoad = false;
 		}
 
 		if (continueGame)
@@ -1679,13 +1683,13 @@ void Scene::LoadMap(std::string map)
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, enemies);
 
+	bool wasContinued = continueGame;
 	if (continueGame == true) {
 		Engine::GetInstance().gameManager->LoadGame();
 		continueGame = false;
 	}
-	
 
-	if (firstMapLoad && !continueGame) 
+	if (firstMapLoad && !wasContinued) 
 	{
 		showHelp = true;
 		firstMapLoad = false;
