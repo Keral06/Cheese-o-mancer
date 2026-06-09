@@ -352,13 +352,26 @@ bool Map::Load(std::string path, std::string fileName)//
             {
                 for (const auto& object : objectGroup->objects)
                 {
-                    std::shared_ptr<WeakWall> wall = std::dynamic_pointer_cast<WeakWall>(Engine::GetInstance().entityManager->CreateEntity(EntityType::WEAKWALL));
+                    std::shared_ptr<WeakWall> wall = std::dynamic_pointer_cast<WeakWall>(
+                        Engine::GetInstance().entityManager->CreateEntity(EntityType::WEAKWALL)
+                    );
 
                     wall->position = Vector2D((float)object->x, (float)object->y);
-
-                    // opcional si quieres tamaño desde Tiled
                     wall->width = object->width;
                     wall->height = object->height;
+
+                    // --- SOLUCIÓN USANDO TU PROPIO SISTEMA DE PROPIEDADES ---
+                    bool shouldDraw = true; // Por defecto se dibuja si no existe la propiedad
+
+                    // Buscamos la propiedad en el listado del objeto de Tiled
+                    Properties::Property* pDraw = object->properties.GetProperty("Draw");
+                    if (pDraw != nullptr)
+                    {
+                        shouldDraw = pDraw->value; // Extrae el booleano guardado
+                    }
+
+                    wall->drawed = shouldDraw;
+                    // -------------------------------------------------------
 
                     wall->Start();
                 }
