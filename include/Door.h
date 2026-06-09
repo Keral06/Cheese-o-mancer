@@ -11,7 +11,7 @@ public:
 
     Door();
     virtual ~Door();
-
+    bool isLocked = false;
     bool Start() override;
     bool Update(float dt) override;
     bool CleanUp() override;
@@ -26,7 +26,8 @@ public:
         int offsetY,
         int width,
         int height,
-        bool requiresInteraction
+        bool requiresInteraction,
+        bool isLocked
     );
 
     void OnCollisionEnd(PhysBody* physA, PhysBody* physB) override;
