@@ -320,6 +320,7 @@ public:
 	std::string nextMap = "";
 	std::string nextSpawnPoint = "Door_1_1";
 	std::string nextDoor = "";
+	std::vector<int> killedEnemiesList;
 	bool firstDoor = true;
 	bool cheese = true;
 	bool dobleSalto = false;

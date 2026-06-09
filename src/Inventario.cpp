@@ -52,5 +52,6 @@ void Inventario::LoadState(pugi::xml_node node) {
     objetos.clear();
     for (pugi::xml_node itemNode = node.child("item"); itemNode; itemNode = itemNode.next_sibling("item")) {
         std::string nom = itemNode.attribute("nombre").as_string();
+        push(nom, nullptr, nullptr);
     }
 }

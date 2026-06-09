@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
-
+#include "pugixml.hpp"
 struct SDL_Texture;
 
 class Card {
@@ -25,4 +25,6 @@ public:
     void usarObjeto(int pos);
     void GirarCarta(std::string nom);
     bool tieneObjeto(std::string nom);
+    void SaveState(pugi::xml_node& node);
+    void LoadState(pugi::xml_node& node);
 };

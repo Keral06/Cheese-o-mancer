@@ -333,6 +333,7 @@ void Enemy::DecreaseHealth(int amount) {
 	}
 	else {
 		Engine::GetInstance().scene->RegisterEnemyKill(this->name);
+		Engine::GetInstance().scene->killedEnemiesList.push_back(this->mapID);
 		SetState(EnemyState::DYING);
 	}
 }

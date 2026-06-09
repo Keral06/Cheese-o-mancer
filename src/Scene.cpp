@@ -1680,6 +1680,7 @@ void Scene::LoadMap(std::string map)
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("assets/Maps/", map);
 
+
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, enemies);
 
@@ -1687,6 +1688,49 @@ void Scene::LoadMap(std::string map)
 	if (continueGame == true) {
 		Engine::GetInstance().gameManager->LoadGame();
 		continueGame = false;
+		for (auto& obj : inventario.objetos) {
+			if (obj.nombre == "Map" || obj.nombre == "Map Nivel 1") { obj.imagen = iconMap; obj.imagenDescripcion = map1Texture; }
+			else if (obj.nombre == "Map Nivel 2") { obj.imagen = iconMap; obj.imagenDescripcion = map2Texture; }
+			else if (obj.nombre == "Map Nivel 3") { obj.imagen = iconMap; obj.imagenDescripcion = map3Texture; }
+			else if (obj.nombre == "Key") obj.imagen = iconKey;
+			else if (obj.nombre == "Lamp") obj.imagen = iconLamp;
+			else if (obj.nombre == "Spring") obj.imagen = iconSpring;
+			else if (obj.nombre == "HorseMacure") obj.imagen = iconHorseMacure;
+			else if (obj.nombre == "Gargantuan") obj.imagen = iconGargantuan;
+		}
+		for (auto& mis : misiones.objetos) {
+			if (mis.nombre == "Talk with magician") {
+				SDL_Texture* texNormal = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Magician1.png");
+				SDL_Texture* texCompletada = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Magician2.png");
+
+				mis.imagenFinalizada = texCompletada;
+
+				if (mis.completed == true) {
+					mis.imagen = texCompletada;
+				}
+				else {
+					mis.imagen = texNormal;
+				}
+			}
+		}
+
+		for (auto& card : cards.cards) {
+			if (card.nombre == "The fool") {
+				card.imagen = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Fool.png");
+			}
+			else if (card.nombre == "The magician") {
+				card.imagen = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Magician.png"); 
+			}
+			else if (card.nombre == "Wheel of fortune") {
+				card.imagen = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Wheel.png"); 
+			}
+		}
+
+		for (auto& card : cards.cards) {
+			if (card.nombre == "The fool") {
+				card.imagen = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Fool.png");
+			}
+		}
 	}
 
 	if (firstMapLoad && !wasContinued) 

@@ -672,7 +672,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                 int id = objectNode.attribute("id").as_int();
 
                 bool isDead = false;
-                for (int killedId : killedEnemies) {
+                for (int killedId : Engine::GetInstance().scene->killedEnemiesList) {
                     if (killedId == id) {
                         isDead = true;
                         break;
@@ -690,9 +690,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                         if (objectNode.attribute("cpX")) x = objectNode.attribute("cpX").as_float();
                         if (objectNode.attribute("cpY")) y = objectNode.attribute("cpY").as_float();
                     }
-                    else {
-                        killedEnemies.clear();
-                    }
+                    
 
                     if (player == nullptr) {
                         player = std::dynamic_pointer_cast<Player>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER));
