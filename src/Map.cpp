@@ -345,6 +345,9 @@ bool Map::Load(std::string path, std::string fileName)//
             else if (objectGroup->name == "Walls") {
                 type = ColliderType::PARED;
             }
+            else if (objectGroup->name == "MohoWalls") {
+                type = ColliderType::MOHOWALL;
+            }
             else if (objectGroup->name == "spikes") {
                 type = ColliderType::DANGER;
             }
