@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="175" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="37" nextobjectid="472">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="175" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="37" nextobjectid="479">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -119,6 +119,7 @@
  <tileset firstgid="878" source="sprite_torch_01.tsx"/>
  <tileset firstgid="880" source="Dungeon Parallax_Background.tsx"/>
  <tileset firstgid="881" source="METADATA PARTICLES.tsx"/>
+ <tileset firstgid="884" source="tileset_LV1_dungeonBase_02.tsx"/>
  <objectgroup id="13" name="fons" visible="0"/>
  <objectgroup id="24" name="BG Parallax">
   <properties>
@@ -22246,6 +22247,11 @@
     <property name="Draw" type="bool" value="false"/>
    </properties>
   </object>
+  <object id="478" x="11008" y="1920" width="128" height="896">
+   <properties>
+    <property name="level" type="int" value="1"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer id="1" name="Map" width="175" height="63">
   <properties>
@@ -24613,8 +24619,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="233"/>
-   <tile gid="237"/>
+   <tile gid="1390"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -24788,8 +24794,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="233"/>
-   <tile gid="237"/>
+   <tile gid="1390"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -47027,8 +47033,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="295"/>
-   <tile gid="296"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -47202,8 +47208,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="325"/>
-   <tile gid="326"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -47377,8 +47383,8 @@
    <tile gid="374"/>
    <tile/>
    <tile/>
-   <tile gid="355"/>
-   <tile gid="356"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -47552,8 +47558,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="385"/>
-   <tile gid="386"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -47727,8 +47733,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="415"/>
-   <tile gid="416"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -47902,8 +47908,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="415"/>
-   <tile gid="416"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -48077,8 +48083,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="445"/>
-   <tile gid="446"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -55371,9 +55377,6 @@
    <point/>
   </object>
   <object id="350" name="HiddenScrapOfPaper" type="HiddenScrapOfPaper" x="12361.8" y="7224.12">
-   <point/>
-  </object>
-  <object id="351" name="LockedDoor" type="LockedDoor" x="11136" y="2648">
    <point/>
   </object>
   <object id="352" name="DiscardedScroll" type="DiscardedScroll" x="21455" y="2214.79">
@@ -66512,15 +66515,16 @@
   <object id="306" x="4478" y="3456" width="128" height="252"/>
   <object id="307" x="4608" y="3712" width="128" height="1280"/>
   <object id="314" x="2432" y="1664" width="128" height="4600"/>
-  <object id="316" x="2560" y="1536" width="8448" height="128"/>
+  <object id="316" x="2560" y="1536" width="8704" height="128"/>
   <object id="336" x="18048" y="7552" width="256" height="384"/>
-  <object id="338" x="11008" y="1408" width="256" height="512"/>
   <object id="343" x="6528" y="2944" width="128" height="128"/>
   <object id="344" x="7424" y="2944" width="128" height="128"/>
   <object id="370" x="22016" y="3072" width="128" height="896"/>
   <object id="467" x="19584" y="7552" width="128" height="384"/>
   <object id="468" x="21504" y="2816" width="128" height="128"/>
   <object id="469" x="20992" y="2432" width="128" height="128"/>
+  <object id="476" x="11136" y="1408" width="128" height="128"/>
+  <object id="477" x="11008" y="1664" width="128" height="256"/>
  </objectgroup>
  <objectgroup id="27" name="spikes">
   <object id="345" x="6669.7" y="2858" width="739.152" height="214"/>

@@ -388,7 +388,7 @@ void BossFightPrincessKnight::UpdatePhase(float dt)
 void BossFightPrincessKnight::UpdateDeath(float dt)
 {
     // Detenemos a los jefes si estaban haciendo algo en Box2D
-    if (knight != nullptr)  knight->ResetActionFinished();
+    if (knight != nullptr)  knight->toDelete = true;
     if (princess != nullptr) princess->ResetActionFinished();
 
     // Dependiendo de tu input, usaremos teclas provisionales para la decisión:
@@ -398,7 +398,6 @@ void BossFightPrincessKnight::UpdateDeath(float dt)
     if (!waitingDecisionFinished)
     {
         //Primero mira las condiciones para ver el spare o no
-
         if (Engine::GetInstance().scene->hasShownPoemToWell == true) {
         
             if (DefeatWell.hasStarted == false) { DefeatWell.AvanzarDialogo(dt); return; }
