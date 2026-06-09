@@ -55,10 +55,10 @@ bool CheeseBallInteract::Start() {
 	}
 
 	if (cheesePower==1) {
-		dialogue = Dialogue("Assets/Dialogues/Interactuables/Justice_Dialogues_FindCheeseWheel.txt"); return;
+		dialogue = Dialogue("Assets/Dialogues/Interactuables/Justice_Dialogues_FindCheeseWheel.txt"); return true;
 	}
-	else if (cheesePower==2) { dialogue = Dialogue("Assets/Dialogues/Interactuables/Justice_Dialogues_FindCheeseWheel2.txt"); return; }
-	else if (cheesePower==3) { dialogue = Dialogue("Assets/Dialogues/Interactuables/Justice_Dialogues_FindCheeseWheel3.txt"); return; }
+	else if (cheesePower==2) { dialogue = Dialogue("Assets/Dialogues/Interactuables/Justice_Dialogues_FindCheeseWheel2.txt");  return true; }
+	else if (cheesePower==3) { dialogue = Dialogue("Assets/Dialogues/Interactuables/Justice_Dialogues_FindCheeseWheel3.txt");  return true; }
 
 
 	return true;
