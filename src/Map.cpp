@@ -30,6 +30,7 @@
 #include "KnightBoss.h"
 #include "PrincessBoss.h"
 #include "HighPriestess.h"
+#include "Rey.h"
 #include <algorithm>
 
 
@@ -741,6 +742,12 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                     princess->position = Vector2D(x, y);
                     princess->Start();
                     princess->mapID = id;
+                }
+                else if (entityType == "Rey") {
+                    std::shared_ptr<Rey> rey = std::dynamic_pointer_cast<Rey>(Engine::GetInstance().entityManager->CreateEntity(EntityType::REY));
+                    rey->position = Vector2D(x, y);
+                    rey->Start();
+                    rey->mapID = id;
                 }
                 else if (entityType == "HighPriestess") {
                     std::shared_ptr<HighPriestess> highPriestess = std::dynamic_pointer_cast<HighPriestess>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HIGHPRIESTESSS));

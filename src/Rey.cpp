@@ -4,22 +4,24 @@
 #include "EntityManager.h"
 #include "Textures.h"
 #include "Physics.h"
-
+#include "MagoBoss.h"
 Rey::Rey() : Enemy()
 {
-    name = "Verdugo";
+    name = "Rey";
 }
 Rey::~Rey() {}
 
 bool Rey::Start() { 
     
-    texW = 128;
-    texH = 128;
+    texW = 640;
+    texH = 640;
 
-    std::unordered_map<int, std::string> aliasesAnim = { {0,"idle"},{10,"dead"} };
-    anims.LoadFromTSX("assets/Textures/Spritesheets/King/king.tsx", aliasesAnim);
+    std::unordered_map<int, std::string> aliasesAnim = { {0,"idle"},{28,"death"} };
+    anims.LoadFromTSX("assets/Textures/Spritesheets/King/kg_idle.tsx", aliasesAnim);
     texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/King/sprite_king_01.png");
-
+    textureIdle = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Wizard Cheese/Cmage_Idles_spritesheet.png");
+    textureBall = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Wizard Cheese/Cmage_ball attack_spritesheet.png");
+    textureTransformation = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Wizard Cheese/Cmage_transformation_spritesheet.png");
     
     //Add physics to the enemy - initialize physics body
     pbody = Engine::GetInstance().physics->CreateRectangleSensor(position.getX(), position.getY(), texW, texH, bodyType::STATIC);
@@ -27,7 +29,10 @@ bool Rey::Start() {
     pbody->listener = this;
 
     //ssign collider type
-    pbody->ctype = ColliderType::ENEMY;
+    pbody->ctype = ColliderType::REY;
+
+    anims.SetCurrent("idle");
+    attackHitbox = nullptr;
     return true; 
 
 
@@ -47,7 +52,7 @@ void Rey::ChangeCurrentAnimation() {
         break;
 
     case DEADR:
-        anims.SetCurrent("dead");
+        anims.SetCurrent("death");
         offsetY = 0.0f;
         break;
 
@@ -59,9 +64,49 @@ void Rey::ChangeCurrentAnimation() {
 
 bool Rey::Update(float dt)
 {
+    // 1. Si el jugador está en rango y pulsa la tecla E
+    if (playerInRange && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+        Engine::GetInstance().render->SetZoomSmooth(0.5f, 800.0f);
+        Die(); // Recuerda que aquí dentro pones stateR = DEADR;
+    }
 
+    // Añadimos "!magoSpawned" a la condición
+    if (stateR == DEADR && anims.HasFinished() && !magoSpawned) {
+        magoSpawned = true;
+
+        Engine::GetInstance().render->SetZoomSmooth(0.3f, 800.0f);
+
+        // 1. Guardas lo que devuelve tu mánager (asumo que se llama así el tipo)
+        std::shared_ptr<Entity> entityPtr = Engine::GetInstance().entityManager->CreateEntity(EntityType::MAGOBOSS);
+
+        if (entityPtr) {
+            // 2. Usamos .get() para sacar el puntero crudo y le hacemos el static_cast
+            MagoBoss* newMago = static_cast<MagoBoss*>(entityPtr.get());
+
+            newMago->position.setX(this->position.getX() + 400);
+            newMago->position.setY(this->position.getY());
+
+            // 3. Le pasamos las texturas
+            newMago->SetTextures(
+                this->textureIdle,
+                this->textureBall,
+                this->textureTransformation
+            );
+
+            // 4. Inicializamos
+            newMago->Start();
+        }
+
+        //this->pendingToDelete = true;
+    }
+
+    // 2. Actualizar máquina de estados
+    ChangeCurrentAnimation();
+
+    // 3. Dibujar
     Draw(dt);
-    return false;
+
+    return true;
 }
 
 void Rey::Draw(float dt)
@@ -96,16 +141,23 @@ void Rey::Draw(float dt)
 }
 
 void Rey::Die() {
-    // 1. Aquí va tu lógica de animación de muerte
+    stateR = DEADR; // Cambia el estado para que dibuje la animación de muerte
 
-    // 2. Spawneamos al Mago directamente desde aquí
-    // Usamos el EntityManager para crear la nueva entidad
-    auto newMago = Engine::GetInstance().entityManager->CreateEntity(EntityType::MAGOBOSS);
+   
+    // Opcional: Marcar al Rey para ser destruido por el EntityManager si ya no se va a dibujar
+    // this->pendingToDelete = true;
+}
 
-    // Posicionamos al mago donde estaba el rey o en un punto predefinido
-    if (newMago) {
-        newMago->position.setX(this->position.getX());
-        newMago->position.setY(this->position.getY());
-        newMago->Start(); // Importante llamar a Start() para que inicialice su física
+void Rey::OnCollision(PhysBody* physA, PhysBody* physB) {
+    // Detectamos si el cuerpo que entra es el jugador
+    if (physB->ctype == ColliderType::PLAYER) {
+        playerInRange = true;
+    }
+}
+
+void Rey::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+    // Detectamos cuando el jugador se aleja
+    if (physB->ctype == ColliderType::PLAYER) {
+        playerInRange = false;
     }
 }

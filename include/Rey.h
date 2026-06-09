@@ -23,6 +23,8 @@ public:
     virtual ~Rey();
     bool Start() override;
     void Die(); // Lógica de muerte que spawnea al Mago
+    void OnCollision(PhysBody* physA, PhysBody* physB) override;
+    void OnCollisionEnd(PhysBody* physA, PhysBody* physB) override;
     bool Update(float dt) override;
     void Draw(float dt) override;
     void ChangeCurrentAnimation() override;
@@ -35,7 +37,14 @@ public:
 
     AnimationSet anims;
     SDL_Texture* texture = NULL;
+    SDL_Texture* textureIdle = NULL;
+    SDL_Texture* textureBall = NULL;
+    SDL_Texture* textureTransformation = NULL;
+
     ReyState stateR;
     ReyState lastStateR;
+
+    bool playerInRange = false;
+    bool magoSpawned = false;
 };
 #endif

@@ -20,6 +20,7 @@ enum class EntityType
 	PROTECTION,
 	FINALBOSS,
 	MAGOBOSS,
+	REY,
 	UVA,
 	EXTRALIVE,
 	RAT,

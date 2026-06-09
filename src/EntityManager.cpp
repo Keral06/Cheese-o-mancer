@@ -31,6 +31,7 @@
 #include "SpikeHazard.h"
 #include "MagoBoss.h"
 #include "Uva.h"
+#include "Rey.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -131,6 +132,9 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::VERDUGO:
 		entity = std::make_shared<Verdugo>();
+		break;
+	case EntityType::REY:
+		entity = std::make_shared<Rey>();
 		break;
 	case EntityType::JAILER:
 		entity = std::make_shared<Jailer>();

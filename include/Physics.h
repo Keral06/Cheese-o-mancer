@@ -48,7 +48,8 @@ enum class ColliderType {
     WEAKWALL,
     NPC,
     MOHOWALL,
-    ARENA_TRIGGER
+    ARENA_TRIGGER,
+    REY,
     // ..
 };
 
