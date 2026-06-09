@@ -1116,7 +1116,7 @@ void Scene::UnloadLevel() {
 }
 
 void  Scene::PostUpdateLevel() {
-	if (interaction) {
+	if (interaction && !someoneIsTalking) {
 		ShowInteract();
 
 

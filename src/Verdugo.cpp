@@ -90,7 +90,6 @@ bool Verdugo::Start()
     pathfinding->ResetPath(tilePos);
     
     CreateAttackHitbox(GetPosition().getX(),GetPosition().getY(), 70,200);
-
     phase = PHASE_INTROV;
     introFinished = false;
     transformationFinished = false;
@@ -623,61 +622,63 @@ void Verdugo::ChangeCurrentAnimation() {
         currentAnimSet = &animsAtaque3a;
         texture = textureA3a;
         currentAnimSet->SetCurrent("attack3_start");
-        offsetY = texH / 2;
+        offsetY = 128.0f * 4;
         break;
 
     case ATAQUE3A:
         currentAnimSet = &animsAtaque3a;
         texture = textureA3a;
         currentAnimSet->SetCurrent("attack3_run"); 
-        offsetY = texH/2;
+        offsetY = 128.0f * 4;
         break;
 
     case ATAQUE3B:
         currentAnimSet = &animsAtaque3b;
         texture = textureA3b;
         currentAnimSet->SetCurrent("attack3b");
-        offsetY = texH/2;
+        offsetY = 128.0f*4;
         break;
 
     case ATAQUE3C:
         currentAnimSet = &animsAtaque3c;
         texture = textureA3c;
         currentAnimSet->SetCurrent("attack3c");
-        offsetY = texH/2;
+        offsetY = 128.0f * 4;
         break;
 
     case ATAQUE4A:
         currentAnimSet = &animsAtaque4a;
         texture = textureA4a;
         currentAnimSet->SetCurrent("attack4a");
-        offsetY = texH/2;
+        offsetY = 128.0f * 3;
         break;
 
     case ATAQUE4B:
         currentAnimSet = &animsAtaque4b;
         texture = textureA4b;
         currentAnimSet->SetCurrent("attack4b");
-        offsetY = texH/2;
+        offsetY = 128.0f * 3;
         break;
 
     case MUERTO:
         currentAnimSet = &animsDeath;
         texture = textureDeath;
         currentAnimSet->SetCurrent("death");
-        offsetY = 0.0f;
+        offsetY = 128.0f * 3;
         break;
 
     case TRANSFORM1:
         currentAnimSet = &animsTransform1;
         texture = textureT1;
         currentAnimSet->SetCurrent("transform1");
+        offsetY = 128.0f;
         break;
 
     case TRANSFORM2:
         currentAnimSet = &animsTransform2;
         texture = textureT2;
         currentAnimSet->SetCurrent("transform2");
+        offsetY = 128.0f;
         break;
     default:
         break;
