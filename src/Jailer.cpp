@@ -183,7 +183,9 @@ void Jailer::UpdateAttack(float dt)
     }
 
     if (hitboxActive && playerInHitbox && !hasHit) {
-        Engine::GetInstance().scene->lives--;
+        if (!Engine::GetInstance().scene->GetPlayer()->godMode) {
+            Engine::GetInstance().scene->lives--;
+        }
         hasHit = true;
         LOG("JAILER HITBOX DAMAGE");
     }
