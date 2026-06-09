@@ -1130,6 +1130,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                 else if (pType == "Meteor" || pType == "METEOR") p->setStyle(ParticleExample::METEOR);
                 else if (pType == "Explosion" || pType == "EXPLOSION") p->setStyle(ParticleExample::EXPLOSION);
                 else if (pType == "Snow" || pType == "SNOW") p->setStyle(ParticleExample::SNOW);
+                else if (pType == "FloatingDust" || pType == "FLOATINGDUST") p->setStyle(ParticleExample::FLOATING_DUST);
 
                 p->setPosVar(Vec2(w / 2.0f, h / 2.0f));
                 mapParticles.push_back(p);

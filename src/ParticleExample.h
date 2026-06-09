@@ -19,6 +19,7 @@ public:
         MOHO_SALTO,   
         POLVO_SALTO,
         HIERBAJO_SALTO,
+        FLOATING_DUST,
         /*FIRE_WORK,
         SUN,
         GALAXY,
