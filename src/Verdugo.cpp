@@ -108,6 +108,8 @@ bool Verdugo::Start()
  
     Engine::GetInstance().scene->cards.push("Justice", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Justice.png"), nullptr);
 
+    Dialogue dialogue("assets/Dialogues/Justice/Justice_Dialogues_Battle.txt", "assets/Dialogues/Justice/Justice_Names_Battle.txt");
+    this->dialogue = dialogue;
     return true;
 }
 
@@ -171,13 +173,29 @@ void Verdugo::UpdateIntro(float dt)
 
         if (dist < 10.0f) // ajusta el trigger
         {
-            introTriggered = true;
-
-            // LOCK PLAYER
-            //Engine::GetInstance().scene->LockPlayer(true);
-
+         
             // ZOOM AL BOSS
             Engine::GetInstance().render->SetZoomSmooth(0.5f, 800.0f);
+            // LOCK PLAYER
+            //Engine::GetInstance().scene->LockPlayer(true);
+            if (dialogue.hasStarted == false) { dialogue.AvanzarDialogo(dt); }
+            if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+            
+            
+                if (dialogue.AvanzarDialogo(dt)) {
+                
+                    introTriggered = true;
+                    return;
+                }
+            
+            }
+            if (dialogue.hasEnded == false && dialogue.hasStarted) {
+
+                dialogue.Draw(dt);
+                return;
+
+            }
+         
 
             introTimer = 120.0f; // frames o tiempo simple
 
