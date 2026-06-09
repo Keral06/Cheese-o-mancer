@@ -74,8 +74,6 @@ bool Rey::Update(float dt)
     if (stateR == DEADR && anims.HasFinished() && !magoSpawned) {
         magoSpawned = true;
 
-        Engine::GetInstance().render->SetZoomSmooth(0.3f, 800.0f);
-
         // 1. Guardas lo que devuelve tu mánager (asumo que se llama así el tipo)
         std::shared_ptr<Entity> entityPtr = Engine::GetInstance().entityManager->CreateEntity(EntityType::MAGOBOSS);
 
@@ -83,7 +81,7 @@ bool Rey::Update(float dt)
             // 2. Usamos .get() para sacar el puntero crudo y le hacemos el static_cast
             MagoBoss* newMago = static_cast<MagoBoss*>(entityPtr.get());
 
-            newMago->position.setX(this->position.getX() + 400);
+            newMago->position.setX(this->position.getX() + 2000);
             newMago->position.setY(this->position.getY());
 
             // 3. Le pasamos las texturas
@@ -96,7 +94,7 @@ bool Rey::Update(float dt)
             // 4. Inicializamos
             newMago->Start();
         }
-
+        Engine::GetInstance().render->SetZoomSmooth(0.3f, 800.0f);
         //this->pendingToDelete = true;
     }
 

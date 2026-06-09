@@ -4,6 +4,7 @@
 #include "Textures.h"
 #include "Physics.h"
 #include "Input.h" // Lo usaremos para pruebas o inputs si hiciese falta
+#include "Uva.h"
 
 MagoBoss::MagoBoss() : Enemy()
 {
@@ -22,8 +23,8 @@ bool MagoBoss::Start()
     std::unordered_map<int, std::string> aliasesBall = { {0,"attack_start"}, {25,"attack_loop"},{30,"attack_end"} };
     std::unordered_map<int, std::string> aliasesTransform = { {0,"normal_idle"}, {56,"weak_start"}, {70,"weak_loop"}, {84,"transformation"} };
 
-    animsIdle.LoadFromTSX("assets/Textures/Spritesheets/Wizard Cheese/Cmage_transformation.tsx", aliasesIdle);
-    animsBall.LoadFromTSX("assets/Textures/Spritesheets/Wizard Cheese/Cmage_transformation.tsx", aliasesBall);
+    animsIdle.LoadFromTSX("assets/Textures/Spritesheets/Wizard Cheese/Cmage_idle.tsx", aliasesIdle);
+    animsBall.LoadFromTSX("assets/Textures/Spritesheets/Wizard Cheese/Cmage_ball attack.tsx", aliasesBall);
     animsTransformation.LoadFromTSX("assets/Textures/Spritesheets/Wizard Cheese/Cmage_transformation.tsx", aliasesTransform);
 
     
@@ -43,7 +44,7 @@ bool MagoBoss::Start()
     hasBeenHit = false;
     isAttacking = false;
     phaseTimer = 0.0f;
-
+    
     return true;
 }
 
@@ -103,16 +104,42 @@ void MagoBoss::UpdateIntroPhase(float dt)
 }
 void MagoBoss::UpdateTransformationPhase(float dt)
 {
-    // El mago está ejecutando la animación "transformation"
+    // 1. Si termina el destello de la transformación, lo mandamos a VIAJAR
     if (stateM == MAGO_TRANSFORMATION_FX && currentAnimTrack->HasFinished())
     {
-        // Al terminar, vuela al centro de la pantalla para empezar la pelea
-        // Aquí moverías su pbody a la posición del medio de la pantalla
-        // int centroX = ...; int centroY = ...;
-        // pbody->SetPosition(centroX, centroY);
+        stateM = MAGO_VIAJANDO_AL_CENTRO;
+    }
 
-        currentPhase = BossPhaseM::BOSSFIGHTM;
-        stateM = MAGO_FLY_IDLE; // Estado por defecto en combate
+    // 2. Lógica de viaje pura y dura
+    if (stateM == MAGO_VIAJANDO_AL_CENTRO)
+    {
+        int currentX, currentY;
+        pbody->GetPosition(currentX, currentY);
+
+        float centroX = 6000.0f;
+        float centroY = 5000.0f;
+
+        float distX = centroX - currentX;
+        float distY = centroY - currentY;
+
+        // Si está muy cerca, lo CLAVAMOS y cambiamos de fase inmediatamente
+        if (abs(distX) <= 20.0f && abs(distY) <= 20.0f)
+        {
+            Engine::GetInstance().physics->SetLinearVelocity(pbody, 0.0f, 0.0f);
+            pbody->SetPosition(centroX, centroY);
+
+            // ¡AQUÍ ESTÁ LA CLAVE! Pasamos a la pelea y lo dejamos en FLY_IDLE estable
+            currentPhase = BossPhaseM::BOSSFIGHTM;
+            stateM = MAGO_FLY_IDLE;
+            attackTimer = 0.0f;
+            isAttacking = false;
+        }
+        else
+        {
+            // Movimiento de aproximación suave
+            float factorSuave = 2.0f;
+            Engine::GetInstance().physics->SetLinearVelocity(pbody, distX * factorSuave, distY * factorSuave);
+        }
     }
 }
 
@@ -149,22 +176,109 @@ void MagoBoss::UpdateBossfightPhase(float dt)
 
 void MagoBoss::ExecuteMeteorAttack(float dt)
 {
-    //stateM = MAGO_FLOATING;
+    // Al empezar el ataque, cambiamos la animación a magia
+    if (stateM != MAGO_FLY_MAGIC) {
+        stateM = MAGO_FLY_MAGIC;
+        attackTimer = 0.0f; // Usamos el timer para controlar la cadencia de disparo
+        phaseTimer = 0.0f;  // Usamos phaseTimer para controlar la duración total del ataque
+    }
 
-    // Lógica del Ataque 1:
-    // - Moverse al centro de la pantalla flotando.
-    // - Ir spawneando entidades "UvaMeteorito" verticalmente usando el EntityManager de forma periódica.
-    // - Cuando pase X tiempo, isAttacking = false y vuelve a la rutina normal.
+    phaseTimer += dt;
+    attackTimer += dt;
+
+    // 1. Spawnear una uva cada 0.3 segundos
+    if (attackTimer >= 0.3f)
+    {
+        attackTimer = 0.0f;
+
+        // Calculamos una X aleatoria alrededor de la pantalla para que caigan en lluvia
+        // Ejemplo: entre la X=200 y la X=1700
+        float randomX = 200 + (rand() % 1500);
+        float spawnY = -50.0f; // Aparecen justo por encima del techo de la pantalla
+
+        // Creamos el proyectil (Asegúrate de tener este EntityType configurado)
+        auto uva = Engine::GetInstance().entityManager->CreateEntity(EntityType::UVA);
+        if (uva) {
+            uva->position.setX(randomX);
+            uva->position.setY(spawnY);
+            uva->Start(); // En su Start, la uva debe crearse como DYNAMIC o tener una velocidad Y positiva constante hacia abajo
+        }
+    }
+
+    // 2. El ataque dura 5 segundos en total
+    if (phaseTimer >= 5.0f)
+    {
+        // Terminamos el ataque y vuelve a volar en reposo
+        isAttacking = false;
+        stateM = MAGO_FLY_IDLE;
+        attackTimer = 0.0f; // Reset del cooldown para el próximo ataque
+    }
 }
 
 void MagoBoss::ExecuteBouncingBallAttack(float dt)
 {
-    //stateM = MAGO_BOUNCING_BALL;
+    // PASO A: Iniciar la transformación a bola (Animación de carga)
+    if (stateM != MAGO_BALL_START && stateM != MAGO_BALL_LOOP && stateM != MAGO_BALL_END)
+    {
+        stateM = MAGO_BALL_START;
+        phaseTimer = 0.0f;
+        Engine::GetInstance().physics->SetLinearVelocity(pbody, 0.0f, 0.0f);
+        return;
+    }
 
-    // Lógica del Ataque 2:
-    // - Cambiar el pbody a DYNAMIC para que responda a rebotes (o simularlo por código).
-    // - Aplicar fuerzas para que rebote por el escenario.
-    // - En OnCollision, si toca el suelo, spawnear proyectiles de uva a los lados.
+    // PASO B: ¡Aquí empieza lo bueno! La bola se activa
+    if (stateM == MAGO_BALL_START && currentAnimTrack->HasFinished())
+    {
+        stateM = MAGO_BALL_LOOP;
+        phaseTimer = 0.0f;
+
+        // 1. LE DEVOLVEMOS LA GRAVEDAD NATIVA A BOX2D (Escala 1.0f)
+        b2Body_SetGravityScale(pbody->body, 1.0f);
+
+        // 2. Le damos su velocidad horizontal inicial hacia la derecha (p.ej. 5.0f en metros/s)
+        // Usamos tu wrapper para no romper las conversiones
+        Engine::GetInstance().physics->SetXVelocity(pbody, 250.0f);
+    }
+
+    // PASO C: Bucle de movimiento (Box2D se encarga de la gravedad en Y de forma nativa)
+    if (stateM == MAGO_BALL_LOOP)
+    {
+        phaseTimer += dt;
+
+        // Solo nos encargamos de controlar los límites horizontales de la sala (Paredes)
+        int currentX, currentY;
+        pbody->GetPosition(currentX, currentY);
+
+        float limiteIzquierdo = 4000.0f;
+        float limiteDerecho = 7000.0f;
+
+        // Si toca un límite, invertimos su velocidad X actual usando tus wrappers
+        float currentVx = Engine::GetInstance().physics->GetXVelocity(pbody);
+        if (currentX <= limiteIzquierdo && currentVx < 0) {
+            Engine::GetInstance().physics->SetXVelocity(pbody, abs(currentVx));
+        }
+        else if (currentX >= limiteDerecho && currentVx > 0) {
+            Engine::GetInstance().physics->SetXVelocity(pbody, -abs(currentVx));
+        }
+
+        // Duración total del ataque
+        if (phaseTimer >= 7.0f) {
+            stateM = MAGO_BALL_END;
+        }
+    }
+
+    // PASO D: Terminar el ataque de la bola
+    if (stateM == MAGO_BALL_END && currentAnimTrack->HasFinished())
+    {
+        // 1. LE VOLVEMOS A QUITAR LA GRAVEDAD para que pueda flotar de nuevo
+        b2Body_SetGravityScale(pbody->body, 0.0f);
+
+        // 2. Lo mandamos al estado de viaje para que regrese al centro flotando suavemente
+        currentPhase = BossPhaseM::TRANSFORMATIONM;
+        stateM = MAGO_VIAJANDO_AL_CENTRO;
+        isAttacking = false;
+        attackTimer = 0.0f;
+    }
 }
 
 void MagoBoss::ChangeCurrentAnimation()
@@ -197,6 +311,7 @@ void MagoBoss::ChangeCurrentAnimation()
         break;
 
         // --- TEXTURA Y ANIMACIONES DE IDLE / VUELO ---
+    case MAGO_VIAJANDO_AL_CENTRO:
     case MAGO_FLY_IDLE:
         currentAnimTrack = &animsIdle;
         currentTexture = textureIdle;
@@ -244,14 +359,39 @@ void MagoBoss::OnCollision(PhysBody* physA, PhysBody* physB)
         }
     }
 
-    // Si estamos en la Fase 3 y es el ataque de la bola rebotando contra el suelo
-    //if (currentPhase == BossPhase::BOSSFIGHT && stateM == MAGO_BOUNCING_BALL)
-    //{
-    //    if (physB->ctype == ColliderType::PLATFORM)
-    //    {
-    //        // Aquí irá la lógica de hacer aparecer uvas proyectil hacia los lados
-    //    }
-    //}
+    // Si estamos en la Fase de Combate, modo Bola Rebotando, y chocamos con el suelo
+    if (currentPhase == BossPhaseM::BOSSFIGHTM && stateM == MAGO_BALL_LOOP)
+    {
+        if (physB->ctype == ColliderType::PLATFORM)
+        {
+            // ¡EL IMPULSO HACIA ARRIBA NATIVO!
+            // Al tocar el suelo, obligamos a la velocidad Y a ser negativa (hacia arriba)
+            // Tu wrapper de Physics ya traduce este -700.0f a los metros por segundo que Box2D entiende.
+            Engine::GetInstance().physics->SetYVelocity(physA, -700.0f);
+
+            // ... Tu código de spawnear las uvas laterales se queda exactamente igual ...
+            int currentX, currentY;
+            pbody->GetPosition(currentX, currentY);
+
+            auto entityLeft = Engine::GetInstance().entityManager->CreateEntity(EntityType::UVA);
+            if (entityLeft) {
+                Uva* uvaIzq = static_cast<Uva*>(entityLeft.get());
+                uvaIzq->SetConfiguration(UvaSize::PEQUEÑA, UvaType::LINEAL, -1.0f);
+                uvaIzq->position.setX(currentX - 50);
+                uvaIzq->position.setY(currentY);
+                uvaIzq->Start();
+            }
+
+            auto entityRight = Engine::GetInstance().entityManager->CreateEntity(EntityType::UVA);
+            if (entityRight) {
+                Uva* uvaDer = static_cast<Uva*>(entityRight.get());
+                uvaDer->SetConfiguration(UvaSize::PEQUEÑA, UvaType::LINEAL, 1.0f);
+                uvaDer->position.setX(currentX + 50);
+                uvaDer->position.setY(currentY);
+                uvaDer->Start();
+            }
+        }
+    }
 }
 
 void MagoBoss::SetTextures(SDL_Texture* idle, SDL_Texture* ball, SDL_Texture* trans) {

@@ -28,7 +28,9 @@ enum MagoState {
     // Animaciones del Ataque de la Bola (Fase 3 - Ataque 2)
     MAGO_BALL_START,
     MAGO_BALL_LOOP,
-    MAGO_BALL_END
+    MAGO_BALL_END,
+
+    MAGO_VIAJANDO_AL_CENTRO
 };
 
 class MagoBoss : public Enemy
