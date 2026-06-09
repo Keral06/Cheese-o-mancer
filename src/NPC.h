@@ -1433,4 +1433,6 @@ public:
 	Player* py;
 
 	SDL_Texture* InteractTexture = nullptr;
+
+	Dialogue dos;
 };

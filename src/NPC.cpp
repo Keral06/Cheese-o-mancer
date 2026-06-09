@@ -4373,7 +4373,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 			}
 			//Not advanced
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->ratmissionfinished == false) {
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->HasKilledOneOfEachType() == false && Engine::GetInstance().scene->finishedRetiredKnight == false) {
 
 				
 					if (notAdvanced.AvanzarDialogo(dt)) {
@@ -4392,13 +4392,13 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 			}
 			//Completed mission
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->finishedMissionSculptor == false) { //y mirar si tiene cadáveres???
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->HasKilledOneOfEachType()==true && Engine::GetInstance().scene->finishedRetiredKnight == false) { //y mirar si tiene cadáveres???
 
 				
 					if (completed.AvanzarDialogo(dt)) {
 
 
-						Engine::GetInstance().scene->finishedMissionSculptor = true;
+						Engine::GetInstance().scene->finishedRetiredKnight = true;
 
 					}
 					
@@ -4412,7 +4412,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			}
 
 			//After finished
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->finishedMissionSculptor == true) {
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->finishedRetiredKnight == true) {
 
 			
 					if (teleport.AvanzarDialogo(dt)) {
@@ -4465,7 +4465,10 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 	HighPriestess::HighPriestess() : NPC(EntityType::HIGHPRIESTESS)
 	{
-		// De momento sin dialogos asignados
+		Dialogue dialogue1("assets/Dialogues/HighPriestess/HighPriestess_Initial_Dialogues.txt", "assets/Dialogues/HighPriestess/HighPriestess_Initial_Names.txt");
+		dialogue = dialogue1;
+		Dialogue dialogue2("assets/Dialogues/HighPriestess/HighPriestess_AfterInitial_Dialogues.txt", "assets/Dialogues/HighPriestess/HighPriestess_AfterInitial_Names.txt");
+		dos = dialogue2;
 	}
 
 	HighPriestess::~HighPriestess()
@@ -4537,6 +4540,50 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	{
 		if (!active) return true;
 
+		if (isGettingTouched) {
+			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
+		
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedPreach == false) {
+			
+			
+			
+				if (dialogue.AvanzarDialogo(dt)) {
+					Engine::GetInstance().scene->hasTalkedPreach = true;
+				}
+				return true;
+
+			}
+			if (dialogue.hasStarted && !dialogue.hasEnded) {
+				dialogue.Draw(dt);
+				return true;
+
+			}
+		
+		
+		
+		
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN ) {
+
+
+
+				if (dos.AvanzarDialogo(dt)) {
+
+				}
+				return true;
+
+			}
+			if (dos.hasStarted && !dos.hasEnded) {
+				dos.Draw(dt);
+				return true;
+
+			}
+		
+		
+		
+		
+		
+		
+		}
 		Draw(dt);
 		return true;
 	}

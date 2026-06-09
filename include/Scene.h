@@ -337,6 +337,8 @@ public:
 	Inventario inventario;
 	//MARC ESTOS SON LOS BOOLS DE EL PLAYER PARA CONVERSACIONES
 
+	bool finishedRetiredKnight = false;
+	bool hasTalkedPreach = false;
 	
 	bool beatBoss = false;
 	bool beatPrincess = false;	
