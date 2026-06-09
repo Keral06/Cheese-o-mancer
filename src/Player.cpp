@@ -435,19 +435,34 @@ void Player::GetPhysicsValues() {
 	velocity = Engine::GetInstance().physics->GetLinearVelocity(pbody);
 
 	if (!godMode) {
-		if (!isKnockback) {
+		if (!isAttacking && !isKnockback) {
 			velocity.x = 0;
 		}
 	}
-	else { velocity = { 0, 0 }; }
+	else {
+		velocity = { 0, 0 };
+	}
 }
 
 void Player::Move() {
-	/*if (isdead || Engine::GetInstance().scene->IsGamePaused())
-		return;*/
-	if (isAttacking && isCollidedFloor) return;
+
+	// ==========================================
+	// --- 1. LÓGICA DE INERCIA AL ATACAR ---
+	// ==========================================
+	if (isAttacking) {
+		if (isCollidedFloor) {
+			velocity.x *= 0.85f; // Frena poco a poco
+			if (abs(velocity.x) < 0.5f) velocity.x = 0.0f;
+		}
+
+		return;
+	}
+
 	isWalking = false;
 
+	// ==========================================
+	// --- 2. LÓGICA DE PARED (WallWalking) ---
+	// ==========================================
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT && isOnSpecialWall)
 	{
 		isWallWalking = true;
@@ -473,15 +488,13 @@ void Player::Move() {
 
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			velocity.x = speed;
-
 	}
 
-	// =====================
-	// INPUT HORIZONTAL
-	// =====================
+	// ==========================================
+	// --- 3. INPUT HORIZONTAL NORMAL ---
+	// ==========================================
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		// Si estamos pegados a una pared a la IZQUIERDA, no forzamos la velocidad contra ella
 		if (isCollidedWall && wallSide == -1) {
 			velocity.x = 0;
 		}
@@ -493,7 +506,6 @@ void Player::Move() {
 	}
 	else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		// Si estamos pegados a una pared a la DERECHA, no forzamos la velocidad contra ella
 		if (isCollidedWall && wallSide == 1) {
 			velocity.x = 0;
 		}
@@ -507,16 +519,17 @@ void Player::Move() {
 	{
 		velocity.x = 0;
 	}
+
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_U) == KEY_REPEAT)
 	{
 		Engine::GetInstance().render->SetZoomSmooth(0.7f, 600.0f);
 	}
-	// =====================
-	// GOD MODE (VERTICAL)
-	// =====================
+
+	// ==========================================
+	// --- 4. GOD MODE (VERTICAL) ---
+	// ==========================================
 	if (godMode)
-	{/*
-		Engine::GetInstance().scene->lives = Engine::GetInstance().scene->maxLives;*/
+	{
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
 			velocity.y = -godmodeSpeed;
@@ -533,27 +546,24 @@ void Player::Move() {
 		}
 	}
 
-	// =====================
-	// STATE MACHINE
-	// =====================
+	// ==========================================
+	// --- 5. STATE MACHINE ---
+	// ==========================================
 	if (state == ONCHEESE) {
 		return;
 	}
-	// PRIORIDAD 1: aire
+
 	if (!isCollidedFloor)
 	{
 		state = JUMPING;
-
 	}
 	else
 	{
 		isJumping = false;
-		// SOBRE QUESO
 		if (isMounted)
 		{
-			return; // aquí sí puedes cortar si quieres
+			return;
 		}
-		// SUELO NORMAL
 		else
 		{
 			if (isWalking)
@@ -563,9 +573,9 @@ void Player::Move() {
 		}
 	}
 
-	// =====================
-	// SONIDO PASOS
-	// =====================
+	// ==========================================
+	// --- 6. SONIDO PASOS ---
+	// ==========================================
 	if (isWalking && isCollidedFloor)
 	{
 		int randNum = rand() % 4;
