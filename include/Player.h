@@ -17,6 +17,7 @@ enum PlayerState {
 	IDLE,
 	IDLE_ON_CHEESE,
 	RUNNING_ON_CHEESE,
+	HURT,
 	DEFAULT
 
 };
@@ -103,6 +104,7 @@ public:
 	int deathfx;
 	int healfx;
 	int attackfx;
+	int hurtfx;
 
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
@@ -118,6 +120,9 @@ public:
 	int wallSide = 0;
 	bool isCollidedFloor = false;
 	int floorContacts = 0;
+	bool isKnockback = false;
+	float knockbackTimer = 0.0f;
+	float knockbackDuration = 400.0f;
 
 	// Temporizador para las partículas de los pies
 	float stepParticleTimer = 0.0f;
@@ -127,6 +132,7 @@ public:
 	std::vector<std::shared_ptr<FireBall>> fireballs;
 	
 	bool IsProtected = false;
+	float protectionTimer = 0.0f;
 	static void AddPoints(int points);
 	//Score and lives
 

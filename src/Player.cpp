@@ -57,7 +57,7 @@ bool Player::Start() {
 	lastState = RUNNING;
 	// load
 	std::unordered_map<int, std::string> aliases2x3 = { {2,"run"},{16,"jump"},{28,"hoponcheese"} };
-	std::unordered_map<int, std::string> aliases3x3 = { {0,"idle"},{17,"idleOnCheese"} };
+	std::unordered_map<int, std::string> aliases3x3 = { {0,"idle"},{17,"idleOnCheese"}, {34,"hurt"} };
 	std::unordered_map<int, std::string> aliases3x4 = { {0,"attack2"},{6,"attack3"},{16,"attack1"} };
 	std::unordered_map<int, std::string> aliases4x4 = { {0,"ballroll"} };
 	std::unordered_map<int, std::string> aliases5x5 = { {0,"ballkick"} };
@@ -65,13 +65,13 @@ bool Player::Start() {
 	Engine::GetInstance().render->camera.y = limitUp;
 
 	anims2x3.LoadFromTSX("assets/Textures/Spritesheets/Jester/2x3/j_sp.tsx", aliases2x3);
-	anims3x3.LoadFromTSX("assets/Textures/Spritesheets/Jester/3x3/j_sp_idle.tsx", aliases3x3);
+	anims3x3.LoadFromTSX("assets/Textures/Spritesheets/Jester/3x3/j_sp_3x3.tsx", aliases3x3);
 	anims3x4.LoadFromTSX("assets/Textures/Spritesheets/Jester/3x4/j_sp_3x4.tsx", aliases3x4);
 	anims4x4.LoadFromTSX("assets/Textures/Spritesheets/Jester/4x4/j_sp_ballroll.tsx", aliases4x4);
 	anims5x5.LoadFromTSX("assets/Textures/Spritesheets/Jester/5x5/j_sp_5x5.tsx", aliases5x5);
 
 	texture2x3 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/2x3/j_2x3.png");
-	texture3x3 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/3x3/sprite_jester_idles_02.png");
+	texture3x3 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/3x3/j_3x3.png");
 	texture3x4 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/3x4/j_3x4.png");
 	texture4x4 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/4x4/j_ballroll.png");
 	texture5x5 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/5x5/j_5x5.png");
@@ -127,6 +127,7 @@ bool Player::Start() {
 	deathfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/player_death.wav");
 	pickCoinFxId = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/coin-collision-sound-342335.wav");
 	healfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Heal_plant.wav");
+	hurtfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Jester/Jester_hurt1.wav");
 
 	respawnPosition = { PIXEL_TO_METERS(position.getX()), PIXEL_TO_METERS(position.getY()) };
 	
@@ -169,8 +170,21 @@ bool Player::Update(float dt)
 		else
 		{
 			if (Engine::GetInstance().scene->someoneIsTalking == false) {
-				Move();
-				Jump();
+
+				if (isKnockback) {
+					if (currentAnimSet->HasFinished()) {
+						isKnockback = false;
+						state = DEFAULT;
+					}
+				}
+				else {
+					Move();
+					Jump();
+					Attack();
+					HandleAttack();
+					CheckKickFrame();
+					SpawnCheeseBall();
+				}
 
 				// 1. LÓGICA SUELO
 				if (isWalking && isCollidedFloor && !isWallWalking) {
@@ -266,13 +280,10 @@ bool Player::Update(float dt)
 
 	CameraRender(dt);
 	if (!isPaused) {
-		if (IsProtected) {
-			//check if the protection has been active for more than 10 seconds
-			static Uint32 protectionStartTime = SDL_GetTicks();
-			Uint32 currentTime = SDL_GetTicks();
-			if (currentTime - protectionStartTime >= 10000) {
+		if (IsProtected && !isKnockback) {
+			protectionTimer -= dt;
+			if (protectionTimer <= 0.0f) {
 				IsProtected = false;
-				protectionStartTime = currentTime; //reset timer
 				LOG("Protection expired");
 			}
 		}
@@ -367,9 +378,13 @@ void Player::GetPhysicsValues() {
 		position.setY((float)y);
 	}
 
-	// Read current velocity
 	velocity = Engine::GetInstance().physics->GetLinearVelocity(pbody);
-	if (!godMode) { velocity = { 0, velocity.y }; }
+
+	if (!godMode) {
+		if (!isKnockback) {
+			velocity.x = 0;
+		}
+	}
 	else { velocity = { 0, 0 }; }
 }
 
@@ -825,22 +840,47 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 
 		if (!isdead)
 		{
-			Engine::GetInstance().audio->PlayFx(deathfx);
-			isdead = true;
+			Engine::GetInstance().audio->PlayFx(hurtfx);
 
 			if (extralife) {
 				extralife = false;
-				break;
 			}
-
-			Engine::GetInstance().scene->lives--;
+			else {
+				Engine::GetInstance().scene->lives--;
+			}
 
 			if (Engine::GetInstance().scene->lives <= 0)
 			{
+				isdead = true;
 				isDeadDefinitive = true;
+				currentAnimSet->SetCurrent("jump");
 			}
+			else
+			{
+				isKnockback = true;
+				state = HURT;
+				IsProtected = true;
+				protectionTimer = 2500.0f;
+				isAttacking = false;
+				hitboxActive = false;
+				currentAnimSet = &anims3x3;
+				texture = texture3x3;
+				currentAnimSet->SetCurrent("hurt");
+				currentAnimSet->Resets();
+				if (isMounted) {
+					DismountVerticalJump();
+				}
 
-			currentAnimSet->SetCurrent("jump");
+				int px, py, ex, ey;
+				pbody->GetPosition(px, py);
+				physB->GetPosition(ex, ey);
+
+				float dirX = (px > ex) ? 1.0f : -1.0f;
+
+				Engine::GetInstance().physics->SetLinearVelocity(pbody, 0.0f, 0.0f);
+
+				Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, dirX * 1000.0f, -1000.0f, true);
+			}
 		}
 		break;
 	}
@@ -1007,6 +1047,7 @@ void Player::ChangeCurrentAnimation() {
 
 	if (isKicking) return;
 	if (state == ATTACKING) return;
+	if (state == HURT) return;
 	if (state == lastState) return;
 
 	lastState = state;
@@ -1046,8 +1087,17 @@ void Player::ChangeCurrentAnimation() {
 		texture = texture4x4;
 		currentAnimSet->SetCurrent("ballroll");
 		break;
+	case HURT:
+		currentAnimSet = &anims3x3;
+		texture = texture3x3;
+		currentAnimSet->SetCurrent("hurt");
+		break;
 	default:
 		break;
+	}
+
+	if (currentAnimSet != nullptr) {
+		currentAnimSet->Resets();
 	}
 }
 
