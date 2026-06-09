@@ -4002,9 +4002,11 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 							break;
 						case 3:
 							Engine::GetInstance().scene->rat3 = true;
+							Engine::GetInstance().scene->cards.push("Tower", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Tower.png"), nullptr);
 							break;
 						case 4:
 							Engine::GetInstance().scene->rat4 = true;
+							Engine::GetInstance().scene->cards.push("Tower", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Star.png"), nullptr);
 							break;
 
 						}
@@ -4560,6 +4562,9 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			
 				if (dialogue.AvanzarDialogo(dt)) {
 					Engine::GetInstance().scene->hasTalkedPreach = true;
+					Engine::GetInstance().scene->cards.push("High", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_HighPriestess.png"), Engine::GetInstance().textures->Load("assets/UI/Tarot/Inverted/UI_TarotCard_HighPriestess_inverted.png"));
+
+
 				}
 				return true;
 

@@ -106,7 +106,7 @@ bool Verdugo::Start()
     velocity.x = 0;
     velocity.y = 0;
  
-    Engine::GetInstance().scene->cards.push("Justice", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Justice.png"), nullptr);
+    Engine::GetInstance().scene->cards.push("Justice", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Justice.png"), Engine::GetInstance().textures->Load("assets/UI/Tarot/Invertido/UI_TarotCard_Justice_inverted.png"));
 
     Dialogue dialogue("assets/Dialogues/Justice/Justice_Dialogues_Battle.txt", "assets/Dialogues/Justice/Justice_Names_Battle.txt");
     this->dialogue = dialogue;
@@ -857,6 +857,7 @@ void Verdugo::OnWallDestroyed()
 
 void Verdugo::Die() {
     anims.SetCurrent("death");
+    Engine::GetInstance().scene->cards.GirarCarta("Justice");
     int numeroDeMonedas = 10;
     const Vector2D& pos = this->GetPosition();
     Engine::GetInstance().scene->isInBossfight = false;
