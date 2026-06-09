@@ -42,6 +42,7 @@ void GameManager::SaveGame() {
         pos.append_attribute("y").set_value(player->GetPosition().getY());
     }
 
+
     // Historia?
     pugi::xml_node story = root.append_child("StoryFlags");
 
@@ -117,6 +118,15 @@ void GameManager::SaveGame() {
 
     pugi::xml_node cardsNode = root.append_child("TarotCards");
     scene->cards.SaveState(cardsNode);
+
+    story.append_attribute("cheese").set_value(scene->cheese);
+    story.append_attribute("rat1").set_value(scene->rat1);
+    story.append_attribute("rat2").set_value(scene->rat2);
+    story.append_attribute("rat3").set_value(scene->rat3);
+    story.append_attribute("rat4").set_value(scene->rat4);
+    story.append_attribute("miniBossFinished").set_value(scene->miniBossFinished);
+	story.append_attribute("mohoWalls").set_value(scene->mohoWalls);
+    story.append_attribute("dobleSalto").set_value(scene->dobleSalto);
 
 	//Enemigos muertos
     pugi::xml_node enemiesNode = root.append_child("KilledEnemies");
@@ -229,6 +239,15 @@ void GameManager::LoadGame() {
         scene->misiones.LoadState(root.child("Missions"));
         scene->cards.LoadState(root.child("TarotCards"));
 
+        scene->cheese = story.attribute("cheese").as_bool();
+        scene->rat1 = story.attribute("rat1").as_bool();
+        scene->rat2 = story.attribute("rat2").as_bool();
+        scene->rat3 = story.attribute("rat3").as_bool();
+        scene->rat4 = story.attribute("rat4").as_bool();
+        scene->miniBossFinished = story.attribute("miniBossFinished").as_bool();
+		scene->mohoWalls = story.attribute("mohoWalls").as_bool();
+		scene->dobleSalto = story.attribute("dobleSalto").as_bool();
+
 
 		// Enemigos muertos
         scene->killedEnemiesList.clear();
@@ -279,6 +298,14 @@ void GameManager::StartNewGame() {
     scene->beatBoss = false;
     scene->beatPrincess = false;
     scene->cheese = false;
+
+    scene->rat1 = false;
+    scene->rat2 = false;
+    scene->rat3 = false;
+    scene->rat4 = false;
+    scene->miniBossFinished = false;
+	scene->mohoWalls = false;
+	scene->dobleSalto = false;
 
     scene->killedEnemiesList.clear();
 
