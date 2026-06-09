@@ -443,6 +443,11 @@ public:
 		void RegisterEnemyKill(std::string enemyName);
 		bool HasKilledOneOfEachType();
 
+		// Mision Escultor
+		void PickUpCorpse(Enemy* corpse);
+		SDL_Texture* iconCheeseStatue = nullptr;
+		SDL_Texture* pressETexture = nullptr;
+
 private:
 	//all video stuff
 	struct VideoData {
