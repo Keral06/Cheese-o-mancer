@@ -171,7 +171,9 @@ void Rat::Die()
         coinEntity->yInicial = (int)deathPosition.getY();
         coinEntity->Start();
     }
-
+    if (HighPriestesss::instance != nullptr) {
+        HighPriestesss::instance->NotifyEnemyDeath();
+    }
     if (isArenaRat) {
         Engine::GetInstance().scene->CheckMiniBossStatus();
     }

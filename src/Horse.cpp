@@ -227,6 +227,9 @@ void Horse::Die() {
         coinEntity->yInicial = (int)deathPosition.getY();
         coinEntity->Start();
     }
+    if (HighPriestesss::instance != nullptr) {
+        HighPriestesss::instance->NotifyEnemyDeath();
+    }
 }
 
 void Horse::Sprint()

@@ -16,7 +16,7 @@ public:
     void SpawnWave();
     void NotifyEnemyDeath();
     void ChangeCurrentAnimation();
-
+    static HighPriestesss* instance;
 private:
     // Control de oleadas y vulnerabilidad
     int currentWave;
