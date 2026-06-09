@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="100" height="120" tilewidth="128" tileheight="128" infinite="0" nextlayerid="23" nextobjectid="31">
+<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="100" height="120" tilewidth="128" tileheight="128" infinite="0" nextlayerid="23" nextobjectid="31">
  <tileset firstgid="1" source="test2_tileset.tsx"/>
  <tileset firstgid="4" source="cloud_2.tsx"/>
  <tileset firstgid="5" source="cloud_1.tsx"/>
@@ -10796,6 +10796,14 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="899"/>
+   <tile gid="900"/>
+   <tile gid="901"/>
+   <tile gid="902"/>
+   <tile gid="903"/>
+   <tile gid="904"/>
+   <tile gid="905"/>
+   <tile gid="906"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10887,24 +10895,16 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="619"/>
+   <tile gid="619"/>
+   <tile gid="932"/>
+   <tile gid="933"/>
+   <tile gid="934"/>
+   <tile gid="935"/>
+   <tile gid="936"/>
+   <tile gid="937"/>
+   <tile gid="938"/>
+   <tile gid="619"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10995,8 +10995,8 @@
    <tile gid="619"/>
    <tile gid="225"/>
    <tile gid="611"/>
-   <tile gid="257"/>
-   <tile gid="611"/>
+   <tile gid="619"/>
+   <tile gid="619"/>
    <tile gid="612"/>
    <tile gid="613"/>
    <tile gid="614"/>

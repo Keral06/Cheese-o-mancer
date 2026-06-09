@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="107" height="104" tilewidth="128" tileheight="128" infinite="0" nextlayerid="26" nextobjectid="444">
+<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="107" height="104" tilewidth="128" tileheight="128" infinite="0" nextlayerid="26" nextobjectid="444">
  <tileset firstgid="1" name="tileset_lv1_torture_02" tilewidth="128" tileheight="128" tilecount="810" columns="30">
   <image source="tileset_lv1_torture_02.png" width="3840" height="3537"/>
  </tileset>
@@ -44589,7 +44589,7 @@
   <object id="359" x="10636" y="12437.3" width="360" height="96"/>
   <object id="436" x="7296" y="3456" width="384" height="128"/>
  </objectgroup>
- <layer id="25" name="Navigation" width="107" height="104">
+ <layer id="25" name="Navigation" width="107" height="104" visible="0">
   <properties>
    <property name="Navigation" type="bool" value="true"/>
   </properties>
@@ -55917,7 +55917,7 @@
    </properties>
   </object>
  </objectgroup>
- <layer id="24" name="MetadataSuelos" width="107" height="104">
+ <layer id="24" name="MetadataSuelos" width="107" height="104" visible="0">
   <data>
    <tile/>
    <tile/>
