@@ -80,7 +80,9 @@ void Door::OnCollision(PhysBody* physA, PhysBody* physB)
 {
     if (physB->ctype != ColliderType::PLAYER)
         return;
-
+    if (Engine::GetInstance().scene->isInBossfight) {
+        return;
+    }
     if (requiresInteraction){
         playerInside = true;
         return;

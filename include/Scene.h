@@ -61,6 +61,7 @@ public:
 	SDL_Texture* teleportBg = nullptr;
 	int currentMission = 0;
 	int actualHelpTexture = 0;
+	bool isInBossfight = false;
 	Scene();
 	// help
 
