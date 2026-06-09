@@ -720,5 +720,6 @@ void PrincessBoss::DecreaseHealth(int amount)
     {
         // CAMBIO AQUÍ: En lugar de morir, se queda arrodillada/derrotada esperando decisión
         SetPrincessState(PrincessState::DEFEAT);
+        
     }
 }
