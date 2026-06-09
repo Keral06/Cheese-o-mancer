@@ -375,7 +375,7 @@ bool Map::Load(std::string path, std::string fileName)//
                     int targetLevel = 1; // Valor por defecto (por si no tiene la propiedad en Tiled)
 
                     // Buscamos la propiedad entera en el listado de Tiled
-                    Properties::Property* pLevel = object->properties.GetProperty("Level");
+                    Properties::Property* pLevel = object->properties.GetProperty("level");
                     if (pLevel != nullptr)
                     {
                         targetLevel = pLevel->valueInt; // <--- ¡Aquí usamos tu variable valueInt!
