@@ -88,11 +88,11 @@ bool HANDMAN::Start() {
                {37, "shop_end"}
     };
 
-    anims.LoadFromTSX("assets/Textures/Spritesheets/Hangman/sprite_hangedman_01.tsx", aliases);
+    anims.LoadFromTSX("assets/Textures/Spritesheets/Hangman/sprite_hangedman_02.tsx", aliases);
     anims.SetCurrent("idle");
     currentState = H_IDLE;
 
-    texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hangman/sprite_hangedman_01.png");
+    texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hangman/sprite_hangedman_02.png");
     InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
     texW = 256;
@@ -173,7 +173,7 @@ bool HANDMAN::Update(float dt)
                         BeatBoss.Draw(dt);
                     }
 
-                    if (this->level == 1) {
+                    if (this->storeID == 1) {
                        
                         Engine::GetInstance().scene->cards.push("HangMan", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_HangMan.png"), nullptr);
                     }
