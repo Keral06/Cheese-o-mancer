@@ -6,6 +6,7 @@
 #include "EntityManager.h"
 #include "Scene.h"
 #include "Textures.h"
+#include "HighPriestess.h"
 
 Horse::Horse() : Enemy()
 {

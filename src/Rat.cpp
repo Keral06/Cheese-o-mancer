@@ -5,6 +5,7 @@
 #include "coins.h"
 #include "EntityManager.h"
 #include "Scene.h"
+#include "HighPriestess.h"
 
 Rat::Rat() : Enemy()
 {
