@@ -151,7 +151,7 @@ bool HANDMAN::Update(float dt)
 
                 if (pendingDialogue != nullptr) {
                     pendingDialogue->hasEnded = false;
-                    pendingDialogue->BeginDialogue();
+                    pendingDialogue->BeginDialogue(nameNPC);
                     pendingDialogue->Draw(dt);
                 }
             }
@@ -160,16 +160,16 @@ bool HANDMAN::Update(float dt)
         if (firstTime && dialogue.hasStarted && !dialogue.hasEnded) {
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
               
-                if (dialogue.AvanzarDialogo(dt)) {
+                if (dialogue.AvanzarDialogo(dt, nameNPC)) {
                     firstTime = false;
                     if (!bossDefeated) {
                         dialogueHANDMAN.hasEnded = false;
-                        dialogueHANDMAN.BeginDialogue();
+                        dialogueHANDMAN.BeginDialogue(nameNPC);
                         dialogueHANDMAN.Draw(dt);
                     }
                     else {
                         BeatBoss.hasEnded = false;
-                        BeatBoss.BeginDialogue();
+                        BeatBoss.BeginDialogue(nameNPC);
                         BeatBoss.Draw(dt);
                     }
 
@@ -195,10 +195,9 @@ bool HANDMAN::Update(float dt)
         // AQUÍ ES DONDE SE ABRE LA TIENDA CUANDO ACABA DE HABLAR 
         if (bossDefeated && BeatBoss.hasStarted && !BeatBoss.hasEnded) {
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-
-                if (BeatBoss.AvanzarDialogo(dt)) {
-
-                    // PASAMOS AL ESTADO DE ABRIR TIENDA
+               
+                if (BeatBoss.AvanzarDialogo(dt, nameNPC)) {
+                    /*firstTimeBossKill = false;*/
                     isStoreOn = true;
                     currentState = H_SHOP_START;
                     anims.SetCurrent("shop_start");
@@ -280,7 +279,7 @@ bool HANDMAN::Update(float dt)
             // Reproducimos el diálogo solicitado directamente (Ya no bloqueamos con "isWaitingForAnimation")
             if (pendingDialogue != nullptr) {
                 pendingDialogue->hasEnded = false;
-                pendingDialogue->BeginDialogue();
+                pendingDialogue->BeginDialogue(nameNPC);
                 pendingDialogue->Draw(dt);
             }
         }

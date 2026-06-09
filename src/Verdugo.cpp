@@ -70,7 +70,7 @@ bool Verdugo::Start()
     textureT1 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Cheese Executoner/test1.png");
     textureT2 = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Cheese Executoner/test2.png");
     
-
+    Engine::GetInstance().scene->cheese = true;
     //Add physics to the enemy - initialize physics body
     pbody = Engine::GetInstance().physics->CreateRectangle(position.getX(), position.getY(), texW, texH, bodyType::DYNAMIC);
 
@@ -78,7 +78,7 @@ bool Verdugo::Start()
     pbody->listener = this;
 
     //ssign collider type
-    pbody->ctype = ColliderType::ENEMY;
+    pbody->ctype = ColliderType::BOSSATTACK;
 
     // Initialize pathfinding
     pathfinding = std::make_shared<Pathfinding>();
@@ -182,11 +182,11 @@ void Verdugo::UpdateIntro(float dt)
             Engine::GetInstance().render->SetZoomSmooth(0.5f, 800.0f);
             // LOCK PLAYER
             //Engine::GetInstance().scene->LockPlayer(true);
-            if (dialogue.hasStarted == false) { dialogue.AvanzarDialogo(dt); }
+            if (dialogue.hasStarted == false) { dialogue.AvanzarDialogo(dt, nameNPC); }
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
             
             
-                if (dialogue.AvanzarDialogo(dt)) {
+                if (dialogue.AvanzarDialogo(dt, nameNPC)) {
                 
                     introTriggered = true;
                     return;
@@ -271,14 +271,14 @@ void Verdugo::UpdatePhase1(float dt)
     }
 
   
-    if (dist < 10.0f)
+    if (dist < 7.0f)
     {
         ExecutePhase1Attack();
         return;
     }
 
    
-    if (dist > 10.0f)
+    if (dist > 7.0f)
     {
         state = WALKV;
         velocity.x = 0;
@@ -310,23 +310,87 @@ void Verdugo::UpdatePhase1(float dt)
 void Verdugo::ExecutePhase1Attack()
 {
     attackInProgress = true;
-
     state = ATAQUEP1;
     currentAnimSet->Resets();
 
+    hitboxActive = false;
+    currentAttackId++; // <-- NUEVO: Cada ataque tiene un número de carné único
+
+    // Impulso (opcional, frena a 0 en el Update si no quieres que deslice)
     velocity.x = facingLeft ? 25.0f : -25.0f;
 
-    LOG("PHASE 1 ATTACK");
+    LOG("PHASE 1 ATTACK START - ID: %d", currentAttackId);
 }
 
 void Verdugo::UpdatePhase1Attack()
 {
-   
+    // Frenamos el movimiento para que no patine durante el garrotazo
+    velocity.x = 0;
+
+    int currentFrame = currentAnimSet->GetCurrentFrameIndex();
+
+    // 1. CONTROL DE FRAMES ACTIVOS (Del 5 al 7)
+    if (currentFrame >= 12 && currentFrame <= 15)
+    {
+        hitboxActive = true;
+
+        // ====================================================
+        // OPTIONAL: Si necesitas que la hitbox se mueva con el jefe
+        // antes de medir, actualiza su posición aquí. Por ejemplo:
+        // int bx, by;
+        // pbody->GetPosition(bx, by);
+        // int dirX = facingLeft ? offsetAttackHitboxX : -offsetAttackHitboxX;
+        // attackHitbox->SetPosition(bx + dirX, by + offsetAttackHitboxY);
+        // ====================================================
+
+        // 2. EXTRAER EL RECTÁNGULO REAL DE TU ATTACKHITBOX
+        int hx, hy;
+        attackHitbox->GetPosition(hx, hy); // Obtenemos la posición física actual de tu sensor
+
+        // Creamos el SDL_Rect usando el tamaño exacto que le diste en el Start (70x200)
+        // Nota: Box2D suele medir desde el centro, si ves que el QueryArea se desplaza, 
+        // réstale la mitad del ancho y del alto como hacías en el Draw.
+        SDL_Rect hitboxRect = {
+            hx - (70 / 2),
+            hy - (200 / 2),
+            70,
+            200
+        };
+
+        // 3. ESCANEO DEL ÁREA
+        std::vector<PhysBody*> hits = Engine::GetInstance().physics->QueryArea(hitboxRect);
+
+        for (auto* body : hits)
+        {
+            if (body->ctype == ColliderType::PLAYER)
+            {
+                Player* p = static_cast<Player*>(body->listener);
+
+                // 4. LÓGICA DE DAÑO ÚNICO (Para que no te destroze la vida en 1 frame)
+                if (p && p->lastAttackId != currentAttackId)
+                {
+                    // ¡Aquí pones la función real de quitar vida a tu jugador!
+                    p->HasBeenHit(pbody);
+
+                    p->lastAttackId = currentAttackId; // El jugador se anota el ID para ser inmune al resto de este golpe
+                    LOG("¡HIT! El Verdugo te ha dado con su attackHitbox real en el frame %d", currentFrame);
+                }
+            }
+        }
+    }
+    else
+    {
+        hitboxActive = false;
+    }
+
+    // 5. FIN DE LA ANIMACIÓN
     if (currentAnimSet->HasFinished())
     {
         attackInProgress = false;
+        hitboxActive = false;
         currentAnimSet->Resets();
-        state = IDLEV;
+        state = IDLEV; // Volver a Idle
+        LOG("PHASE 1 ATTACK END");
     }
 }
 
@@ -486,22 +550,14 @@ void Verdugo::UpdateAttack()
 
 void Verdugo::OnCollision(PhysBody* physA, PhysBody* physB)
 {
-    // Solo actuar si la hitbox está activa
-    if (!hitboxActive) return;
-
     switch (physB->ctype)
     {
-    case ColliderType::PLAYER:
-    {
-        playerInHitbox = true;
-        break;
-    }
     case ColliderType::CHEESEBALL:
     {
         bolazo = true;
         break;
     }
-
+    // Si tienes otros proyectiles o trampas que afecten al jefe, se quedan aquí.
     default:
         break;
     }
@@ -523,13 +579,17 @@ void Verdugo::ChangeCurrentAnimation() {
     switch (state)
     {
     case IDLEV:
+        hitboxActive = false;
         currentAnimSet = &animsIdle;
         texture = textureIdleWalk;
+        playerInHitbox = false;
         currentAnimSet->SetCurrent("idle");
         offsetY = 0.0f;
         break;
 
     case WALKV:
+        hitboxActive = false;
+        playerInHitbox = false;
         currentAnimSet = &animsIdle;
         texture = textureIdleWalk;
         currentAnimSet->SetCurrent("walk");
@@ -667,6 +727,7 @@ void Verdugo::ExecuteAttack()
         state = ATAQUE1;
         attackInProgress = true;
         velocity.x = facingLeft ? 25.0f : -25.0f;
+        Engine::GetInstance().physics->SetLinearVelocity(pbody, velocity);
         break;
 
     case ATTACK_2:
@@ -676,7 +737,7 @@ void Verdugo::ExecuteAttack()
         // impulso parabólico simple
         velocity.y = -30.0f;
         velocity.x = facingLeft ? 25.0f : -25.0f;
-        
+        Engine::GetInstance().physics->SetLinearVelocity(pbody, velocity);
         attackInProgress = true;
         break;
 
@@ -737,6 +798,8 @@ void Verdugo::UpdateAttackLogic()
         if (state == ATAQUE3A)
         {
             velocity.x = (playerX > myX) ? speed : -speed;
+
+            Engine::GetInstance().physics->SetLinearVelocity(pbody, velocity);
 
             if (playerInHitbox)
             {

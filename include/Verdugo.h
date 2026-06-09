@@ -160,8 +160,10 @@ protected:
     int bodyW;
     int bodyH;
     bool deathStarted = false;
-
+    int currentAttackId = 0;
+  
     bodyType type;
 
     Dialogue dialogue;
+    std::string nameNPC;
 };

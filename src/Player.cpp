@@ -1697,3 +1697,29 @@ void Player::PlayShowCheese()
 	texture = textureShowCheese;
 	currentAnimSet->SetCurrent("show_cheese");
 }
+
+void Player::HasBeenHit(PhysBody* physB) {
+	isKnockback = true;
+	state = HURT;
+	IsProtected = true;
+	protectionTimer = 2500.0f;
+	isAttacking = false;
+	hitboxActive = false;
+	currentAnimSet = &anims3x3;
+	texture = texture3x3;
+	currentAnimSet->SetCurrent("hurt");
+	currentAnimSet->Resets();
+	if (isMounted) {
+		DismountVerticalJump();
+	}
+
+	int px, py, ex, ey;
+	pbody->GetPosition(px, py);
+	physB->GetPosition(ex, ey);
+
+	float dirX = (px > ex) ? 1.0f : -1.0f;
+
+	Engine::GetInstance().physics->SetLinearVelocity(pbody, 0.0f, 0.0f);
+
+	Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, dirX * 1000.0f, -1000.0f, true);
+}
