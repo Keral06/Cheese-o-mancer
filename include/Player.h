@@ -105,7 +105,7 @@ public:
 	int deathfx;
 	int healfx;
 	int attackfx;
-	int hurtfx;
+	int hurtFx[3];
 
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;

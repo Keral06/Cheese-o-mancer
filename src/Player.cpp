@@ -133,7 +133,11 @@ bool Player::Start() {
 	deathfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/player_death.wav");
 	pickCoinFxId = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/coin-collision-sound-342335.wav");
 	healfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Heal_plant.wav");
-	hurtfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Jester/Jester_hurt1.wav");
+
+	// 3 versiones de hurt
+	hurtFx[0] = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Jester/Jester_hurt1.wav");
+	hurtFx[1] = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Jester/Jester_hurt2.wav");
+	hurtFx[2] = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Jester/Jester_hurt3.wav");
 
 	respawnPosition = { PIXEL_TO_METERS(position.getX()), PIXEL_TO_METERS(position.getY()) };
 	Engine::GetInstance().render->SetZoomSmooth(0.3f, 0.0f);
@@ -904,7 +908,8 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 
 		if (!isdead)
 		{
-			Engine::GetInstance().audio->PlayFx(hurtfx);
+			int randomSound = rand() % 3;
+			Engine::GetInstance().audio->PlayFx(hurtFx[randomSound]);
 
 			if (extralife) {
 				extralife = false;
