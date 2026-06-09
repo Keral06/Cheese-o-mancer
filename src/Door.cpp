@@ -37,6 +37,17 @@ bool Door::Update(float dt)
         playerInside &&
         Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
     {
+        if (isLocked) {
+            if (Engine::GetInstance().scene->inventario.tieneObjeto(requiredKey)) {
+                isLocked = false;
+                Engine::GetInstance().scene->inventario.eliminarObjeto(requiredKey);
+                LOG("Puerta desbloqueada con %s!", requiredKey.c_str());
+            }
+            else {
+                LOG("Puerta bloqueada. Necesitas la llave: %s", requiredKey.c_str());
+                return true;
+            }
+        }
         Engine::GetInstance().scene->nextSpawnPoint = targetDoor;
         Engine::GetInstance().scene->firstDoor = false;
         Engine::GetInstance().scene->nextMap = targetMap;
@@ -65,7 +76,8 @@ void Door::SetDoorData(
     int width,
     int height,
     bool requiresInteraction,
-    bool isLocked
+    bool isLocked,
+    std::string requiredKey
 )
 {
     this->targetMap = targetMap;
@@ -76,6 +88,7 @@ void Door::SetDoorData(
     this->height = height;
     this->requiresInteraction = requiresInteraction;
     this->isLocked = isLocked;
+    this->requiredKey = requiredKey;
 }
 
 void Door::OnCollision(PhysBody* physA, PhysBody* physB)
@@ -92,6 +105,7 @@ void Door::OnCollision(PhysBody* physA, PhysBody* physB)
     if (isLocked) {
         if (Engine::GetInstance().scene->inventario.tieneObjeto("Key")) {
             isLocked = false;
+            Engine::GetInstance().scene->inventario.eliminarObjeto("Key");
             LOG("Puerta desbloqueada con la llave!");
         }
         else {

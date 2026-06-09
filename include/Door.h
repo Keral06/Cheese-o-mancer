@@ -12,6 +12,7 @@ public:
     Door();
     virtual ~Door();
     bool isLocked = false;
+    std::string requiredKey = "Key1";
     bool Start() override;
     bool Update(float dt) override;
     bool CleanUp() override;
@@ -27,7 +28,8 @@ public:
         int width,
         int height,
         bool requiresInteraction,
-        bool isLocked
+        bool isLocked,
+        std::string requiredKey 
     );
 
     void OnCollisionEnd(PhysBody* physA, PhysBody* physB) override;

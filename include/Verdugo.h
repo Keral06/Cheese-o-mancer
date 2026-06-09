@@ -165,4 +165,5 @@ protected:
     bodyType type;
 
     Dialogue dialogue;
+    std::string nameNPC;
 };

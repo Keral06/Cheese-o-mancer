@@ -117,10 +117,10 @@ bool BossFightPrincessKnight::Update(float dt)
                 LOG("CAMARA: Aplicando ZOOM a la escena.");
                 LOG("Jugador cerca de la Princesa. Arrancando Intro...");
                 if (introTriggered == false) {
-                    if (Before.hasStarted == false) { Before.AvanzarDialogo(dt); return true; }
+                    if (Before.hasStarted == false) { Before.AvanzarDialogo(dt, nameNPC); return true; }
                     if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
-                        if (Before.AvanzarDialogo(dt)) {
+                        if (Before.AvanzarDialogo(dt, nameNPC)) {
 
                             introTriggered = true;
                             SetFightState(BossFightState::INTRO);
@@ -250,14 +250,14 @@ void BossFightPrincessKnight::UpdateIntro(float dt)
 
                 // CAMBIO AQUÍ: En vez de ir a la transformación, pasamos al nuevo diálogo
                 if (Before2.hasStarted == false) {
-                    Before2.AvanzarDialogo(dt);  knightBasePos = Vector2D(knightTargetX, knight->GetPosition().getY());
+                    Before2.AvanzarDialogo(dt, nameNPC);  knightBasePos = Vector2D(knightTargetX, knight->GetPosition().getY());
                     knight->ReturnToBase(knightBasePos); knight->SetKnightState(KnightState::ENTRANCE_DASH);
                     knight->ResetActionFinished(); return;
                 }
 
                 if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
-                    if (Before2.AvanzarDialogo(dt)) {
+                    if (Before2.AvanzarDialogo(dt, nameNPC)) {
                         SetFightState(BossFightState::KNIGHT_ENTRANCE);
                     }
 
@@ -415,12 +415,12 @@ void BossFightPrincessKnight::UpdateDeath(float dt)
 
         if (Engine::GetInstance().scene->hasShownPoemToWell == true) {
 
-            if (DefeatWell.hasStarted == false) { DefeatWell.AvanzarDialogo(dt); return; }
+            if (DefeatWell.hasStarted == false) { DefeatWell.AvanzarDialogo(dt, nameNPC); return; }
 
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 
-                if (DefeatWell.AvanzarDialogo(dt)) {
+                if (DefeatWell.AvanzarDialogo(dt, nameNPC)) {
 
 
 
@@ -448,12 +448,12 @@ void BossFightPrincessKnight::UpdateDeath(float dt)
 
 
 
-            if (Defeat.hasStarted == false) { Defeat.AvanzarDialogo(dt); return; }
+            if (Defeat.hasStarted == false) { Defeat.AvanzarDialogo(dt, nameNPC); return; }
 
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 
-                if (Defeat.AvanzarDialogo(dt)) {
+                if (Defeat.AvanzarDialogo(dt, nameNPC)) {
 
 
 

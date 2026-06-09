@@ -182,11 +182,11 @@ void Verdugo::UpdateIntro(float dt)
             Engine::GetInstance().render->SetZoomSmooth(0.5f, 800.0f);
             // LOCK PLAYER
             //Engine::GetInstance().scene->LockPlayer(true);
-            if (dialogue.hasStarted == false) { dialogue.AvanzarDialogo(dt); }
+            if (dialogue.hasStarted == false) { dialogue.AvanzarDialogo(dt, nameNPC); }
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
             
             
-                if (dialogue.AvanzarDialogo(dt)) {
+                if (dialogue.AvanzarDialogo(dt, nameNPC)) {
                 
                     introTriggered = true;
                     return;

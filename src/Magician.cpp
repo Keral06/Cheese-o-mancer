@@ -134,7 +134,7 @@ bool Magician::Update(float dt) {
 		if (!dialogueMagicianStart.hasStarted && Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN) {
 			Engine::GetInstance().scene->showHelp = false;
 			Engine::GetInstance().scene->SetHelpUI(Engine::GetInstance().scene->showHelp);
-			dialogueMagicianStart.BeginDialogue();
+			dialogueMagicianStart.BeginDialogue(nameNPC);
 			Engine::GetInstance().scene->SetInventariIcon(true);
 			Engine::GetInstance().scene->cards.push("The fool", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Fool.png"), nullptr);
 			Engine::GetInstance().scene->misiones.push("Talk with magician", Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Magician1.png"), Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Magician2.png"));
@@ -142,7 +142,7 @@ bool Magician::Update(float dt) {
 		else if (dialogueMagicianStart.hasStarted && !dialogueMagicianStart.hasEnded && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
 		
 
-			if (dialogueMagicianStart.AvanzarDialogo(dt)) {
+			if (dialogueMagicianStart.AvanzarDialogo(dt, nameNPC)) {
 				firstTime = false;
 
 			}
@@ -155,7 +155,7 @@ bool Magician::Update(float dt) {
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
 		if (Engine::GetInstance().scene->beatBoss == true && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-			BeatBoss.AvanzarDialogo(dt);
+			BeatBoss.AvanzarDialogo(dt, nameNPC);
 			return true;
 		}
 		if (AfterCheese.hasStarted && !AfterCheese.hasEnded) {
@@ -164,7 +164,7 @@ bool Magician::Update(float dt) {
 		}
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedMagician == false) {
 			
-				if (dialogueMagicianStart.AvanzarDialogo(dt)) {
+				if (dialogueMagicianStart.AvanzarDialogo(dt, nameNPC)) {
 					Engine::GetInstance().scene->hasTalkedMagician = true;
 					Engine::GetInstance().scene->misiones.Completed("Talk with magician");
 				}
@@ -178,7 +178,7 @@ bool Magician::Update(float dt) {
 
 
 		if (Engine::GetInstance().scene->cheese == false && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasTalkedMagician == true) {
-			BeforeCheese.AvanzarDialogo(dt);
+			BeforeCheese.AvanzarDialogo(dt, nameNPC);
 			return true;
 		}
 		if (BeforeCheese.hasStarted && !BeforeCheese.hasEnded) {
@@ -187,7 +187,7 @@ bool Magician::Update(float dt) {
 		}
 
 		if (Engine::GetInstance().scene->cheese == true && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-			AfterCheese.AvanzarDialogo(dt);
+			AfterCheese.AvanzarDialogo(dt, nameNPC);
 			return true;
 		}
 		if (AfterCheese.hasStarted && !AfterCheese.hasEnded) {

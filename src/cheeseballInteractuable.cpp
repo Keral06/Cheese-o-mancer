@@ -94,7 +94,7 @@ bool CheeseBallInteract::Update(float dt)
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-			if (dialogue.AvanzarDialogo(dt)) {
+			if (dialogue.AvanzarDialogo(dt, nameNPC)) {
 				if (cheesePower == 1) {
 					Engine::GetInstance().scene->cheese = true;
 					Engine::GetInstance().scene->cards.push("WheelOfFortune", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_WheelOfFortune.png"), nullptr);

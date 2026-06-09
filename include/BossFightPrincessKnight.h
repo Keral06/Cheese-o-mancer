@@ -142,4 +142,6 @@ public:
     Dialogue DefeatWell;
     Dialogue AfterFightSpare;
     Dialogue AfterFightKill;
+
+    std::string nameNPC = "Princess-Knight";
 };

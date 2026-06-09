@@ -1035,7 +1035,7 @@ void Scene::UpdateLevel(float dt) {
 		LoadMap("Map_LV3_temple_01.tmx");
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_V) == KEY_DOWN) {
-		LoadMap("Map_LV3_right_02.tmx");
+		LoadMap("Map_LV2_encreuada_02.tmx");
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN) {
 		LoadMap("Map_LV2_towersBotanica_02.tmx");
@@ -1726,7 +1726,7 @@ void Scene::LoadMap(std::string map)
 			if (obj.nombre == "Map" || obj.nombre == "Map Nivel 1") { obj.imagen = iconMap; obj.imagenDescripcion = map1Texture; }
 			else if (obj.nombre == "Map Nivel 2") { obj.imagen = iconMap; obj.imagenDescripcion = map2Texture; }
 			else if (obj.nombre == "Map Nivel 3") { obj.imagen = iconMap; obj.imagenDescripcion = map3Texture; }
-			else if (obj.nombre == "Key") obj.imagen = iconKey;
+			else if (obj.nombre.find("Key") != std::string::npos) obj.imagen = iconKey;
 			else if (obj.nombre == "Lamp") obj.imagen = iconLamp;
 			else if (obj.nombre == "Spring") obj.imagen = iconSpring;
 			else if (obj.nombre == "HorseMacure") obj.imagen = iconHorseMacure;
@@ -2157,7 +2157,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
 					handman->hasBeenSold.hasEnded = false;
-					handman->hasBeenSold.BeginDialogue();
+					handman->hasBeenSold.BeginDialogue(handman->nameNPC);
 					break;
 				}
 			}
@@ -2167,7 +2167,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
 					handman->hasNoMoney.hasEnded = false;
-					handman->hasNoMoney.BeginDialogue();
+					handman->hasNoMoney.BeginDialogue(handman->nameNPC);
 					break;
 				}
 			}
@@ -2187,14 +2187,22 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				}
 
 			}
-			Engine::GetInstance().scene->inventario.push("Key", iconKey, nullptr);
+			/*Engine::GetInstance().scene->inventario.push("Key", iconKey, nullptr);*/
+			std::string keyName = "Key1";
+			if (Engine::GetInstance().map->mapFileName.find("LV2") != std::string::npos) {
+				keyName = "Key2";
+			}
+			else if (Engine::GetInstance().map->mapFileName.find("LV3") != std::string::npos) {
+				keyName = "Key3";
+			}
+			Engine::GetInstance().scene->inventario.push(keyName, iconKey, nullptr);
 
 			//FUNCION DE QUE PLAYER TIENE LA LLAVE
 			for (auto& entity : Engine::GetInstance().entityManager->entities) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
 					handman->hasBeenSold.hasEnded = false;
-					handman->hasBeenSold.BeginDialogue();
+					handman->hasBeenSold.BeginDialogue(handman->nameNPC);
 					break;
 				}
 			}
@@ -2204,7 +2212,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
 					handman->hasNoMoney.hasEnded = false;
-					handman->hasNoMoney.BeginDialogue();
+					handman->hasNoMoney.BeginDialogue(handman->nameNPC);
 					break;
 				}
 			}
@@ -2236,7 +2244,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
 					handman->hasBeenSold.hasEnded = false;
-					handman->hasBeenSold.BeginDialogue();
+					handman->hasBeenSold.BeginDialogue(handman->nameNPC);
 					break;
 				}
 			}
@@ -2246,7 +2254,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
 					handman->hasNoMoney.hasEnded = false;
-					handman->hasNoMoney.BeginDialogue();
+					handman->hasNoMoney.BeginDialogue(handman->nameNPC);
 					break;
 				}
 			}
@@ -2277,7 +2285,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
 					handman->hasBeenSold.hasEnded = false;
-					handman->hasBeenSold.BeginDialogue();
+					handman->hasBeenSold.BeginDialogue(handman->nameNPC);
 					break;
 				}
 			}
@@ -2287,7 +2295,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
 					handman->hasNoMoney.hasEnded = false;
-					handman->hasNoMoney.BeginDialogue();
+					handman->hasNoMoney.BeginDialogue(handman->nameNPC);
 					break;
 				}
 			}
@@ -2330,7 +2338,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
 					handman->hasBeenSold.hasEnded = false;
-					handman->hasBeenSold.BeginDialogue();
+					handman->hasBeenSold.BeginDialogue(handman->nameNPC);
 					break;
 				}
 			}
@@ -2340,7 +2348,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 				if (entity->type == EntityType::HANDMAN) {
 					HANDMAN* handman = static_cast<HANDMAN*>(entity.get());
 					handman->hasNoMoney.hasEnded = false;
-					handman->hasNoMoney.BeginDialogue();
+					handman->hasNoMoney.BeginDialogue(handman->nameNPC);
 					break;
 				}
 			}
