@@ -20,6 +20,7 @@ public:
         POLVO_SALTO,
         HIERBAJO_SALTO,
         FLOATING_DUST,
+        STARS,
         /*FIRE_WORK,
         SUN,
         GALAXY,

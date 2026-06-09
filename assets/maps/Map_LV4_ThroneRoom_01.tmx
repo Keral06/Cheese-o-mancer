@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="89" height="50" tilewidth="128" tileheight="128" infinite="0" nextlayerid="23" nextobjectid="57">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="89" height="50" tilewidth="128" tileheight="128" infinite="0" nextlayerid="23" nextobjectid="57">
  <tileset firstgid="1" source="test2_tileset.tsx"/>
  <tileset firstgid="4" source="ThroneRoom_1.tsx"/>
  <tileset firstgid="5" source="ThroneRoom_2.tsx"/>

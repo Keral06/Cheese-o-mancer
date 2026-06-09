@@ -406,6 +406,46 @@ void ParticleExample::setStyle(PatticleStyle style)
         break;
     }
 
+    case ParticleExample::STARS:
+    {
+        // Ponemos menos partículas por emisor, porque luego crearemos 3 emisores a la vez (3x4 = 12 estrellas en total)
+
+        initWithTotalParticles(3);
+
+        this->_isBlinking = true;
+
+        _duration = DURATION_INFINITY;
+        this->_emitterMode = Mode::GRAVITY;
+
+        this->modeA.gravity = { 0.0f, -1.0f };
+        this->modeA.speed = 13.0f;
+        this->modeA.speedVar = 5.0f;
+
+        _angle = 90.0f;
+        _angleVar = 400.0f;
+
+        _life = 8.0f;
+        _lifeVar = 3.0f;
+
+        _startSize = 60.0f;
+        _startSizeVar = 30.0f;
+        _endSize = 3.0f;
+        _endSizeVar = 2.0f;
+
+        _emissionRate = _totalParticles / _life;
+
+        _startColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+        _startColorVar = { 0.0f, 0.0f, 0.0f, 0.8f };
+        _endColor = { 1.0f, 1.0f, 1.0f, 0.0f };
+        _endColorVar = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+        _posVar = { 60.0f, 60.0f };
+
+        if (_texture) SDL_SetTextureBlendMode(_texture, SDL_BLENDMODE_ADD);
+
+        break;
+    }
+
     //case ParticleExample::FIRE_WORK:
     //{
     //    initWithTotalParticles(1500);

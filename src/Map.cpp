@@ -40,7 +40,7 @@ bool Map::IsMoho(int gid) {
 }
 
 bool Map::IsPolvo(int gid) {
-    static const std::vector<int> ids = { 882, 18967, 2135, 1636, 819, 2540,20591, 2945, 3370, 2895, 1576, 1575, 3696, 1688, 1682, 1199, 1191, 1189, 1197, 2866 }; // todos los de polvo
+    static const std::vector<int> ids = { 882, 18967, 2135, 1633, 1636, 819, 2540,20591, 2945, 3370, 2895, 1576, 1575, 3696, 1688, 1682, 1199, 1191, 1189, 1197, 2866 }; // todos los de polvo
     return std::find(ids.begin(), ids.end(), gid) != ids.end();
 }                                                                                                           //1682 en temple lvl3 tmb    2866 queen int
                                                                                                        //20591 20592 botanica
@@ -1150,6 +1150,29 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                 else if (pType == "Explosion" || pType == "EXPLOSION") p->setStyle(ParticleExample::EXPLOSION);
                 else if (pType == "Snow" || pType == "SNOW") p->setStyle(ParticleExample::SNOW);
                 else if (pType == "FloatingDust" || pType == "FLOATINGDUST") p->setStyle(ParticleExample::FLOATING_DUST);
+                else if (pType == "Stars" || pType == "STARS") {
+                    // 1. Configuramos el emisor base (p) con la estrella 1
+                    p->setStyle(ParticleExample::STARS);
+                    p->setTexture(Engine::GetInstance().textures->Load("assets/Textures/Particles/Stars/star1.png"));
+
+                    // 2. Creamos un segundo emisor invisible en la misma posición para la estrella 2
+                    ParticleExample* p2 = new ParticleExample();
+                    p2->setRenderer(Engine::GetInstance().render->renderer);
+                    p2->setPosition((int)(x + (w / 2.0f)), (int)(y + (h / 2.0f)));
+                    p2->setPosVar(Vec2(w / 2.0f, h / 2.0f));
+                    p2->setStyle(ParticleExample::STARS);
+                    p2->setTexture(Engine::GetInstance().textures->Load("assets/Textures/Particles/Stars/star2.png"));
+                    mapParticles.push_back(p2);
+
+                    // 3. Creamos un tercer emisor para la estrella 3
+                    ParticleExample* p3 = new ParticleExample();
+                    p3->setRenderer(Engine::GetInstance().render->renderer);
+                    p3->setPosition((int)(x + (w / 2.0f)), (int)(y + (h / 2.0f)));
+                    p3->setPosVar(Vec2(w / 2.0f, h / 2.0f));
+                    p3->setStyle(ParticleExample::STARS);
+                    p3->setTexture(Engine::GetInstance().textures->Load("assets/Textures/Particles/Stars/star3.png"));
+                    mapParticles.push_back(p3);
+                }
 
                 p->setPosVar(Vec2(w / 2.0f, h / 2.0f));
                 mapParticles.push_back(p);
