@@ -283,6 +283,7 @@ private:
 	SDL_Texture* quesoSextos_1 = nullptr;
 	SDL_Texture* extraHeartTexture = nullptr;
 
+	float dtHelp = 0;
 
 	SDL_Texture* behindteleport = nullptr;
 

@@ -133,7 +133,11 @@ bool Player::Start() {
 	deathfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/player_death.wav");
 	pickCoinFxId = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/coin-collision-sound-342335.wav");
 	healfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Heal_plant.wav");
-	hurtfx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Jester/Jester_hurt1.wav");
+
+	// 3 versiones de hurt
+	hurtFx[0] = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Jester/Jester_hurt1.wav");
+	hurtFx[1] = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Jester/Jester_hurt2.wav");
+	hurtFx[2] = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/Jester/Jester_hurt3.wav");
 
 	respawnPosition = { PIXEL_TO_METERS(position.getX()), PIXEL_TO_METERS(position.getY()) };
 	Engine::GetInstance().render->SetZoomSmooth(0.3f, 0.0f);
@@ -160,12 +164,9 @@ bool Player::Update(float dt)
 
 	if (!isPaused) {
 
-		// ======================================================
-		// --- BLOQUEO ABSOLUTO DE MUERTE (AL PRINCIPIO) --------
-		// ======================================================
 		if (isdead) {
 			GetPhysicsValues();
-			velocity.x = 0; // Evita que el Jester resbale muerto
+			velocity.x = 0;
 			ApplyPhysics();
 
 			Draw(dt);
@@ -175,9 +176,8 @@ bool Player::Update(float dt)
 			if (currentAnimSet->HasFinished()) {
 				isDeathAnimFinished = true;
 			}
-			return true; // Abortamos el frame aquí para ignorar el teclado por completo
+			return true;
 		}
-		// ======================================================
 
 		GetPhysicsValues();
 
@@ -204,15 +204,15 @@ bool Player::Update(float dt)
 					}
 				}
 				else {
-					Move();
-					Jump();
-					Attack();
-					HandleAttack();
-					CheckKickFrame();
-					SpawnCheeseBall();
+					if (!isKicking) {
+						Move();
+						Jump();
+						Attack();
+						HandleAttack();
+						SpawnCheeseBall();
+					}
 				}
 
-				// 1. LÓGICA SUELO
 				if (isWalking && isCollidedFloor && !isWallWalking) {
 					stepParticleTimer += dt;
 
@@ -238,7 +238,6 @@ bool Player::Update(float dt)
 						}
 					}
 				}
-				// 2. LÓGICA PARED
 				else if (isWallWalking && (velocity.x != 0.0f || velocity.y != 0.0f)) {
 					stepParticleTimer += dt;
 
@@ -251,7 +250,6 @@ bool Player::Update(float dt)
 						Engine::GetInstance().map->SpawnParticle(ParticleExample::MOHO, spawnX, spawnY, 0.15f);
 					}
 				}
-				// 3. SI SE PARA
 				else if (!isWalking) {
 					stepParticleTimer = 1000.0f;
 				}
@@ -260,6 +258,8 @@ bool Player::Update(float dt)
 				currentAnimSet->SetCurrent("idle");
 			}
 		}
+
+		CheckKickFrame();
 
 		if (isMounted && Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
 		{
@@ -305,8 +305,6 @@ bool Player::Update(float dt)
 	CameraRender(dt);
 
 	if (!isPaused) {
-		// (El viejo bloque 'if(isdead)' que estaba aquí ha sido eliminado con éxito)
-
 		if (IsProtected && !isKnockback) {
 			protectionTimer -= dt;
 			if (protectionTimer <= 0.0f) {
@@ -446,22 +444,10 @@ void Player::GetPhysicsValues() {
 
 void Player::Move() {
 
-	// ==========================================
-	// --- 1. LÓGICA DE INERCIA AL ATACAR ---
-	// ==========================================
-	if (isAttacking) {
-		if (isCollidedFloor) {
-			velocity.x *= 0.85f; // Frena poco a poco
-			if (abs(velocity.x) < 0.5f) velocity.x = 0.0f;
-		}
-
-		return;
-	}
-
 	isWalking = false;
 
 	// ==========================================
-	// --- 2. LÓGICA DE PARED (WallWalking) ---
+	// --- 1. LÓGICA DE PARED (WallWalking) ---
 	// ==========================================
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT && isOnSpecialWall)
 	{
@@ -472,6 +458,25 @@ void Player::Move() {
 		isWallWalking = false;
 	}
 
+	// ==========================================
+	// --- 2. LÓGICA DE INERCIA AL ATACAR ---
+	// ==========================================
+	if (isAttacking) {
+		if (isCollidedFloor && !isWallWalking) {
+			velocity.x *= 0.85f;
+			if (abs(velocity.x) < 0.5f) velocity.x = 0.0f;
+		}
+		else if (isWallWalking) {
+			velocity.x = 0.0f;
+			velocity.y = 0.0f;
+		}
+
+		return;
+	}
+
+	// ==========================================
+	// --- 3. MOVERSE POR LA PARED ---
+	// ==========================================
 	if (isWallWalking)
 	{
 		velocity.y = 0;
@@ -489,45 +494,47 @@ void Player::Move() {
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			velocity.x = speed;
 	}
-
 	// ==========================================
-	// --- 3. INPUT HORIZONTAL NORMAL ---
+	// --- 4. INPUT HORIZONTAL NORMAL ---
 	// ==========================================
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-	{
-		if (isCollidedWall && wallSide == -1) {
-			velocity.x = 0;
-		}
-		else {
-			velocity.x = -speed;
-		}
-		isWalking = true;
-		facingLeft = true;
-	}
-	else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-	{
-		if (isCollidedWall && wallSide == 1) {
-			velocity.x = 0;
-		}
-		else {
-			velocity.x = speed;
-		}
-		isWalking = true;
-		facingLeft = false;
-	}
 	else
 	{
-		velocity.x = 0;
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		{
+			if (isCollidedWall && wallSide == -1) {
+				velocity.x = 0;
+			}
+			else {
+				velocity.x = -speed;
+			}
+			isWalking = true;
+			facingLeft = true;
+		}
+		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		{
+			if (isCollidedWall && wallSide == 1) {
+				velocity.x = 0;
+			}
+			else {
+				velocity.x = speed;
+			}
+			isWalking = true;
+			facingLeft = false;
+		}
+		else
+		{
+			velocity.x = 0;
+		}
 	}
 
+	// ==========================================
+	// --- 5. EXTRAS (Zoom y GodMode) ---
+	// ==========================================
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_U) == KEY_REPEAT)
 	{
 		Engine::GetInstance().render->SetZoomSmooth(0.7f, 600.0f);
 	}
 
-	// ==========================================
-	// --- 4. GOD MODE (VERTICAL) ---
-	// ==========================================
 	if (godMode)
 	{
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
@@ -547,13 +554,13 @@ void Player::Move() {
 	}
 
 	// ==========================================
-	// --- 5. STATE MACHINE ---
+	// --- 6. STATE MACHINE ---
 	// ==========================================
 	if (state == ONCHEESE) {
 		return;
 	}
 
-	if (!isCollidedFloor)
+	if (!isCollidedFloor && !isWallWalking)
 	{
 		state = JUMPING;
 	}
@@ -574,9 +581,9 @@ void Player::Move() {
 	}
 
 	// ==========================================
-	// --- 6. SONIDO PASOS ---
+	// --- 7. SONIDO PASOS ---
 	// ==========================================
-	if (isWalking && isCollidedFloor)
+	if (isWalking && isCollidedFloor && !isWallWalking)
 	{
 		int randNum = rand() % 4;
 		switch (randNum) {
@@ -904,7 +911,8 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 
 		if (!isdead)
 		{
-			Engine::GetInstance().audio->PlayFx(hurtfx);
+			int randomSound = rand() % 3;
+			Engine::GetInstance().audio->PlayFx(hurtFx[randomSound]);
 
 			if (extralife) {
 				extralife = false;
@@ -1595,23 +1603,22 @@ void Player::CheckKickFrame()
 {
 	if (!isKicking) return;
 
-	// Comprobamos si hemos llegado al frame 5
-	if (currentAnimSet->GetCurrentFrameIndex() == 8 && !mountedBall == NULL)
-	{
-		
-		// --- 1. INICIO DEL CHUTE (Frame 0) ---
-		if (currentAnimSet->GetCurrentFrameIndex() == 0)
-		{
-			b2Body_SetAwake(pbody->body, true);
-			// Cambiamos la escala de gravedad a 0 para que flote
-			b2Body_SetGravityScale(pbody->body, 0.0f);
-			// Eliminamos velocidad vertical para que no siga subiendo/cayendo
-			b2Vec2 vel = b2Body_GetLinearVelocity(pbody->body);
-			vel.y = 0.0f;
-			b2Body_SetLinearVelocity(pbody->body, vel);
-		}
+	int currentFrame = currentAnimSet->GetCurrentFrameIndex();
 
-		// --- LÓGICA DE LANZAMIENTO ORIGINAL ---
+	// --- 1. INICIO DEL CHUTE (Frame 0) ---
+	if (currentFrame == 0)
+	{
+		b2Body_SetAwake(pbody->body, true);
+		b2Body_SetGravityScale(pbody->body, 0.0f);
+		b2Vec2 vel = b2Body_GetLinearVelocity(pbody->body);
+		vel.y = 0.0f;
+		b2Body_SetLinearVelocity(pbody->body, vel);
+	}
+
+	// --- 2. LANZAMIENTO (En el frame de impacto) ---
+	// Si tiene 10 frames, el 5 o 6 suelen ser el punto donde la pierna golpea.
+	if (currentFrame >= 5 && mountedBall != nullptr)
+	{
 		mountedBall->canSmash = false;
 		mountedBall->StartLifespan();
 
@@ -1627,20 +1634,25 @@ void Player::CheckKickFrame()
 		mountedBall->ismounted = false;
 		mountedBall = nullptr;
 		isMounted = false;
-		state = DEFAULT;
-		ResetCheeseState();
 
-		LOG("Bola chutada en el frame 5");
+		LOG("Bola chutada con éxito");
 	}
 
-	if (currentAnimSet->HasFinished()) {
+	// --- 3. FIN DE LA ANIMACIÓN (Failsafe anti-congelamiento) ---
+	// Como tiene 10 frames (del 0 al 9), si el frame actual es el 9, 
+	// forzamos la salida aunque el HasFinished() falle.
+	if (currentFrame >= 9 || currentAnimSet->HasFinished()) {
 		isKicking = false;
 
-		// RESTAURAR GRAVEDAD: 2.25f es el valor que usas en Player::Start()
+		// Restauramos la gravedad normal
 		b2Body_SetGravityScale(pbody->body, 2.25f);
 
-		// Limpieza de punteros
-		mountedBall = nullptr;
+		// Limpieza de seguridad
+		if (mountedBall != nullptr) {
+			mountedBall->ismounted = false;
+			mountedBall = nullptr;
+		}
+
 		isMounted = false;
 		state = DEFAULT;
 		ResetCheeseState();

@@ -118,7 +118,6 @@ void Rat::OnCollision(PhysBody* physA, PhysBody* physB)
     if (physB->ctype == ColliderType::PLAYER) {
         Player* player = dynamic_cast<Player*>(physB->listener);
         if (player && damageTimer <= 0) {
-            Engine::GetInstance().scene->lives--;
             damageTimer = 60; 
             LOG("Daño recibido!");
         }

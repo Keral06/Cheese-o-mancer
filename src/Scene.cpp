@@ -70,6 +70,7 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	dtHelp = dt;
 	if (isPlayingVideo) {
 		//LOG("Video dt: %f", dt);
 		plm_decode(video.plm, dt / 1000.0f);	//passar d milisegons a segons
@@ -187,16 +188,17 @@ bool Scene::Update(float dt)
 		StartFadeIn(1.0f);
 	}
 
-	if (bossFightController != nullptr)
-	{
-		bossFightController->Update(dt);
-	}
+
 	return true;
 }
 
 // Called each loop iteration
 bool Scene::PostUpdate()
 {
+	if (bossFightController != nullptr)
+	{
+		bossFightController->Update(dtHelp);
+	}
 	bool ret = true;
 	if (isPaused) {
 		UpdatePauseMenu();
@@ -1003,7 +1005,7 @@ void Scene::UpdateLevel(float dt) {
 		LoadMap("TEST_map_LV1_bossRoom_01.tmx");
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_J) == KEY_DOWN) {
-		LoadMap("Map_LV4_ThroneRoom_01.tmx");
+		LoadMap("Map_LV2_bossTower.tmx");
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
 		LoadMap("Map_LV3_left_01.tmx");

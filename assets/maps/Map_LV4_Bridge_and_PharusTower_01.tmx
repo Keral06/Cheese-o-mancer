@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="120" tilewidth="128" tileheight="128" infinite="0" nextlayerid="24" nextobjectid="36">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="120" tilewidth="128" tileheight="128" infinite="0" nextlayerid="25" nextobjectid="39">
  <tileset firstgid="1" source="test2_tileset.tsx"/>
  <tileset firstgid="4" source="cloud_2.tsx"/>
  <tileset firstgid="5" source="cloud_1.tsx"/>
@@ -36140,6 +36140,23 @@
  </objectgroup>
  <objectgroup id="21" name="spikes">
   <object id="35" x="2560" y="13312" width="10240" height="256"/>
+ </objectgroup>
+ <objectgroup id="24" name="WeakWalls">
+  <object id="36" x="5504" y="13952" width="128" height="1024">
+   <properties>
+    <property name="level" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="37" x="7296" y="13952" width="128" height="1024">
+   <properties>
+    <property name="level" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="38" x="9088" y="13952" width="128" height="1024">
+   <properties>
+    <property name="level" type="int" value="3"/>
+   </properties>
+  </object>
  </objectgroup>
  <group id="3" name="Foreground clouds" offsetx="3328" offsety="-3712" parallaxx="1.1" parallaxy="0.5">
   <properties>
