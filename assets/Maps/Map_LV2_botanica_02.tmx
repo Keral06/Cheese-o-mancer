@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="306" height="153" tilewidth="128" tileheight="128" infinite="0" nextlayerid="64" nextobjectid="469">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="306" height="153" tilewidth="128" tileheight="128" infinite="0" nextlayerid="64" nextobjectid="469">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -45,70 +45,111 @@
  <tileset firstgid="20585" source="test2_tileset.tsx"/>
  <tileset firstgid="20588" source="muralla_torre.tsx"/>
  <group id="35" name="Sky" offsetx="202.061" offsety="1299.76" parallaxx="0.1" parallaxy="0.1">
+  <properties>
+   <property name="Background" type="bool" value="true"/>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <objectgroup id="36" name="Sky1" parallaxx="0.4" parallaxy="0.4">
-   <object id="414" gid="1567" x="-8191.11" y="2120.47" width="17437.3" height="5604.83"/>
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
+   <object id="414" gid="1567" x="-21791.1" y="21248.9" width="63025.6" height="15238.8"/>
   </objectgroup>
   <objectgroup id="37" name="Sky2" parallaxx="0.5" parallaxy="0.5">
-   <object id="415" gid="1570" x="-7951.06" y="2263.92" width="17437.3" height="5604.83"/>
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
+   <object id="415" gid="1570" x="-21434.9" y="21580.6" width="63217.6" height="15238.8"/>
   </objectgroup>
   <objectgroup id="38" name="Sky3" parallaxx="0.6" parallaxy="0.6">
-   <object id="416" gid="1565" x="-7790.71" y="2447.23" width="17437.3" height="5604.83"/>
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
+   <object id="416" gid="1565" x="-21295.4" y="22020.7" width="64305.6" height="15238.8"/>
   </objectgroup>
   <objectgroup id="39" name="Sky4" parallaxx="0.7" parallaxy="0.7">
-   <object id="417" gid="1566" x="-2343.6" y="884.12" width="7000" height="2250"/>
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
+   <object id="417" gid="1566" x="-21117.9" y="22192.5" width="65112" height="8933.44"/>
   </objectgroup>
   <objectgroup id="40" name="Sky5" parallaxx="0.8" parallaxy="0.8">
-   <object id="418" gid="1568" x="-6991.74" y="2694.28" width="17437.3" height="5604.83"/>
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
+   <object id="418" gid="1568" x="-20100.1" y="27695.8" width="70449.6" height="18438.8"/>
   </objectgroup>
   <objectgroup id="41" name="Sky6" parallaxx="0.9" parallaxy="0.9">
-   <object id="419" gid="1569" x="-481.2" y="1080.44" width="4000" height="2250"/>
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
+   <object id="419" gid="1569" x="-1532.71" y="-2436.75" width="6278.08" height="3531.42"/>
   </objectgroup>
  </group>
  <group id="46" name="Castle" offsetx="-14332" offsety="-13048" parallaxx="0.1" parallaxy="0.1">
+  <properties>
+   <property name="Background" type="bool" value="true"/>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <objectgroup id="47" name="Castle 1" parallaxx="0.3">
-   <object id="423" gid="20579" x="10982.7" y="17816.2" width="8780.89" height="5268.53"/>
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
+   <object id="423" gid="20579" x="8746.36" y="15623.9" width="13781.8" height="8269.06"/>
   </objectgroup>
   <objectgroup id="48" name="Castle 2" parallaxx="0.4">
-   <object id="424" gid="20580" x="11050.7" y="16512" width="8780.89" height="5268.53"/>
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
+   <object id="424" gid="20580" x="8759.14" y="13576.9" width="13781.8" height="8269.06"/>
   </objectgroup>
   <objectgroup id="49" name="Castle 3" parallaxx="0.5">
-   <object id="425" gid="20581" x="10859" y="17579.7" width="8780.89" height="5268.53"/>
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
+   <object id="425" gid="20581" x="8364.32" y="15252.7" width="13781.8" height="8269.06"/>
   </objectgroup>
   <objectgroup id="50" name="Castle 4" parallaxx="0.7">
-   <object id="426" gid="20582" x="11037.6" y="17383" width="8780.89" height="5268.53"/>
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
+   <object id="426" gid="20582" x="8456.74" y="14943.9" width="13781.8" height="8269.06"/>
   </objectgroup>
   <objectgroup id="51" name="Castle 5" parallaxx="0.8">
-   <object id="427" gid="20583" x="10284" y="17130.1" width="8780.89" height="5268.53"/>
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
+   <object id="427" gid="20583" x="7180" y="14547" width="13781.8" height="8269.06"/>
   </objectgroup>
   <objectgroup id="52" name="Castle 6" parallaxx="0.9">
-   <object id="428" gid="20584" x="13355.1" y="17539.4" width="8780.89" height="5268.53"/>
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
+   <object id="428" gid="20584" x="11906.2" y="15189.4" width="13781.8" height="8269.06"/>
   </objectgroup>
  </group>
- <group id="31" name="Trees" offsetx="-224" offsety="6592">
+ <group id="63" name="WALL" parallaxx="0.9">
   <properties>
-   <property name="Draw" type="bool" value="false"/>
+   <property name="Background" type="bool" value="true"/>
+   <property name="Draw" type="bool" value="true"/>
   </properties>
-  <objectgroup id="32" name="Big Tree 1">
-   <properties>
-    <property name="Draw" type="bool" value="true"/>
-   </properties>
-   <object id="406" gid="1562" x="4764" y="9473" width="9032" height="8354"/>
-  </objectgroup>
-  <objectgroup id="33" name="Big Tree 2">
-   <properties>
-    <property name="Draw" type="bool" value="true"/>
-   </properties>
-   <object id="408" gid="1563" x="15436" y="8337" width="7560" height="7202"/>
-  </objectgroup>
-  <objectgroup id="34" name="Big Tree 3">
-   <properties>
-    <property name="Draw" type="bool" value="true"/>
-   </properties>
-   <object id="410" gid="1564" x="10300" y="9409" width="8712" height="7122"/>
-  </objectgroup>
- </group>
- <group id="63" name="WALL">
   <objectgroup id="61" name="Wall">
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
    <object id="436" gid="20588" x="23552" y="16256" width="3000" height="3456"/>
    <object id="437" gid="20588" x="20096" y="16256" width="3000" height="3456"/>
    <object id="438" gid="20588" x="16768" y="16256" width="3000" height="3456"/>
@@ -133,7 +174,34 @@
    <object id="468" gid="20588" x="26752" y="16224" width="3000" height="3456"/>
   </objectgroup>
  </group>
- <layer id="16" name="Background" width="306" height="153">
+ <group id="31" name="Trees" offsetx="-224" offsety="6592">
+  <properties>
+   <property name="Background" type="bool" value="true"/>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
+  <objectgroup id="32" name="Big Tree 1">
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
+   <object id="406" gid="1562" x="4828" y="18369" width="9032" height="8354"/>
+  </objectgroup>
+  <objectgroup id="33" name="Big Tree 2">
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
+   <object id="408" gid="1563" x="15180" y="16945" width="7560" height="7202"/>
+  </objectgroup>
+  <objectgroup id="34" name="Big Tree 3">
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
+   <object id="410" gid="1564" x="10844" y="17985" width="8712" height="7122"/>
+  </objectgroup>
+ </group>
+ <layer id="16" name="Background" width="306" height="153" visible="0">
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>
@@ -327941,7 +328009,7 @@
    </properties>
   </object>
  </objectgroup>
- <layer id="60" name="Navigation" width="306" height="153">
+ <layer id="60" name="Navigation" width="306" height="153" visible="0">
   <properties>
    <property name="Draw" type="bool" value="false"/>
    <property name="Navigation" type="bool" value="true"/>
@@ -374802,15 +374870,15 @@
   <object id="351" x="37760" y="12288" width="384" height="128"/>
   <object id="352" x="37120" y="11136" width="256" height="128"/>
   <object id="353" x="36480" y="10624" width="640" height="128"/>
-  <object id="383" x="10496" y="9600" width="896" height="128"/>
-  <object id="384" x="11776" y="10368" width="896" height="128"/>
-  <object id="385" x="12672" y="10496" width="384" height="128"/>
-  <object id="389" x="13824" y="10880" width="896" height="128"/>
-  <object id="390" x="14720" y="11008" width="384" height="128"/>
+  <object id="383" x="10528" y="6752" width="896" height="128"/>
+  <object id="384" x="11808" y="7520" width="896" height="128"/>
+  <object id="385" x="12704" y="7648" width="384" height="128"/>
+  <object id="389" x="13760" y="9024" width="896" height="128"/>
+  <object id="390" x="14656" y="9152" width="384" height="128"/>
   <object id="391" x="17024" y="11520" width="128" height="128"/>
   <object id="392" x="17152" y="11392" width="384" height="128"/>
   <object id="393" x="17536" y="11264" width="640" height="128"/>
-  <object id="394" x="19072" y="10496" width="768" height="128"/>
+  <object id="394" x="19104" y="7648" width="768" height="128"/>
   <object id="395" x="19840" y="11264" width="768" height="128"/>
   <object id="396" x="20608" y="11392" width="384" height="128"/>
   <object id="397" x="21248" y="12032" width="768" height="128"/>
@@ -374818,8 +374886,8 @@
   <object id="399" x="15616" y="11776" width="640" height="128"/>
   <object id="401" x="14080" y="12288" width="768" height="128"/>
   <object id="402" x="14848" y="12416" width="512" height="128"/>
-  <object id="403" x="9600" y="11008" width="896" height="128"/>
-  <object id="404" x="7424" y="10368" width="1024" height="128"/>
+  <object id="403" x="9536" y="9152" width="896" height="128"/>
+  <object id="404" x="7456" y="7520" width="1024" height="128"/>
  </objectgroup>
  <objectgroup id="19" name="spikes"/>
  <objectgroup id="9" name="Walls">
@@ -374840,7 +374908,7 @@
   <object id="362" x="36480" y="10752" width="128" height="5120"/>
  </objectgroup>
  <objectgroup id="8" name="Entities">
-  <object id="372" name="Player" type="Player" x="25732" y="15444">
+  <object id="372" name="Player" type="Player" x="5268" y="15188">
    <point/>
   </object>
   <object id="375" name="Bee" type="Bee" x="11320" y="14768">
