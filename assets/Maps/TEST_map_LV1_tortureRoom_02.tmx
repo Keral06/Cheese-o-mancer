@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="107" height="104" tilewidth="128" tileheight="128" infinite="0" nextlayerid="28" nextobjectid="447">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="107" height="104" tilewidth="128" tileheight="128" infinite="0" nextlayerid="28" nextobjectid="450">
  <tileset firstgid="1" name="tileset_lv1_torture_02" tilewidth="128" tileheight="128" tilecount="810" columns="30">
   <image source="tileset_lv1_torture_02.png" width="3840" height="3537"/>
  </tileset>
@@ -66952,7 +66952,7 @@
   <object id="409" x="11008" y="12416" width="128" height="128"/>
  </objectgroup>
  <objectgroup id="8" name="Entities">
-  <object id="97" name="Player" type="Player" x="606.182" y="1640.33">
+  <object id="97" name="Player" type="Player" x="894.18" y="1652.33">
    <point/>
   </object>
   <object id="361" name="Decrepit scale" x="9707.3" y="6889.33">
@@ -66988,7 +66988,7 @@
   <object id="446" name="Live" type="Live" x="10494.7" y="2598.67" width="256" height="384"/>
  </objectgroup>
  <objectgroup id="27" name="Checkpoints">
-  <object id="445" name="Flag" type="Flag" x="9984" y="6784">
+  <object id="445" name="Flag" type="Flag" x="9966.63" y="6810.33">
    <point/>
   </object>
  </objectgroup>
@@ -67058,6 +67058,9 @@
     <property name="loop" type="bool" value="true"/>
    </properties>
   </object>
+  <object id="447" type="Stars" x="8709.01" y="6516.62" width="245.97" height="408.758"/>
+  <object id="448" type="Stars" x="9049.01" y="6695.62" width="337.97" height="448.758"/>
+  <object id="449" type="Stars" x="9455.01" y="6517.62" width="403.97" height="444.758"/>
  </objectgroup>
  <layer id="24" name="MetadataSuelos" width="107" height="104" visible="0">
   <data>

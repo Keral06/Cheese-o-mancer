@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="26" nextobjectid="294">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="26" nextobjectid="296">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -22433,7 +22433,7 @@
    </properties>
   </object>
  </objectgroup>
- <layer id="25" name="Navigation" width="86" height="52">
+ <layer id="25" name="Navigation" width="86" height="52" visible="0">
   <properties>
    <property name="Draw" type="bool" value="false"/>
    <property name="Navigation" type="bool" value="true"/>
@@ -35968,5 +35968,7 @@
   <object id="291" type="Soup" x="5774" y="6078" width="740" height="144"/>
   <object id="292" type="Soup" x="2572.67" y="5838" width="740" height="168"/>
   <object id="293" type="Soup" x="8707.33" y="5975.33" width="740" height="150.667"/>
+  <object id="294" type="Stars" x="3884.56" y="2871.56" width="339.97" height="242.091"/>
+  <object id="295" type="Stars" x="7123.35" y="5381.62" width="249.97" height="132.758"/>
  </objectgroup>
 </map>
