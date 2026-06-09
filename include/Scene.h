@@ -320,6 +320,10 @@ private:
 	SDL_Texture* storePaperDamage = nullptr;
 	int selectedStoreItem = 0;
 
+	SDL_Texture* inventoryPaperKey1 = nullptr;
+	SDL_Texture* inventoryPaperKey2 = nullptr;
+	SDL_Texture* inventoryPaperKey3 = nullptr;
+
 
 public:
 	void SetStore(bool store, int storeID = 1);

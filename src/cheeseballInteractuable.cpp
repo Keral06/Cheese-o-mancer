@@ -77,6 +77,21 @@ bool CheeseBallInteract::Update(float dt)
 {
 	if (!active) return true;
 
+	if (cheesePower == 1) {
+	
+		if (Engine::GetInstance().scene->cheese)return true;
+	
+	}if (cheesePower == 2) {
+	
+		if (Engine::GetInstance().scene->dobleSalto)return true;
+	
+	
+	}if (cheesePower == 3) {
+	
+		if (Engine::GetInstance().scene->mohoWalls)return true;
+	
+	}
+
 	Draw(dt);
 	CheeseBallTexture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Jester/Cheese_wheel/Cheese_flat_asset.png");
 
