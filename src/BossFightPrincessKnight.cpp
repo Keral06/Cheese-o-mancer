@@ -38,6 +38,16 @@ BossFightPrincessKnight::BossFightPrincessKnight()
     debugStartFight = true;
 
     introStarted = false;
+
+    Dialogue Before("assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Dialogues.txt", "assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Names.txt");
+    this->Before = Before;
+    Dialogue Before2("assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight2_Dialogues.txt", "assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight2_Names.txt");
+    this->Before2 = Before2;
+
+   /* Dialogue Defeat("assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Dialogues", "assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Names");
+    Dialogue DefeatWell("assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Dialogues", "assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Names");
+    Dialogue AfterFightSpare("assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Dialogues", "assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Names");
+    Dialogue AfterFightKill("assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Dialogues", "assets/Dialogues/The_Lovers_Bossfight/Lovers_Before_Bossfight1_Names");*/
 }
 
 BossFightPrincessKnight::~BossFightPrincessKnight()
@@ -85,15 +95,37 @@ bool BossFightPrincessKnight::Update(float dt)
             // Si el jugador se acerca a 10 píxeles (o unidades de tu mapa)
             if (distance <= 1350.0f)
             {
-                LOG("Jugador cerca de la Princesa. Arrancando Intro...");
-                introTriggered = true;
-
-                // 1. Hacemos Zoom a la cámara (Ajusta el método según tu módulo de Render/Camera)
                 Engine::GetInstance().render->SetZoomSmooth(0.5f, 800);
                 LOG("CAMARA: Aplicando ZOOM a la escena.");
+                LOG("Jugador cerca de la Princesa. Arrancando Intro...");
+                if (introTriggered == false) {
+                    if (Before.hasStarted == false) { Before.AvanzarDialogo(dt); return true; }
+                    if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+
+                        if (Before.AvanzarDialogo(dt)) {
+
+                            introTriggered = true;
+                            SetFightState(BossFightState::INTRO);
+                            return true;
+                        }
+
+
+                        
+                    }
+                    if (Before.hasStarted && !Before.hasEnded) {
+
+                        Before.Draw(dt);
+                        return true;
+
+
+                    }
+
+                }
+                // 1. Hacemos Zoom a la cámara (Ajusta el método según tu módulo de Render/Camera)
+              
 
                 // 2. Cambiamos al estado INTRO (esperando el diálogo)
-                SetFightState(BossFightState::INTRO);
+              
             }
         }
     }
@@ -176,7 +208,7 @@ void BossFightPrincessKnight::UpdateIntro(float dt)
         // ==========================================
     case BossFightState::INTRO:
     {
-        if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+        if (Before.hasEnded )
         {
             LOG("Primer diálogo completado. ¡El Caballero SPAWNEA en medio!");
 
@@ -190,18 +222,35 @@ void BossFightPrincessKnight::UpdateIntro(float dt)
                 knightTargetX = (princessBasePos.getX() + playerX) * 0.5f;
 
                 // Teletransportamos al Caballero directamente al centro exacto
-                knightBasePos = Vector2D(knightTargetX, knight->GetPosition().getY());
-                knight->ReturnToBase(knightBasePos);
+              
 
                 // Activamos la animación del Slide/Lunge inicial
-                knight->SetKnightState(KnightState::ENTRANCE_DASH);
-                knight->ResetActionFinished();
+               
 
                 // Quitamos el Zoom de la cámara suavemente
                 Engine::GetInstance().render->SetZoomSmooth(0.3f, 800);
 
                 // CAMBIO AQUÍ: En vez de ir a la transformación, pasamos al nuevo diálogo
-                SetFightState(BossFightState::KNIGHT_ENTRANCE);
+                if (Before2.hasStarted == false) {
+                    Before2.AvanzarDialogo(dt);  knightBasePos = Vector2D(knightTargetX, knight->GetPosition().getY());
+                    knight->ReturnToBase(knightBasePos); knight->SetKnightState(KnightState::ENTRANCE_DASH);
+                    knight->ResetActionFinished(); return;
+                }
+
+                if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+
+                    if (Before2.AvanzarDialogo(dt)) {
+                        SetFightState(BossFightState::KNIGHT_ENTRANCE);
+                    }
+
+                }
+
+                if (Before2.hasStarted && !Before2.hasEnded) {
+                    Before2.Draw(dt);
+                    return;
+                
+                }
+               
                 LOG("BossFight State: Esperando al segundo diálogo pre-transformación...");
             }
         }
@@ -233,14 +282,13 @@ void BossFightPrincessKnight::UpdateIntro(float dt)
     case BossFightState::KNIGHT_DIAL_BEFORE_TRANSFORM:
     {
         
-            if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-            {
+            
                 LOG("Segundo diálogo completado. ¡Empieza la transformación!");
 
                 // Al pasar a KNIGHT_TRANSFORM, tu código ya llamará a knight->StartTransform()
                 // lo que sacará al caballero del slide y cargará los sprites de mutación.
                 SetFightState(BossFightState::KNIGHT_TRANSFORM);
-            }
+            
         
         break;
     }

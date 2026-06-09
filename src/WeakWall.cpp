@@ -18,10 +18,10 @@ bool WeakWall::Start()
             texture = Engine::GetInstance().textures->Load("assets/Textures/Columna.png");
         }
         if (level == 2) {
-            texture = Engine::GetInstance().textures->Load("assets/Textures/Columna.png");
+            texture = Engine::GetInstance().textures->Load("assets/Textures/Columna_lvl3.png");
         }
         if (level == 3) {
-            texture = Engine::GetInstance().textures->Load("assets/Textures/Columna.png");
+            texture = Engine::GetInstance().textures->Load("assets/Textures/Columna_lvl4.png");
         }
     }
     else {

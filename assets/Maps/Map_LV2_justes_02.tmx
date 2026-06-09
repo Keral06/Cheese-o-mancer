@@ -15,23 +15,58 @@
  <tileset firstgid="3365" source="Level2/tileset_lv2_sky_parallax_6.tsx"/>
  <tileset firstgid="3366" source="muralla_torre.tsx"/>
  <group id="39" name="Sky" offsetx="-876" offsety="2112" parallaxx="0.1" parallaxy="0.1">
+  <properties>
+   <property name="Background" type="bool" value="true"/>
+   <property name="Draw" type="bool" value="true"/>
+   <property name="Parallax" type="float" value="0"/>
+  </properties>
   <objectgroup id="40" name="Sky1" parallaxx="0.4" parallaxy="0.4">
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+    <property name="Parallax" type="float" value="0"/>
+   </properties>
    <object id="380" gid="3359" x="-5565.17" y="-142.211" width="11883.5" height="3819.71"/>
   </objectgroup>
   <objectgroup id="41" name="Sky2" parallaxx="0.5" parallaxy="0.5">
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+    <property name="Parallax" type="float" value="0"/>
+   </properties>
    <object id="384" gid="3360" x="-5476.4" y="-60.9394" width="11883.5" height="3819.71"/>
   </objectgroup>
   <objectgroup id="42" name="Sky3" parallaxx="0.6" parallaxy="0.6">
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+    <property name="Parallax" type="float" value="0"/>
+   </properties>
    <object id="385" gid="3361" x="-5394.15" y="6.20725" width="11883.5" height="3819.71"/>
   </objectgroup>
   <objectgroup id="43" name="Sky4" parallaxx="0.7" parallaxy="0.7">
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+    <property name="Parallax" type="float" value="0"/>
+   </properties>
    <object id="386" gid="3362" x="-5298.32" y="86.9351" width="11883.5" height="3819.71"/>
    <object id="387" gid="3363" x="-5298.32" y="46.1915" width="11883.5" height="3819.71"/>
   </objectgroup>
   <objectgroup id="44" name="Sky5" parallaxx="0.8" parallaxy="0.8">
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+    <property name="Parallax" type="float" value="0"/>
+   </properties>
    <object id="388" gid="3364" x="-5229.65" y="167.663" width="11883.5" height="3819.71"/>
   </objectgroup>
   <objectgroup id="45" name="Sky6" parallaxx="0.9" parallaxy="0.9">
+   <properties>
+    <property name="Background" type="bool" value="true"/>
+    <property name="Draw" type="bool" value="true"/>
+    <property name="Parallax" type="float" value="0"/>
+   </properties>
    <object id="389" gid="3365" x="-2723.15" y="234.81" width="6790.6" height="3819.71"/>
   </objectgroup>
  </group>
