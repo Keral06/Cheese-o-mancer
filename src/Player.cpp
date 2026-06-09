@@ -1662,7 +1662,6 @@ void Player::CheckKickFrame()
 
 	int currentFrame = currentAnimSet->GetCurrentFrameIndex();
 
-	// --- 1. INICIO DEL CHUTE (Frame 0) ---
 	if (currentFrame == 0)
 	{
 		b2Body_SetAwake(pbody->body, true);
@@ -1672,8 +1671,6 @@ void Player::CheckKickFrame()
 		b2Body_SetLinearVelocity(pbody->body, vel);
 	}
 
-	// --- 2. LANZAMIENTO (En el frame de impacto) ---
-	// Si tiene 10 frames, el 5 o 6 suelen ser el punto donde la pierna golpea.
 	if (currentFrame >= 5 && mountedBall != nullptr)
 	{
 		mountedBall->canSmash = false;
@@ -1695,9 +1692,6 @@ void Player::CheckKickFrame()
 		LOG("Bola chutada con éxito");
 	}
 
-	// --- 3. FIN DE LA ANIMACIÓN (Failsafe anti-congelamiento) ---
-	// Como tiene 10 frames (del 0 al 9), si el frame actual es el 9, 
-	// forzamos la salida aunque el HasFinished() falle.
 	if (currentFrame >= 9 || currentAnimSet->HasFinished()) {
 		isKicking = false;
 
@@ -1725,7 +1719,6 @@ void Player::PlayShowCheese()
 	vel.x = 0.0f;
 	b2Body_SetLinearVelocity(pbody->body, vel);
 
-	// ASIGNAMOS LA ANIMACIÓN AQUÍ, SOLO UNA VEZ PARA QUE NO SE CONGELE
 	currentAnimSet = &animsShowCheese;
 	texture = textureShowCheese;
 	currentAnimSet->SetCurrent("show_cheese");
