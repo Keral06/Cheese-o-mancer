@@ -9,6 +9,13 @@
 
 struct SDL_Texture;
 
+enum HandmanState {
+	H_IDLE,
+	H_SHOP_START,
+	H_SHOP_STATIC,
+	H_SHOP_END
+};
+
 class HANDMAN : public NPC
 {
 public:
@@ -29,11 +36,10 @@ public:
 private:
 
 	void GetPhysicsValues();
-	
+
 	void ApplyPhysics();
 	void Draw(float dt);
 	void Jump();
-	
 
 
 private:
@@ -43,7 +49,7 @@ private:
 	int texW, texH;
 	int level;
 	const char* tsxPath;
-	
+
 
 public:
 	SDL_Texture* InteractTexture = nullptr;
@@ -51,7 +57,7 @@ public:
 	int storeID = 1;
 	int coinPickupFx;
 	int xInicial;
-	int yInicial;	
+	int yInicial;
 	Dialogue dialogueHANDMAN;
 	Dialogue hasBought;
 	Dialogue hasNotBought;
@@ -68,4 +74,6 @@ public:
 	int moneyPlayer = 0;
 	bool isWaitingForAnimation = false;
 	Dialogue* pendingDialogue = nullptr;
+
+	HandmanState currentState = H_IDLE;
 };

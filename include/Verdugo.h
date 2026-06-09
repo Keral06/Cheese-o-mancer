@@ -1,6 +1,7 @@
 #pragma once
 #include "Enemy.h"
 #include "Physics.h"
+#include "Dialogue.h"
 
 enum VerdugoState {
     IDLEV,
@@ -154,4 +155,6 @@ protected:
     int bodyW;
     int bodyH;
     bodyType type;
+
+    Dialogue dialogue;
 };
