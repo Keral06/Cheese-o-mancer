@@ -88,6 +88,8 @@ void Jailer::Attack()
 
 bool Jailer::Update(float dt)
 {
+    if (hasBeenPicked) return true;
+
     if (Engine::GetInstance().scene->GetPlayer()->isDead()) return true;
 
     // 1. ZONA SEGURA DE MUERTE

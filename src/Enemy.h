@@ -107,6 +107,8 @@ public:
 
 	// Bandera de muerte unificada para toda la herencia
 	bool isDead = false;
+	bool hasLanded = false;
+	bool hasBeenPicked = false;
 
 	Vector2D deathPosition;
 protected:

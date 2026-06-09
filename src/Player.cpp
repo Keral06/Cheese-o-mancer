@@ -210,6 +210,13 @@ bool Player::Update(float dt)
 						Attack();
 						HandleAttack();
 						SpawnCheeseBall();
+						if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+							if (interactableCorpse != nullptr && interactableCorpse->isDead) {
+								Engine::GetInstance().scene->PickUpCorpse(interactableCorpse);
+								interactableCorpse = nullptr;
+							}
+						}
+
 					}
 				}
 
@@ -730,6 +737,18 @@ void Player::Draw(float dt) {
 		flip
 	);
 
+	if (interactableCorpse != nullptr && Engine::GetInstance().scene->pressETexture != nullptr) {
+		int drawX = (int)interactableCorpse->GetPosition().getX();
+		int drawY = (int)interactableCorpse->GetPosition().getY() - 100; //altura a cambiar?
+
+		Engine::GetInstance().render->DrawTexture(
+			Engine::GetInstance().scene->pressETexture,
+			drawX,
+			drawY,
+			NULL,
+			1.0f, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE
+		);
+	}
 }
 
 void Player::CameraRender(float dt) {
@@ -981,6 +1000,15 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 		// dar la vida y reproducir el sonido según sus animaciones.
 		break;
 	}
+	case ColliderType::NPC:
+	{
+		Enemy* enemy = dynamic_cast<Enemy*>(physB->listener);
+		if (enemy && enemy->isDead) {
+			interactableCorpse = enemy;
+			LOG("Estatua detectada. Pulsa E para recoger.");
+		}
+		break;
+	}
 
 	default:
 		break;
@@ -1025,6 +1053,15 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 		isOnSpecialWall = false;
 		isWallWalking = false;
 		break;
+	case ColliderType::NPC:
+	{
+		Enemy* enemy = dynamic_cast<Enemy*>(physB->listener);
+		if (enemy && enemy == interactableCorpse) {
+			interactableCorpse = nullptr;
+			LOG("Saliendo de la estatua.");
+		}
+		break;
+	}
 	default:
 		break;
 	}

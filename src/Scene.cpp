@@ -1044,16 +1044,13 @@ void Scene::UpdateLevel(float dt) {
 		}
 	}
 
-	// Lógica de gestión de enemigos muertos
-	if (player && player->isDead()) {
-		for (auto it = enemies.begin(); it != enemies.end(); ) {
-			if ((*it)->toDelete) { // si se tiene que borrar la destruye
-				it = enemies.erase(it);
-			}
-			/*else {
-				(*it)->Reset();
-				++it;
-			}*/
+	// Lógica de gestión de entidades destruidas
+	for (auto it = enemies.begin(); it != enemies.end(); ) {
+		if ((*it)->toDelete) {
+			it = enemies.erase(it); // Lo borramos de la escena definitivamente
+		}
+		else {
+			++it;
 		}
 	}
 
@@ -2300,6 +2297,8 @@ void Scene::CreateInventoryUI() {
 	arrowRight2 = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_BurronRight2_.png");
 	arrowLeft2 = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_ButtonLeft2_.png");
 	cardsBase = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_Base_.png");
+	iconCheeseStatue = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemCheeseStatue1.png");
+	pressETexture = Engine::GetInstance().textures->Load("assets/UI/UI_Interaction/UI_ Interaction_Indicator1Interact.png");
 
 	auto invPrevPage = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 48, "",
@@ -2834,4 +2833,38 @@ void Scene::RegisterEnemyKill(std::string enemyName) {
 
 bool Scene::HasKilledOneOfEachType() {
 	return (ratsKilled > 0, horsesKilled > 0, beesKilled > 0, jailersKilled > 0);
+}
+
+void Scene::PickUpCorpse(Enemy* corpse) {
+	if (!corpse) return;
+
+	std::string corpseName = corpse->name;
+
+	SDL_Texture* iconPlaceholder = iconCheeseStatue;
+
+	if (corpseName == "Rat") {
+		inventario.push("Estatua Rata", iconPlaceholder, nullptr);
+		LOG("Estatua de Rata añadida al inventario");
+	}
+	else if (corpseName == "Horse") {
+		inventario.push("Estatua Caballo", iconPlaceholder, nullptr);
+		LOG("Estatua de Caballo añadida al inventario");
+	}
+	else if (corpseName == "Bee") {
+		inventario.push("Estatua Abeja", iconPlaceholder, nullptr);
+		LOG("Estatua de Abeja añadida al inventario");
+	}
+	else if (corpseName == "Jailer") {
+		inventario.push("Estatua Verdugo", iconPlaceholder, nullptr);
+		LOG("Estatua de Verdugo añadida al inventario");
+	}
+
+	corpse->Destroy();
+
+	if (corpse->pbody != nullptr) {
+		Engine::GetInstance().physics->DeletePhysBody(corpse->pbody);
+		corpse->pbody = nullptr;
+	}
+
+	corpse->hasBeenPicked = true;
 }
