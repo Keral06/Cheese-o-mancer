@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="89" height="50" tilewidth="128" tileheight="128" infinite="0" nextlayerid="21" nextobjectid="31">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="89" height="50" tilewidth="128" tileheight="128" infinite="0" nextlayerid="21" nextobjectid="32">
  <tileset firstgid="1" source="test2_tileset.tsx"/>
  <tileset firstgid="4" source="ThroneRoom_1.tsx"/>
  <tileset firstgid="5" source="ThroneRoom_2.tsx"/>
@@ -17906,7 +17906,7 @@
   <object id="28" name="Player" type="Player" x="10544" y="5552">
    <point/>
   </object>
-  <object id="29" name="Rey" type="Rey" x="5680" y="5350">
+  <object id="29" name="Rey" type="Rey" x="5437.58" y="5307.58">
    <point/>
   </object>
  </objectgroup>

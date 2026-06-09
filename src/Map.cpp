@@ -622,6 +622,9 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
         if (objectGroupNode.attribute("name").as_string() == std::string("Doors")) {
             for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
                 std::string entityType = objectNode.attribute("type").as_string();
+                if (entityType == "") {
+                    entityType = objectNode.attribute("class").as_string(); // Añadimos el parche que ya usabas en las partículas
+                }
                 float x = objectNode.attribute("x").as_float();
                 float y = objectNode.attribute("y").as_float();
 

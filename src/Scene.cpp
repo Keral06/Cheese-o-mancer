@@ -2427,7 +2427,7 @@ void Scene::HandleTeleportUIEvents(UIElement* uiElement) {
 
 	case 61:  // LEVEL 2
 		targetLevel = 2;
-		targetMap = "Map_LV2_bossTower.tmx";
+		targetMap = "Map_LV4_ThroneRoom_01.tmx";
 		break;
 
 	case 62:  // LEVEL 3

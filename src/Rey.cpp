@@ -5,23 +5,47 @@
 #include "Textures.h"
 #include "Physics.h"
 #include "MagoBoss.h"
+#include "Log.h"
+
 Rey::Rey() : Enemy()
 {
     name = "Rey";
+
+    // INICIALIZAMOS LAS VARIABLES PARA EVITAR VALORES BASURA DE MEMORIA
+    stateR = IDLER;
+    lastStateR = DEATH_STATICR; // Lo ponemos distinto a IDLER para forzar que cargue la animación en el primer frame
+
+    offsetX = 0.0f;
+    offsetY = 0.0f;
+
+    playerInRange = false;
+    magoSpawned = false;
 }
+
 Rey::~Rey() {}
 
 bool Rey::Start() { 
     
-    texW = 640;
-    texH = 640;
+    texW = 650;
+    texH = 650;
 
-    std::unordered_map<int, std::string> aliasesAnim = { {0,"idle"},{28,"death"} };
-    anims.LoadFromTSX("assets/Textures/Spritesheets/King/kg_idle.tsx", aliasesAnim);
+    std::unordered_map<int, std::string> aliasesAnim = {
+            {0,"idle"},
+            {1, "talking"},
+            {28,"death_start"},
+            {29, "death_static"}
+    };
+
+    anims.LoadFromTSX("assets/Textures/Spritesheets/King/king.tsx", aliasesAnim);
     texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/King/sprite_king_01.png");
+
     textureIdle = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Wizard Cheese/Cmage_Idles_spritesheet.png");
     textureBall = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Wizard Cheese/Cmage_ball attack_spritesheet.png");
     textureTransformation = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Wizard Cheese/Cmage_transformation_spritesheet.png");
+
+    pbody = Engine::GetInstance().physics->CreateRectangleSensor(position.getX(), position.getY(), texW, texH, bodyType::STATIC);
+    pbody->listener = this;
+    pbody->ctype = ColliderType::REY;
     
     //Add physics to the enemy - initialize physics body
     pbody = Engine::GetInstance().physics->CreateRectangleSensor(position.getX(), position.getY(), texW, texH, bodyType::STATIC);
@@ -51,8 +75,18 @@ void Rey::ChangeCurrentAnimation() {
         offsetY = 0.0f;
         break;
 
+    case TALKINGR:
+        anims.SetCurrent("talking");
+        offsetY = 0.0f;
+        break;
+
     case DEADR:
-        anims.SetCurrent("death");
+        anims.SetCurrent("death_start");
+        offsetY = 0.0f;
+        break;
+
+    case DEATH_STATICR:
+        anims.SetCurrent("death_static");
         offsetY = 0.0f;
         break;
 
@@ -64,14 +98,27 @@ void Rey::ChangeCurrentAnimation() {
 
 bool Rey::Update(float dt)
 {
-    // 1. Si el jugador está en rango y pulsa la tecla E
-    if (playerInRange && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-        Engine::GetInstance().render->SetZoomSmooth(0.5f, 800.0f);
-        Die(); // Recuerda que aquí dentro pones stateR = DEADR;
+
+    bool eKeyCurrent = (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN);
+
+    // Si pulsamos la E, el jugador está cerca y NO la habíamos pulsado en el frame anterior
+    if (playerInRange && eKeyCurrent && !eKeyWasPressed) {
+        LOG("Has interactuado con el Rey (Tecla E)");
+
+        if (stateR == IDLER) {
+            stateR = TALKINGR; // Pasa a hablar
+        }
+        else if (stateR == TALKINGR) {
+            Engine::GetInstance().render->SetZoomSmooth(0.5f, 800.0f);
+            Die();
+        }
     }
 
-    // Añadimos "!magoSpawned" a la condición
+    eKeyWasPressed = eKeyCurrent;
+
+    // Cuando termina la animación de muerte
     if (stateR == DEADR && anims.HasFinished() && !magoSpawned) {
+        stateR = DEATH_STATICR;
         magoSpawned = true;
 
         // 1. Guardas lo que devuelve tu mánager (asumo que se llama así el tipo)
@@ -112,6 +159,10 @@ void Rey::Draw(float dt)
     anims.Update(dt);
     const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
+    if (animFrame.w == 0 || animFrame.h == 0) {
+        LOG("CUIDADO: El fotograma de la animacion del Rey mide 0x0. Revisa el TSX y los IDs.");
+    }
+
     //// Update render position using your PhysBody helper
     int x, y;
     pbody->GetPosition(x, y);
@@ -147,9 +198,10 @@ void Rey::Die() {
 }
 
 void Rey::OnCollision(PhysBody* physA, PhysBody* physB) {
-    // Detectamos si el cuerpo que entra es el jugador
-    if (physB->ctype == ColliderType::PLAYER) {
+    // 2. SOLUCIÓN A LA INTERACCIÓN: Detectamos también los pies del jugador
+    if (physB->ctype == ColliderType::PLAYER || physB->ctype == ColliderType::PLAYERFEET) {
         playerInRange = true;
+        LOG("JUGADOR EN RANGO - Puedes pulsar la tecla E");
     }
 }
 

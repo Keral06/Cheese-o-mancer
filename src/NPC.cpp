@@ -3630,15 +3630,16 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	}
 	bool Empress::Start() {
 
-		// De momento solo idle
-		//std::unordered_map<int, std::string> aliases = {
-		//		  {0, "idle"}
-		//};
+		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/empress_queen/empress_01_idle.png");
 
-		//anims.LoadFromTSX("assets/Textures/Spritesheets/High Priestess/high_priestess_idle.tsx", aliases);
-		//anims.SetCurrent("idle");
+		std::unordered_map<int, std::string> aliases = {
+				  {0, "idle"}
+		};
 
-		//texture = Engine::GetInstance().textures->Load("resources/spritesheets/High Priestess/priestess_idle_01.png");
+		anims.LoadFromTSX("assets/Textures/Spritesheets/empress_queen/empress_idle.tsx", aliases);
+		anims.SetCurrent("idle");
+
+
 		InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
 		texW = 128;
@@ -4533,6 +4534,3 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	{
 		isGettingTouched = false;
 	}
-
-
-
