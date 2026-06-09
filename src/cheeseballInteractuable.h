@@ -42,7 +42,7 @@ private:
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
-	const char* nameNPC;
+	std::string nameNPC = "cheeseBall";
 
 	bool waitingForAnim = false;
 	float waitTimer = 0.0f;
