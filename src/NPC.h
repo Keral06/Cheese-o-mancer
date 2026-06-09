@@ -42,6 +42,7 @@ private:
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
+	const char* nameNPC;
 
 public:
 	int coinFx;
@@ -66,24 +67,13 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
+	std::string nameNPC = "HiddenScrapOfPaper";
 
 public:
 	int coinFx;
@@ -109,24 +99,13 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
+	std::string nameNPC = "DiscardedScroll";
 
 public:
 	int coinFx;
@@ -152,24 +131,13 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
+	std::string nameNPC = "Sketches";
 
 public:
 	int coinFx;
@@ -195,24 +163,13 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
+	std::string nameNPC = "WallBeforeWheel";
 
 public:
 	int coinFx;
@@ -237,24 +194,13 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
+	std::string nameNPC = "LockedDoor";
 
 public:
 	int coinFx;
@@ -280,24 +226,13 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
+	std::string nameNPC = "DestructDoor";
 
 public:
 	int coinFx;
@@ -322,24 +257,13 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
+	std::string nameNPC = "NormalFlag";
 
 public:
 	int coinFx;
@@ -364,24 +288,13 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
+	std::string nameNPC = "CheeseFlag";
 
 public:
 	int coinFx;
@@ -408,24 +321,13 @@ public:
 	
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
+	std::string nameNPC = "NoteRoyalHalls";
 
 public:
 	int coinFx;
@@ -450,17 +352,6 @@ public:
 	bool CleanUp();
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
-public:
-
-
-private:
-
-
-
-
-
-
-
 
 private:
 	SDL_Texture* texture;
@@ -468,6 +359,7 @@ private:
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
+	std::string nameNPC = "Compass";
 
 public:
 	int coinFx;
@@ -492,24 +384,13 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
+	std::string nameNPC = "Portrait";
 
 public:
 	int coinFx;
@@ -535,24 +416,13 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
+	std::string nameNPC = "UnfinishedPortrait";
 
 public:
 	int coinFx;
@@ -578,24 +448,13 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
+	std::string nameNPC = "HungSword";
 
 public:
 	int coinFx;
@@ -621,24 +480,13 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
+	std::string nameNPC = "CowWeb";
 
 public:
 	int coinFx;
@@ -664,24 +512,13 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
 	PhysBody* pbody;
 	int texW, texH;
 	const char* tsxPath;
+	std::string nameNPC = "CommemorativeMonument";
 
 public:
 	int coinFx;
@@ -710,18 +547,6 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
@@ -730,6 +555,7 @@ private:
 	const char* tsxPath;
 	Dialogue secondDialogue;
 	bool hasTalkedBefore = false;
+	std::string nameNPC = "Nohuely";
 
 public:
 	int coinFx;
@@ -756,18 +582,6 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
@@ -776,6 +590,7 @@ private:
 	const char* tsxPath;
 	Dialogue secondDialogue;
 	bool hasTalkedBefore = false;
+	std::string nameNPC = "Milkmaid";
 
 public:
 	int coinFx;
@@ -802,18 +617,6 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
@@ -822,6 +625,7 @@ private:
 	const char* tsxPath;
 	Dialogue secondDialogue;
 	bool hasTalkedBefore = false;
+	std::string nameNPC = "TowGuard";
 
 public:
 	int coinFx;
@@ -850,18 +654,6 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
@@ -872,6 +664,8 @@ private:
 	Dialogue PercentChance;
 	bool hasTalkedBefore = false;
 	int randomNumber = 0;
+
+	std::string nameNPC = "Death";
 public:
 	int coinFx;
 	int coinPickupFx;
@@ -900,18 +694,6 @@ public:
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 	void Draw(float dt);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
@@ -928,7 +710,7 @@ private:
 	Dialogue hasAllFinished;
 	bool finishedMission = false;
 	
-
+	std::string nameNPC = "Hermit";
 
 	//Hermit bools
 	bool springWater = false;
@@ -962,18 +744,6 @@ public:
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 	void Draw(float dt);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
@@ -989,7 +759,7 @@ private:
 	Dialogue hasAll;
 	Dialogue hasAllFinished;
 	bool finishedMission = false;
-
+	std::string nameNPC = "Well";
 
 
 	//Hermit bools
@@ -1025,17 +795,6 @@ public:
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 	void Draw(float dt);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
 
 private:
 	SDL_Texture* texture;
@@ -1052,6 +811,7 @@ private:
 	Dialogue hasAll;
 	Dialogue hasAllFinished;
 	bool finishedMission = false;
+	std::string nameNPC = "Hierophant";
 	
 
 
@@ -1089,18 +849,6 @@ public:
 	void Draw(float dt);
 	void WhatPositionIsIt(int i);
 
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
@@ -1118,6 +866,8 @@ private:
 	Dialogue hasFinished;
 	bool finishedMission = false;
 	int isThereATM = false;
+
+	std::string nameNPC = "Timmy";
 
 
 	//Hermit bools
@@ -1154,19 +904,6 @@ public:
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 	void Draw(float dt);
 	
-
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
@@ -1183,6 +920,8 @@ private:
 	
 	bool finishedMission = false;
 	int isThereATM = false;
+
+	std::string nameNPC = "Empress";
 
 
 	//Hermit bools
@@ -1220,19 +959,6 @@ public:
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 	void Draw(float dt);
 
-
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
@@ -1249,6 +975,8 @@ private:
 
 	bool finishedMission = false;
 	int isThereATM = false;
+
+	std::string nameNPC = "RatKing";
 
 
 	//Hermit bools
@@ -1286,19 +1014,6 @@ public:
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 	void Draw(float dt);
 
-
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
@@ -1315,6 +1030,8 @@ private:
 
 	bool finishedMission = false;
 	int isThereATM = false;
+
+	std::string nameNPC = "RetiredKnight";
 
 
 	//Hermit bools
@@ -1349,19 +1066,6 @@ public:
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 	void Draw(float dt);
 
-
-public:
-
-
-private:
-
-
-
-
-
-
-
-
 private:
 	SDL_Texture* texture;
 	AnimationSet anims;
@@ -1378,6 +1082,8 @@ private:
 
 	bool finishedMission = false;
 	int isThereATM = false;
+
+	std::string nameNPC = "Sculptor";
 
 
 	//Hermit bools
@@ -1422,6 +1128,8 @@ private:
 	int texW, texH;
 	const char* tsxPath;
 	std::string currentAnimName = "idle";
+
+	std::string nameNPC = "HighPriestess";
 
 public:
 	int coinFx;

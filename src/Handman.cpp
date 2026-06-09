@@ -144,7 +144,7 @@ bool HANDMAN::Update(float dt)
 
                 if (pendingDialogue != nullptr) {
                     pendingDialogue->hasEnded = false;
-                    pendingDialogue->BeginDialogue();
+                    pendingDialogue->BeginDialogue(nameNPC);
                     pendingDialogue->Draw(dt);
                 }
             }
@@ -153,16 +153,16 @@ bool HANDMAN::Update(float dt)
         if (firstTime && dialogue.hasStarted && !dialogue.hasEnded) {
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
               
-                if (dialogue.AvanzarDialogo(dt)) {
+                if (dialogue.AvanzarDialogo(dt, nameNPC)) {
                     firstTime = false;
                     if (!bossDefeated) {
                         dialogueHANDMAN.hasEnded = false;
-                        dialogueHANDMAN.BeginDialogue();
+                        dialogueHANDMAN.BeginDialogue(nameNPC);
                         dialogueHANDMAN.Draw(dt);
                     }
                     else {
                         BeatBoss.hasEnded = false;
-                        BeatBoss.BeginDialogue();
+                        BeatBoss.BeginDialogue(nameNPC);
                         BeatBoss.Draw(dt);
                     }
 
@@ -188,7 +188,7 @@ bool HANDMAN::Update(float dt)
         if (bossDefeated && BeatBoss.hasStarted && !BeatBoss.hasEnded) {
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
                
-                if (BeatBoss.AvanzarDialogo(dt)) {
+                if (BeatBoss.AvanzarDialogo(dt, nameNPC)) {
                     /*firstTimeBossKill = false;*/
                     isStoreOn = true;
                     moneyPlayer = Engine::GetInstance().scene->score;
@@ -269,7 +269,7 @@ bool HANDMAN::Update(float dt)
                 }
                 else {
                     pendingDialogue->hasEnded = false;
-                    pendingDialogue->BeginDialogue();
+                    pendingDialogue->BeginDialogue(nameNPC);
                     pendingDialogue->Draw(dt);
                 }
             }

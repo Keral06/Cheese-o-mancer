@@ -443,7 +443,7 @@ bool Pics::Update(float dt)
 			}
 			if (dialogue.hasStarted) {
 
-				if (dialogue.AvanzarDialogo(dt)) {
+				if (dialogue.AvanzarDialogo(dt, nameNPC)) {
 					CheckBoolOfPlayer();
 
 				}

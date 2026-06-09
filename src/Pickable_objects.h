@@ -63,4 +63,5 @@ public:
 	bool PopUpOn = false;
 	void ChooseWhoIs();
 	bool EmpressSpecial = false;
+	const char* nameNPC;
 };

@@ -68,4 +68,6 @@ public:
 	int moneyPlayer = 0;
 	bool isWaitingForAnimation = false;
 	Dialogue* pendingDialogue = nullptr;
+
+	const char* nameNPC = "Handman";
 };

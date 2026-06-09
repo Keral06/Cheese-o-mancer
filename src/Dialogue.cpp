@@ -28,20 +28,14 @@ Dialogue :: Dialogue(const char	*tsxPath, const char* name) {
 
 			helper.push_back(a);
 			fich.get(a);
-			
-
 		}
 		lenght++;
 		dialogue.push_back(helper);
 		while (!helper.empty()) {
 
 			helper.pop_back();
-
 		}
 		fich.get(a);
-
-
-		
 
 	}
 	if (name == nullptr) { return; }
@@ -66,14 +60,7 @@ Dialogue :: Dialogue(const char	*tsxPath, const char* name) {
 
 		}
 		ficht.get(b);
-
-
-
-
 	}
-
-	
-	
 }
 
 Dialogue::Dialogue()
@@ -91,17 +78,15 @@ bool Dialogue::Awake() {
 
 bool Dialogue::Start() {
 
-	
-
-
 	return true;
 }
+
 void Dialogue::Draw(float dt) {
 	float w, h;
 	SDL_GetTextureSize(textureDialogue, &w, &h);
 
-		
 	Engine::GetInstance().render->DrawTextureNoCamera(textureDialogue,250, 420, w / 1.5, h / 1.5);
+
 	if (choicesBeingMade) {
 		Engine::GetInstance().render->DrawText(dialogueHelper[lenghtHelper-1].c_str(), 330, 550, 0, 0, { 0,0,0 });
 		Engine::GetInstance().render->DrawText(dialogueHelper[lenghtHelper].c_str(), 330, 580, 0, 0, { 0,0,0 });
@@ -115,15 +100,19 @@ void Dialogue::Draw(float dt) {
 		if (nameHelper.size() != 0) {
 
 			Engine::GetInstance().render->DrawText(nameHelper[lenghtHelper].c_str(), 312, 520, 0, 0, { 0,0,0 });
+			HandleAudio(nameHelper[lenghtHelper]);
 
 		}
 		return;
 	}
+
 	Engine::GetInstance().render->DrawText(dialogueHelper[lenghtHelper ].c_str(), 330, 550, 0, 0, { 0,0,0 });
+
 	if (nameHelper.size() != 0) {
 	
-	Engine::GetInstance().render->DrawText(nameHelper[lenghtHelper].c_str(), 312, 520, 0, 0, { 0,0,0 });
-	
+		Engine::GetInstance().render->DrawText(nameHelper[lenghtHelper].c_str(), 312, 520, 0, 0, { 0,0,0 });
+		//funcio a cridar switches audios amb nameHelper[lenghtHelper] ---> passar d string a const char*
+		HandleAudio(nameHelper[lenghtHelper]);
 	}
 }
 
@@ -138,7 +127,7 @@ bool Dialogue::Update(float dt)
 	
 	return true;
 }
-void Dialogue::BeginDialogue() {
+void Dialogue::BeginDialogue(std::string charName) {
 	
 	dialogueHelper = dialogue;
 	nameHelper = name;
@@ -148,15 +137,20 @@ void Dialogue::BeginDialogue() {
 	printf("%s", dialogueHelper[lenghtHelper].c_str());
 	Engine::GetInstance().scene->someoneIsTalking = true;
 	
-	
-
+	//play audio begining
+	/*who = charName;
+	LoadTalkSound(who);
+	PlayTalkSound(who);*/
+	HandleAudio(charName);
 
 }
+
 bool Dialogue::WhatChoice() {
 
 	return choice;
 
 }
+
 void Dialogue:: NextDialogue() {
 	if (choicesBeingMade) {
 	
@@ -166,7 +160,6 @@ void Dialogue:: NextDialogue() {
 				while (dialogueHelper[lenghtHelper] != "CHOICE 1:") {
 				
 					lenghtHelper++;
-				
 				}
 				lenghtHelper++;
 
@@ -174,39 +167,30 @@ void Dialogue:: NextDialogue() {
 				if (nameHelper.size() != 0) {
 
 					printf("%s\n", nameHelper[lenghtHelper].c_str());
-
+					HandleAudio(nameHelper[lenghtHelper]);
 				}
-			}
-		
-		
-		
+			}		
 		}
 		else {
 		
 			while (dialogueHelper[lenghtHelper] != "CHOICE 2:") {
 
 				lenghtHelper++;
-
 			}
 			lenghtHelper++;
-		
 		}
-	
-	
 		choicesBeingMade = false;
 	
 		return;
-	
-	
 	}
+
 	if (choice) {
 	
-	if (dialogueHelper[lenghtHelper + 1] == "CHOICE 2:" && choice) {
+		if (dialogueHelper[lenghtHelper + 1] == "CHOICE 2:" && choice) {
 	
-		lenghtHelper == lenght;
+			lenghtHelper == lenght;
 	
-	}
-	
+		}
 	}
 	if (lenghtHelper < lenght-1) {
 	
@@ -218,12 +202,11 @@ void Dialogue:: NextDialogue() {
 		
 		}
 
-		
-
 		printf("%s\n",dialogueHelper[lenghtHelper].c_str());
 		if (nameHelper.size() != 0) {
 		
-		printf("%s\n",nameHelper[lenghtHelper].c_str());
+			printf("%s\n",nameHelper[lenghtHelper].c_str());
+			HandleAudio(nameHelper[lenghtHelper]);
 		
 		}
 	}
@@ -233,15 +216,15 @@ void Dialogue:: NextDialogue() {
 	}
 	HasEnded(hasStarted);
 }
+
 std::string Dialogue::GetCurrentDialogue() {
 	return dialogueHelper[lenghtHelper];
 }
+
 bool Dialogue:: HasEnded(bool name){
 
 	hasEnded = !name;
 	return hasEnded;
-
-
 }
 
 
@@ -251,7 +234,6 @@ bool Dialogue::CleanUp()
 
 		dialogue.clear();
 
-	
 	return true;
 }
 
@@ -281,8 +263,6 @@ void Dialogue::AddDialogue(const char* tsxPath) {
 
 			helper.push_back(a);
 			fich.get(a);
-
-
 		}
 		lenght++;
 		dialogue.push_back(helper);
@@ -292,17 +272,7 @@ void Dialogue::AddDialogue(const char* tsxPath) {
 
 		}
 		fich.get(a);
-
-
-
-
 	}
-
-
-
-
-
-
 }
 
 void Dialogue::AddName(const char* tsxPath) {
@@ -320,49 +290,127 @@ void Dialogue::AddName(const char* tsxPath) {
 
 			helper.push_back(a);
 			fich.get(a);
-
-
 		}
 	
 		name.push_back(helper);
 		while (!helper.empty()) {
 
 			helper.pop_back();
-
 		}
 		fich.get(a);
-
-
-
-
 	}
-
-
-
-
-
-
+	std::string totalName;
+	for (int i = 0; i < name.size(); ++i) 
+	{
+		totalName = totalName + name.at(i);
+	}
+	if (totalName == "Magician:") {
+		/*LoadTalkSound(charName);
+		PlayTalkSound(charName);*/
+		LOG("Magician talking");
+	}
 }
 
-bool Dialogue::AvanzarDialogo(float dt) {
+bool Dialogue::AvanzarDialogo(float dt, std::string charName) {
 	if (hasStarted) {
 
 		NextDialogue();
 		Draw(dt);
+		//play general audio
+	/*	LoadTalkSound(charName);
+		PlayTalkSound(charName);*/
+		if (hasConversation == true) {
+			if (nameHelper[lenghtHelper] == "Fool: ") {
+				hasPlayed = false;
+			}
+		}
+		if (hasPlayed == true) {
+			LOG("hasPlayed TRUE");
+		}
+		else {
+			LOG("hasPlayed FALSE");
+		}
+		
 		if (hasEnded) {
-
+			hasPlayed = false;
+			
 			return true;
 		}
 		return false;
 	}
-	BeginDialogue();
+	BeginDialogue(charName);
 	Draw(dt);
 
-
 	return false;
+}
+
+void Dialogue::HandleAudio(std::string name) {
+	LoadTalkSound(name);
+	if (hasPlayed == false) {
+		PlayTalkSound(name);
+	}
+	
+}
+
+void Dialogue::LoadTalkSound(std::string charName) {
+	
+	charName = charName;
+	if (charName == "Magician: ") {
+		int randNum = rand() % 6;
+		switch (randNum) {
+		case 0:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/magician/Magician_talk1.wav");
+			break;
+		case 1:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/magician/Magician_talk2.wav");
+			break;
+		case 2:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/magician/Magician_talk3.wav");
+			break;
+		case 3:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/magician/Magician_hum1.wav");
+			break;
+		case 4:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/magician/Magician_hum2.wav");
+			break;
+		case 5:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/magician/Magician_hum3.wav");
+			break;
+		}
+	}	
+	if (charName == "Milkmaid") {
+		currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Milklady/Milklady_talk1.wav");
+		/*int randNum = rand() % 6;
+		switch (randNum) {
+		case 0:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/magician/Magician_talk1.wav");
+			break;
+		case 1:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/magician/Magician_talk2.wav");
+			break;
+		case 2:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/magician/Magician_talk3.wav");
+			break;
+		case 3:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/magician/Magician_hum1.wav");
+			break;
+		case 4:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/magician/Magician_hum2.wav");
+			break;
+		case 5:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/magician/Magician_hum3.wav");
+			break;
+		}*/
+	}
 
 
+}
 
-
-
+void Dialogue::PlayTalkSound(std::string charName) {
+	
+	Engine::GetInstance().audio->PlayFx(currentFx);
+	hasPlayed = true;
+	/*if (charName == "Magician: ") {
+		
+	}*/
 }
