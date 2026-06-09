@@ -216,7 +216,8 @@ bool Scene::PostUpdate()
 	
 	
 	}
-	else {
+	else if (misiones.Visualizada() == true && !someoneIsTalking) {
+
 	
 		for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
 			if (element->id == 68) {
@@ -224,6 +225,33 @@ bool Scene::PostUpdate()
 			}
 		}
 	}
+
+	if (cards.Visualizada() == false && !someoneIsTalking) {
+
+
+		for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
+			if (element->id == 69) {
+				element->ChangeImage(cardsIcon2clic, cardsIconclic);
+			}
+		}
+
+
+
+	}
+	else if (cards.Visualizada() == true && !someoneIsTalking) {
+
+		for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
+			if (element->id == 69) {
+				element->ChangeImage(cardsIcon2, cardsIcon);
+			}
+		}
+
+
+
+	}
+
+
+
 	switch (currentScene)
 	{
 	case SceneID::INTRO_SCREEN:
@@ -959,20 +987,9 @@ void Scene::UpdateLevel(float dt) {
 			}
 		}
 	}
-	/*if (cardsInventoryOn) {
-		if (cardsBase != nullptr) {
-			Engine::GetInstance().render->DrawTextureNoCamera(cardsBase, 240, 60, 800, 600);
-		}
 
-		if (cards.cards.size() > 0) {
-
-
-			Engine::GetInstance().render->DrawTextureNoCamera(cards.cards[currentCardIndex].imagen, 730, 162, 200, 400);
-		}
-
-
-	}*/
 	
+
 	if (isPaused||showHelp||inventoryOn) {
 		return;
 	}
@@ -1099,7 +1116,23 @@ void Scene::UnloadLevel() {
 }
 
 void  Scene::PostUpdateLevel() {
+	if (cardsInventoryOn) {
+		if (cardsBase != nullptr) {
+			SDL_Rect screenRect = { -10000, -10000, 50000, 50000 };
+			Engine::GetInstance().render->DrawRectangle(screenRect, 0, 0, 0, 150, true, false);
+			Engine::GetInstance().render->DrawTextureNoCamera(cardsBase, 240, 60, 800, 600);
+		}
 
+
+		if (cards.cards.size() > 0) {
+
+
+
+			Engine::GetInstance().render->DrawTextureNoCamera(cards.cards[currentCardIndex].imagen, 730, 162, 200, 400);
+			cards.cards[currentCardIndex].visualizada = true;
+		}
+
+	}
 	// Cargar/Guardar estado (F5/F6)
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
 		Engine::GetInstance().map->LoadEntities(player, enemies);
@@ -1302,14 +1335,6 @@ void  Scene::PostUpdateLevel() {
 	{
 		SDL_FRect centrar = { 0, 0, 1280, 720 };
 		SDL_RenderTexture(Engine::GetInstance().render->renderer, mapToShow, NULL, &centrar);
-	}
-	if (cardsInventoryOn) {
-		if (cardsBase != nullptr) {
-			Engine::GetInstance().render->DrawTextureNoCamera(cardsBase, 240, 60, 800, 600);
-		}
-		if (cards.cards.size() > 0) {
-			Engine::GetInstance().render->DrawTextureNoCamera(cards.cards[currentCardIndex].imagen, 730, 162, 200, 400);
-		}
 	}
 	Engine::GetInstance().uiManager->PostUpdate();
 
@@ -1657,6 +1682,10 @@ void Scene::LoadMap(std::string map)
 	if (helpTextures.size() == 0) {
 		helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_Tutorial/UI_TutorialControls1_.png");
 		helpTextures.push_back(helpTexture);
+
+		helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_Tutorial/UI_TutorialControls2_.png");
+		helpTextures.push_back(helpTexture);
+
 	}
 	
 	map1Texture = Engine::GetInstance().textures->Load("assets/UI/Map/UI_Map_Level1.png");
@@ -1704,99 +1733,36 @@ void Scene::LoadMap(std::string map)
 			else if (obj.nombre == "Gargantuan") obj.imagen = iconGargantuan;
 		}
 		for (auto& mis : misiones.objetos) {
-			std::string pathNormal = "";
-			std::string pathCompletada = "";
-
 			if (mis.nombre == "Talk with magician") {
-				pathNormal = "assets/UI/UI_Mission_Info/UI_MissionNotes_Magician1.png";
-				pathCompletada = "assets/UI/UI_Mission_Info/UI_MissionNotes_Magician2.png";
-			}
-			else if (mis.nombre == "Hermit") {
-				pathNormal = "assets/UI/UI_Mission_Info/UI_MissionNotes_Botanist1.png";
-				pathCompletada = "assets/UI/UI_Mission_Info/UI_MissionNotes_Botanist2.png";
-			}
-			else if (mis.nombre == "Well") {
-				pathNormal = "assets/UI/UI_Mission_Info/UI_MissionNotes_VoiceWell1.png";
-				pathCompletada = "assets/UI/UI_Mission_Info/UI_MissionNotes_VoiceWell2.png";
-			}
-			else if (mis.nombre == "Psalms") {
-				pathNormal = "assets/UI/UI_Mission_Info/UI_MissionNotes_Hierophant1.png";
-				pathCompletada = "assets/UI/UI_Mission_Info/UI_MissionNotes_Hierophant2.png";
-			}
-			else if (mis.nombre == "KillPriest") {
-				pathNormal = "assets/UI/UI_Mission_Info/UI_MissionNotes_Hierophant1_02.png";
-				pathCompletada = "assets/UI/UI_Mission_Info/UI_MissionNotes_Hierophant2_02.png";
-			}
-			else if (mis.nombre == "Timmy") {
-				pathNormal = "assets/UI/UI_Mission_Info/UI_MissionNotes_LittleFinley1.png";
-				pathCompletada = "assets/UI/UI_Mission_Info/UI_MissionNotes_LittleFinley2.png";
-			}
-			else if (mis.nombre == "Empress") {
-				pathNormal = "assets/UI/UI_Mission_Info/UI_MissionNotes_Queen1.png";
-				pathCompletada = "assets/UI/UI_Mission_Info/UI_MissionNotes_Queen1.png";
-			}
-			else if (mis.nombre == "Chariot") {
-				pathNormal = "assets/UI/Spritesheets/UI_Mission_Info/UI_MissionNotes_Teleport1.png";
-				pathCompletada = "assets/UI/Spritesheets/UI_Mission_Info/UI_MissionNotes_Teleport2.png";
-			}
-			else if (mis.nombre == "Sculptor") {
-				pathNormal = "assets/UI/Spritesheets/UI_Mission_Info/UI_MissionNotes_Sculptor1.png";
-				pathCompletada = "assets/UI/Spritesheets/UI_Mission_Info/UI_MissionNotes_Sculptor2.png";
-			}
-			else if (mis.nombre == "Retired") {
-				pathNormal = "assets/UI/Spritesheets/UI_Mission_Info/UI_MissionNotes_RetiredKnight1.png";
-				pathCompletada = "assets/UI/Spritesheets/UI_Mission_Info/UI_MissionNotes_RetiredKnight2.png";
-			}
-			if (pathNormal != "") {
-				mis.imagenFinalizada = Engine::GetInstance().textures->Load(pathCompletada.c_str());
-				mis.imagen = mis.completed ? mis.imagenFinalizada : Engine::GetInstance().textures->Load(pathNormal.c_str());
+				SDL_Texture* texNormal = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Magician1.png");
+				SDL_Texture* texCompletada = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Magician2.png");
+
+				mis.imagenFinalizada = texCompletada;
+
+				if (mis.completed == true) {
+					mis.imagen = texCompletada;
+				}
+				else {
+					mis.imagen = texNormal;
+				}
 			}
 		}
 
 		for (auto& card : cards.cards) {
-			std::string pathNormal = "";
-			std::string pathInvertida = "";
-
 			if (card.nombre == "The fool") {
-				pathNormal = "assets/UI/Tarot/UI_TarotCard_Fool.png";
+				card.imagen = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Fool.png");
 			}
-			else if (card.nombre == "High") {
-				pathNormal = "assets/UI/Tarot/UI_TarotCard_HighPriestess.png";
-				pathInvertida = "assets/UI/Tarot/Inverted/UI_TarotCard_HighPriestess_inverted.png";
+			else if (card.nombre == "The magician") {
+				card.imagen = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Magician.png"); 
 			}
-			else if (card.nombre == "Death") {
-				pathNormal = "assets/UI/Tarot/UI_TarotCard_Death.png";
+			else if (card.nombre == "Wheel of fortune") {
+				card.imagen = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Wheel.png"); 
 			}
-			else if (card.nombre == "Hermit") {
-				pathNormal = "assets/UI/Tarot/UI_TarotCard_Hermit.png";
-			}
-			else if (card.nombre == "Hierophant") {
-				pathNormal = "assets/UI/Tarot/UI_TarotCard_Hierophant.png";
-			}
-			else if (card.nombre == "Empress") {
-				pathNormal = "assets/UI/Tarot/UI_TarotCard_Empress.png";
-			}
-			else if (card.nombre == "Chariot") {
-				pathNormal = "assets/UI/Tarot/UI_TarotCard_Chariot.png";
-			}
-			else if (card.nombre == "Tower") {
-				pathNormal = "assets/UI/Tarot/UI_TarotCard_Tower.png";
-			}
-			else if (card.nombre == "Star") {
-				pathNormal = "assets/UI/Tarot/UI_TarotCard_Star.png";
-			}
-			else if (card.nombre == "Strenght") {
-				pathNormal = "assets/UI/Tarot/UI_TarotCard_Strength.png";
-			}
+		}
 
-			if (pathNormal != "") {
-				card.imagen = Engine::GetInstance().textures->Load(pathNormal.c_str());
-				if (pathInvertida != "") {
-					card.imagenGirada = Engine::GetInstance().textures->Load(pathInvertida.c_str());
-				}
-				else {
-					card.imagenGirada = nullptr;
-				}
+		for (auto& card : cards.cards) {
+			if (card.nombre == "The fool") {
+				card.imagen = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Fool.png");
 			}
 		}
 	}
@@ -2722,6 +2688,9 @@ void Scene::InventariIconUI() {
 
 	cardsIcon = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Tarot_InventoryItem1_.png");
 	cardsIcon2 = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Tarot_InventoryItem2_.png");
+	cardsIconclic = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Tarot_InventoryItem1_notification.png");
+	cardsIcon2clic = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Tarot_InventoryItem2_notification.png");
+
 	auto bag = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 67, "",
 		{ 1110, 560, 160, 160 }, this, SDL_Rect{ 0,0,0,0 },
@@ -2773,7 +2742,7 @@ void Scene::SetTarotUI(bool on) {
 			element->visible = cardsInventoryOn;
 		}
 	}
-	/*if (on) {
+	if (on) {
 		if (cardsBase != nullptr) {
 			Engine::GetInstance().render->DrawTextureNoCamera(cardsBase, 240, 60, 800, 600);
 		}
@@ -2785,7 +2754,7 @@ void Scene::SetTarotUI(bool on) {
 		}
 
 
-	}*/
+	}
 }
 
 // FUNCIONES HELP UI
@@ -2799,6 +2768,8 @@ void Scene::HelpUI() {
 	cardsBase = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_Base_.png");
 	if (helpTextures.size() == 0) {
 		helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_Tutorial/UI_TutorialControls1_.png");
+		helpTextures.push_back(helpTexture);
+		helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_Tutorial/UI_TutorialControls2_.png");
 		helpTextures.push_back(helpTexture);
 	}
 

@@ -1,1 +1,1 @@
-TEST_map_LV1_towerCenter_01.tmx
+TEST_map_LV1_startRoom_01.tmx

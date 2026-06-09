@@ -217,6 +217,10 @@ private:
 	SDL_Texture* uiCoin = nullptr;
 
 	//Texturas tarot
+	SDL_Texture* cardsIconclic = nullptr;
+	SDL_Texture* cardsIcon2clic = nullptr;
+
+
 	SDL_Texture* cardsIcon = nullptr;
 	SDL_Texture* cardsIcon2 = nullptr;
 	SDL_Texture* cardsBase = nullptr;

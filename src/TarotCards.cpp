@@ -55,4 +55,30 @@ void TarotCards::LoadState(pugi::xml_node& node) {
 
         push(nom, nullptr, nullptr);
     }
+}void TarotCards::hasBeenSeen(std::string nom) {// para cuando se ha visualizado el objeto
+    for (int j = 0; j < cards.size(); j++) {
+        if (cards[j].nombre == nom) {
+            cards[j].visualizada = true;
+            break;
+        }
+    }
 }
+
+
+bool TarotCards::Visualizada() {
+
+
+    for (int j = 0; j < cards.size(); j++) {
+        if (cards[j].visualizada == false) {
+            return false;
+        }
+    }
+    return true;
+
+
+
+
+
+
+}
+

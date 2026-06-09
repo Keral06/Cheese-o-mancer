@@ -15,6 +15,8 @@ enum VerdugoState {
     ATAQUE3C,
     ATAQUE4A,
     ATAQUE4B,
+    TRANSFORM1,
+    TRANSFORM2,
     MUERTO
 };
 
@@ -104,6 +106,8 @@ protected:
     AnimationSet animsAtaque3c;
     AnimationSet animsAtaque4a;
     AnimationSet animsAtaque4b;
+    AnimationSet animsTransform1;
+    AnimationSet animsTransform2;
     AnimationSet animsDeath;
 
     AnimationSet* currentAnimSet = nullptr;
@@ -119,8 +123,9 @@ protected:
     SDL_Texture* textureA4a = NULL;
     SDL_Texture* textureA4b = NULL;
     SDL_Texture* textureDeath = NULL;
-    SDL_Texture* textureT = NULL;
-    
+    SDL_Texture* textureT1 = NULL;
+    SDL_Texture* textureT2 = NULL;
+
     float offsetY = 0.0f;
     float offsetX = 0.0f;
 
@@ -154,6 +159,8 @@ protected:
 
     int bodyW;
     int bodyH;
+    bool deathStarted = false;
+
     bodyType type;
 
     Dialogue dialogue;

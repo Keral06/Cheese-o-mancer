@@ -40,7 +40,7 @@ bool Map::IsMoho(int gid) {
 }
 
 bool Map::IsPolvo(int gid) {
-    static const std::vector<int> ids = { 882, 18967, 2135, 1636, 819, 2540,20591, 2945, 3370, 2895, 1576, 1575, 3696, 1688, 1682, 1199, 1191, 1189, 1197, 2866 }; // todos los de polvo
+    static const std::vector<int> ids = { 882, 18967, 2135, 1633, 1636, 819, 2540,20591, 2945, 3370, 2895, 1576, 1575, 3696, 1688, 1682, 1199, 1191, 1189, 1197, 2866 }; // todos los de polvo
     return std::find(ids.begin(), ids.end(), gid) != ids.end();
 }                                                                                                           //1682 en temple lvl3 tmb    2866 queen int
                                                                                                        //20591 20592 botanica
@@ -912,6 +912,27 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                     cheeseBallInteract->position = Vector2D(x, y);
                     cheeseBallInteract->xInicial = (int)x;
                     cheeseBallInteract->yInicial = (int)y;
+                    // Load Tiled custom properties
+
+                    Properties tempProperties;
+
+                    LoadProperties(objectNode, tempProperties);
+
+
+
+                    auto where = tempProperties.GetProperty("Where");
+
+                    if (where)
+
+                    {
+
+                        cheeseBallInteract->cheesePower = where->valueInt;
+
+                     
+
+                      
+
+                    }
                     cheeseBallInteract->Start();
                     cheeseBallInteract->mapID = id;
                 }

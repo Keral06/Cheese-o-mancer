@@ -55,5 +55,5 @@ public:
 	Player* py;
 	int moneyPlayer = 0;
 	bool isGettingTouched = false;
-
+	int cheesePower = 1;
 };

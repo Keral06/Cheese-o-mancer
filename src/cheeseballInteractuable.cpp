@@ -12,9 +12,6 @@
 CheeseBallInteract::CheeseBallInteract() : NPC(EntityType::CHEESEBALLINTERACT)
 {
 	pbody = nullptr;
-	if(Engine::GetInstance().scene->cheese==false)dialogue = Dialogue("Assets/Dialogues/Interactuables/Justice_Dialogues_FindCheeseWheel.txt");
-	/*else if(Engine::GetInstance().scene->doublejump == false) { dialogue = Dialogue("Assets/Dialogues/Interactuables/Justice_Dialogues_FindCheeseWheel2.txt"); }
-	else if (Engine::GetInstance().scene->moho == false) { dialogue = Dialogue("Assets/Dialogues/Interactuables/Justice_Dialogues_FindCheeseWheel3.txt"); }*/
 }
 
 
@@ -57,6 +54,11 @@ bool CheeseBallInteract::Start() {
 
 	}
 
+	if (cheesePower==1) {
+		dialogue = Dialogue("Assets/Dialogues/Interactuables/Justice_Dialogues_FindCheeseWheel.txt"); return true;
+	}
+	else if (cheesePower==2) { dialogue = Dialogue("Assets/Dialogues/Interactuables/Justice_Dialogues_FindCheeseWheel2.txt");  return true; }
+	else if (cheesePower==3) { dialogue = Dialogue("Assets/Dialogues/Interactuables/Justice_Dialogues_FindCheeseWheel3.txt");  return true; }
 
 
 	return true;
@@ -93,10 +95,11 @@ bool CheeseBallInteract::Update(float dt)
 
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 			if (dialogue.AvanzarDialogo(dt)) {
-				if (Engine::GetInstance().scene->cheese == false) {
+				if (cheesePower == 1) {
 					Engine::GetInstance().scene->cheese = true;
 					Engine::GetInstance().scene->cards.push("WheelOfFortune", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_WheelOfFortune.png"), nullptr);
-
+					Engine::GetInstance().scene->helpTextures.push_back(Engine::GetInstance().textures->Load(("assets/UI/UI_Tutorial/UI_TutorialControls3_.png")));
+					Engine::GetInstance().scene->actualHelpTexture++;
 					// Activamos la animación
 					if (py != nullptr) {
 						py->PlayShowCheese();
@@ -106,6 +109,36 @@ bool CheeseBallInteract::Update(float dt)
 					waitingForAnim = true;
 					waitTimer = 1900.0f;
 				}
+				else if (cheesePower == 2) {
+					Engine::GetInstance().scene->dobleSalto = true;
+					Engine::GetInstance().scene->cards.push("WheelOfFortune", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_WheelOfFortune.png"), nullptr);
+					Engine::GetInstance().scene->actualHelpTexture++;
+					Engine::GetInstance().scene->helpTextures.push_back(Engine::GetInstance().textures->Load(("assets/UI/UI_Tutorial/UI_TutorialControls4_jump.png")));
+					// Activamos la animación
+					if (py != nullptr) {
+						py->PlayShowCheese();
+					}
+
+					// Iniciamos el cronómetro (1900 ms para que congele la pose justo al final)
+					waitingForAnim = true;
+					waitTimer = 1900.0f;
+				}
+				else if (cheesePower == 3) {
+					Engine::GetInstance().scene->mohoWalls = true;
+					Engine::GetInstance().scene->cards.push("WheelOfFortune", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_WheelOfFortune.png"), nullptr);
+					Engine::GetInstance().scene->actualHelpTexture++;
+					Engine::GetInstance().scene->helpTextures.push_back(Engine::GetInstance().textures->Load(("assets/UI/UI_Tutorial/UI_TutorialControls4_climb.png")));
+					// Activamos la animación
+					if (py != nullptr) {
+						py->PlayShowCheese();
+					}
+
+					// Iniciamos el cronómetro (1900 ms para que congele la pose justo al final)
+					waitingForAnim = true;
+					waitTimer = 1900.0f;
+				}
+				
+
 			}
 			return true;
 		}
