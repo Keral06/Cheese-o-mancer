@@ -1265,8 +1265,6 @@ void Player::HandleAttack()
 			else {
 				isAttacking = false;
 				state = DEFAULT;
-				// YA NO NECESITAS RESETEAR ENEMIGOS AQUÍ. 
-				// El cambio de ID en el próximo clic se encarga de todo.
 			}
 		}
 	}
@@ -1277,13 +1275,20 @@ void Player::StartAttack(int combo)
 	isAttacking = true;
 	state = ATTACKING;
 
-	// --- LA CLAVE ESTÁ AQUÍ ---
-	// Incrementamos el ID cada vez que se lanza un golpe, sea o no parte de un combo.
 	currentAttackId++;
-	// --------------------------
 
 	currentAnimSet = &anims3x4;
 	texture = texture3x4;
+
+	if (isCollidedFloor) {
+		float dashForce = 0.0f;
+
+		if (combo == 1) dashForce = 15.0f;
+		else if (combo == 2) dashForce = 18.0f;
+		else if (combo == 3) dashForce = 28.0f;
+
+		velocity.x = facingLeft ? -dashForce : dashForce;
+	}
 
 	switch (combo)
 	{

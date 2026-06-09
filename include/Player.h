@@ -192,6 +192,7 @@ private:
 	bool attackRequested = false;
 	bool isAttacking = false;
 	bool bufferedAttack = false;
+	bool hasDashed = false;
 	Uint32 bufferTime = 200; // ms
 	Uint32 bufferStart = 0;
 
