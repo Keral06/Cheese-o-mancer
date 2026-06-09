@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="100" height="120" tilewidth="128" tileheight="128" infinite="0" nextlayerid="26" nextobjectid="39">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="100" height="120" tilewidth="128" tileheight="128" infinite="0" nextlayerid="27" nextobjectid="45">
  <tileset firstgid="1" source="test2_tileset.tsx"/>
  <tileset firstgid="4" source="cloud_2.tsx"/>
  <tileset firstgid="5" source="cloud_1.tsx"/>
@@ -12087,6 +12087,9 @@
   </data>
  </layer>
  <layer id="23" name="Assets" width="100" height="120">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -36179,6 +36182,14 @@
    <object id="17" gid="4" x="398.4" y="9384.2" width="10616" height="3450"/>
   </objectgroup>
  </group>
+ <objectgroup id="26" name="Particles">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
+  <object id="39" type="FloatingDust" x="1032" y="72" width="11744" height="14976"/>
+  <object id="40" type="FloatingDust" x="1040" y="80" width="11744" height="14976"/>
+  <object id="44" type="FloatingDust" x="1040" y="64" width="11744" height="7568"/>
+ </objectgroup>
  <layer id="25" name="MetadataSuelos" width="100" height="120" visible="0">
   <data>
    <tile/>
