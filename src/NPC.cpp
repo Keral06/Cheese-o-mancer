@@ -3929,7 +3929,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 
 						Engine::GetInstance().scene->ratTalkedOnce = true;
-						Engine::GetInstance().scene->cards.push("Hermit", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Chariot.png"), nullptr);
+						Engine::GetInstance().scene->cards.push("Chariot", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Chariot.png"), nullptr);
 
 						
 					}
@@ -3985,7 +3985,22 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 				
 					if (teleport.AvanzarDialogo(dt)) {
 						// Abrir el menú de teletransporte después del diálogo
+						switch (level) {
 
+						case 1:
+							Engine::GetInstance().scene->rat1 = true;
+							break;
+						case 2:
+							Engine::GetInstance().scene->rat2 = true;
+							break;
+						case 3:
+							Engine::GetInstance().scene->rat3 = true;
+							break;
+						case 4:
+							Engine::GetInstance().scene->rat4 = true;
+							break;
+
+						}
 						Engine::GetInstance().scene->SetTeleport(true);
 					}
 					
