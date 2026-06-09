@@ -1,0 +1,21 @@
+Knight: 
+Princess: 
+Knight: 
+Princess: 
+Knight: 
+Princess: 
+Knight: 
+Princess: 
+Princess: 
+CHOCICE
+Q. You two are very lucky that I’m a sucker for romance.
+E. Kill them.
+CHOCICE Q:
+Fool: 
+Princess: 
+Knight: 
+Princess: 
+Knight: 
+CHOCICE E:
+Fool: 
++
