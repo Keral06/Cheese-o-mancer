@@ -65,6 +65,9 @@ public:
 
 	void MoveMelee();
 
+	void RegisterEnemyKill(std::string enemyName);
+	bool HasKilledOneOfEachType();
+
 protected:
 	void PerformPathfinding();
 	void GetPhysicsValues();

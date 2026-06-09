@@ -2805,3 +2805,29 @@ void Scene::CheckMiniBossStatus() {
 		Engine::GetInstance().map->DestroyBodyByName("WallBeforeWheel");
 	}
 }
+
+void Scene::RegisterEnemyKill(std::string enemyName) {
+
+	if (enemyName == "Rat") {
+		ratsKilled++;
+	}
+	else if (enemyName == "Horse") {
+		horsesKilled++;
+	}
+	else if (enemyName == "Bee") {
+		beesKilled++;
+	}
+	else if (enemyName == "Jailer") {
+		jailersKilled++;
+	}
+
+	LOG("Bajas actuales - Rats: %d, Horses: %d, Bees: %d, Jailers: %d", ratsKilled, horsesKilled, beesKilled, jailersKilled);
+
+	if (HasKilledOneOfEachType()) {
+		LOG("¡Has matado al menos uno de cada tipo de enemigo!");
+	}
+}
+
+bool Scene::HasKilledOneOfEachType() {
+	return (ratsKilled > 0, horsesKilled > 0, beesKilled > 0, jailersKilled > 0);
+}
