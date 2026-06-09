@@ -3777,7 +3777,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 					return true;
 				}
 				if (AfterMission.hasStarted && !AfterMission.hasEnded) {
-					AfterMission.Draw(dt, nameNPC);
+					AfterMission.Draw(dt);
 					return true;
 
 				}
