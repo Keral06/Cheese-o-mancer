@@ -55,7 +55,7 @@ bool Scene::Start()
 
 	bossFightController = new BossFightPrincessKnight();
 	bossFightController->Start();
-
+	InteractTexture = Engine::GetInstance().textures->Load("assets/UI/UI_interaction/UI_ Interaction_Indicator1Interact.png");
 	return true;
 }
 
@@ -1116,6 +1116,11 @@ void Scene::UnloadLevel() {
 }
 
 void  Scene::PostUpdateLevel() {
+	if (interaction) {
+		ShowInteract();
+
+
+	}
 	if (cardsInventoryOn) {
 		if (cardsBase != nullptr) {
 			SDL_Rect screenRect = { -10000, -10000, 50000, 50000 };
@@ -2961,4 +2966,14 @@ void Scene::PickUpCorpse(Enemy* corpse) {
 	}
 
 	corpse->hasBeenPicked = true;
+}
+
+void Scene::ShowInteract() {
+
+	
+	Engine::GetInstance().render->DrawTextureNoCamera(InteractTexture, 520, 420, 200, 50);
+
+
+
+
 }
