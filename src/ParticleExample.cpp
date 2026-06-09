@@ -364,6 +364,48 @@ void ParticleExample::setStyle(PatticleStyle style)
         break;
     }
 
+    case ParticleExample::FLOATING_DUST:
+    {
+        // No cargamos textura para que use automáticamente la por defecto (fuego)
+
+        initWithTotalParticles(120);
+
+        _duration = DURATION_INFINITY;
+        this->_emitterMode = Mode::GRAVITY;
+
+        // Gravedad flotante: Ligerísima tendencia a subir o flotar libremente
+        this->modeA.gravity = { 0.0f, -1.0f };
+        this->modeA.speed = 13.0f; // Velocidad extremadamente baja
+        this->modeA.speedVar = 5.0f;
+
+        _angle = 90.0f;
+        _angleVar = 400.0f; // Que cada mota flote en direcciones aleatorias
+
+        _life = 8.0f;  // Duran mucho en el aire
+        _lifeVar = 3.0f;
+
+        _startSize = 100.0f;
+        _startSizeVar = 50.0f;
+        _endSize = 3.0f;   // Se van haciendo aún más pequeñas
+        _endSizeVar = 2.0f;
+
+        _emissionRate = _totalParticles / _life;
+
+        // Color Blanco y semi-transparente
+        _startColor = { 1.0f, 1.0f, 1.0f, 0.3f }; // Alpha inicial al 40%
+        _startColorVar = { 0.0f, 0.0f, 0.0f, 0.2f }; // Variación de transparencia
+        _endColor = { 1.0f, 1.0f, 1.0f, 0.0f }; // Terminan desvaneciéndose (Alpha 0)
+        _endColorVar = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+        // Amplio rango de aparición para llenar el área del emisor (ajusta según Tiled)
+        _posVar = { 60.0f, 60.0f };
+
+        // Usamos Blend normal para que respete bien las transparencias suaves
+        if (_texture) SDL_SetTextureBlendMode(_texture, SDL_BLENDMODE_BLEND);
+
+        break;
+    }
+
     //case ParticleExample::FIRE_WORK:
     //{
     //    initWithTotalParticles(1500);

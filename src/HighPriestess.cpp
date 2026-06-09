@@ -7,6 +7,8 @@
 #include "Player.h"
 #include "Scene.h"
 
+HighPriestesss* HighPriestesss::instance = nullptr;
+
 HighPriestesss::HighPriestesss() : Enemy() {
     name = "HighPriestesss";
     currentWave = 1;
@@ -18,6 +20,8 @@ HighPriestesss::HighPriestesss() : Enemy() {
 HighPriestesss::~HighPriestesss() {}
 
 bool HighPriestesss::Start() {
+
+    instance = this;
     // 1. Cargar las 3 texturas por separado
     texIdle = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/High Priestess/sprite_high_priestess_idle_01.png");
     texTurn = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/High Priestess/sprite_high_priestess_turn_01.png");
@@ -61,79 +65,74 @@ bool HighPriestesss::Start() {
     pbody->listener = this;
     pbody->ctype = ColliderType::ENEMY;
     attackHitbox = nullptr;
+
+   
     b2Body_SetGravityScale(pbody->body, 0.0f);
-    //SpawnWave();
+    SpawnWave();
     return true;
 }
 
 bool HighPriestesss::Update(float dt) {
-    // Si no hay enemigos y no hemos terminado, el boss se expone
-    if (enemiesAlive <= 0 && currentWave <= 3 && !isVulnerable && hitsTaken < 3) {
+    // Si no hay enemigos vivos, la jefa no es vulnerable todavía y no ha muerto...
+    if (enemiesAlive <= 0 && !isVulnerable && state != EnemyState::DYING) {
+        // Solo se expone si realmente la oleada actual se ha limpiado de verdad
         isVulnerable = true;
-        SetState(EnemyState::WALKING); // Alias de vulnerable
+        SetState(EnemyState::WALKING); // Pasa a estado Vulnerable (Animación Turn)
     }
 
-    // --- TRANSICIONES DE FASE FINAL ---
+    // --- TRANSICIONES DE FASE FINAL (Tu lógica de cinemática/elección) ---
     if (currentAnimName == "inmobilization_start" && anims.HasFinished()) {
         anims.SetCurrent("inmobilization_idle");
         currentAnimName = "inmobilization_idle";
-        waitingForChoice = true; // Ahora el jugador puede elegir
+        waitingForChoice = true;
     }
     else if (currentAnimName == "spare" && anims.HasFinished()) {
-        // Termina la animación de Spare -> GAME OVER DIRECTO
-        // Buscamos al jugador en la escena actual para activar su muerte definitiva
         Player* player = Engine::GetInstance().scene->GetPlayer();
-
-        if (player != nullptr) {
-            player->isDeadDefinitive = true;
+        if (player != nullptr) player->isDeadDefinitive = true;
+    }
+    else if (currentAnimName == "death" && anims.HasFinished()) {
+        anims.SetCurrent("death_static");
+        currentAnimName = "death_static";
+        if (instance == this) {
+            instance = nullptr;
         }
     }
 
-    else if (currentAnimName == "death" && anims.HasFinished()) {
-        // Termina de morir -> Se queda en el suelo
-        anims.SetCurrent("death_static");
-        currentAnimName = "death_static";
-    }
-
-
-    // Cambiar de track de animación si ha cambiado el estado
+    // Actualizar máquinas de estado y tracks
     ChangeCurrentAnimation();
 
-    // Actualizar los frames del track que esté activo en este frame
     if (currentAnimTrack != nullptr) {
         currentAnimTrack->Update(dt);
     }
 
-    // Dibujar
     Draw(dt);
 
     return true;
 }
 
 void HighPriestesss::ChangeCurrentAnimation() {
-    // Si el estado no ha cambiado, no hacemos nada (Optimización)
-    //if (state == lastState) return;
-    //lastState = state;
+    if (state == lastState) return;
+    lastState = state;
 
-    //switch (state) {
-    //case EnemyState::IDLE:
-    //    currentAnimTrack = &animIdle;
-    //    currentTexture = texIdle;
-    //    animIdle.SetCurrent("idle");
-    //    break;
+    switch (state) {
+    case EnemyState::IDLE:
+        currentAnimTrack = &animIdle;
+        currentTexture = texIdle;
+        animIdle.SetCurrent("idle");
+        break;
 
-    //case EnemyState::WALKING: // Vulnerable / Aturdida
-    //    currentAnimTrack = &animTurn;
-    //    currentTexture = texTurn;
-    //    animTurn.SetCurrent("turn");
-    //    break;
+    case EnemyState::WALKING: // Vulnerable / Aturdida
+        currentAnimTrack = &animTurn;
+        currentTexture = texTurn;
+        animTurn.SetCurrent("turn");
+        break;
 
-    //case EnemyState::DYING:
-    //    currentAnimTrack = &animDeath;
-    //    currentTexture = texDeath;
-    //    animDeath.SetCurrent("death");
-    //    break;
-    //}
+    case EnemyState::DYING:
+        currentAnimTrack = &animDeath;
+        currentTexture = texDeath;
+        animDeath.SetCurrent("death");
+        break;
+    }
 }
 
 void HighPriestesss::Draw(float dt) {
@@ -168,30 +167,61 @@ void HighPriestesss::Draw(float dt) {
 }
 
 void HighPriestesss::OnCollision(PhysBody* physA, PhysBody* physB) {
+    // IMPORTANTE: Comprobamos que sea vulnerable para procesar el golpe
     if (isVulnerable && physB->ctype == ColliderType::PLAYERATTACK) {
+
+        isVulnerable = false; // Desactivar vulnerabilidad INSTANTÁNEAMENTE para evitar doble golpe
         hitsTaken++;
-        isVulnerable = false;
 
         if (hitsTaken >= 3) {
             SetState(EnemyState::DYING);
-            // Lógica de Die() si fuese necesario
+            // Aquí puedes iniciar tu animación de "inmobilization_start" si es lo que deseas
+            currentAnimName = "inmobilization_start";
         }
         else {
-            currentWave++;
+            currentWave++; // Cambiamos a la siguiente oleada (Wave 2 o 3)
             SetState(EnemyState::IDLE);
+
+            // Dejar un pequeño margen o llamar directamente al spawner
             SpawnWave();
         }
     }
 }
 
 void HighPriestesss::SpawnWave() {
-    int count = 2;
+    // Definimos cuántos enemigos por oleada (según tu especificación, siempre son 3)
+    int count = 3;
     enemiesAlive = count;
+    
+    // Determinamos el tipo de enemigo según la oleada actual
+    EntityType typeToSpawn;
+    switch (currentWave) {
+    case 1:
+        typeToSpawn = EntityType::RAT; // Reemplaza por tu enum real de Rata
+        break;
+    case 2:
+        typeToSpawn = EntityType::JAILER; // Reemplaza por tu enum real de Jailer
+        break;
+    case 3:
+        typeToSpawn = EntityType::HORSE; // Reemplaza por tu enum real de Abeja
+        break;
+    default:
+        typeToSpawn = EntityType::ENEMY; // Por si acaso
+        break;
+    }
+    printf("Spawneando oleada: %d, Tipo de entidad: %d\n", currentWave, (int)typeToSpawn);
+    // Spawneamos los 3 enemigos en posiciones distribuidas
     for (int i = 0; i < count; ++i) {
-        auto esbirro = Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY);
-        if (esbirro) {
-            esbirro->position.setX(position.getX() + (i == 0 ? -150.0f : 150.0f));
-            esbirro->position.setY(position.getY());
+        auto esbirro = Engine::GetInstance().entityManager->CreateEntity(typeToSpawn);
+        if (esbirro != nullptr) {
+            // Posicionamiento: uno a la izquierda (-200), uno en el centro (0), uno a la derecha (+200)
+            float offsetX = (i - 1) * 200.0f;
+            esbirro->position.setX(position.getX() + offsetX);
+            esbirro->position.setY(position.getY() + 2000);
+
+            // ¡IMPORTANTE! Si tu EntityManager ya llama a Start() internamente al crear la entidad,
+            // llamar aquí a esbirro->Start() de forma manual puede causar un doble Start() y romper el juego.
+            // Si ves que vuelven los crashes, prueba a comentar la línea de abajo:
             esbirro->Start();
         }
     }

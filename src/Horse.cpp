@@ -6,6 +6,7 @@
 #include "EntityManager.h"
 #include "Scene.h"
 #include "Textures.h"
+#include "HighPriestess.h"
 
 Horse::Horse() : Enemy()
 {
@@ -228,6 +229,9 @@ void Horse::Die() {
         coinEntity->xInicial = (int)deathPosition.getX();
         coinEntity->yInicial = (int)deathPosition.getY();
         coinEntity->Start();
+    }
+    if (HighPriestesss::instance != nullptr) {
+        HighPriestesss::instance->NotifyEnemyDeath();
     }
 }
 

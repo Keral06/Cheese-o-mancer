@@ -8,8 +8,8 @@ Knight:
 Princess: 
 Princess: 
 CHOCICE
-1. You two are very lucky that I’m a sucker for romance.
-2. Kill them.
+Fool: 
+Fool: 
 CHOCICE 1:
 Fool: 
 Princess: 

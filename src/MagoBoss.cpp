@@ -233,7 +233,7 @@ void MagoBoss::ExecuteBouncingBallAttack(float dt)
         phaseTimer = 0.0f;
 
         // 1. LE DEVOLVEMOS LA GRAVEDAD NATIVA A BOX2D (Escala 1.0f)
-        b2Body_SetGravityScale(pbody->body, 1.0f);
+        b2Body_SetGravityScale(pbody->body, 0.3f);
 
         // 2. Le damos su velocidad horizontal inicial hacia la derecha (p.ej. 5.0f en metros/s)
         // Usamos tu wrapper para no romper las conversiones

@@ -5,6 +5,7 @@
 #include "scene.h"
 #include "EntityManager.h"
 #include "coins.h"
+#include "HighPriestess.h"
 
 Jailer::Jailer() : Enemy()
 {
@@ -372,5 +373,8 @@ void Jailer::Die() {
         coinEntity->xInicial = (int)deathPosition.getX();
         coinEntity->yInicial = (int)deathPosition.getY();
         coinEntity->Start();
+    }
+    if (HighPriestesss::instance != nullptr) {
+        HighPriestesss::instance->NotifyEnemyDeath();
     }
 }

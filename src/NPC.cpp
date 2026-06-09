@@ -3141,6 +3141,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 					if (level1.AvanzarDialogo(dt)) {
 
 						Engine::GetInstance().scene->hasTalkedAboutPsalmsB4 = true;
+						Engine::GetInstance().scene->misiones.Completed("Psalms");
 					}
 					return true;
 				
@@ -3180,6 +3181,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 				if (level2.AvanzarDialogo(dt)) {
 
 					Engine::GetInstance().scene->hasBeenWhistledblowed = true;
+					Engine::GetInstance().scene->misiones.push("KillPriest", Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Hierophant1_02.png"), Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Hierophant2_02.png"));
+
 				}
 				return true;
 			
@@ -3218,7 +3221,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 				if (hasAll.AvanzarDialogo(dt)) {
 
-					SDL_Texture* help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
+					SDL_Texture* help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemQueenKey1.png");
 					Engine::GetInstance().scene->inventario.push("EmpressKey1", help, nullptr);
 					Engine::GetInstance().scene->misiones.Completed("Psalms");
 					Engine::GetInstance().scene->cards.push("Hierophant", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Hierophant.png"), nullptr);
@@ -4002,9 +4005,11 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 							break;
 						case 3:
 							Engine::GetInstance().scene->rat3 = true;
+							Engine::GetInstance().scene->cards.push("Tower", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Tower.png"), nullptr);
 							break;
 						case 4:
 							Engine::GetInstance().scene->rat4 = true;
+							Engine::GetInstance().scene->cards.push("Tower", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Star.png"), nullptr);
 							break;
 
 						}
@@ -4410,7 +4415,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 						Engine::GetInstance().scene->misiones.Completed("Retired");
 
-
+						Engine::GetInstance().scene->cards.push("Strenght", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Strength.png"), nullptr);
 					}
 					
 
@@ -4560,6 +4565,9 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			
 				if (dialogue.AvanzarDialogo(dt)) {
 					Engine::GetInstance().scene->hasTalkedPreach = true;
+					Engine::GetInstance().scene->cards.push("High", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_HighPriestess.png"), Engine::GetInstance().textures->Load("assets/UI/Tarot/Inverted/UI_TarotCard_HighPriestess_inverted.png"));
+
+
 				}
 				return true;
 
