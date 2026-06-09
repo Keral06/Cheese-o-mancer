@@ -895,6 +895,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                         ratking->yInicial = (int)y;
                         ratking->Start();
                         ratking->mapID = id;
+                        ratking->level = ratLevel;
                     }
                 }
                 else if (entityType == "interactball") {

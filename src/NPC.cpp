@@ -3594,25 +3594,18 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	//Empress
 	Empress::Empress() :NPC(EntityType::NPC) {
 
-		/*Dialogue regular;
-		Dialogue trusted;
-		Dialogue scolding;
-		Dialogue GivesArticact;
-		Dialogue AfterMission;*/
-
-		Dialogue paperDialogue("assets/Dialogues/Hierophant/Hierophant_Inital_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_Inital_Names.txt"); //Primer Diálogo
+		Dialogue paperDialogue("assets/Dialogues/Mission_Empress/Empress_Initial_NOP_Dialogues.txt", "assets/Dialogues/Mission_Empress/Empress_Initial_NOP_Names.txt"); //Primer Diálogo
 		this->regular = paperDialogue;
-		Dialogue secondDialogue("assets/Dialogues/Hierophant/Hierophant_AllPsalms_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AllPsalms_Names.txt"); //Dialogo All psalms
+		Dialogue secondDialogue("assets/Dialogues/Mission_Empress/Empress_Initial_Dialogues.txt", "assets/Dialogues/Mission_Empress/Empress_Initial_Names.txt"); //trusted
 		this->trusted = secondDialogue;
 
-		Dialogue percent("assets/Dialogues/Hierophant/Hierophant_AfterInital_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AfterInital_Names.txt"); //Dialogo despues de segunda interaccion
+		Dialogue percent("assets/Dialogues/Mission_Empress/Empress_MissingArtifact_Dialogues.txt", "assets/Dialogues/Mission_Empress/Empress_MissingArtifact_Names.txt"); //Dialogo despues de segunda interaccion
 		this->scolding = percent;
-		Dialogue lvll2("assets/Dialogues/Hierophant/Hierophant_AllPsalms_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_AllPsalms_Names.txt"); //Whistleblower has read all psalms
+		Dialogue lvll2("assets/Dialogues/Mission_Empress/Empress_AllArtifact_Dialogues.txt", "assets/Dialogues/Mission_Empress/Empress_AllArtifact_Names.txt"); //Whistleblower has read all psalms
 		this->GivesArtifact = lvll2;
-		Dialogue third("assets/Dialogues/Hierophant/Hierophant_BeforeBoss_Dialogues.txt", "assets/Dialogues/Hierophant/Hierophant_BeforeBoss_Names.txt"); //Has not defeated 
+		Dialogue third("assets/Dialogues/Mission_Empress/Empress_MissingArtifact_Dialogues.txt", "assets/Dialogues/Mission_Empress/Empress_MissingArtifact_Names.txt"); //Has not defeated 
 		this->AfterMission = third;
 
-	
 
 
 	}
@@ -3689,22 +3682,22 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 		if (isGettingTouched) {
 			Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
 
-			
+
 
 			//trusted dialogue
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasShownPoemToWell == true && Engine::GetInstance().scene->talkedTwiceEmpress == false) {
 
-				
-					if (trusted.AvanzarDialogo(dt)) {
+
+				if (trusted.AvanzarDialogo(dt)) {
 
 
-						Engine::GetInstance().scene->talkedTwiceEmpress = true;
-						Engine::GetInstance().scene->EmpressTrustedDialogue = true;
-						Engine::GetInstance().scene->misiones.push("Empress", Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Queen1.png"), Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Queen1.png"));
+					Engine::GetInstance().scene->talkedTwiceEmpress = true;
+					Engine::GetInstance().scene->EmpressTrustedDialogue = true;
+					Engine::GetInstance().scene->misiones.push("Empress", Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Queen1.png"), Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Queen1.png"));
 
 
-					}
-					
+				}
+
 				return true;
 			}
 			if (trusted.hasStarted && !trusted.hasEnded) {
@@ -3715,20 +3708,20 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 			//has artifact
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasShownPoemToWell == true && Engine::GetInstance().scene->hasAllFragments == true && !Engine::GetInstance().scene->inventario.tieneObjeto("Artifact") && Engine::GetInstance().scene->talkedTwiceEmpress == true) {
 
-			
-					if (GivesArtifact.AvanzarDialogo(dt)) {
+
+				if (GivesArtifact.AvanzarDialogo(dt)) {
 
 
-						SDL_Texture* help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ArtifactAssembled2_.png");
-						Engine::GetInstance().scene->inventario.push("Artifact", help, nullptr);
-						Engine::GetInstance().scene->inventario.eliminarObjeto("Bloody");
-						Engine::GetInstance().scene->inventario.eliminarObjeto("Moldy");
-						Engine::GetInstance().scene->inventario.eliminarObjeto("Core");
-						Engine::GetInstance().scene->inventario.eliminarObjeto("Rusty");
-						Engine::GetInstance().scene->misiones.Completed("Empress");
-						Engine::GetInstance().scene->cards.push("Empress", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Empress.png"), nullptr);
-					}
-				
+					SDL_Texture* help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ArtifactAssembled2_.png");
+					Engine::GetInstance().scene->inventario.push("Artifact", help, nullptr);
+					Engine::GetInstance().scene->inventario.eliminarObjeto("Bloody");
+					Engine::GetInstance().scene->inventario.eliminarObjeto("Moldy");
+					Engine::GetInstance().scene->inventario.eliminarObjeto("Core");
+					Engine::GetInstance().scene->inventario.eliminarObjeto("Rusty");
+					Engine::GetInstance().scene->misiones.Completed("Empress");
+					Engine::GetInstance().scene->cards.push("Empress", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Empress.png"), nullptr);
+				}
+
 
 				return true;
 			}
@@ -3737,42 +3730,67 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 				return true;
 
 			}
-		
 
-		//After Mission
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN  && Engine::GetInstance().scene->hasAllFragments == true && Engine::GetInstance().scene->inventario.tieneObjeto("Artifact")) {
+			//has ntartifact
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasShownPoemToWell == true && Engine::GetInstance().scene->talkedTwiceEmpress == true) {
 
-			
-				if (AfterMission.AvanzarDialogo(dt)) {
+
+
+
+				if (scolding.AvanzarDialogo(dt)) {
+
+
+
 
 
 				}
-				
-			return true;
-		}
-		if (AfterMission.hasStarted && !AfterMission.hasEnded) {
-			AfterMission.Draw(dt);
-			return true;
-
-		}
-		//regular
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasShownPoemToWell == false) {
-
-			
-				if (regular.AvanzarDialogo(dt)) {
 
 
-					Engine::GetInstance().scene->hasTalkedOnceEmpress = true;
+
+
+				return true;
+			}
+			if (scolding.hasStarted && !scolding.hasEnded) {
+				scolding.Draw(dt);
+				return true;
+
+
+
+				//After Mission
+				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasAllFragments == true && Engine::GetInstance().scene->inventario.tieneObjeto("Artifact")) {
+
+
+					if (AfterMission.AvanzarDialogo(dt)) {
+
+
+					}
+
+					return true;
 				}
-				
+				if (AfterMission.hasStarted && !AfterMission.hasEnded) {
+					AfterMission.Draw(dt);
+					return true;
 
-			return true;
-		}
-		if (regular.hasStarted && !regular.hasEnded) {
-			regular.Draw(dt);
-			return true;
+				}
+				//regular
+				if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Engine::GetInstance().scene->hasShownPoemToWell == false) {
 
-		}
+
+					if (regular.AvanzarDialogo(dt)) {
+
+
+						Engine::GetInstance().scene->hasTalkedOnceEmpress = true;
+					}
+
+
+					return true;
+				}
+				if (regular.hasStarted && !regular.hasEnded) {
+					regular.Draw(dt);
+					return true;
+
+				}
+			}
 		}
 
 
@@ -3967,6 +3985,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 				
 					if (teleport.AvanzarDialogo(dt)) {
 						// Abrir el menú de teletransporte después del diálogo
+
 						Engine::GetInstance().scene->SetTeleport(true);
 					}
 					

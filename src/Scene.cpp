@@ -1117,6 +1117,14 @@ void  Scene::PostUpdateLevel() {
 		SDL_RenderTexture(Engine::GetInstance().render->renderer, helpTextures[actualHelpTexture], NULL, &centrar);
 	}
 	
+	if (teleportOn) {
+
+		SDL_FRect centrar = { 0, 0, 1200, 600 };
+		SDL_RenderTexture(Engine::GetInstance().render->renderer, behindteleport, NULL, &centrar);
+
+
+
+	}
 
 	if (player != nullptr && Engine::GetInstance().scene->hasTalkedMagician == true) {
 		
@@ -2340,58 +2348,64 @@ void Scene::SetInventory(bool inventory) {
 }
 
 void Scene::CreateTeleportUI() {
-	int x = 450;
-	int y = 200;
-	int buttonWidth = 250;
-	int buttonHeight = 60;
-	int spacing = 80;
+
+
+
+
+
+
+	int x = 320;
+	int y = 260;
+	int buttonWidth = 175;
+	int buttonHeight = 175;
+	int spacing = 170;
 
 	// LEVEL 1
-	SDL_Texture* levelNormal = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level1_Normal.png");
-	SDL_Texture* levelClicked = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level1_Clicked.png");
+	SDL_Texture* levelNormal = Engine::GetInstance().textures->Load("assets/UI/UI_Teleport/UI_Teleport_L1_1.png");
+	SDL_Texture* levelClicked = Engine::GetInstance().textures->Load("assets/UI/UI_Teleport/UI_Teleport_L1_2.png");
 	auto btnLevel1 = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 60, "LEVEL 1",
-		{ x, y, buttonWidth, buttonHeight },
+		{ x, y + 40, buttonWidth, buttonHeight },
 		this, SDL_Rect{ 0,0,0,0 }, levelNormal, levelClicked
 	);
 	btnLevel1->visible = false;
 
 	// LEVEL 2
-	levelNormal = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level2_Normal.png");
-	levelClicked = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level2_Clicked.png");
+	levelNormal = Engine::GetInstance().textures->Load("assets/UI/UI_Teleport/UI_Teleport_L2_1.png");
+	levelClicked = Engine::GetInstance().textures->Load("assets/UI/UI_Teleport/UI_Teleport_L2_2.png");
 	auto btnLevel2 = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 61, "LEVEL 2",
-		{ x, y + spacing, buttonWidth, buttonHeight },
+		{ x + spacing, y - 30, buttonWidth, buttonHeight },
 		this, SDL_Rect{ 0,0,0,0 }, levelNormal, levelClicked
 	);
 	btnLevel2->visible = false;
 
 	// LEVEL 3
-	levelNormal = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level3_Normal.png");
-	levelClicked = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level3_Clicked.png");
+	levelNormal = Engine::GetInstance().textures->Load("assets/UI/UI_Teleport/UI_Teleport_L3_1.png");
+	levelClicked = Engine::GetInstance().textures->Load("assets/UI/UI_Teleport/UI_Teleport_L3_2.png");
 	auto btnLevel3 = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 62, "LEVEL 3",
-		{ x, y + (spacing * 2), buttonWidth, buttonHeight },
+		{ x + spacing + spacing, y + 23, buttonWidth, buttonHeight },
 		this, SDL_Rect{ 0,0,0,0 }, levelNormal, levelClicked
 	);
 	btnLevel3->visible = false;
 
 	// LEVEL 4
-	levelNormal = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level4_Normal.png");
-	levelClicked = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level4_Clicked.png");
+	levelNormal = Engine::GetInstance().textures->Load("assets/UI/UI_Teleport/UI_Teleport_L4_1.png");
+	levelClicked = Engine::GetInstance().textures->Load("assets/UI/UI_Teleport/UI_Teleport_L4_2.png");
 	auto btnLevel4 = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 63, "LEVEL 4",
-		{ x, y + (spacing * 3), buttonWidth, buttonHeight },
+		{ x + spacing + spacing + spacing, y - 44, buttonWidth, buttonHeight },
 		this, SDL_Rect{ 0,0,0,0 }, levelNormal, levelClicked
 	);
 	btnLevel4->visible = false;
 
 	// EXIT
-	SDL_Texture* exitNormal = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Exit_Normal.png");
-	SDL_Texture* exitClicked = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Exit_Clicked.png");
+	SDL_Texture* exitNormal = Engine::GetInstance().textures->Load("assets/UI/UI_Teleport/UI_Teleport_Exit1.png");
+	SDL_Texture* exitClicked = Engine::GetInstance().textures->Load("assets/UI/UI_Teleport/UI_Teleport_Exit2.png");
 	auto btnExit = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 64, "EXIT",
-		{ x, y + (spacing * 4), buttonWidth, buttonHeight },
+		{ x - 100, y - 100, buttonWidth / 2, buttonHeight / 4 },
 		this, SDL_Rect{ 0,0,0,0 }, exitNormal, exitClicked
 	);
 	btnExit->visible = false;
@@ -2401,12 +2415,32 @@ void Scene::CreateTeleportUI() {
 }
 
 
+
+
 void Scene::SetTeleport(bool teleport) {
 	teleportOn = teleport;
 
 	for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
-		if (element->id >= 60 && element->id <= 64) {
-			element->visible = teleportOn;
+
+		if (element->id == 60 && rat1) {
+			element->visible = teleport;
+
+		}
+		if (element->id == 61 && rat2) {
+			element->visible = teleport;
+
+		}
+		if (element->id == 62 && rat3) {
+			element->visible = teleport;
+
+		}
+		if (element->id == 63 && rat4) {
+			element->visible = teleport;
+
+		}
+		if (element->id == 64 && rat4) {
+			element->visible = teleport;
+
 		}
 	}
 
@@ -2414,6 +2448,7 @@ void Scene::SetTeleport(bool teleport) {
 		selectedTeleportingLevel = 0;
 	}
 }
+
 
 void Scene::HandleTeleportUIEvents(UIElement* uiElement) {
 	int targetLevel = 0;

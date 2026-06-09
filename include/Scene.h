@@ -65,6 +65,14 @@ public:
 	Scene();
 	// help
 
+	// ratas!!
+
+	bool rat1 = false;
+	bool rat2 = false;
+	bool rat3 = false;
+	bool rat4 = false;
+
+
 	void HelpUI();
 
 	void SetHelpUI(bool aaa);
@@ -275,6 +283,10 @@ private:
 	SDL_Texture* quesoSextos_1 = nullptr;
 	SDL_Texture* extraHeartTexture = nullptr;
 
+
+	SDL_Texture* behindteleport = nullptr;
+
+
 	std::vector<std::shared_ptr<Enemy>> enemies;
 
 	std::shared_ptr<UIButton> uiBt;
@@ -307,7 +319,7 @@ public:
 	std::string nextSpawnPoint = "Door_1_1";
 	std::string nextDoor = "";
 	bool firstDoor = true;
-	bool cheese = false;
+	bool cheese = true;
 
 	bool isFading = false;
 	bool fadeIn = false;   // true = fade in, false = fade out

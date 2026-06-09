@@ -1261,7 +1261,7 @@ public:
 	int coinPickupFx;
 	int xInicial;
 	int yInicial;
-	int hidingPlace = 0;
+	int level = 0;
 
 	bool isGettingTouched = false;
 	Player* py;
