@@ -613,6 +613,8 @@ protected:
     */
     bool _isAutoRemoveOnFinish = false;
 
+    bool _isBlinking = false;
+
     std::string _plistFile;
     //! time elapsed since the start of the system (in seconds)
     float _elapsed = 0;

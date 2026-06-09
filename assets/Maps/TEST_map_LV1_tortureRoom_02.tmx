@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="107" height="104" tilewidth="128" tileheight="128" infinite="0" nextlayerid="28" nextobjectid="447">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="107" height="104" tilewidth="128" tileheight="128" infinite="0" nextlayerid="28" nextobjectid="447">
  <tileset firstgid="1" name="tileset_lv1_torture_02" tilewidth="128" tileheight="128" tilecount="810" columns="30">
   <image source="tileset_lv1_torture_02.png" width="3840" height="3537"/>
  </tileset>
