@@ -3221,7 +3221,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 					SDL_Texture* help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
 					Engine::GetInstance().scene->inventario.push("EmpressKey1", help, nullptr);
 					Engine::GetInstance().scene->misiones.Completed("Psalms");
-					Engine::GetInstance().scene->cards.push("Empress", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Empress.png"), nullptr);
+					Engine::GetInstance().scene->cards.push("Hierophant", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Hierophant.png"), nullptr);
 				}
 				return true;
 			
