@@ -7,4 +7,15 @@ Ayfer…
 Res… cue… Prin… cess…
 No, my knight, please…
 My… Knight…
+CHOCICE
+Q. You two are very lucky that I’m a sucker for romance.
+E. Kill them.
+CHOCICE Q:
+Now, when you eat your way out of there: make better choices.
+. . . 
+. . .
+Wha--- You little---!
+Thank you.
+CHOCICE E:
+Know that you deserve this.
 +
