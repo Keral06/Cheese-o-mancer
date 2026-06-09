@@ -183,7 +183,7 @@ void Verdugo::UpdateIntro(float dt)
 
             state = IDLEV; // boss quieto
             velocity.x = 0;
-
+            Engine::GetInstance().scene->isInBossfight = true;
             LOG("Boss intro cinematic START");
         }
 
@@ -841,7 +841,7 @@ void Verdugo::Die() {
     anims.SetCurrent("death");
     int numeroDeMonedas = 10;
     const Vector2D& pos = this->GetPosition();
-
+    Engine::GetInstance().scene->isInBossfight = false;
     for (int i = 0; i < numeroDeMonedas; ++i) {
         auto newCoin = Engine::GetInstance().entityManager->CreateEntity(EntityType::COIN);
         auto coinEntity = std::static_pointer_cast<Coins>(newCoin);
@@ -854,7 +854,7 @@ void Verdugo::Die() {
             coinEntity->Start();
         }
     }
-    this->toDelete = true;
+    //this->toDelete = true;
 }
 
 void Verdugo::SpawnWeakWall()
