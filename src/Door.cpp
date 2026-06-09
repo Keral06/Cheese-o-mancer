@@ -26,7 +26,7 @@ bool Door::Start()
     );
 
     pbody->listener = this;
-    pbody->ctype = ColliderType::PARED;
+    pbody->ctype = ColliderType::DOOR;
 
     return true;
 }
