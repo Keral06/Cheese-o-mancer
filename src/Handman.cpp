@@ -11,23 +11,23 @@
 
 HANDMAN::HANDMAN() : NPC(EntityType::HANDMAN)
 {
-	
-	this->name = name;
-	this->texture = texture;
-	this->tsxPath = tsxPath;
+    this->name = name;
+    this->texture = texture;
+    this->tsxPath = tsxPath;
     pbody = nullptr;
+    currentState = H_IDLE;
 }
 
 
 HANDMAN::~HANDMAN() {
-	if (pbody != nullptr) {
-		Engine::GetInstance().physics->DeletePhysBody(pbody);
-		pbody = nullptr;
-	}
+    if (pbody != nullptr) {
+        Engine::GetInstance().physics->DeletePhysBody(pbody);
+        pbody = nullptr;
+    }
 }
 
 bool HANDMAN::Awake() {
-	return true;
+    return true;
 }
 
 bool HANDMAN::Start() {
@@ -82,16 +82,19 @@ bool HANDMAN::Start() {
     }
 
     std::unordered_map<int, std::string> aliases = {
-           {70, "selling"}
+               {0, "idle"},
+               {35, "shop_start"},
+               {36, "shop_static"},
+               {37, "shop_end"}
     };
+
     anims.LoadFromTSX("assets/Textures/Spritesheets/Hangman/sprite_hangedman_01.tsx", aliases);
-    /*coinPickupFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/PREV/coin-collision-sound-342335.wav");*/
     anims.SetCurrent("idle");
+    currentState = H_IDLE;
 
     texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hangman/sprite_hangedman_01.png");
     InteractTexture = Engine::GetInstance().textures->Load("resources/UI/UI_interaction/UI_ Interaction_Indicator1Talk.png");
 
-    //32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
     texW = 256;
     texH = 640;
 
@@ -107,21 +110,25 @@ bool HANDMAN::Start() {
             bodyType::DYNAMIC
         );
         b2Body_SetGravityScale(pbody->body, 0.0f);
-
         pbody->listener = this;
         pbody->ctype = ColliderType::MAGICIAN;
-
-
-
-
     }
-    //Poner dialogo dependiendo del nivel
+
     return true;
 }
 
 bool HANDMAN::Update(float dt)
 {
-	if (!active) return true;
+    if (!active) return true;
+
+    if (currentState == H_SHOP_START && anims.HasFinished()) {
+        currentState = H_SHOP_STATIC;
+        anims.SetCurrent("shop_static");
+    }
+    else if (currentState == H_SHOP_END && anims.HasFinished()) {
+        currentState = H_IDLE;
+        anims.SetCurrent("idle");
+    }
 
 	Draw(dt);
     if (isGettingTouched) {
@@ -185,17 +192,23 @@ bool HANDMAN::Update(float dt)
             return true;
         }
 
+        // AQUÍ ES DONDE SE ABRE LA TIENDA CUANDO ACABA DE HABLAR 
         if (bossDefeated && BeatBoss.hasStarted && !BeatBoss.hasEnded) {
             if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
                
-                if (BeatBoss.AvanzarDialogo(dt, nameNPC)) {
+                if (BeatBoss.AvanzarDialogo(dt)) {
                     /*firstTimeBossKill = false;*/
                     isStoreOn = true;
+                    currentState = H_SHOP_START;
+                    anims.SetCurrent("shop_start");
+                    anims.Resets();
+
                     moneyPlayer = Engine::GetInstance().scene->score;
                     Engine::GetInstance().scene->SetStore(isStoreOn, storeID);
                     return true;
                 }
             }
+
             if (!BeatBoss.hasEnded) BeatBoss.Draw(dt);
             return true;
         }
@@ -232,24 +245,27 @@ bool HANDMAN::Update(float dt)
             return true;
         }
 
+        // CONTROL DE TECLA E PRINCIPAL PARA INICIAR DIÁLOGOS O CERRAR LA TIENDA
         if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-            bool necesitaAnimacion = false;
             if (firstTime) {
                 pendingDialogue = &dialogue;
-                necesitaAnimacion = true;
             }
             else if (!bossDefeated) {
                 pendingDialogue = &dialogueHANDMAN;
-                necesitaAnimacion = true;
             }
             else {
                 if (!isStoreOn) {
                     pendingDialogue = &BeatBoss;
-                    necesitaAnimacion = true;
                 }
                 else {
+                    // AQUÍ ES DONDE SE CIERRA LA TIENDA VOLUNTARIAMENTE
                     isStoreOn = false;
                     Engine::GetInstance().scene->SetStore(isStoreOn, storeID);
+
+                    // PASAMOS AL ESTADO DE CERRAR TIENDA
+                    currentState = H_SHOP_END;
+                    anims.SetCurrent("shop_end");
+                    anims.Resets();
 
                     if (Engine::GetInstance().scene->score < moneyPlayer) {
                         pendingDialogue = &hasBought;
@@ -257,26 +273,18 @@ bool HANDMAN::Update(float dt)
                     else {
                         pendingDialogue = &hasNotBought;
                     }
-                    necesitaAnimacion = false;
                 }
             }
 
+            // Reproducimos el diálogo solicitado directamente (Ya no bloqueamos con "isWaitingForAnimation")
             if (pendingDialogue != nullptr) {
-                if (necesitaAnimacion) {
-                    anims.SetCurrent("selling");
-                    anims.Resets();
-                    isWaitingForAnimation = true;
-                }
-                else {
-                    pendingDialogue->hasEnded = false;
-                    pendingDialogue->BeginDialogue(nameNPC);
-                    pendingDialogue->Draw(dt);
-                }
+                pendingDialogue->hasEnded = false;
+                pendingDialogue->BeginDialogue(nameNPC);
+                pendingDialogue->Draw(dt);
             }
         }
-
-            
     }
+
     return true;
 }
 //		//parlarli i has beat el boss primer cop
@@ -369,19 +377,13 @@ void HANDMAN::Draw(float dt) {
     position.setX((float)x);
     position.setY((float)y);
 
-    SDL_Rect frameToDraw;
+    // Actualizamos SIEMPRE la animación para que se vea moverse en todo momento
+    anims.Update(dt);
+    const SDL_Rect& frameToDraw = anims.GetCurrentFrame();
 
-    if (isWaitingForAnimation) {
-        anims.Update(dt);
-        frameToDraw = anims.GetCurrentFrame();
-    }
-    else {
-        frameToDraw = { 0, 1280, texW, texH };
-    }
-
-	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &frameToDraw);
-
+    Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &frameToDraw);
 }
+
 bool HANDMAN::CleanUp()
 {
 	LOG("Unloading Coin");
@@ -392,6 +394,7 @@ bool HANDMAN::CleanUp()
 	}
 	return true;
 }
+
 void HANDMAN::OnCollision(PhysBody* physA, PhysBody* physB) {
 	Player* pp = static_cast<Player*>(physB->listener);
 	py = pp;
@@ -405,6 +408,7 @@ void HANDMAN::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 
 }
+
 void HANDMAN::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 	isGettingTouched = false;
 

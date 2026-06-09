@@ -8,7 +8,9 @@ public:
     enum ReyState
     {
         IDLER,
-        DEADR
+        TALKINGR,    
+        DEADR,
+        DEATH_STATICR
     };
 
     enum Finales 
@@ -46,5 +48,6 @@ public:
 
     bool playerInRange = false;
     bool magoSpawned = false;
+    bool eKeyWasPressed = false;
 };
 #endif

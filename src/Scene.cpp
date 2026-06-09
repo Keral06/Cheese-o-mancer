@@ -70,6 +70,7 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	dtHelp = dt;
 	if (isPlayingVideo) {
 		//LOG("Video dt: %f", dt);
 		plm_decode(video.plm, dt / 1000.0f);	//passar d milisegons a segons
@@ -187,16 +188,17 @@ bool Scene::Update(float dt)
 		StartFadeIn(1.0f);
 	}
 
-	if (bossFightController != nullptr)
-	{
-		bossFightController->Update(dt);
-	}
+
 	return true;
 }
 
 // Called each loop iteration
 bool Scene::PostUpdate()
 {
+	if (bossFightController != nullptr)
+	{
+		bossFightController->Update(dtHelp);
+	}
 	bool ret = true;
 	if (isPaused) {
 		UpdatePauseMenu();
@@ -214,7 +216,8 @@ bool Scene::PostUpdate()
 	
 	
 	}
-	else {
+	else if (misiones.Visualizada() == true && !someoneIsTalking) {
+
 	
 		for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
 			if (element->id == 68) {
@@ -222,6 +225,33 @@ bool Scene::PostUpdate()
 			}
 		}
 	}
+
+	if (cards.Visualizada() == false && !someoneIsTalking) {
+
+
+		for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
+			if (element->id == 69) {
+				element->ChangeImage(cardsIcon2clic, cardsIconclic);
+			}
+		}
+
+
+
+	}
+	else if (cards.Visualizada() == true && !someoneIsTalking) {
+
+		for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
+			if (element->id == 69) {
+				element->ChangeImage(cardsIcon2, cardsIcon);
+			}
+		}
+
+
+
+	}
+
+
+
 	switch (currentScene)
 	{
 	case SceneID::INTRO_SCREEN:
@@ -577,9 +607,13 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::IN_GAME:
 		
 
-		if (lastscene != SceneID::IN_GAME)
+		if (lastscene == SceneID::MAIN_MENU && !continueGame)
 		{
 			firstMapLoad = true;
+		}
+		else
+		{
+			firstMapLoad = false;
 		}
 
 		if (continueGame)
@@ -953,20 +987,9 @@ void Scene::UpdateLevel(float dt) {
 			}
 		}
 	}
-	if (cardsInventoryOn) {
-		if (cardsBase != nullptr) {
-			Engine::GetInstance().render->DrawTextureNoCamera(cardsBase, 240, 60, 800, 600);
-		}
 
-		if (cards.cards.size() > 0) {
-
-
-			Engine::GetInstance().render->DrawTextureNoCamera(cards.cards[currentCardIndex].imagen, 730, 162, 200, 400);
-		}
-
-
-	}
 	
+
 	if (isPaused||showHelp||inventoryOn) {
 		return;
 	}
@@ -980,9 +1003,10 @@ void Scene::UpdateLevel(float dt) {
 		levelTimer += dt / 1000.0f;
 	}
 
-	if (player && Engine::GetInstance().scene->lives <= 0) {
-		ChangeScene(SceneID::GAME_OVER);
-		return;
+	if (player && player->isDead()) {
+		if (player->isDeathAnimFinished) {
+			ChangeScene(SceneID::GAME_OVER);
+		}
 	}
 
 	//Lógica de cambio de mapa (F1-F4)
@@ -1002,7 +1026,7 @@ void Scene::UpdateLevel(float dt) {
 		LoadMap("TEST_map_LV1_bossRoom_01.tmx");
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_J) == KEY_DOWN) {
-		LoadMap("Map_LV4_ThroneRoom_01.tmx");
+		LoadMap("Map_LV2_bossTower.tmx");
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
 		LoadMap("Map_LV3_left_01.tmx");
@@ -1037,16 +1061,13 @@ void Scene::UpdateLevel(float dt) {
 		}
 	}
 
-	// Lógica de gestión de enemigos muertos
-	if (player && player->isDead()) {
-		for (auto it = enemies.begin(); it != enemies.end(); ) {
-			if ((*it)->toDelete) { // si se tiene que borrar la destruye
-				it = enemies.erase(it);
-			}
-			/*else {
-				(*it)->Reset();
-				++it;
-			}*/
+	// Lógica de gestión de entidades destruidas
+	for (auto it = enemies.begin(); it != enemies.end(); ) {
+		if ((*it)->toDelete) {
+			it = enemies.erase(it); // Lo borramos de la escena definitivamente
+		}
+		else {
+			++it;
 		}
 	}
 
@@ -1095,7 +1116,23 @@ void Scene::UnloadLevel() {
 }
 
 void  Scene::PostUpdateLevel() {
+	if (cardsInventoryOn) {
+		if (cardsBase != nullptr) {
+			SDL_Rect screenRect = { -10000, -10000, 50000, 50000 };
+			Engine::GetInstance().render->DrawRectangle(screenRect, 0, 0, 0, 150, true, false);
+			Engine::GetInstance().render->DrawTextureNoCamera(cardsBase, 240, 60, 800, 600);
+		}
 
+
+		if (cards.cards.size() > 0) {
+
+
+
+			Engine::GetInstance().render->DrawTextureNoCamera(cards.cards[currentCardIndex].imagen, 730, 162, 200, 400);
+			cards.cards[currentCardIndex].visualizada = true;
+		}
+
+	}
 	// Cargar/Guardar estado (F5/F6)
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
 		Engine::GetInstance().map->LoadEntities(player, enemies);
@@ -1116,6 +1153,14 @@ void  Scene::PostUpdateLevel() {
 		SDL_RenderTexture(Engine::GetInstance().render->renderer, helpTextures[actualHelpTexture], NULL, &centrar);
 	}
 	
+	if (teleportOn) {
+
+		SDL_FRect centrar = { 0, 0, 1200, 600 };
+		SDL_RenderTexture(Engine::GetInstance().render->renderer, behindteleport, NULL, &centrar);
+
+
+
+	}
 
 	if (player != nullptr && Engine::GetInstance().scene->hasTalkedMagician == true) {
 		
@@ -1637,6 +1682,10 @@ void Scene::LoadMap(std::string map)
 	if (helpTextures.size() == 0) {
 		helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_Tutorial/UI_TutorialControls1_.png");
 		helpTextures.push_back(helpTexture);
+
+		helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_Tutorial/UI_TutorialControls2_.png");
+		helpTextures.push_back(helpTexture);
+
 	}
 	
 	map1Texture = Engine::GetInstance().textures->Load("assets/UI/Map/UI_Map_Level1.png");
@@ -1665,16 +1714,60 @@ void Scene::LoadMap(std::string map)
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("assets/Maps/", map);
 
+
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, enemies);
 
+	bool wasContinued = continueGame;
 	if (continueGame == true) {
 		Engine::GetInstance().gameManager->LoadGame();
 		continueGame = false;
-	}
-	
+		for (auto& obj : inventario.objetos) {
+			if (obj.nombre == "Map" || obj.nombre == "Map Nivel 1") { obj.imagen = iconMap; obj.imagenDescripcion = map1Texture; }
+			else if (obj.nombre == "Map Nivel 2") { obj.imagen = iconMap; obj.imagenDescripcion = map2Texture; }
+			else if (obj.nombre == "Map Nivel 3") { obj.imagen = iconMap; obj.imagenDescripcion = map3Texture; }
+			else if (obj.nombre == "Key") obj.imagen = iconKey;
+			else if (obj.nombre == "Lamp") obj.imagen = iconLamp;
+			else if (obj.nombre == "Spring") obj.imagen = iconSpring;
+			else if (obj.nombre == "HorseMacure") obj.imagen = iconHorseMacure;
+			else if (obj.nombre == "Gargantuan") obj.imagen = iconGargantuan;
+		}
+		for (auto& mis : misiones.objetos) {
+			if (mis.nombre == "Talk with magician") {
+				SDL_Texture* texNormal = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Magician1.png");
+				SDL_Texture* texCompletada = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Magician2.png");
 
-	if (firstMapLoad && !continueGame) 
+				mis.imagenFinalizada = texCompletada;
+
+				if (mis.completed == true) {
+					mis.imagen = texCompletada;
+				}
+				else {
+					mis.imagen = texNormal;
+				}
+			}
+		}
+
+		for (auto& card : cards.cards) {
+			if (card.nombre == "The fool") {
+				card.imagen = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Fool.png");
+			}
+			else if (card.nombre == "The magician") {
+				card.imagen = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Magician.png"); 
+			}
+			else if (card.nombre == "Wheel of fortune") {
+				card.imagen = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Wheel.png"); 
+			}
+		}
+
+		for (auto& card : cards.cards) {
+			if (card.nombre == "The fool") {
+				card.imagen = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Fool.png");
+			}
+		}
+	}
+
+	if (firstMapLoad && !wasContinued) 
 	{
 		showHelp = true;
 		firstMapLoad = false;
@@ -2285,6 +2378,8 @@ void Scene::CreateInventoryUI() {
 	arrowRight2 = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_BurronRight2_.png");
 	arrowLeft2 = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_ButtonLeft2_.png");
 	cardsBase = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_Base_.png");
+	iconCheeseStatue = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemCheeseStatue1.png");
+	pressETexture = Engine::GetInstance().textures->Load("assets/UI/UI_Interaction/UI_ Interaction_Indicator1Interact.png");
 
 	auto invPrevPage = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 48, "",
@@ -2339,58 +2434,64 @@ void Scene::SetInventory(bool inventory) {
 }
 
 void Scene::CreateTeleportUI() {
-	int x = 450;
-	int y = 200;
-	int buttonWidth = 250;
-	int buttonHeight = 60;
-	int spacing = 80;
+
+
+
+
+
+
+	int x = 320;
+	int y = 260;
+	int buttonWidth = 175;
+	int buttonHeight = 175;
+	int spacing = 170;
 
 	// LEVEL 1
-	SDL_Texture* levelNormal = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level1_Normal.png");
-	SDL_Texture* levelClicked = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level1_Clicked.png");
+	SDL_Texture* levelNormal = Engine::GetInstance().textures->Load("assets/UI/UI_Teleport/UI_Teleport_L1_1.png");
+	SDL_Texture* levelClicked = Engine::GetInstance().textures->Load("assets/UI/UI_Teleport/UI_Teleport_L1_2.png");
 	auto btnLevel1 = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 60, "LEVEL 1",
-		{ x, y, buttonWidth, buttonHeight },
+		{ x, y + 40, buttonWidth, buttonHeight },
 		this, SDL_Rect{ 0,0,0,0 }, levelNormal, levelClicked
 	);
 	btnLevel1->visible = false;
 
 	// LEVEL 2
-	levelNormal = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level2_Normal.png");
-	levelClicked = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level2_Clicked.png");
+	levelNormal = Engine::GetInstance().textures->Load("assets/UI/UI_Teleport/UI_Teleport_L2_1.png");
+	levelClicked = Engine::GetInstance().textures->Load("assets/UI/UI_Teleport/UI_Teleport_L2_2.png");
 	auto btnLevel2 = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 61, "LEVEL 2",
-		{ x, y + spacing, buttonWidth, buttonHeight },
+		{ x + spacing, y - 30, buttonWidth, buttonHeight },
 		this, SDL_Rect{ 0,0,0,0 }, levelNormal, levelClicked
 	);
 	btnLevel2->visible = false;
 
 	// LEVEL 3
-	levelNormal = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level3_Normal.png");
-	levelClicked = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level3_Clicked.png");
+	levelNormal = Engine::GetInstance().textures->Load("assets/UI/UI_Teleport/UI_Teleport_L3_1.png");
+	levelClicked = Engine::GetInstance().textures->Load("assets/UI/UI_Teleport/UI_Teleport_L3_2.png");
 	auto btnLevel3 = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 62, "LEVEL 3",
-		{ x, y + (spacing * 2), buttonWidth, buttonHeight },
+		{ x + spacing + spacing, y + 23, buttonWidth, buttonHeight },
 		this, SDL_Rect{ 0,0,0,0 }, levelNormal, levelClicked
 	);
 	btnLevel3->visible = false;
 
 	// LEVEL 4
-	levelNormal = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level4_Normal.png");
-	levelClicked = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Level4_Clicked.png");
+	levelNormal = Engine::GetInstance().textures->Load("assets/UI/UI_Teleport/UI_Teleport_L4_1.png");
+	levelClicked = Engine::GetInstance().textures->Load("assets/UI/UI_Teleport/UI_Teleport_L4_2.png");
 	auto btnLevel4 = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 63, "LEVEL 4",
-		{ x, y + (spacing * 3), buttonWidth, buttonHeight },
+		{ x + spacing + spacing + spacing, y - 44, buttonWidth, buttonHeight },
 		this, SDL_Rect{ 0,0,0,0 }, levelNormal, levelClicked
 	);
 	btnLevel4->visible = false;
 
 	// EXIT
-	SDL_Texture* exitNormal = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Exit_Normal.png");
-	SDL_Texture* exitClicked = Engine::GetInstance().textures->Load("assets/UI/Teleport/UI_Teleport_Exit_Clicked.png");
+	SDL_Texture* exitNormal = Engine::GetInstance().textures->Load("assets/UI/UI_Teleport/UI_Teleport_Exit1.png");
+	SDL_Texture* exitClicked = Engine::GetInstance().textures->Load("assets/UI/UI_Teleport/UI_Teleport_Exit2.png");
 	auto btnExit = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 64, "EXIT",
-		{ x, y + (spacing * 4), buttonWidth, buttonHeight },
+		{ x - 100, y - 100, buttonWidth / 2, buttonHeight / 4 },
 		this, SDL_Rect{ 0,0,0,0 }, exitNormal, exitClicked
 	);
 	btnExit->visible = false;
@@ -2400,12 +2501,32 @@ void Scene::CreateTeleportUI() {
 }
 
 
+
+
 void Scene::SetTeleport(bool teleport) {
 	teleportOn = teleport;
 
 	for (auto& element : Engine::GetInstance().uiManager->UIElementsList) {
-		if (element->id >= 60 && element->id <= 64) {
-			element->visible = teleportOn;
+
+		if (element->id == 60 && rat1) {
+			element->visible = teleport;
+
+		}
+		if (element->id == 61 && rat2) {
+			element->visible = teleport;
+
+		}
+		if (element->id == 62 && rat3) {
+			element->visible = teleport;
+
+		}
+		if (element->id == 63 && rat4) {
+			element->visible = teleport;
+
+		}
+		if (element->id == 64 && rat4) {
+			element->visible = teleport;
+
 		}
 	}
 
@@ -2414,6 +2535,7 @@ void Scene::SetTeleport(bool teleport) {
 	}
 }
 
+
 void Scene::HandleTeleportUIEvents(UIElement* uiElement) {
 	int targetLevel = 0;
 	std::string targetMap;
@@ -2421,12 +2543,12 @@ void Scene::HandleTeleportUIEvents(UIElement* uiElement) {
 	switch (uiElement->id) { // CAMBIAR targetMap por el mapa donde esté el object KingRat final con la propiedad int Level = targetLevel para cada caso
 	case 60:  // LEVEL 1
 		targetLevel = 1;
-		targetMap = "TEST_map_LV1_startRoom_01.tmx";
+		targetMap = "Map_LV2_botanica_02.tmx";
 		break;
 
 	case 61:  // LEVEL 2
 		targetLevel = 2;
-		targetMap = "Map_LV2_bossTower.tmx";
+		targetMap = "Map_LV4_ThroneRoom_01.tmx";
 		break;
 
 	case 62:  // LEVEL 3
@@ -2566,6 +2688,9 @@ void Scene::InventariIconUI() {
 
 	cardsIcon = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Tarot_InventoryItem1_.png");
 	cardsIcon2 = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Tarot_InventoryItem2_.png");
+	cardsIconclic = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Tarot_InventoryItem1_notification.png");
+	cardsIcon2clic = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Tarot_InventoryItem2_notification.png");
+
 	auto bag = Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 67, "",
 		{ 1110, 560, 160, 160 }, this, SDL_Rect{ 0,0,0,0 },
@@ -2643,6 +2768,8 @@ void Scene::HelpUI() {
 	cardsBase = Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_Tarot_Base_.png");
 	if (helpTextures.size() == 0) {
 		helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_Tutorial/UI_TutorialControls1_.png");
+		helpTextures.push_back(helpTexture);
+		helpTexture = Engine::GetInstance().textures->Load("assets/UI/UI_Tutorial/UI_TutorialControls2_.png");
 		helpTextures.push_back(helpTexture);
 	}
 
@@ -2766,4 +2893,64 @@ void Scene::CheckMiniBossStatus() {
 		// El mapa busca el muro de la capa Walls por su nombre de Tiled y lo elimina
 		Engine::GetInstance().map->DestroyBodyByName("WallBeforeWheel");
 	}
+}
+
+void Scene::RegisterEnemyKill(std::string enemyName) {
+
+	if (enemyName == "Rat") {
+		ratsKilled++;
+	}
+	else if (enemyName == "Horse") {
+		horsesKilled++;
+	}
+	else if (enemyName == "Bee") {
+		beesKilled++;
+	}
+	else if (enemyName == "Jailer") {
+		jailersKilled++;
+	}
+
+	LOG("Bajas actuales - Rats: %d, Horses: %d, Bees: %d, Jailers: %d", ratsKilled, horsesKilled, beesKilled, jailersKilled);
+
+	if (HasKilledOneOfEachType()) {
+		LOG("¡Has matado al menos uno de cada tipo de enemigo!");
+	}
+}
+
+bool Scene::HasKilledOneOfEachType() {
+	return (ratsKilled > 0, horsesKilled > 0, beesKilled > 0, jailersKilled > 0);
+}
+
+void Scene::PickUpCorpse(Enemy* corpse) {
+	if (!corpse) return;
+
+	std::string corpseName = corpse->name;
+
+	SDL_Texture* iconPlaceholder = iconCheeseStatue;
+
+	if (corpseName == "Rat") {
+		inventario.push("Estatua Rata", iconPlaceholder, nullptr);
+		LOG("Estatua de Rata añadida al inventario");
+	}
+	else if (corpseName == "Horse") {
+		inventario.push("Estatua Caballo", iconPlaceholder, nullptr);
+		LOG("Estatua de Caballo añadida al inventario");
+	}
+	else if (corpseName == "Bee") {
+		inventario.push("Estatua Abeja", iconPlaceholder, nullptr);
+		LOG("Estatua de Abeja añadida al inventario");
+	}
+	else if (corpseName == "Jailer") {
+		inventario.push("Estatua Verdugo", iconPlaceholder, nullptr);
+		LOG("Estatua de Verdugo añadida al inventario");
+	}
+
+	corpse->Destroy();
+
+	if (corpse->pbody != nullptr) {
+		Engine::GetInstance().physics->DeletePhysBody(corpse->pbody);
+		corpse->pbody = nullptr;
+	}
+
+	corpse->hasBeenPicked = true;
 }

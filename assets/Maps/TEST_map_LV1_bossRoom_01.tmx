@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="68" height="38" tilewidth="128" tileheight="128" infinite="0" nextlayerid="25" nextobjectid="242">
+<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="68" height="38" tilewidth="128" tileheight="128" infinite="0" nextlayerid="25" nextobjectid="242">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -23,7 +23,7 @@
    <properties>
     <property name="Background" type="bool" value="true"/>
     <property name="Draw" type="bool" value="true"/>
-    <property name="Parallax" type="float" value="0"/>
+    <property name="Parallax" type="float" value="0.9"/>
    </properties>
    <data>
     <tile/>
@@ -2616,7 +2616,7 @@
    <properties>
     <property name="Background" type="bool" value="true"/>
     <property name="Draw" type="bool" value="true"/>
-    <property name="Parallax" type="float" value="0"/>
+    <property name="Parallax" type="float" value="0.9"/>
    </properties>
    <data>
     <tile/>

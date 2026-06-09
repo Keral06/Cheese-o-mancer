@@ -61,8 +61,18 @@ public:
 	SDL_Texture* teleportBg = nullptr;
 	int currentMission = 0;
 	int actualHelpTexture = 0;
+	bool isInBossfight = false;
+	
 	Scene();
 	// help
+
+	// ratas!!
+
+	bool rat1 = false;
+	bool rat2 = false;
+	bool rat3 = false;
+	bool rat4 = false;
+
 
 	void HelpUI();
 
@@ -207,6 +217,10 @@ private:
 	SDL_Texture* uiCoin = nullptr;
 
 	//Texturas tarot
+	SDL_Texture* cardsIconclic = nullptr;
+	SDL_Texture* cardsIcon2clic = nullptr;
+
+
 	SDL_Texture* cardsIcon = nullptr;
 	SDL_Texture* cardsIcon2 = nullptr;
 	SDL_Texture* cardsBase = nullptr;
@@ -274,6 +288,11 @@ private:
 	SDL_Texture* quesoSextos_1 = nullptr;
 	SDL_Texture* extraHeartTexture = nullptr;
 
+	float dtHelp = 0;
+
+	SDL_Texture* behindteleport = nullptr;
+
+
 	std::vector<std::shared_ptr<Enemy>> enemies;
 
 	std::shared_ptr<UIButton> uiBt;
@@ -305,8 +324,11 @@ public:
 	std::string nextMap = "";
 	std::string nextSpawnPoint = "Door_1_1";
 	std::string nextDoor = "";
+	std::vector<int> killedEnemiesList;
 	bool firstDoor = true;
-	bool cheese = false;
+	bool cheese = true;
+	bool dobleSalto = false;
+	bool mohoWalls = false;
 
 	bool isFading = false;
 	bool fadeIn = false;   // true = fade in, false = fade out
@@ -323,6 +345,8 @@ public:
 	Inventario inventario;
 	//MARC ESTOS SON LOS BOOLS DE EL PLAYER PARA CONVERSACIONES
 
+	bool finishedRetiredKnight = false;
+	bool hasTalkedPreach = false;
 	
 	bool beatBoss = false;
 	bool beatPrincess = false;	
@@ -413,6 +437,20 @@ public:
 		bool ratTalkedOnce = false;
 		bool ratmissionfinished = false;
 		int whereIsRat = 1;
+
+		// Contador Enemigos
+		int ratsKilled = 0;
+		int jailersKilled = 0;
+		int beesKilled = 0;
+		int horsesKilled = 0;
+
+		void RegisterEnemyKill(std::string enemyName);
+		bool HasKilledOneOfEachType();
+
+		// Mision Escultor
+		void PickUpCorpse(Enemy* corpse);
+		SDL_Texture* iconCheeseStatue = nullptr;
+		SDL_Texture* pressETexture = nullptr;
 
 private:
 	//all video stuff

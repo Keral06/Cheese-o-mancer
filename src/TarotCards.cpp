@@ -40,3 +40,45 @@ void TarotCards::GirarCarta(std::string nom) {
         }
     }
 }
+
+void TarotCards::SaveState(pugi::xml_node& node) {
+    for (int j = 0; j < cards.size(); j++) {
+        pugi::xml_node cardNode = node.append_child("Card");
+        cardNode.append_attribute("nombre").set_value(cards[j].nombre.c_str());
+    }
+}
+
+void TarotCards::LoadState(pugi::xml_node& node) {
+    cards.clear(); 
+    for (pugi::xml_node cardNode = node.child("Card"); cardNode; cardNode = cardNode.next_sibling("Card")) {
+        std::string nom = cardNode.attribute("nombre").as_string();
+
+        push(nom, nullptr, nullptr);
+    }
+}void TarotCards::hasBeenSeen(std::string nom) {// para cuando se ha visualizado el objeto
+    for (int j = 0; j < cards.size(); j++) {
+        if (cards[j].nombre == nom) {
+            cards[j].visualizada = true;
+            break;
+        }
+    }
+}
+
+
+bool TarotCards::Visualizada() {
+
+
+    for (int j = 0; j < cards.size(); j++) {
+        if (cards[j].visualizada == false) {
+            return false;
+        }
+    }
+    return true;
+
+
+
+
+
+
+}
+

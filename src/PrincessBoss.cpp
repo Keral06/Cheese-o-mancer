@@ -111,7 +111,7 @@ bool PrincessBoss::Start()
         controller->princess = this; // La princesa se registra a sí misma en el controlador
         LOG("PrincessBoss enlazada automáticamente al entrar a la sala.");
     }
-
+    health = 100;
     return true;
 }
 
@@ -522,6 +522,11 @@ void PrincessBoss::ChangeCurrentAnimation()
         offsetY = -128 * 8;
         offsetX = -128 * 2;
         break;
+    case PrincessState::DEFEAT:
+        currentAnim = &animsDefeat;
+        currentTexture = textureDefeat;
+        offsetY = 0;
+        break;
     default:
         break;
     }
@@ -678,5 +683,43 @@ void PrincessBoss::AdjustHitboxY(int offsetPxl)
             // Al morir, vuelve a ser dynamicBody y cae con las físicas normales
             b2Body_SetType(pbody->body, b2_dynamicBody);
         }
+    }
+}
+
+void PrincessBoss::DecreaseHealth(int amount)
+{
+    if (princessState == PrincessState::DEATH || princessState == PrincessState::DEFEAT)
+        return;
+
+    health -= amount;
+    if (health < 0) health = 0;
+
+    LOG("Princess Boss golpeada! Vida restante: %f", health);
+
+    if (fightController != nullptr)
+    {
+        float healthPct = (float)health / 100.0f;
+        int currentPhase = fightController->currentPhase;
+
+        if (currentPhase == 1 && healthPct <= 0.66f)
+        {
+            fightController->NextPhase();
+        }
+        else if (currentPhase == 2 && healthPct <= 0.33f)
+        {
+            fightController->NextPhase();
+        }
+        // CAMBIO AQUÍ: Al llegar a 0, mandamos al controlador al estado DEATH (gestor de la escena final)
+        else if (health <= 0 && fightController->fightState != BossFightState::DEATH)
+        {
+            fightController->SetFightState(BossFightState::DEATH);
+        }
+    }
+
+    if (health <= 0)
+    {
+        // CAMBIO AQUÍ: En lugar de morir, se queda arrodillada/derrotada esperando decisión
+        SetPrincessState(PrincessState::DEFEAT);
+        
     }
 }

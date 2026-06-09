@@ -70,6 +70,7 @@ bool Enemy::Start() {
 
 bool Enemy::Update(float dt)
 {
+	if (Engine::GetInstance().scene->GetPlayer()->isDead())
 	repathTimer++;
 
 	if (isKnockback) {
@@ -315,6 +316,7 @@ void Enemy::Attack() {
 }
 
 void Enemy::DecreaseHealth(int amount) {
+	if (state == EnemyState::DYING) return;
 
 	health -= amount;
 	if (health > 0) {
@@ -330,10 +332,12 @@ void Enemy::DecreaseHealth(int amount) {
 		}
 	}
 	else {
+		Engine::GetInstance().scene->RegisterEnemyKill(this->name);
+		Engine::GetInstance().scene->killedEnemiesList.push_back(this->mapID);
 		SetState(EnemyState::DYING);
-		Die();
 	}
 }
+
 void Enemy::Die() {
 	
 	toDelete = true;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="26" nextobjectid="294">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="26" nextobjectid="300">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -22406,7 +22406,7 @@
  <objectgroup id="17" name="Items">
   <object id="258" name="Live" type="Live" x="768" y="5248" width="256" height="384"/>
  </objectgroup>
- <objectgroup id="18" name="Checkpoint">
+ <objectgroup id="18" name="Checkpoints">
   <object id="259" name="Flag" type="Flag" x="644" y="4040">
    <point/>
   </object>
@@ -22433,7 +22433,7 @@
    </properties>
   </object>
  </objectgroup>
- <layer id="25" name="Navigation" width="86" height="52">
+ <layer id="25" name="Navigation" width="86" height="52" visible="0">
   <properties>
    <property name="Draw" type="bool" value="false"/>
    <property name="Navigation" type="bool" value="true"/>
@@ -26993,27 +26993,6 @@
   <object id="279" name="Rat" type="Rat" x="8096" y="6176">
    <point/>
   </object>
-  <object id="281" name="Rat" type="Rat" x="3137.94" y="3139.64">
-   <properties>
-    <property name="hasEntered" type="bool" value="false"/>
-    <property name="isDefeated" type="bool" value="false"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="282" name="Rat" type="Rat" x="5809.09" y="3093.94">
-   <properties>
-    <property name="hasEntered" type="bool" value="false"/>
-    <property name="isDefeated" type="bool" value="false"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="283" name="Rat" type="Rat" x="5296" y="3100">
-   <properties>
-    <property name="hasEntered" type="bool" value="false"/>
-    <property name="isDefeated" type="bool" value="false"/>
-   </properties>
-   <point/>
-  </object>
   <object id="284" name="miniBoss" type="miniBoss" x="3130.3" y="1796.97" width="2039.39" height="127.273">
    <properties>
     <property name="hasEntered" type="bool" value="false"/>
@@ -27021,6 +27000,20 @@
    </properties>
   </object>
   <object id="287" name="Player" type="Player" x="9896" y="1476">
+   <point/>
+  </object>
+  <object id="298" name="Rat" type="Rat" x="2832" y="3232">
+   <properties>
+    <property name="hasEntered" type="bool" value="false"/>
+    <property name="isDefeated" type="bool" value="false"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="299" name="Rat" type="Rat" x="5616" y="3240">
+   <properties>
+    <property name="hasEntered" type="bool" value="false"/>
+    <property name="isDefeated" type="bool" value="false"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>
@@ -28950,12 +28943,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
    <tile gid="2147484833"/>
    <tile gid="2147484832"/>
    <tile gid="2147484831"/>
@@ -29020,16 +29007,16 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile gid="1007"/>
    <tile gid="1008"/>
    <tile gid="1009"/>
    <tile gid="1010"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -29106,16 +29093,16 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile gid="1051"/>
    <tile gid="1052"/>
    <tile gid="1053"/>
    <tile gid="1054"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -29232,6 +29219,12 @@
    <tile gid="1315"/>
    <tile gid="1316"/>
    <tile gid="1317"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -35989,5 +35982,7 @@
   <object id="291" type="Soup" x="5774" y="6078" width="740" height="144"/>
   <object id="292" type="Soup" x="2572.67" y="5838" width="740" height="168"/>
   <object id="293" type="Soup" x="8707.33" y="5975.33" width="740" height="150.667"/>
+  <object id="294" type="Stars" x="3884.56" y="2871.56" width="339.97" height="242.091"/>
+  <object id="295" type="Stars" x="7123.35" y="5381.62" width="249.97" height="132.758"/>
  </objectgroup>
 </map>

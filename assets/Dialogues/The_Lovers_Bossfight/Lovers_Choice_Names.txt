@@ -1,0 +1,21 @@
+Knight: 
+Princess: 
+Knight: 
+Princess: 
+Knight: 
+Princess: 
+Knight: 
+Princess: 
+Princess: 
+CHOCICE
+Fool: 
+Fool: 
+CHOCICE 1:
+Fool: 
+Princess: 
+Knight: 
+Princess: 
+Knight: 
+CHOCICE 2:
+Fool: 
++

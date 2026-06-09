@@ -26,7 +26,7 @@ bool Door::Start()
     );
 
     pbody->listener = this;
-    pbody->ctype = ColliderType::PARED;
+    pbody->ctype = ColliderType::DOOR;
 
     return true;
 }
@@ -64,7 +64,8 @@ void Door::SetDoorData(
     int offsetY,
     int width,
     int height,
-    bool requiresInteraction
+    bool requiresInteraction,
+    bool isLocked
 )
 {
     this->targetMap = targetMap;
@@ -74,16 +75,29 @@ void Door::SetDoorData(
     this->width = width;
     this->height = height;
     this->requiresInteraction = requiresInteraction;
+    this->isLocked = isLocked;
 }
 
 void Door::OnCollision(PhysBody* physA, PhysBody* physB)
 {
     if (physB->ctype != ColliderType::PLAYER)
         return;
-
+    if (Engine::GetInstance().scene->isInBossfight) {
+        return;
+    }
     if (requiresInteraction){
         playerInside = true;
         return;
+    }
+    if (isLocked) {
+        if (Engine::GetInstance().scene->inventario.tieneObjeto("Key")) {
+            isLocked = false;
+            LOG("Puerta desbloqueada con la llave!");
+        }
+        else {
+            LOG("Puerta bloqueada. Necesitas comprar la llave.");
+            return; 
+        }
     }
 
     LOG("Door triggered -> loading map: %s", targetMap.c_str());

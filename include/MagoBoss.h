@@ -90,4 +90,12 @@ private:
     SDL_Texture* textureIdle = nullptr;
     SDL_Texture* textureBall = nullptr;
     SDL_Texture* textureTransformation = nullptr;
+
+    bool uvasPendientes = false;
+    int spawnX = 0;
+    int spawnY = 0;
+
+    bool ballInitialized = false;
+    float ballDirX = 0.0f;
+    float dirChangeTimer = 0.0f;
 };

@@ -2,7 +2,10 @@
 #include "Engine.h"
 #include "Scene.h"
 #include "Player.h"
+#include "EntityManager.h"
 #include "Log.h"
+#include "TarotCards.h"
+#include "Textures.h"
 
 GameManager::GameManager() : Module() {
     name = "gameManager";
@@ -31,6 +34,7 @@ void GameManager::SaveGame() {
     world.append_attribute("lives").set_value(scene->lives);
     world.append_attribute("maxLives").set_value(scene->maxLives);
     world.append_attribute("score").set_value(scene->score);
+    world.append_attribute("levelTimer").set_value(scene->levelTimer);
 
     if (player != nullptr) {
         pugi::xml_node pos = world.append_child("Position");
@@ -111,6 +115,16 @@ void GameManager::SaveGame() {
     pugi::xml_node missionsNode = root.append_child("Missions");
     scene->misiones.SaveState(missionsNode);
 
+    pugi::xml_node cardsNode = root.append_child("TarotCards");
+    scene->cards.SaveState(cardsNode);
+
+	//Enemigos muertos
+    pugi::xml_node enemiesNode = root.append_child("KilledEnemies");
+    for (int id : scene->killedEnemiesList) {
+        pugi::xml_node enemyNode = enemiesNode.append_child("Enemy");
+        enemyNode.append_attribute("id").set_value(id);
+    }
+
     // Guardar 
     if (doc.save_file("savegame.xml")) {
         LOG("Partida guardada");
@@ -135,6 +149,7 @@ void GameManager::LoadGame() {
         scene->lives = world.attribute("lives").as_int();
         scene->maxLives = world.attribute("maxLives").as_int();
         scene->score = world.attribute("score").as_int();
+        scene->levelTimer = world.attribute("levelTimer").as_float();
 
         if (player != nullptr) {
             pugi::xml_node pos = world.child("Position");
@@ -212,6 +227,25 @@ void GameManager::LoadGame() {
         // INVENTARIO Y MISIONES
         scene->inventario.LoadState(root.child("Inventory"));
         scene->misiones.LoadState(root.child("Missions"));
+        scene->cards.LoadState(root.child("TarotCards"));
+
+
+		// Enemigos muertos
+        scene->killedEnemiesList.clear();
+        pugi::xml_node enemiesNode = root.child("KilledEnemies");
+        if (enemiesNode) {
+            for (pugi::xml_node enemyNode = enemiesNode.child("Enemy"); enemyNode; enemyNode = enemyNode.next_sibling("Enemy")) {
+                scene->killedEnemiesList.push_back(enemyNode.attribute("id").as_int());
+            }
+        }
+
+        for (auto& entity : Engine::GetInstance().entityManager->entities) {
+            for (int deadId : scene->killedEnemiesList) {
+                if (entity->mapID == deadId && entity->type != EntityType::PLAYER) {
+                    entity->toDelete = true;
+                }
+            }
+        }
 
         LOG("Partida cargada exitosamente.");
     }
@@ -245,6 +279,8 @@ void GameManager::StartNewGame() {
     scene->beatBoss = false;
     scene->beatPrincess = false;
     scene->cheese = false;
+
+    scene->killedEnemiesList.clear();
 
     Player* player = scene->GetPlayer();
     if (player != nullptr) {

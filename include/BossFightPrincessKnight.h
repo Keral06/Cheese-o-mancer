@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Module.h"
+#include "Dialogue.h"
 #include <Vector2D.h>
 
 class PrincessBoss;
@@ -71,7 +72,7 @@ public:
     PrincessBoss* princess;
     KnightBoss* knight;
 
-private:
+public:
 
     // ===============================
     // INTERNAL UPDATE
@@ -127,4 +128,18 @@ private:
     bool introTriggered = false;
     float knightTargetX = 1800.0f;
     bool princessTranformed = false;
+
+    bool waitingDecisionFinished = false;
+    bool playerChoiceSpare = false;
+
+
+    bool desicion = false;
+    //DIALOGS
+
+    Dialogue Before;
+    Dialogue Before2;
+    Dialogue Defeat;
+    Dialogue DefeatWell;
+    Dialogue AfterFightSpare;
+    Dialogue AfterFightKill;
 };

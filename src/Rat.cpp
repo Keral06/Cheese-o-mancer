@@ -5,6 +5,7 @@
 #include "coins.h"
 #include "EntityManager.h"
 #include "Scene.h"
+#include "HighPriestess.h"
 
 Rat::Rat() : Enemy()
 {
@@ -45,6 +46,11 @@ bool Rat::Start()
 
 bool Rat::Update(float dt)
 {
+    if (hasBeenPicked) return true;
+
+    if (Engine::GetInstance().scene->GetPlayer()->isDead()) return true;
+
+    // Lógica de Arena
     if (!hasEntered) {
         if (pbody != nullptr && b2Body_IsEnabled(pbody->body)) {
             b2Body_Disable(pbody->body);
@@ -56,11 +62,18 @@ bool Rat::Update(float dt)
         b2Body_Enable(pbody->body);
     }
 
+    // 1. ZONA SEGURA DE MUERTE
+    if (health <= 0 && !isDead) {
+        Die();
+    }
+
+    // 2. DIBUJAR CADÁVER
     if (isDead) {
         Draw(dt);
         return true;
     }
 
+    // 3. LÓGICA NORMAL
     if (damageTimer > 0) damageTimer--;
 
     GetPhysicsValues();
@@ -91,8 +104,8 @@ bool Rat::Update(float dt)
 
     if (velocity.x < -0.1f) facingLeft = true;
     else if (velocity.x > 0.1f) facingLeft = false;
-    Draw(dt);
 
+    Draw(dt);
     return true;
 }
 
@@ -104,7 +117,7 @@ void Rat::OnCollision(PhysBody* physA, PhysBody* physB)
 
             b2Body_SetGravityScale(pbody->body, 0.0f);
 
-            pbody->listener = nullptr;
+            //pbody->listener = nullptr;
         }
         return;
     }
@@ -115,8 +128,10 @@ void Rat::OnCollision(PhysBody* physA, PhysBody* physB)
 
     if (physB->ctype == ColliderType::PLAYER) {
         Player* player = dynamic_cast<Player*>(physB->listener);
-        if (player && damageTimer <= 0) {
+        if (player && !player->godMode) {
             Engine::GetInstance().scene->lives--;
+        }
+        if (player && damageTimer <= 0) {
             damageTimer = 60; 
             LOG("Daño recibido!");
         }
@@ -129,11 +144,11 @@ void Rat::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 }
 
 //Muerte
-void Rat::Die() {
+void Rat::Die()
+{
     isDead = true;
     isDefeated = true;
     SetState(EnemyState::DYING);
-
     deathPosition = GetPosition();
 
     if (attackHitbox != nullptr) {
@@ -143,31 +158,28 @@ void Rat::Die() {
 
     if (pbody != nullptr) {
         Engine::GetInstance().physics->DeletePhysBody(pbody);
-        pbody = nullptr;
-
         pbody = Engine::GetInstance().physics->CreateRectangleSensor(
             (int)deathPosition.getX(),
             (int)deathPosition.getY(),
-            texW / 2,
-            texH / 2,
+            texW/2,
+            texH/2,
             bodyType::DYNAMIC
         );
-
         pbody->ctype = ColliderType::NPC;
         pbody->listener = this;
     }
 
-    // coin
     auto newCoin = Engine::GetInstance().entityManager->CreateEntity(EntityType::COIN);
     auto coinEntity = std::static_pointer_cast<Coins>(newCoin);
 
     if (coinEntity) {
-        const Vector2D& pos = this->GetPosition();
-        coinEntity->xInicial = (int)pos.getX();
-        coinEntity->yInicial = (int)pos.getY();
+        coinEntity->xInicial = (int)deathPosition.getX();
+        coinEntity->yInicial = (int)deathPosition.getY();
         coinEntity->Start();
     }
-
+    if (HighPriestesss::instance != nullptr) {
+        HighPriestesss::instance->NotifyEnemyDeath();
+    }
     if (isArenaRat) {
         Engine::GetInstance().scene->CheckMiniBossStatus();
     }

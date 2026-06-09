@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.12.1" name="j_3x3" tilewidth="384" tileheight="385" tilecount="87" columns="17">
+<tileset version="1.10" tiledversion="1.12.1" name="j_sp_3x3b.tsx" tilewidth="384" tileheight="384" tilecount="102" columns="17">
  <image source="j_3x3.png" width="6528" height="2304"/>
  <tile id="0">
   <properties>
    <property name="loop" type="bool" value="true"/>
-   <property name="name" value="idle1"/>
+   <property name="name" value="idle"/>
   </properties>
   <animation>
    <frame tileid="0" duration="100"/>
@@ -22,30 +22,12 @@
    <frame tileid="12" duration="100"/>
    <frame tileid="13" duration="100"/>
    <frame tileid="14" duration="100"/>
-   <frame tileid="15" duration="100"/>
-   <frame tileid="16" duration="100"/>
   </animation>
  </tile>
- <tile id="1"/>
- <tile id="2"/>
- <tile id="3"/>
- <tile id="4"/>
- <tile id="5"/>
- <tile id="6"/>
- <tile id="7"/>
- <tile id="8"/>
- <tile id="9"/>
- <tile id="10"/>
- <tile id="11"/>
- <tile id="12"/>
- <tile id="13"/>
- <tile id="14"/>
- <tile id="15"/>
- <tile id="16"/>
  <tile id="17">
   <properties>
    <property name="loop" type="bool" value="true"/>
-   <property name="name" value="idle2"/>
+   <property name="name" value="idleOnCheese"/>
   </properties>
   <animation>
    <frame tileid="17" duration="100"/>
@@ -67,22 +49,6 @@
    <frame tileid="33" duration="100"/>
   </animation>
  </tile>
- <tile id="18"/>
- <tile id="19"/>
- <tile id="20"/>
- <tile id="21"/>
- <tile id="22"/>
- <tile id="23"/>
- <tile id="24"/>
- <tile id="25"/>
- <tile id="26"/>
- <tile id="27"/>
- <tile id="28"/>
- <tile id="29"/>
- <tile id="30"/>
- <tile id="31"/>
- <tile id="32"/>
- <tile id="33"/>
  <tile id="34">
   <properties>
    <property name="loop" type="bool" value="false"/>
@@ -90,24 +56,13 @@
   </properties>
   <animation>
    <frame tileid="34" duration="100"/>
+   <frame tileid="35" duration="100"/>
+   <frame tileid="36" duration="100"/>
+   <frame tileid="37" duration="100"/>
+   <frame tileid="38" duration="100"/>
+   <frame tileid="39" duration="100"/>
   </animation>
  </tile>
- <tile id="35"/>
- <tile id="36"/>
- <tile id="37"/>
- <tile id="38"/>
- <tile id="39"/>
- <tile id="40"/>
- <tile id="41"/>
- <tile id="42"/>
- <tile id="43"/>
- <tile id="44"/>
- <tile id="45"/>
- <tile id="46"/>
- <tile id="47"/>
- <tile id="48"/>
- <tile id="49"/>
- <tile id="50"/>
  <tile id="51">
   <properties>
    <property name="loop" type="bool" value="false"/>
@@ -115,41 +70,53 @@
   </properties>
   <animation>
    <frame tileid="51" duration="100"/>
+   <frame tileid="52" duration="100"/>
+   <frame tileid="53" duration="100"/>
+   <frame tileid="54" duration="100"/>
+   <frame tileid="55" duration="100"/>
+   <frame tileid="56" duration="100"/>
+   <frame tileid="57" duration="100"/>
+   <frame tileid="58" duration="100"/>
+   <frame tileid="59" duration="100"/>
+   <frame tileid="60" duration="100"/>
+   <frame tileid="61" duration="100"/>
+   <frame tileid="62" duration="100"/>
+   <frame tileid="63" duration="100"/>
+   <frame tileid="64" duration="100"/>
+   <frame tileid="65" duration="100"/>
+   <frame tileid="66" duration="100"/>
+   <frame tileid="67" duration="100"/>
+   <frame tileid="68" duration="100"/>
+   <frame tileid="69" duration="100"/>
+   <frame tileid="70" duration="100"/>
+   <frame tileid="71" duration="100"/>
+   <frame tileid="72" duration="100"/>
+   <frame tileid="73" duration="100"/>
+   <frame tileid="74" duration="100"/>
+   <frame tileid="75" duration="100"/>
+   <frame tileid="76" duration="100"/>
+   <frame tileid="77" duration="100"/>
+   <frame tileid="78" duration="100"/>
+   <frame tileid="79" duration="100"/>
+   <frame tileid="80" duration="100"/>
+   <frame tileid="81" duration="100"/>
+   <frame tileid="82" duration="100"/>
+   <frame tileid="83" duration="100"/>
+   <frame tileid="84" duration="100"/>
+   <frame tileid="85" duration="100"/>
+   <frame tileid="86" duration="100"/>
+   <frame tileid="87" duration="100"/>
+   <frame tileid="88" duration="100"/>
+   <frame tileid="89" duration="100"/>
+   <frame tileid="90" duration="100"/>
+   <frame tileid="91" duration="100"/>
+   <frame tileid="92" duration="100"/>
+   <frame tileid="93" duration="100"/>
+   <frame tileid="94" duration="100"/>
+   <frame tileid="95" duration="100"/>
+   <frame tileid="96" duration="100"/>
+   <frame tileid="96" duration="100"/>
+   <frame tileid="96" duration="100"/>
   </animation>
  </tile>
- <tile id="52"/>
- <tile id="53"/>
- <tile id="54"/>
- <tile id="55"/>
- <tile id="56"/>
- <tile id="57"/>
- <tile id="58"/>
- <tile id="59"/>
- <tile id="60"/>
- <tile id="61"/>
- <tile id="62"/>
- <tile id="63"/>
- <tile id="64"/>
- <tile id="65"/>
- <tile id="66"/>
- <tile id="67"/>
- <tile id="68"/>
- <tile id="69"/>
- <tile id="70"/>
- <tile id="71"/>
- <tile id="72"/>
- <tile id="73"/>
- <tile id="74"/>
- <tile id="75"/>
- <tile id="76"/>
- <tile id="77"/>
- <tile id="78"/>
- <tile id="79"/>
- <tile id="80"/>
- <tile id="81"/>
- <tile id="82"/>
- <tile id="83"/>
- <tile id="84"/>
- <tile id="92"/>
- <tile id="138"/>
 </tileset>

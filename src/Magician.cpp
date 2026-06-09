@@ -120,10 +120,21 @@ bool Magician::Update(float dt) {
 	}
 
 	Draw(dt);
+	if (Engine::GetInstance().scene->hasTalkedMagician == true) {
+		firstTime = false;
+		
+	}
+	else if (Engine::GetInstance().scene->hasTalkedMagician == false && Engine::GetInstance().scene->cards.tieneObjeto("The fool")==false) {
+	
+		Engine::GetInstance().scene->showHelp = true;
+		Engine::GetInstance().scene->SetHelpUI(Engine::GetInstance().scene->showHelp);
+	}
 	if (firstTime == true) {
 		
 		if (!dialogueMagicianStart.hasStarted && Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN) {
-			dialogueMagicianStart.BeginDialogue(nameNPC);
+			Engine::GetInstance().scene->showHelp = false;
+			Engine::GetInstance().scene->SetHelpUI(Engine::GetInstance().scene->showHelp);
+			dialogueMagicianStart.BeginDialogue();
 			Engine::GetInstance().scene->SetInventariIcon(true);
 			Engine::GetInstance().scene->cards.push("The fool", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Fool.png"), nullptr);
 			Engine::GetInstance().scene->misiones.push("Talk with magician", Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Magician1.png"), Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Magician2.png"));

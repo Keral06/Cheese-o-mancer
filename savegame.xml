@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<SaveState>
+	<WorldState savedLevel="1" lives="4" maxLives="4" score="0" levelTimer="41.8668137">
+		<Position x="12650" y="2437" />
+	</WorldState>
+	<StoryFlags beatBoss="false" beatPrincess="false" hasAllPoems="false" teleportUnlocked="false" hasTalkedWell="false" day="false" night="false" dusk="false" dawn="false" springWaterHermit="false" HorsekinManureHermit="false" GargantuanHermit="false" finishedmissionHermit="false" hasTalkedHermit="false" psalm1="false" psalm2="false" psalm3="false" EmpressTrustedDialogue="false" hasTalkedSculptor="false" hasDamagePlus="false" extralife="false" hasTalkedMagician="true" springWater="false" HorsekinManure="false" Gargantuan="false" hasReadAllPsalms="false" hasTalkedAboutPsalmsB4="false" DefeatedHighPrietest="false" hasBeenWhistledblowed="false" talkedTiredPreacher="false" hasShownPoemToWell="false" hasFoundTimmyThreeTimes="false" hasTalkedToTimmyOnce="false" talkedOnceAfterDefeatBoss="false" hidingPlaceATM="0" hasAllFragments="false" hasSparedPrincessAndKnight="false" hasTalkedOnceEmpress="false" talkedTwiceEmpress="false" finishedMissionSculptor="false" ratTalkedOnce="false" ratmissionfinished="false" whereIsRat="1" />
+	<Inventory />
+	<Missions>
+		<mision nombre="Talk with magician" visualizada="false" completed="true" />
+	</Missions>
+	<TarotCards>
+		<Card nombre="The fool" />
+	</TarotCards>
+	<KilledEnemies />
+</SaveState>

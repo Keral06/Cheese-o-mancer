@@ -3,6 +3,9 @@
 #include "Log.h"
 #include "Textures.h"
 #include "scene.h"
+#include "EntityManager.h"
+#include "coins.h"
+#include "HighPriestess.h"
 
 Jailer::Jailer() : Enemy()
 {
@@ -85,6 +88,27 @@ void Jailer::Attack()
 
 bool Jailer::Update(float dt)
 {
+    if (spawnDelayTimer > 0.0f) {
+        spawnDelayTimer -= dt;
+    }
+
+    if (hasBeenPicked) return true;
+
+    if (Engine::GetInstance().scene->GetPlayer()->isDead()) return true;
+
+    // 1. ZONA SEGURA DE MUERTE
+    if (health <= 0 && !isDead) {
+        Die();
+    }
+
+    // 2. DIBUJAR CADÁVER
+    if (isDead) { // Equivalente a jailerState == JAILER_DEATH
+        anims.Update(dt);
+        Draw(dt);
+        return true;
+    }
+
+    // 3. LÓGICA NORMAL
     if (attackCooldownTimer > 0.0f) {
         attackCooldownTimer -= dt;
     }
@@ -96,16 +120,6 @@ bool Jailer::Update(float dt)
             knockbackTimer = knockbackDuration;
             Engine::GetInstance().physics->SetLinearVelocity(pbody, 0.0f, 0.0f);
         }
-    }
-
-    if (health <= 0 && jailerState != JAILER_DEATH) {
-        SetJailerState(JAILER_DEATH);
-    }
-
-    if (jailerState == JAILER_DEATH) {
-        anims.Update(dt);
-        Draw(dt);
-        return true;
     }
 
     if (!isKnockback) {
@@ -173,7 +187,9 @@ void Jailer::UpdateAttack(float dt)
     }
 
     if (hitboxActive && playerInHitbox && !hasHit) {
-        Engine::GetInstance().scene->lives--;
+        if (!Engine::GetInstance().scene->GetPlayer()->godMode) {
+            Engine::GetInstance().scene->lives--;
+        }
         hasHit = true;
         LOG("JAILER HITBOX DAMAGE");
     }
@@ -226,6 +242,10 @@ void Jailer::Draw(float dt)
         pbody->GetPosition(x, y);
         position.setX((float)x);
         position.setY((float)y);
+    }
+    else {
+        x = (int)deathPosition.getX();
+        y = (int)deathPosition.getY();
     }
 
     SDL_Rect animFrame;
@@ -309,6 +329,15 @@ void Jailer::SetJailerState(JailerState newState)
 
 void Jailer::OnCollision(PhysBody* physA, PhysBody* physB)
 {
+    if (isDead) {
+        // Solo frenamos si el delay ha pasado (ya ha caído un poco)
+        if (physB->ctype == ColliderType::PLATFORM && pbody != nullptr && spawnDelayTimer <= 0.0f) {
+            Engine::GetInstance().physics->SetLinearVelocity(pbody, { 0.0f, 0.0f });
+            b2Body_SetGravityScale(pbody->body, 0.0f);
+        }
+        return;
+    }
+
     if (physA == attackHitbox && physB->ctype == ColliderType::PLAYER)
     {
         playerInHitbox = true;
@@ -325,10 +354,11 @@ void Jailer::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 
 void Jailer::Die() {
     isDead = true;
-    SetState(EnemyState::DYING);
+    SetJailerState(JAILER_DEATH);
+    deathPosition = GetPosition();
 
-    int bx, by;
-    pbody->GetPosition(bx, by);
+    // Reseteamos el delay de caída
+    spawnDelayTimer = 0.2f; // 0.2 segundos de "gracia" antes de que pueda tocar el suelo
 
     if (attackHitbox != nullptr) {
         Engine::GetInstance().physics->DeletePhysBody(attackHitbox);
@@ -337,17 +367,31 @@ void Jailer::Die() {
 
     if (pbody != nullptr) {
         Engine::GetInstance().physics->DeletePhysBody(pbody);
-        pbody = nullptr;
 
+        // Mantenemos el tamaño original, pero lo spawneamos 30 píxeles más arriba
         pbody = Engine::GetInstance().physics->CreateRectangleSensor(
-            bx,
-            by,
-            (int)texW,
-            (int)texH,
-            bodyType::STATIC
+            (int)deathPosition.getX(),
+            (int)deathPosition.getY() - 30, // Más alto para asegurar que cae
+            texW,
+            texH,
+            bodyType::DYNAMIC
         );
-
         pbody->ctype = ColliderType::NPC;
         pbody->listener = this;
+
+        b2Body_SetGravityScale(pbody->body, 1.0f);
+        b2Body_SetAwake(pbody->body, true);
+    }
+
+    auto newCoin = Engine::GetInstance().entityManager->CreateEntity(EntityType::COIN);
+    auto coinEntity = std::static_pointer_cast<Coins>(newCoin);
+
+    if (coinEntity) {
+        coinEntity->xInicial = (int)deathPosition.getX();
+        coinEntity->yInicial = (int)deathPosition.getY();
+        coinEntity->Start();
+    }
+    if (HighPriestesss::instance != nullptr) {
+        HighPriestesss::instance->NotifyEnemyDeath();
     }
 }

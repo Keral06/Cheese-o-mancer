@@ -16,7 +16,7 @@ public:
     void SpawnWave();
     void NotifyEnemyDeath();
     void ChangeCurrentAnimation();
-
+    static HighPriestesss* instance;
 private:
     // Control de oleadas y vulnerabilidad
     int currentWave;
@@ -37,4 +37,10 @@ private:
     AnimationSet* currentAnimTrack = nullptr;
     SDL_Texture* currentTexture = nullptr;
     EnemyState lastState; // Para optimizar el cambio de animación
+
+
+    bool isImmobilized = false;
+    bool waitingForChoice = false;
+    std::string currentAnimName = "none";
+
 };

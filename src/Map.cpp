@@ -40,12 +40,12 @@ bool Map::IsMoho(int gid) {
 }
 
 bool Map::IsPolvo(int gid) {
-    static const std::vector<int> ids = { 882, 18967, 2135, 1636, 819 }; // todos los de polvo
+    static const std::vector<int> ids = { 882, 18967, 2135, 1633, 1636, 819, 2540,20591, 2945, 3370, 2895, 1576, 1575, 3696, 1688, 1682, 1199, 1191, 1189, 1197, 2866 }; // todos los de polvo
     return std::find(ids.begin(), ids.end(), gid) != ids.end();
-}
-
-bool Map::IsHierba(int gid) {
-    static const std::vector<int> ids = { 883 }; // todos los de hierba
+}                                                                                                           //1682 en temple lvl3 tmb    2866 queen int
+                                                                                                       //20591 20592 botanica
+bool Map::IsHierba(int gid) {                                                                       //2945 2946 encreuada
+    static const std::vector<int> ids = { 883, 20592, 2946, 3369 }; // todos los de hierba        //justes. 3369, 3370 uno polvo otro hierba
     return std::find(ids.begin(), ids.end(), gid) != ids.end();
 }
 
@@ -352,14 +352,36 @@ bool Map::Load(std::string path, std::string fileName)//
             {
                 for (const auto& object : objectGroup->objects)
                 {
-                    std::shared_ptr<WeakWall> wall = std::dynamic_pointer_cast<WeakWall>(Engine::GetInstance().entityManager->CreateEntity(EntityType::WEAKWALL));
+                    std::shared_ptr<WeakWall> wall = std::dynamic_pointer_cast<WeakWall>(
+                        Engine::GetInstance().entityManager->CreateEntity(EntityType::WEAKWALL)
+                    );
 
                     wall->position = Vector2D((float)object->x, (float)object->y);
-
-                    // opcional si quieres tamaño desde Tiled
                     wall->width = object->width;
                     wall->height = object->height;
 
+                    // --- SOLUCIÓN USANDO TU PROPIO SISTEMA DE PROPIEDADES ---
+                    bool shouldDraw = true; // Por defecto se dibuja si no existe la propiedad
+
+                    // Buscamos la propiedad en el listado del objeto de Tiled
+                    Properties::Property* pDraw = object->properties.GetProperty("Draw");
+                    if (pDraw != nullptr)
+                    {
+                        shouldDraw = pDraw->value; // Extrae el booleano guardado
+                    }
+
+                    wall->drawed = shouldDraw;
+                    // -------------------------------------------------------
+                    int targetLevel = 1; // Valor por defecto (por si no tiene la propiedad en Tiled)
+
+                    // Buscamos la propiedad entera en el listado de Tiled
+                    Properties::Property* pLevel = object->properties.GetProperty("level");
+                    if (pLevel != nullptr)
+                    {
+                        targetLevel = pLevel->valueInt; // <--- ¡Aquí usamos tu variable valueInt!
+                    }
+
+                    wall->level = targetLevel;
                     wall->Start();
                 }
 
@@ -609,6 +631,9 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
         if (objectGroupNode.attribute("name").as_string() == std::string("Doors")) {
             for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
                 std::string entityType = objectNode.attribute("type").as_string();
+                if (entityType == "") {
+                    entityType = objectNode.attribute("class").as_string(); // Añadimos el parche que ya usabas en las partículas
+                }
                 float x = objectNode.attribute("x").as_float();
                 float y = objectNode.attribute("y").as_float();
 
@@ -625,6 +650,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                     int width = objectNode.attribute("width").as_int();
                     int height = objectNode.attribute("height").as_int();
                     auto interactionProp = tempProperties.GetProperty("requiresInteraction");
+                    auto lockedProp = tempProperties.GetProperty("isLocked");
 
                     door->SetDoorData(
                         mapProp ? mapProp->valueString : "",
@@ -633,7 +659,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                         offsetY ? offsetY->valueInt : 0,
                         width,
                         height,
-                        interactionProp ? interactionProp->value : false
+                        interactionProp ? interactionProp->value : false,
+                        lockedProp ? lockedProp->value : false
                     );
                     door->Start();
                 }
@@ -647,7 +674,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                 int id = objectNode.attribute("id").as_int();
 
                 bool isDead = false;
-                for (int killedId : killedEnemies) {
+                for (int killedId : Engine::GetInstance().scene->killedEnemiesList) {
                     if (killedId == id) {
                         isDead = true;
                         break;
@@ -665,9 +692,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                         if (objectNode.attribute("cpX")) x = objectNode.attribute("cpX").as_float();
                         if (objectNode.attribute("cpY")) y = objectNode.attribute("cpY").as_float();
                     }
-                    else {
-                        killedEnemies.clear();
-                    }
+                    
 
                     if (player == nullptr) {
                         player = std::dynamic_pointer_cast<Player>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER));
@@ -879,6 +904,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                         ratking->yInicial = (int)y;
                         ratking->Start();
                         ratking->mapID = id;
+                        ratking->level = ratLevel;
                     }
                 }
                 else if (entityType == "interactball") {
@@ -886,6 +912,27 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                     cheeseBallInteract->position = Vector2D(x, y);
                     cheeseBallInteract->xInicial = (int)x;
                     cheeseBallInteract->yInicial = (int)y;
+                    // Load Tiled custom properties
+
+                    Properties tempProperties;
+
+                    LoadProperties(objectNode, tempProperties);
+
+
+
+                    auto where = tempProperties.GetProperty("Where");
+
+                    if (where)
+
+                    {
+
+                        cheeseBallInteract->cheesePower = where->valueInt;
+
+                     
+
+                      
+
+                    }
                     cheeseBallInteract->Start();
                     cheeseBallInteract->mapID = id;
                 }
@@ -1104,6 +1151,30 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                 else if (pType == "Meteor" || pType == "METEOR") p->setStyle(ParticleExample::METEOR);
                 else if (pType == "Explosion" || pType == "EXPLOSION") p->setStyle(ParticleExample::EXPLOSION);
                 else if (pType == "Snow" || pType == "SNOW") p->setStyle(ParticleExample::SNOW);
+                else if (pType == "FloatingDust" || pType == "FLOATINGDUST") p->setStyle(ParticleExample::FLOATING_DUST);
+                else if (pType == "Stars" || pType == "STARS") {
+                    // 1. Configuramos el emisor base (p) con la estrella 1
+                    p->setStyle(ParticleExample::STARS);
+                    p->setTexture(Engine::GetInstance().textures->Load("assets/Textures/Particles/Stars/star1.png"));
+
+                    // 2. Creamos un segundo emisor invisible en la misma posición para la estrella 2
+                    ParticleExample* p2 = new ParticleExample();
+                    p2->setRenderer(Engine::GetInstance().render->renderer);
+                    p2->setPosition((int)(x + (w / 2.0f)), (int)(y + (h / 2.0f)));
+                    p2->setPosVar(Vec2(w / 2.0f, h / 2.0f));
+                    p2->setStyle(ParticleExample::STARS);
+                    p2->setTexture(Engine::GetInstance().textures->Load("assets/Textures/Particles/Stars/star2.png"));
+                    mapParticles.push_back(p2);
+
+                    // 3. Creamos un tercer emisor para la estrella 3
+                    ParticleExample* p3 = new ParticleExample();
+                    p3->setRenderer(Engine::GetInstance().render->renderer);
+                    p3->setPosition((int)(x + (w / 2.0f)), (int)(y + (h / 2.0f)));
+                    p3->setPosVar(Vec2(w / 2.0f, h / 2.0f));
+                    p3->setStyle(ParticleExample::STARS);
+                    p3->setTexture(Engine::GetInstance().textures->Load("assets/Textures/Particles/Stars/star3.png"));
+                    mapParticles.push_back(p3);
+                }
 
                 p->setPosVar(Vec2(w / 2.0f, h / 2.0f));
                 mapParticles.push_back(p);

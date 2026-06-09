@@ -41,7 +41,7 @@ public:
 	virtual void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
 	void CreateAttackHitbox(int x, int y, int w, int h);
-	
+
 	float CalculateDistance();
 	void SetPosition(Vector2D pos);
 	Vector2D GetPosition();
@@ -50,7 +50,7 @@ public:
 
 	virtual void Attack();
 
-	void DecreaseHealth(int amount);
+	virtual void DecreaseHealth(int amount);
 	virtual void Die();
 
 	void SetState(EnemyState newState);
@@ -104,6 +104,11 @@ public:
 	bool hasEntered = true;
 	bool isDefeated = false;
 	bool isArenaRat = false;
+
+	// Bandera de muerte unificada para toda la herencia
+	bool isDead = false;
+	bool hasLanded = false;
+	bool hasBeenPicked = false;
 
 	Vector2D deathPosition;
 protected:

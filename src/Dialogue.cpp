@@ -93,6 +93,7 @@ void Dialogue::Draw(float dt) {
 	
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN) {
 		
+			choice = true;
 			NextDialogue();
 		
 		}
@@ -188,7 +189,7 @@ void Dialogue:: NextDialogue() {
 	
 		if (dialogueHelper[lenghtHelper + 1] == "CHOICE 2:" && choice) {
 	
-			lenghtHelper == lenght;
+		lenghtHelper = lenght;
 	
 		}
 	}

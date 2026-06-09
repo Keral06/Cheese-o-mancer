@@ -460,7 +460,20 @@ void ParticleSystem::draw()
             p.size * scale * zoom
         };
 
-        SDL_Color c = { Uint8(p.colorR * 255), Uint8(p.colorG * 255), Uint8(p.colorB * 255), Uint8(p.colorA * 255) };
+        // --- NUEVO CÁLCULO DE ALPHA PARA EL BLINKING ---
+        float finalAlpha = p.colorA;
+
+        if (_isBlinking) {
+            // Usamos una onda senoidal basada en el tiempo de vida. 
+            // El 5.0f es la velocidad del parpadeo (puedes subirlo o bajarlo).
+            // Lo dividimos para que el valor oscile entre 0.0 y 1.0
+            float blink = (sinf(p.timeToLive * 5.0f) + 1.0f) / 2.0f;
+            finalAlpha *= blink;
+        }
+
+        SDL_Color c = { Uint8(p.colorR * 255), Uint8(p.colorG * 255), Uint8(p.colorB * 255), Uint8(finalAlpha * 255) };
+
+        // -----------------------------------------------
         SDL_SetTextureColorMod(_texture, c.r, c.g, c.b);
         SDL_SetTextureAlphaMod(_texture, c.a);
 

@@ -116,8 +116,8 @@ void MagoBoss::UpdateTransformationPhase(float dt)
         int currentX, currentY;
         pbody->GetPosition(currentX, currentY);
 
-        float centroX = 6000.0f;
-        float centroY = 5000.0f;
+        float centroX = 5500.0f;
+        float centroY = 4000.0f;
 
         float distX = centroX - currentX;
         float distY = centroY - currentY;
@@ -133,6 +133,7 @@ void MagoBoss::UpdateTransformationPhase(float dt)
             stateM = MAGO_FLY_IDLE;
             attackTimer = 0.0f;
             isAttacking = false;
+            b2Body_SetGravityScale(pbody->body, 0.0f);
         }
         else
         {
@@ -151,7 +152,7 @@ void MagoBoss::UpdateBossfightPhase(float dt)
         attackTimer += dt;
 
         // Cada 3 segundos en reposo, el boss elige un ataque aleatorio
-        if (attackTimer >= 3.0f)
+        if (attackTimer >= 3000.0f)
         {
             isAttacking = true;
             attackTimer = 0.0f;
@@ -165,7 +166,7 @@ void MagoBoss::UpdateBossfightPhase(float dt)
         // Ejecutar el ataque seleccionado
         if (currentAttack == 1)
         {
-            ExecuteMeteorAttack(dt);
+            //ExecuteMeteorAttack(dt);
         }
         else if (currentAttack == 2)
         {
@@ -187,7 +188,7 @@ void MagoBoss::ExecuteMeteorAttack(float dt)
     attackTimer += dt;
 
     // 1. Spawnear una uva cada 0.3 segundos
-    if (attackTimer >= 0.3f)
+    if (attackTimer >= 300.0f)
     {
         attackTimer = 0.0f;
 
@@ -206,7 +207,7 @@ void MagoBoss::ExecuteMeteorAttack(float dt)
     }
 
     // 2. El ataque dura 5 segundos en total
-    if (phaseTimer >= 5.0f)
+    if (phaseTimer >= 5000.0f)
     {
         // Terminamos el ataque y vuelve a volar en reposo
         isAttacking = false;
@@ -217,67 +218,109 @@ void MagoBoss::ExecuteMeteorAttack(float dt)
 
 void MagoBoss::ExecuteBouncingBallAttack(float dt)
 {
-    // PASO A: Iniciar la transformación a bola (Animación de carga)
-    if (stateM != MAGO_BALL_START && stateM != MAGO_BALL_LOOP && stateM != MAGO_BALL_END)
+    //-----------------------------------------
+    // INICIO DEL ATAQUE
+    //-----------------------------------------
+    if (!ballInitialized)
     {
+        ballInitialized = true;
+
         stateM = MAGO_BALL_START;
         phaseTimer = 0.0f;
-        Engine::GetInstance().physics->SetLinearVelocity(pbody, 0.0f, 0.0f);
+
+        Engine::GetInstance().physics->SetLinearVelocity(
+            pbody,
+            0.0f,
+            0.0f
+        );
+
+        
+
+        animsBall.SetCurrent("attack_start");
+
         return;
     }
 
-    // PASO B: ¡Aquí empieza lo bueno! La bola se activa
-    if (stateM == MAGO_BALL_START && currentAnimTrack->HasFinished())
+    //-----------------------------------------
+    // TRANSFORMACIÓN A BOLA
+    //-----------------------------------------
+    if (stateM == MAGO_BALL_START)
     {
-        stateM = MAGO_BALL_LOOP;
-        phaseTimer = 0.0f;
+        if (currentAnimTrack->HasFinished())
+        {
+            stateM = MAGO_BALL_LOOP;
 
-        // 1. LE DEVOLVEMOS LA GRAVEDAD NATIVA A BOX2D (Escala 1.0f)
-        b2Body_SetGravityScale(pbody->body, 1.0f);
+            animsBall.SetCurrent("attack_loop");
 
-        // 2. Le damos su velocidad horizontal inicial hacia la derecha (p.ej. 5.0f en metros/s)
-        // Usamos tu wrapper para no romper las conversiones
-        Engine::GetInstance().physics->SetXVelocity(pbody, 250.0f);
+            b2Body_SetGravityScale(pbody->body, 0.8f);
+
+            phaseTimer = 0.0f;
+
+            float dir = facingLeft ? -1.0f : 1.0f;
+
+            float vx = dir * 4.0f;  
+            float vy = 24.0f;
+
+            Engine::GetInstance().physics->SetLinearVelocity(pbody, vx, vy);
+            // Primer salto
+            
+        }
+
+        return;
     }
 
-    // PASO C: Bucle de movimiento (Box2D se encarga de la gravedad en Y de forma nativa)
+    //-----------------------------------------
+    // REBOTES
+    //-----------------------------------------
     if (stateM == MAGO_BALL_LOOP)
     {
         phaseTimer += dt;
 
-        // Solo nos encargamos de controlar los límites horizontales de la sala (Paredes)
-        int currentX, currentY;
-        pbody->GetPosition(currentX, currentY);
-
-        float limiteIzquierdo = 4000.0f;
-        float limiteDerecho = 7000.0f;
-
-        // Si toca un límite, invertimos su velocidad X actual usando tus wrappers
-        float currentVx = Engine::GetInstance().physics->GetXVelocity(pbody);
-        if (currentX <= limiteIzquierdo && currentVx < 0) {
-            Engine::GetInstance().physics->SetXVelocity(pbody, abs(currentVx));
-        }
-        else if (currentX >= limiteDerecho && currentVx > 0) {
-            Engine::GetInstance().physics->SetXVelocity(pbody, -abs(currentVx));
-        }
-
-        // Duración total del ataque
-        if (phaseTimer >= 7.0f) {
+        if (phaseTimer >= 7000.0f)
+        {
             stateM = MAGO_BALL_END;
+
+            animsBall.SetCurrent("attack_end");
+
+            phaseTimer = 0.0f;
+
+            Engine::GetInstance().physics->SetLinearVelocity(
+                pbody,
+                0.0f,
+                0.0f
+            );
         }
+
+        return;
     }
 
-    // PASO D: Terminar el ataque de la bola
-    if (stateM == MAGO_BALL_END && currentAnimTrack->HasFinished())
+    //-----------------------------------------
+    // FIN DEL ATAQUE
+    //-----------------------------------------
+    if (stateM == MAGO_BALL_END)
     {
-        // 1. LE VOLVEMOS A QUITAR LA GRAVEDAD para que pueda flotar de nuevo
-        b2Body_SetGravityScale(pbody->body, 0.0f);
+        if (currentAnimTrack->HasFinished())
+        {
+            ballInitialized = false;
 
-        // 2. Lo mandamos al estado de viaje para que regrese al centro flotando suavemente
-        currentPhase = BossPhaseM::TRANSFORMATIONM;
-        stateM = MAGO_VIAJANDO_AL_CENTRO;
-        isAttacking = false;
-        attackTimer = 0.0f;
+            b2Body_SetGravityScale(
+                pbody->body,
+                0.0f
+            );
+
+            Engine::GetInstance().physics->SetLinearVelocity(
+                pbody,
+                0.0f,
+                0.0f
+            );
+
+            isAttacking = false;
+
+            attackTimer = 0.0f;
+
+            currentPhase = BossPhaseM::TRANSFORMATIONM;
+            stateM = MAGO_VIAJANDO_AL_CENTRO;
+        }
     }
 }
 
@@ -349,47 +392,32 @@ void MagoBoss::ChangeCurrentAnimation()
 
 void MagoBoss::OnCollision(PhysBody* physA, PhysBody* physB)
 {
-    // Detectar si estamos en Fase 1 (Intro) y el jugador nos ataca
     if (currentPhase == BossPhaseM::INTROM)
     {
-        // Ajusta esto según cómo gestiones los ataques del jugador (p.ej. si el collider del jugador cambia a "ATTACK")
         if (physB->ctype == ColliderType::PLAYERATTACK)
         {
             hasBeenHit = true;
         }
     }
 
-    // Si estamos en la Fase de Combate, modo Bola Rebotando, y chocamos con el suelo
-    if (currentPhase == BossPhaseM::BOSSFIGHTM && stateM == MAGO_BALL_LOOP)
+    if (currentPhase == BossPhaseM::BOSSFIGHTM &&
+        stateM == MAGO_BALL_LOOP)
     {
         if (physB->ctype == ColliderType::PLATFORM)
         {
-            // ¡EL IMPULSO HACIA ARRIBA NATIVO!
-            // Al tocar el suelo, obligamos a la velocidad Y a ser negativa (hacia arriba)
-            // Tu wrapper de Physics ya traduce este -700.0f a los metros por segundo que Box2D entiende.
-            Engine::GetInstance().physics->SetYVelocity(physA, -700.0f);
+            Engine::GetInstance().physics->SetYVelocity(
+                pbody,
+                -40.0f
+            );
 
-            // ... Tu código de spawnear las uvas laterales se queda exactamente igual ...
-            int currentX, currentY;
-            pbody->GetPosition(currentX, currentY);
+            uvasPendientes = true;
 
-            auto entityLeft = Engine::GetInstance().entityManager->CreateEntity(EntityType::UVA);
-            if (entityLeft) {
-                Uva* uvaIzq = static_cast<Uva*>(entityLeft.get());
-                uvaIzq->SetConfiguration(UvaSize::PEQUEÑA, UvaType::LINEAL, -1.0f);
-                uvaIzq->position.setX(currentX - 50);
-                uvaIzq->position.setY(currentY);
-                uvaIzq->Start();
-            }
+            facingLeft = (rand() % 2 == 0) ? -1.0f : 1.0f;
 
-            auto entityRight = Engine::GetInstance().entityManager->CreateEntity(EntityType::UVA);
-            if (entityRight) {
-                Uva* uvaDer = static_cast<Uva*>(entityRight.get());
-                uvaDer->SetConfiguration(UvaSize::PEQUEÑA, UvaType::LINEAL, 1.0f);
-                uvaDer->position.setX(currentX + 50);
-                uvaDer->position.setY(currentY);
-                uvaDer->Start();
-            }
+            pbody->GetPosition(
+                spawnX,
+                spawnY
+            );
         }
     }
 }

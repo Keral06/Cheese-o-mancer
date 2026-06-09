@@ -1,10 +1,7 @@
 Knight: 
 Princess: 
-Knight: 
+Fool: 
 Princess: 
 Knight: 
-Princess: 
 Knight: 
-Princess: 
-Princess: 
 +

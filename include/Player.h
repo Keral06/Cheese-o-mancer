@@ -7,6 +7,7 @@
 #include "FireBall.h"
 #include "CheeseBall.h"
 
+class Enemy;
 
 enum PlayerState {
 	JUMPING,
@@ -17,6 +18,8 @@ enum PlayerState {
 	IDLE,
 	IDLE_ON_CHEESE,
 	RUNNING_ON_CHEESE,
+	HURT,
+	DYING,
 	DEFAULT
 
 };
@@ -103,6 +106,7 @@ public:
 	int deathfx;
 	int healfx;
 	int attackfx;
+	int hurtFx[3];
 
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
@@ -113,11 +117,15 @@ public:
 	bool firstJump = true;
 	bool godMode = false;
 	bool isdead = false;
+	bool isDeathAnimFinished = false;
 	bool isWalking = false;
 	bool isCollidedWall = false;
 	int wallSide = 0;
 	bool isCollidedFloor = false;
 	int floorContacts = 0;
+	bool isKnockback = false;
+	float knockbackTimer = 0.0f;
+	float knockbackDuration = 400.0f;
 
 	// Temporizador para las partículas de los pies
 	float stepParticleTimer = 0.0f;
@@ -127,6 +135,7 @@ public:
 	std::vector<std::shared_ptr<FireBall>> fireballs;
 	
 	bool IsProtected = false;
+	float protectionTimer = 0.0f;
 	static void AddPoints(int points);
 	//Score and lives
 
@@ -165,6 +174,9 @@ public:
 	bool pendingCheeseSpawn = false;
 	bool isKicking = false;
 
+	// Mision Escultor
+	Enemy* interactableCorpse = nullptr;
+
 private: 
 	b2Vec2 velocity;
 	AnimationSet anims2x3;
@@ -184,6 +196,7 @@ private:
 	bool attackRequested = false;
 	bool isAttacking = false;
 	bool bufferedAttack = false;
+	bool hasDashed = false;
 	Uint32 bufferTime = 200; // ms
 	Uint32 bufferStart = 0;
 
@@ -230,5 +243,9 @@ private:
 	AnimationSet animsShowCheese;
 	bool isShowingCheese = false;
 	float showCheeseTimer = 0.0f;
+
+	SDL_Texture* magicCheeseTexture = nullptr;
+	AnimationSet magicCheeseAnims;
+	bool isPlayingMagicCheese = false;
 
 };
