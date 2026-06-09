@@ -2422,7 +2422,10 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 
 
-				dialogue.AvanzarDialogo(dt);
+				if (dialogue.AvanzarDialogo(dt)) {
+				
+					Engine::GetInstance().scene->cards.push("Death", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Death.png"), nullptr);
+				}
 
 				return true;
 			}
@@ -3218,7 +3221,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 					SDL_Texture* help = Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Items/UI_Mission_ItemGargantualTreeRoot1_.png");
 					Engine::GetInstance().scene->inventario.push("EmpressKey1", help, nullptr);
 					Engine::GetInstance().scene->misiones.Completed("Psalms");
-					Engine::GetInstance().scene->cards.push("Hermit", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Hierophant.png"), nullptr);
+					Engine::GetInstance().scene->cards.push("Empress", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Empress.png"), nullptr);
 				}
 				return true;
 			
@@ -3930,6 +3933,9 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 						Engine::GetInstance().scene->ratTalkedOnce = true;
 						Engine::GetInstance().scene->cards.push("Chariot", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Chariot.png"), nullptr);
+					
+
+						Engine::GetInstance().scene->misiones.push("Chariot", Engine::GetInstance().textures->Load("assets/UI/Spritesheets/UI_Mission_Info/UI_MissionNotes_Teleport1.png"), Engine::GetInstance().textures->Load("assets/UI/Spritesheets/UI_Mission_Info/UI_MissionNotes_Teleport2.png"));
 
 						
 					}
@@ -3968,7 +3974,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 
 						Engine::GetInstance().scene->teleportUnlocked = true;
-
+						Engine::GetInstance().scene->misiones.Completed("Chariot");
+						Engine::GetInstance().scene->cards.push("Chariot", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Chariot.png"), nullptr);
 					}
 					
 				return true;
@@ -4152,7 +4159,8 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 
 						Engine::GetInstance().scene->hasTalkedSculptor = true;
-						
+						Engine::GetInstance().scene->misiones.push("Sculptor", Engine::GetInstance().textures->Load("assets/UI/Spritesheets/UI_Mission_Info/UI_MissionNotes_Sculptor1.png"), Engine::GetInstance().textures->Load("assets/UI/Spritesheets/UI_Mission_Info/UI_MissionNotes_Sculptor2.png"));
+
 
 
 					}
@@ -4209,8 +4217,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 				
 					if (teleport.AvanzarDialogo(dt)) {
-						// Abrir el menú de teletransporte después del diálogo
-						Engine::GetInstance().scene->SetTeleport(true);
+						Engine::GetInstance().scene->misiones.Completed("Sculptor");
 					}
 				
 
@@ -4360,7 +4367,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 						Engine::GetInstance().scene->hasTalkedSculptor = true;
 
-
+						Engine::GetInstance().scene->misiones.push("Retired", Engine::GetInstance().textures->Load("assets/UI/Spritesheets/UI_Mission_Info/UI_MissionNotes_RetiredKnight1.png"), Engine::GetInstance().textures->Load("assets/UI/Spritesheets/UI_Mission_Info/UI_MissionNotes_RetiredKnight2.png"));
 
 					}
 					
@@ -4399,6 +4406,10 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 
 						Engine::GetInstance().scene->finishedRetiredKnight = true;
+						
+
+						Engine::GetInstance().scene->misiones.Completed("Retired");
+
 
 					}
 					

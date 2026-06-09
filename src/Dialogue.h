@@ -68,5 +68,5 @@ public:
 
 	bool choicesBeingMade = false;
 
-	bool choice = false;
+	bool choice = true;
 };
