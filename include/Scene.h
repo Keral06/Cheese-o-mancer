@@ -62,6 +62,7 @@ public:
 	int currentMission = 0;
 	int actualHelpTexture = 0;
 	bool isInBossfight = false;
+	
 	Scene();
 	// help
 
@@ -321,6 +322,8 @@ public:
 	std::string nextDoor = "";
 	bool firstDoor = true;
 	bool cheese = true;
+	bool dobleSalto = false;
+	bool mohoWalls = false;
 
 	bool isFading = false;
 	bool fadeIn = false;   // true = fade in, false = fade out
