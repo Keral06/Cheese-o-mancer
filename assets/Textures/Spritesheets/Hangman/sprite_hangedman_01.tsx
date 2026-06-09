@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="sprite_hangedman_01" tilewidth="256" tileheight="640" tilecount="105" columns="35">
+<tileset version="1.10" tiledversion="1.12.1" name="sprite_hangedman_01" tilewidth="256" tileheight="640" tilecount="105" columns="35">
  <image source="sprite_hangedman_01.png" width="8960" height="1920"/>
  <tile id="0">
+  <properties>
+   <property name="loop" type="bool" value="true"/>
+   <property name="name" value="idle"/>
+  </properties>
   <animation>
    <frame tileid="0" duration="100"/>
    <frame tileid="1" duration="100"/>
@@ -21,29 +25,12 @@
    <frame tileid="15" duration="100"/>
    <frame tileid="16" duration="100"/>
    <frame tileid="17" duration="100"/>
-   <frame tileid="18" duration="100"/>
-   <frame tileid="19" duration="100"/>
-   <frame tileid="20" duration="100"/>
-   <frame tileid="21" duration="100"/>
-   <frame tileid="22" duration="100"/>
-   <frame tileid="23" duration="100"/>
-   <frame tileid="24" duration="100"/>
-   <frame tileid="25" duration="100"/>
-   <frame tileid="26" duration="100"/>
-   <frame tileid="27" duration="100"/>
-   <frame tileid="28" duration="100"/>
-   <frame tileid="29" duration="100"/>
-   <frame tileid="30" duration="100"/>
-   <frame tileid="31" duration="100"/>
-   <frame tileid="32" duration="100"/>
-   <frame tileid="33" duration="100"/>
-   <frame tileid="34" duration="100"/>
   </animation>
  </tile>
  <tile id="35">
   <properties>
    <property name="loop" type="bool" value="false"/>
-   <property name="name" value="shop"/>
+   <property name="name" value="shop_start"/>
   </properties>
   <animation>
    <frame tileid="35" duration="100"/>
@@ -83,39 +70,21 @@
    <frame tileid="69" duration="100"/>
   </animation>
  </tile>
- <tile id="70">
+ <tile id="36">
   <properties>
-   <property name="loop" type="bool" value="false"/>
-   <property name="name" value="idle"/>
+   <property name="loop" type="bool" value="true"/>
+   <property name="name" value="shop_static"/>
   </properties>
   <animation>
-   <frame tileid="70" duration="100"/>
-   <frame tileid="71" duration="100"/>
-   <frame tileid="72" duration="100"/>
-   <frame tileid="73" duration="100"/>
-   <frame tileid="74" duration="100"/>
-   <frame tileid="75" duration="100"/>
-   <frame tileid="76" duration="100"/>
-   <frame tileid="77" duration="100"/>
-   <frame tileid="78" duration="100"/>
-   <frame tileid="79" duration="100"/>
-   <frame tileid="80" duration="100"/>
-   <frame tileid="81" duration="100"/>
-   <frame tileid="82" duration="100"/>
-   <frame tileid="83" duration="100"/>
-   <frame tileid="84" duration="100"/>
-   <frame tileid="85" duration="100"/>
-   <frame tileid="86" duration="100"/>
-   <frame tileid="87" duration="100"/>
-   <frame tileid="88" duration="100"/>
-   <frame tileid="89" duration="100"/>
-   <frame tileid="90" duration="100"/>
-   <frame tileid="91" duration="100"/>
-   <frame tileid="92" duration="100"/>
-   <frame tileid="93" duration="100"/>
-   <frame tileid="94" duration="100"/>
-   <frame tileid="95" duration="100"/>
-   <frame tileid="96" duration="100"/>
+   <frame tileid="51" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="37">
+  <properties>
+   <property name="loop" type="bool" value="false"/>
+   <property name="name" value="shop_end"/>
+  </properties>
+  <animation>
    <frame tileid="97" duration="100"/>
    <frame tileid="98" duration="100"/>
    <frame tileid="99" duration="100"/>

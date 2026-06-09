@@ -372,7 +372,16 @@ bool Map::Load(std::string path, std::string fileName)//
 
                     wall->drawed = shouldDraw;
                     // -------------------------------------------------------
+                    int targetLevel = 1; // Valor por defecto (por si no tiene la propiedad en Tiled)
 
+                    // Buscamos la propiedad entera en el listado de Tiled
+                    Properties::Property* pLevel = object->properties.GetProperty("Level");
+                    if (pLevel != nullptr)
+                    {
+                        targetLevel = pLevel->valueInt; // <--- ¡Aquí usamos tu variable valueInt!
+                    }
+
+                    wall->level = targetLevel;
                     wall->Start();
                 }
 

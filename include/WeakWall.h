@@ -17,4 +17,5 @@ public:
     Verdugo* owner = nullptr;
     int width = 0;
     int height = 0;
+    int level = 1;
 };
