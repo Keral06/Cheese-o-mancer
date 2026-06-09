@@ -88,6 +88,10 @@ void Jailer::Attack()
 
 bool Jailer::Update(float dt)
 {
+    if (spawnDelayTimer > 0.0f) {
+        spawnDelayTimer -= dt;
+    }
+
     if (hasBeenPicked) return true;
 
     if (Engine::GetInstance().scene->GetPlayer()->isDead()) return true;
@@ -239,6 +243,10 @@ void Jailer::Draw(float dt)
         position.setX((float)x);
         position.setY((float)y);
     }
+    else {
+        x = (int)deathPosition.getX();
+        y = (int)deathPosition.getY();
+    }
 
     SDL_Rect animFrame;
     SDL_Texture* texToDraw = texture;
@@ -322,10 +330,10 @@ void Jailer::SetJailerState(JailerState newState)
 void Jailer::OnCollision(PhysBody* physA, PhysBody* physB)
 {
     if (isDead) {
-        if (physB->ctype == ColliderType::PLATFORM && pbody != nullptr) {
+        // Solo frenamos si el delay ha pasado (ya ha caído un poco)
+        if (physB->ctype == ColliderType::PLATFORM && pbody != nullptr && spawnDelayTimer <= 0.0f) {
             Engine::GetInstance().physics->SetLinearVelocity(pbody, { 0.0f, 0.0f });
             b2Body_SetGravityScale(pbody->body, 0.0f);
-            pbody->listener = nullptr;
         }
         return;
     }
@@ -349,6 +357,9 @@ void Jailer::Die() {
     SetJailerState(JAILER_DEATH);
     deathPosition = GetPosition();
 
+    // Reseteamos el delay de caída
+    spawnDelayTimer = 0.2f; // 0.2 segundos de "gracia" antes de que pueda tocar el suelo
+
     if (attackHitbox != nullptr) {
         Engine::GetInstance().physics->DeletePhysBody(attackHitbox);
         attackHitbox = nullptr;
@@ -357,15 +368,19 @@ void Jailer::Die() {
     if (pbody != nullptr) {
         Engine::GetInstance().physics->DeletePhysBody(pbody);
 
+        // Mantenemos el tamaño original, pero lo spawneamos 30 píxeles más arriba
         pbody = Engine::GetInstance().physics->CreateRectangleSensor(
             (int)deathPosition.getX(),
-            (int)deathPosition.getY(),
+            (int)deathPosition.getY() - 30, // Más alto para asegurar que cae
             texW,
             texH,
             bodyType::DYNAMIC
         );
         pbody->ctype = ColliderType::NPC;
         pbody->listener = this;
+
+        b2Body_SetGravityScale(pbody->body, 1.0f);
+        b2Body_SetAwake(pbody->body, true);
     }
 
     auto newCoin = Engine::GetInstance().entityManager->CreateEntity(EntityType::COIN);

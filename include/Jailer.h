@@ -64,4 +64,5 @@ protected:
 
     int damageTimer = 0;
     int damageCooldown = 60;
+    float spawnDelayTimer = 0.0f;
 };

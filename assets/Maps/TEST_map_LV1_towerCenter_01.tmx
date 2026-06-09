@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="30" nextobjectid="401">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="30" nextobjectid="402">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -96556,6 +96556,9 @@
   </object>
  </objectgroup>
  <objectgroup id="26" name="Particles">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <object id="388" type="Fire" x="6025.03" y="13782.7" width="245.939" height="202.546">
    <properties>
     <property name="loop" type="bool" value="true"/>
@@ -96611,9 +96614,11 @@
     <property name="loop" type="bool" value="true"/>
    </properties>
   </object>
+  <object id="401" type="Stars" x="1701.68" y="4419.29" width="260.637" height="212.091"/>
  </objectgroup>
  <layer id="29" name="Foreground" width="93" height="115" parallaxx="1.1">
   <properties>
+   <property name="Draw" type="bool" value="true"/>
    <property name="Foreground" type="bool" value="true"/>
    <property name="Parallax" type="float" value="1.1"/>
   </properties>

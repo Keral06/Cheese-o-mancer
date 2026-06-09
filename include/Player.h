@@ -73,6 +73,8 @@ public:
 
 	void PlayShowCheese();
 
+	void HasBeenHit(PhysBody* physB);
+
 private:
 
 	void GetPhysicsValues();
@@ -176,7 +178,7 @@ public:
 
 	// Mision Escultor
 	Enemy* interactableCorpse = nullptr;
-
+	int lastAttackId = -1;
 private: 
 	b2Vec2 velocity;
 	AnimationSet anims2x3;
@@ -247,5 +249,5 @@ private:
 	SDL_Texture* magicCheeseTexture = nullptr;
 	AnimationSet magicCheeseAnims;
 	bool isPlayingMagicCheese = false;
-
+	
 };
