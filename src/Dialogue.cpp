@@ -138,10 +138,6 @@ void Dialogue::BeginDialogue(std::string charName) {
 	printf("%s", dialogueHelper[lenghtHelper].c_str());
 	Engine::GetInstance().scene->someoneIsTalking = true;
 	
-	//play audio begining
-	/*who = charName;
-	LoadTalkSound(who);
-	PlayTalkSound(who);*/
 	HandleAudio(charName);
 
 }
@@ -354,10 +350,9 @@ void Dialogue::HandleAudio(std::string name) {
 }
 
 void Dialogue::LoadTalkSound(std::string charName) {
-	
-	charName = charName;
+	int randNum;
 	if (charName == "Magician: ") {
-		int randNum = rand() % 6;
+		randNum = rand() % 6;
 		switch (randNum) {
 		case 0:
 			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/magician/Magician_talk1.wav");
@@ -379,38 +374,176 @@ void Dialogue::LoadTalkSound(std::string charName) {
 			break;
 		}
 	}	
+
 	if (charName == "Milkmaid") {
-		currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Milklady/Milklady_talk1.wav");
-		/*int randNum = rand() % 6;
+		randNum = rand() % 4;
 		switch (randNum) {
 		case 0:
-			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/magician/Magician_talk1.wav");
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Milklady/Milklady_talk1.wav");
 			break;
 		case 1:
-			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/magician/Magician_talk2.wav");
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Milklady/Milklady_talk2.wav");
 			break;
 		case 2:
-			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/magician/Magician_talk3.wav");
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Milklady/Milklady_talk3.wav");
 			break;
 		case 3:
-			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/magician/Magician_hum1.wav");
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Milklady/Milklady_talk4.wav");
 			break;
-		case 4:
-			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/magician/Magician_hum2.wav");
-			break;
-		case 5:
-			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/magician/Magician_hum3.wav");
-			break;
-		}*/
+		}
 	}
 
+	if (charName == "Hermit") {
+		randNum = rand() % 4;
+		switch (randNum) {
+		case 0:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Hermit/Hermit_talk.wav");
+			LOG("case 0");
+			break;
+		case 1:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Hermit/Hermit_talk2.wav");
+			LOG("case 1");
+			break;
+		case 2:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Hermit/Hermit_talk3.wav");
+			LOG("case 2");
+			break;
+		case 3:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Hermit/Hermit_talk4.wav");
+			LOG("case 3");
+			break;
+		}
+	}
 
+	if (charName == "Hierophant") {
+		randNum = rand() % 7;
+		switch (randNum) {
+		case 0:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Hierophant/Hierophant_talk_.wav");
+			break;
+		case 1:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Hierophant/Hierophant_talk_2.wav");
+			break;
+		case 2:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Hierophant/Hierophant_talk_3.wav");
+			break;
+		case 3:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Hierophant/Hierophant_talk_4.wav");
+			break;
+		case 4:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Hierophant/Hierophant_talk_5.wav");
+			break;
+		case 5:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Hierophant/Hierophant_talk_8.wav");
+			break;
+		}
+	}
+
+	if (charName == "Well") {
+		randNum = rand() % 3;
+		switch (randNum) {
+		case 0:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Echo_Well/Well_talk3.wav");
+			break;
+		case 1:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Echo_Well/Well_talk1.wav");
+			break;
+		case 2:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Echo_Well/Well_talk2.wav");
+			break;
+		}
+	}
+
+	if (charName == "HighPriestess") {
+		randNum = rand() % 3;
+		switch (randNum) {
+		case 0:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/High_Priestess/HighPriestess_talk1.wav");
+			break;
+		case 1:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/High_Priestess/HighPriestess_talk2.wav");
+			break;
+		case 2:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/High_Priestess/HighPriestess_talk3.wav");
+			break;
+		case 3:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/High_Priestess/HighPriestess_talk4.wav");
+			break;
+		}
+	}
+
+	if (charName == "RetiredKnight") {
+		randNum = rand() % 3;
+		switch (randNum) {
+		case 0:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Retired_Knight/Retired_Knight_talk1.wav");
+			break;
+		case 1:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Retired_Knight/Retired_Knight_talk2.wav");
+			break;
+		case 2:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Retired_Knight/Retired_Knight_talk3.wav");
+			break;
+		}
+	}
+
+	if (charName == "Nohuely") {
+		randNum = rand() % 4;
+		switch (randNum) {
+		case 0:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Lady_Nohuely/Lady_Nohuely_talk1.wav");
+			break;
+		case 1:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Lady_Nohuely/Lady_Nohuely_talk2.wav");
+			break;
+		case 2:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Lady_Nohuely/Lady_Nohuely_talk3.wav");
+			break;
+		case 3:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Lady_Nohuely/Lady_Nohuely_talk4.wav");
+			break;
+		}
+	}
+
+	if (charName == "Sculptor") {
+		randNum = rand() % 3;
+		switch (randNum) {
+		case 0:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Sculptor/Sculptor_talk1.wav");
+			break;
+		case 1:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Sculptor/Sculptor_talk2.wav");
+			break;
+		case 2:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Sculptor/Sculptor_talk3.wav");
+			break;
+		}
+	}
+
+	if (charName == "Empress") {
+		randNum = rand() % 3;
+		switch (randNum) {
+		case 0:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Queen/Queen_talk1.wav");
+			break;
+		case 1:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Queen/Queen_talk2.wav");
+			break;
+		case 2:
+			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/Queen/Queen_talk3.wav");
+			break;
+		}
+	}
 }
+
 
 void Dialogue::PlayTalkSound(std::string charName) {
 	
-	Engine::GetInstance().audio->PlayFx(currentFx);
-	hasPlayed = true;
+	if (nameHelper[lenghtHelper] != "Fool: ") {
+		Engine::GetInstance().audio->PlayFx(currentFx);
+		hasPlayed = true;
+	}
+	
 	/*if (charName == "Magician: ") {
 		
 	}*/
