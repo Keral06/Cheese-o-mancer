@@ -1720,6 +1720,7 @@ void Player::HasBeenHit(PhysBody* physB) {
 	protectionTimer = 2500.0f;
 	isAttacking = false;
 	hitboxActive = false;
+	lives--;
 	currentAnimSet = &anims3x3;
 	texture = texture3x3;
 	currentAnimSet->SetCurrent("hurt");
