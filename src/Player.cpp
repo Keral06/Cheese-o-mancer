@@ -1250,7 +1250,7 @@ void Player::Attack() {
 
 void Player::HandleAttack()
 {
-	const float comboResetTimeMs = 400;
+	const float comboResetTimeMs = 250;
 	static Uint32 lastAttackTime = 0;
 	Uint32 now = SDL_GetTicks();
 
@@ -1269,7 +1269,7 @@ void Player::HandleAttack()
 		int currentFrame = currentAnimSet->GetCurrentFrameIndex();
 
 		// ACTIVACIÓN DEL HITBOX (Frames activos)
-		if (currentFrame >= 1 && currentFrame <= 5) {
+		if (currentFrame >= 1 && currentFrame <= 7) {
 			hitboxActive = true;
 			UpdateAttackHitbox();
 
@@ -1319,6 +1319,8 @@ void Player::StartAttack(int combo)
 
 	currentAnimSet = &anims3x4;
 	texture = texture3x4;
+
+	currentAnimSet->SetSpeed(2.0f);
 
 	if (isCollidedFloor) {
 		float dashForce = 0.0f;
