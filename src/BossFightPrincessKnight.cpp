@@ -490,6 +490,7 @@ void BossFightPrincessKnight::UpdateDeath(float dt)
                 Engine::GetInstance().scene->cards.push("Lovers", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Lovers.png"), nullptr);
 
             }
+            Engine::GetInstance().scene->hasSparedPrincessAndKnight = true;
             // Los jefes se quedan en DEFEAT de forma permanente
             // Aquí puedes disparar tu diálogo "AfterFightSpare"
         }

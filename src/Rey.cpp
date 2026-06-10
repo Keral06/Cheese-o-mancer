@@ -53,6 +53,26 @@ bool Rey::Start() {
     pbody->ctype = ColliderType::REY;
 
     anims.SetCurrent("idle");
+
+    Dialogue help("assets/Dialogues/Final_Bossfight/Final_Before_Bossfight_Dialogues.txt", "assets/Dialogues/Final_Bossfight/Final_Before_Bossfight_Names.txt");
+    choice = help;
+    Dialogue help2("assets/Dialogues/Final_Bossfight/Final_Before_Bossfight_Dialogues2.txt", "assets/Dialogues/Final_Bossfight/Final_Before_Bossfight_Names2.txt");
+    noChoice = help2;
+
+
+    Dialogue help3("assets/Dialogues/Final_Bossfight/Final_WithArtifact_Dialogue.txt", "assets/Dialogues/Final_Bossfight/Final_WithArtifact_Names.txt");
+    Artifact = help3;
+
+
+    Dialogue help4("assets/Dialogues/Endings/Ending_Judgement_Dialogues.txt", "assets/Dialogues/Endings/Ending_Judgement_Names.txt");
+    NoArtifact = help3;
+
+    Dialogue help4("assets/Dialogues/Endings/Ending_Temperance_Dialogues.txt", "assets/Dialogues/Endings/Ending_Temperance_Names.txt");
+    Temperance = help3;
+
+    Dialogue help4("assets/Dialogues/Endings/Ending_TheDevil_Dialogues.txt", "assets/Dialogues/Endings/Ending_TheDevil_Names.txt");
+    theDevil = help3;
+
     attackHitbox = nullptr;
     return true;
 }
@@ -93,38 +113,189 @@ bool Rey::Update(float dt)
 
     // --- BLOQUE 1: El jugador está eligiendo activamente entre SPARE o KILL ---
     if (choosingFinal) {
-        // Tecla 1: MATAR (KILL) -> Final 2
-        if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-            LOG("Has elegido: MATAR AL REY (Final 2)");
-            choosingFinal = false;
 
-            // TODO: Activar aquí la cinemática del FINAL 2 si tienes un método para vídeos o escenas
-            // scene->PlayVideo("assets/Videos/final2.mpeg"); 
+        if (Engine::GetInstance().scene->misiones.HowManyCompleted() > 3 && Engine::GetInstance().scene->hasSparedPrincessAndKnight) {
+        
+        
+            if (choice.hasStarted == false) { choice.AvanzarDialogo(dt, "Rey"); return; }
 
-            Die(); // Ejecuta la animación de muerte del rey
+            if (eKeyCurrent) {
+            
+            
+                if (choice.AvanzarDialogo(dt, "Rey")) {
+
+
+                    choosingFinal = false;
+
+                    decision = choice.WhatChoice();
+                    return;
+                 }
+            
+            }
+
+            if (choice.hasStarted && !choice.hasEnded) { choice.Draw(dt); return; }
+        
+        
+        
         }
-        // Tecla 2: PERDONAR (SPARE) -> Bifurcación entre Final 3 y Jefe (Final 4)
-        else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-            LOG("Has elegido: PERDONAR AL REY");
-            choosingFinal = false;
+        else {
+        
+        
+            if (noChoice.hasStarted == false) { choice.AvanzarDialogo(dt, "Rey"); return; }
 
-            // REQUISITO AMULETO: Comprobamos si tiene el artefacto montado o todos los fragmentos
-            if (Engine::GetInstance().scene->hasAllFragments) {
+            if (eKeyCurrent) {
+
+
+                if (noChoice.AvanzarDialogo(dt, "Rey")) {
+
+
+                    choosingFinal = false;
+                    decision = false;//kill him
+
+
+                }
+
+            }
+
+            if (noChoice.hasStarted && !noChoice.hasEnded) { noChoice.Draw(dt); return; }
+        
+        
+        
+        
+        }
+
+        if (decision)//spare
+        {
+
+            if (Engine::GetInstance().scene->inventario.tieneObjeto("Artifact")) {
                 LOG("¡Tienes el artefacto/amuleto! El Mago se debilita. Comienza la Bossfight");
 
                 Engine::GetInstance().render->SetZoomSmooth(0.5f, 800.0f);
-                Die(); // Cambiará a DEADR y spawneará al MagoBoss en el bloque de abajo
 
-                // NOTA: Si quieres que el Mago sepa que está débil, puedes activar un flag en la escena
-                // scene->isInBossfight = true;
+                if (Artifact.hasStarted == false) { Artifact.AvanzarDialogo(dt, "Rey"); return; }
+
+                if (eKeyCurrent && Artifact.hasEnded == false) {
+                
+                    Artifact.AvanzarDialogo(dt, "Rey");
+                    return;
+                
+                
+                }
+                if (Artifact.hasStarted && !Artifact.hasEnded) { Artifact.Draw(dt); return; }
+                //COMENÇA LLUITA
+                // 
+                // DESPRES LLUITA, ES EL VIDEO
+                // 
+                // 
+                // Cambiará a DEADR y spawneará al MagoBoss en el bloque de abajo
+
             }
             else {
                 LOG("No tienes el amuleto... El Mago te destruye sin piedad (Final 3)");
 
+                if (NoArtifact.hasStarted == false) { NoArtifact.AvanzarDialogo(dt, "Rey"); return; }
+
+                if (eKeyCurrent && Artifact.hasEnded == false) {
+
+                    NoArtifact.AvanzarDialogo(dt, "Rey");
+                    return;
+
+
+                }
+                if (NoArtifact.hasStarted && !NoArtifact.hasEnded) { NoArtifact.Draw(dt); return; }
+               
+                //MUERTE JESTER
+
                 // TODO: Activar aquí la cinemática del FINAL 3
                 // scene->ChangeScene(SceneID::GAME_OVER); // O tu pantalla/video correspondiente
             }
+
+
+
         }
+
+        else if (!decision) //kill him
+        {
+            LOG("Has elegido: MATAR AL REY (Final 2)");
+            choosingFinal = false;
+
+
+            if (Engine::GetInstance().scene->hasSparedPrincessAndKnight) {
+            //Temperance ending
+            
+                if (Temperance.hasStarted == false) { Temperance.AvanzarDialogo(dt, "Rey"); return; }
+
+                if (eKeyCurrent && Temperance.hasEnded == false) {
+
+                    Temperance.AvanzarDialogo(dt, "Rey");
+                    return;
+
+
+                }
+                if (Temperance.hasStarted && !Temperance.hasEnded) { NoArtifact.Draw(dt); return; }
+            
+            }
+            else {
+            
+            //The devil ending
+            
+                if (theDevil.hasStarted == false) { theDevil.AvanzarDialogo(dt, "Rey"); return; }
+
+                if (eKeyCurrent && theDevil.hasEnded == false) {
+
+                    theDevil.AvanzarDialogo(dt, "Rey");
+                    return;
+
+
+                }
+                if (theDevil.hasStarted && !theDevil.hasEnded) { theDevil.Draw(dt); return; }
+            }
+            // TODO: Activar aquí la cinemática del FINAL 2 si tienes un método para vídeos o escenas
+            // scene->PlayVideo("assets/Videos/final2.mpeg"); 
+
+            Die(); // Ejecuta la animación de muerte del rey
+
+
+        }
+
+
+
+
+
+
+
+        //// Tecla 1: MATAR (KILL) -> Final 2
+        //if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
+        //    LOG("Has elegido: MATAR AL REY (Final 2)");
+        //    choosingFinal = false;
+
+        //    // TODO: Activar aquí la cinemática del FINAL 2 si tienes un método para vídeos o escenas
+        //    // scene->PlayVideo("assets/Videos/final2.mpeg"); 
+
+        //    Die(); // Ejecuta la animación de muerte del rey
+        //}
+        //// Tecla 2: PERDONAR (SPARE) -> Bifurcación entre Final 3 y Jefe (Final 4)
+        //else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
+        //    LOG("Has elegido: PERDONAR AL REY");
+        //    choosingFinal = false;
+
+        //    // REQUISITO AMULETO: Comprobamos si tiene el artefacto montado o todos los fragmentos
+        //    if (Engine::GetInstance().scene->hasAllFragments) {
+        //        LOG("¡Tienes el artefacto/amuleto! El Mago se debilita. Comienza la Bossfight");
+
+        //        Engine::GetInstance().render->SetZoomSmooth(0.5f, 800.0f);
+        //        Die(); // Cambiará a DEADR y spawneará al MagoBoss en el bloque de abajo
+
+        //        // NOTA: Si quieres que el Mago sepa que está débil, puedes activar un flag en la escena
+        //        // scene->isInBossfight = true;
+        //    }
+        //    else {
+        //        LOG("No tienes el amuleto... El Mago te destruye sin piedad (Final 3)");
+
+        //        // TODO: Activar aquí la cinemática del FINAL 3
+        //        // scene->ChangeScene(SceneID::GAME_OVER); // O tu pantalla/video correspondiente
+        //    }
+        //}
     }
     // --- BLOQUE 2: Interacción normal pulsando la E ---
     else if (playerInRange && eKeyCurrent && !eKeyWasPressed) {

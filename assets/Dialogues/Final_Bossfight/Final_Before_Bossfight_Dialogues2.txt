@@ -12,22 +12,5 @@ You people made of me a scapegoat for your sorrows, I’ve had enough.
 Mass calls, no time for repentance.
 Oh fool, there's many sins far too great to be mended now regardless.
 So what will you make of me, a feeble man with no way to hold a sword?
-CHOICE
-Q. Spare him.
-E. Kill him.
-CHOICE 1:
-!
-Do I recall our deal correctly, sweet-berry?
-I granted power and you were to put it to good use.
-But this? Oh dear... This is not good.
-Not good at all.
-...
-Cat got your tongue, friend? Now, now, do not worry. I will make things right.
-No more rulers, no more castles... This will simply return to being an unmarked point in the maps. Only a bad dream that the earth will wake up from.
-Wait, you can’t!
-Haha! But I can!
-Although I do need some extra help, and oh! Those cheesy powers have been fed extremely well!
-Would you be so kind?
-CHOICE 2:
 Something of actual use.
 +

@@ -77,3 +77,17 @@ void ListaMisiones::LoadState(pugi::xml_node node) {
         objetos.back().completed = misionNode.attribute("completed").as_bool();
     }
 }
+
+
+int ListaMisiones::HowManyCompleted() {
+
+    int completed = 0;
+    for (int j = 0; j < objetos.size(); j++) {
+        if (objetos[j].visualizada) {
+        
+            completed++;
+        }
+    }
+    return completed;
+
+}

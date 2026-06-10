@@ -33,4 +33,5 @@ public:
     bool Visualizada();
     void SaveState(pugi::xml_node& node);
     void LoadState(pugi::xml_node node);
+    int HowManyCompleted();
 };

@@ -2,6 +2,7 @@
 #define __REY_H__
 
 #include "Enemy.h"
+#include "Dialogue.h"
 
 class Rey : public Enemy {
 public:
@@ -53,5 +54,17 @@ public:
     bool choosingFinal = false; 
 
     Finales finalEscogido;
+
+
+    Dialogue choice;
+    Dialogue noChoice;
+    Dialogue Artifact;
+    Dialogue NoArtifact;
+
+    Dialogue Temperance;
+    Dialogue theDevil;
+    bool decision = false;
+
+
 };
 #endif
