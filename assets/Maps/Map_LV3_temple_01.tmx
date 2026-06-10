@@ -14976,6 +14976,7 @@
   <object id="315" x="0" y="2944" width="2688" height="128"/>
   <object id="366" x="4864" y="2944" width="2688" height="128"/>
   <object id="367" x="4864" y="4992" width="2688" height="128"/>
+  <object id="378" x="2688" y="2944" width="2176" height="128"/>
  </objectgroup>
  <objectgroup id="19" name="spikes"/>
  <objectgroup id="9" name="Walls">
