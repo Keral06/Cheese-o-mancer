@@ -608,14 +608,14 @@ void Verdugo::ChangeCurrentAnimation() {
         currentAnimSet = &animsAtaque1;
         texture = textureA1;
         currentAnimSet->SetCurrent("attack1");
-        offsetY = 0.0f;
+        offsetY =128.0f;
         break;
 
     case ATAQUE2:
         currentAnimSet = &animsAtaque2;
         texture = textureA2;
         currentAnimSet->SetCurrent("attack2");
-        offsetY = 0.0f;
+        offsetY = 128.0f;
         break;
 
     case ATAQUE3START:
@@ -650,21 +650,21 @@ void Verdugo::ChangeCurrentAnimation() {
         currentAnimSet = &animsAtaque4a;
         texture = textureA4a;
         currentAnimSet->SetCurrent("attack4a");
-        offsetY = 128.0f * 3;
+        offsetY = 128.0f * 4;
         break;
 
     case ATAQUE4B:
         currentAnimSet = &animsAtaque4b;
         texture = textureA4b;
         currentAnimSet->SetCurrent("attack4b");
-        offsetY = 128.0f * 3;
+        offsetY = 128.0f * 4;
         break;
 
     case MUERTO:
         currentAnimSet = &animsDeath;
         texture = textureDeath;
         currentAnimSet->SetCurrent("death");
-        offsetY = 128.0f * 3;
+        offsetY = 128.0f;
         break;
 
     case TRANSFORM1:
@@ -719,12 +719,14 @@ AttackType Verdugo::ChooseRandomAttack()
 }
 void Verdugo::ExecuteAttack()
 {
-    float targetX = facingLeft ? 900.0f : 10000.0f;
+    float targetX = facingLeft ? 900.0f : 6000.0f;
     float dx = targetX - GetPosition().getX();
     switch (currentAttack)
     {
     case ATTACK_1:
         LOG("INICIO ATAQUE 1 (garrotazo)");
+        hitboxActive = false;
+        currentAttackId++;
         state = ATAQUE1;
         attackInProgress = true;
         velocity.x = facingLeft ? 25.0f : -25.0f;
@@ -761,18 +763,68 @@ void Verdugo::ExecuteAttack()
 
 void Verdugo::UpdateAttackLogic()
 {
-    float targetX = facingLeft ? 6000.0f : 900.0f;
+    float targetX = facingLeft ? 900.0f : 6000.0f;
     float myX = GetPosition().getX();
     float playerX = Engine::GetInstance().scene->GetPlayerPosition().getX();
-
+    int currentFrame = currentAnimSet->GetCurrentFrameIndex();
     switch (currentAttack)
     {
     case ATTACK_1:
-        // termina cuando animación acaba
+        // 1. Frenamos el movimiento para que ejecute el ataque en el sitio
+        velocity.x = 0;
+        Engine::GetInstance().physics->SetLinearVelocity(pbody, velocity);
+
+        
+
+        // 2. CONTROL DE FRAMES ACTIVOS (¡Cambia el 8 y el 11 por los frames reales de tu ce_attack1.tsx!)
+        if ((currentFrame >= 7 && currentFrame <= 8) || (currentFrame >= 15 && currentFrame <= 17))
+        {
+            hitboxActive = true;
+
+            // 3. EXTRAER EL RECTÁNGULO DE LA HITBOX
+            int hx, hy;
+            attackHitbox->GetPosition(hx, hy);
+
+            // Usamos las mismas dimensiones (70x200) que definiste en el Start
+            SDL_Rect hitboxRect = {
+                hx - (70 / 2),
+                hy - (200 / 2),
+                70,
+                200
+            };
+
+            // 4. ESCANEO DEL ÁREA
+            std::vector<PhysBody*> hits = Engine::GetInstance().physics->QueryArea(hitboxRect);
+
+            for (auto* body : hits)
+            {
+                if (body->ctype == ColliderType::PLAYER)
+                {
+                    Player* p = static_cast<Player*>(body->listener);
+
+                    // 5. LÓGICA DE DAÑO ÚNICO
+                    if (p && p->lastAttackId != currentAttackId)
+                    {
+                        p->HasBeenHit(pbody); // Aplica daño/retroceso al jugador
+                        p->lastAttackId = currentAttackId; // Inmunidad temporal a este garrotazo
+                        LOG("¡HIT FASE 2! El Verdugo te ha dado con el Ataque 1 en el frame %d", currentFrame);
+                    }
+                }
+            }
+        }
+        else
+        {
+            hitboxActive = false;
+        }
+
+        // 6. FIN DE LA ANIMACIÓN
         if (currentAnimSet->HasFinished())
         {
             currentAnimSet->Resets();
+            hitboxActive = false;
             attackInProgress = false;
+            state = IDLEV; // Devolvemos al boss a estado Idle tras terminar
+            LOG("FIN ATAQUE 1 - FASE 2");
         }
         break;
 
@@ -866,6 +918,7 @@ void Verdugo::UpdateAttackLogic()
 
                 LOG("Llega al borde ATAQUE4A");
             }
+            Engine::GetInstance().physics->SetLinearVelocity(pbody, velocity);
         }
 
         // =========================
@@ -939,6 +992,7 @@ void Verdugo::OnWallDestroyed()
 void Verdugo::Die() {
     anims.SetCurrent("death");
     Engine::GetInstance().scene->cards.GirarCarta("Justice");
+    Engine::GetInstance().render->SetZoomSmooth(0.3f, 600.0f);
     int numeroDeMonedas = 10;
     const Vector2D& pos = this->GetPosition();
     Engine::GetInstance().scene->isInBossfight = false;
@@ -970,7 +1024,8 @@ void Verdugo::SpawnWeakWall()
         wall->width = 128;
         wall->height = texH;
         wall->owner = this;
-        int offset = 128;
+        wall->drawed = false;
+        int offset = 128*2;
 
         if (facingLeft)
         {
