@@ -42,8 +42,9 @@ private:
     bool isImmobilized = false;
     bool waitingForChoice = false;
     std::string currentAnimName = "none";
+     
 
-    
-    bool waitingForChoice = false;
+    Dialogue Choosing;
+
     bool choiceMade = false;       
 };
