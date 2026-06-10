@@ -2511,6 +2511,9 @@ void Scene::SetInventory(bool inventory) {
 		if (element->id == 46 || element->id == 47) {
 			element->visible = (inventoryOn && cardsInventoryOn);
 		}
+		if (!inventoryOn && (element->id == 48 || element->id == 49)) {
+			element->visible = false;
+		}
 	}
 }
 
