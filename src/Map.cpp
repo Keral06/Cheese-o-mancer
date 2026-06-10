@@ -35,7 +35,7 @@
 
 
 bool Map::IsMoho(int gid) {
-    static const std::vector<int> ids = { 881 }; // todos los GIDs de moho
+    static const std::vector<int> ids = { 881, 1687 }; // todos los GIDs de moho
     return std::find(ids.begin(), ids.end(), gid) != ids.end();
 }
 
