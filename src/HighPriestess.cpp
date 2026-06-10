@@ -230,13 +230,25 @@ void HighPriestesss::OnCollision(PhysBody* physA, PhysBody* physB) {
         isVulnerable = false;
         hitsTaken++;
 
+        // 1. Devolver al jugador a donde estaba antes (en la arena de los bichos)
+        Player* player = Engine::GetInstance().scene->GetPlayer();
+        if (player != nullptr && player->pbody != nullptr) {
+
+            // Teletransportamos usando tu función nativa pasándole los píxeles guardados
+            player->pbody->SetPosition((int)playerOrigX, (int)playerOrigY);
+
+            // Sincronizamos la posición lógica
+            player->position.setX(playerOrigX);
+            player->position.setY(playerOrigY);
+        }
+
+        // 2. Comprobar oleadas o muerte definitiva
         if (hitsTaken >= 3) {
             SetState(EnemyState::DYING);
             currentAnimName = "inmobilization_start";
 
-            // ASEGURAMOS EL DISPARO DEL DIÁLOGO AQUÍ
             waitingForChoice = true;
-            Choosing.hasStarted = false; // Reseteamos por si acaso para el nuevo arranque
+            Choosing.hasStarted = false;
             Choosing.hasEnded = false;
         }
         else {
@@ -288,4 +300,27 @@ void HighPriestesss::SpawnWave() {
 
 void HighPriestesss::NotifyEnemyDeath() {
     enemiesAlive--;
+
+    if (enemiesAlive <= 0) {
+        Player* player = Engine::GetInstance().scene->GetPlayer();
+        if (player != nullptr && player->pbody != nullptr) {
+
+            // 1. Guardamos la posición actual del jugador usando tu función miembro (en píxeles)
+            int pX, pY;
+            player->pbody->GetPosition(pX, pY);
+            playerOrigX = (float)pX;
+            playerOrigY = (float)pY;
+
+            // 2. Calculamos dónde ponerlo frente a la jefa (ej: 100 píxeles a la izquierda)
+            int targetX = (int)position.getX() - 500;
+            int targetY = (int)position.getY();
+
+            // 3. Teletransportamos usando tu función nativa de PhysBody
+            player->pbody->SetPosition(targetX, targetY);
+
+            // Sincronizamos la posición lógica del jugador
+            player->position.setX((float)targetX);
+            player->position.setY((float)targetY);
+        }
+    }
 }

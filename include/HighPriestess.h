@@ -48,4 +48,8 @@ private:
     Dialogue Choosing;
 
     bool choiceMade = false;       
+
+    // Guardar la posición del jugador antes del combate de la oleada
+    float playerOrigX = 0.0f;
+    float playerOrigY = 0.0f;
 };
