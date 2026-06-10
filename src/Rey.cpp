@@ -176,7 +176,11 @@ bool Rey::Update(float dt)
 
                 if (eKeyCurrent && Artifact.hasEnded == false) {
                 
-                    Artifact.AvanzarDialogo(dt, "Rey");
+                    if (Artifact.AvanzarDialogo(dt, "Rey")) {
+                    
+                    
+                        Engine::GetInstance().scene->cards.push("Judgement", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Judgement.png"), nullptr);
+                    }
                     return true;
                 
                 
@@ -197,7 +201,11 @@ bool Rey::Update(float dt)
 
                 if (eKeyCurrent && Artifact.hasEnded == false) {
 
-                    NoArtifact.AvanzarDialogo(dt, "Rey");
+                    if (NoArtifact.AvanzarDialogo(dt, "Rey")) {
+                    
+                    
+                        Engine::GetInstance().scene->cards.push("Judgement", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Judgement.png"), nullptr);
+                    }
                     return true;
 
 
@@ -227,7 +235,11 @@ bool Rey::Update(float dt)
 
                 if (eKeyCurrent && Temperance.hasEnded == false) {
 
-                    Temperance.AvanzarDialogo(dt, "Rey");
+                    if (Temperance.AvanzarDialogo(dt, "Rey")) {
+                    
+                    
+                        Engine::GetInstance().scene->cards.push("Temperance", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Temperance.png"), nullptr);
+                    }
                     return true;
 
 
@@ -243,7 +255,11 @@ bool Rey::Update(float dt)
 
                 if (eKeyCurrent && theDevil.hasEnded == false) {
 
-                    theDevil.AvanzarDialogo(dt, "Rey");
+                    if (theDevil.AvanzarDialogo(dt, "Rey")) {
+
+
+                        Engine::GetInstance().scene->cards.push("Temperance", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Devil.png"), nullptr);
+                  }
                     return true;
 
 
