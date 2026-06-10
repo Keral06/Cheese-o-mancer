@@ -49,5 +49,9 @@ public:
     bool playerInRange = false;
     bool magoSpawned = false;
     bool eKeyWasPressed = false;
+    
+    bool choosingFinal = false; 
+
+    Finales finalEscogido;
 };
 #endif

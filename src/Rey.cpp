@@ -6,26 +6,30 @@
 #include "Physics.h"
 #include "MagoBoss.h"
 #include "Log.h"
+#include "Input.h" // Asegúrate de tener el include de Input para detectar teclas
+#include "Render.h"
+
 
 Rey::Rey() : Enemy()
 {
     name = "Rey";
 
-    // INICIALIZAMOS LAS VARIABLES PARA EVITAR VALORES BASURA DE MEMORIA
     stateR = IDLER;
-    lastStateR = DEATH_STATICR; // Lo ponemos distinto a IDLER para forzar que cargue la animación en el primer frame
+    lastStateR = DEATH_STATICR;
 
     offsetX = 0.0f;
     offsetY = 0.0f;
 
     playerInRange = false;
     magoSpawned = false;
+    choosingFinal = false;
+    eKeyWasPressed = false;
 }
 
 Rey::~Rey() {}
 
-bool Rey::Start() { 
-    
+bool Rey::Start() {
+
     texW = 650;
     texH = 650;
 
@@ -43,29 +47,18 @@ bool Rey::Start() {
     textureBall = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Wizard Cheese/Cmage_ball attack_spritesheet.png");
     textureTransformation = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Wizard Cheese/Cmage_transformation_spritesheet.png");
 
+    // NOTA: Se eliminó el pbody duplicado que tenías aquí de fondo
     pbody = Engine::GetInstance().physics->CreateRectangleSensor(position.getX(), position.getY(), texW, texH, bodyType::STATIC);
     pbody->listener = this;
-    pbody->ctype = ColliderType::REY;
-    
-    //Add physics to the enemy - initialize physics body
-    pbody = Engine::GetInstance().physics->CreateRectangleSensor(position.getX(), position.getY(), texW, texH, bodyType::STATIC);
-    //Assign enemy class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
-    pbody->listener = this;
-
-    //ssign collider type
     pbody->ctype = ColliderType::REY;
 
     anims.SetCurrent("idle");
     attackHitbox = nullptr;
-    return true; 
-
-
+    return true;
 }
 
 void Rey::ChangeCurrentAnimation() {
-
     if (stateR == lastStateR) return;
-
     lastStateR = stateR;
 
     switch (stateR)
@@ -74,81 +67,135 @@ void Rey::ChangeCurrentAnimation() {
         anims.SetCurrent("idle");
         offsetY = 0.0f;
         break;
-
     case TALKINGR:
         anims.SetCurrent("talking");
         offsetY = 0.0f;
         break;
-
     case DEADR:
         anims.SetCurrent("death_start");
         offsetY = 0.0f;
         break;
-
     case DEATH_STATICR:
         anims.SetCurrent("death_static");
         offsetY = 0.0f;
         break;
-
     default:
         break;
     }
-
 }
 
 bool Rey::Update(float dt)
 {
-
     bool eKeyCurrent = (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN);
 
-    // Si pulsamos la E, el jugador está cerca y NO la habíamos pulsado en el frame anterior
-    if (playerInRange && eKeyCurrent && !eKeyWasPressed) {
+    // Obtenemos el puntero crudo correcto de tu Scene modular
+   
+
+    // --- BLOQUE 1: El jugador está eligiendo activamente entre SPARE o KILL ---
+    if (choosingFinal) {
+        // Tecla 1: MATAR (KILL) -> Final 2
+        if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
+            LOG("Has elegido: MATAR AL REY (Final 2)");
+            choosingFinal = false;
+
+            // TODO: Activar aquí la cinemática del FINAL 2 si tienes un método para vídeos o escenas
+            // scene->PlayVideo("assets/Videos/final2.mpeg"); 
+
+            Die(); // Ejecuta la animación de muerte del rey
+        }
+        // Tecla 2: PERDONAR (SPARE) -> Bifurcación entre Final 3 y Jefe (Final 4)
+        else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
+            LOG("Has elegido: PERDONAR AL REY");
+            choosingFinal = false;
+
+            // REQUISITO AMULETO: Comprobamos si tiene el artefacto montado o todos los fragmentos
+            if (Engine::GetInstance().scene->hasAllFragments) {
+                LOG("¡Tienes el artefacto/amuleto! El Mago se debilita. Comienza la Bossfight");
+
+                Engine::GetInstance().render->SetZoomSmooth(0.5f, 800.0f);
+                Die(); // Cambiará a DEADR y spawneará al MagoBoss en el bloque de abajo
+
+                // NOTA: Si quieres que el Mago sepa que está débil, puedes activar un flag en la escena
+                // scene->isInBossfight = true;
+            }
+            else {
+                LOG("No tienes el amuleto... El Mago te destruye sin piedad (Final 3)");
+
+                // TODO: Activar aquí la cinemática del FINAL 3
+                // scene->ChangeScene(SceneID::GAME_OVER); // O tu pantalla/video correspondiente
+            }
+        }
+    }
+    // --- BLOQUE 2: Interacción normal pulsando la E ---
+    else if (playerInRange && eKeyCurrent && !eKeyWasPressed) {
         LOG("Has interactuado con el Rey (Tecla E)");
 
         if (stateR == IDLER) {
             stateR = TALKINGR; // Pasa a hablar
         }
         else if (stateR == TALKINGR) {
-            Engine::GetInstance().render->SetZoomSmooth(0.5f, 800.0f);
-            Die();
+
+            // --- EVALUACIÓN DE REQUISITOS DE LOS FINALES ---
+
+            // 1. ¿Ha perdonado a la princesa y al caballero?
+            if (!Engine::GetInstance().scene->hasSparedPrincessAndKnight) {
+                LOG("No perdonaste a la princesa y al caballero. Ejecutando Final 1.");
+                finalEscogido = FINAL1;
+                
+            }
+            else {
+                
+                int completedMissionsCount = 0;
+
+                if (Engine::GetInstance().scene->finishedMissionSculptor) completedMissionsCount++;
+                if (Engine::GetInstance().scene->finishedmissionHermit)   completedMissionsCount++;
+                if (Engine::GetInstance().scene->ratmissionfinished)       completedMissionsCount++;
+
+            
+
+                // 3. ¿Tiene un mínimo de 3 misiones completadas?
+                if (completedMissionsCount < 3) {
+                    LOG("Perdonaste a los personajes pero faltan misiones completadas (%d/3). Volviendo al Final 1.", completedMissionsCount);
+                    finalEscogido = FINAL1;
+                }
+                else {
+                    // Cumple absolutamente todo: Se abre la encrucijada de decisiones
+                    LOG("¡REQUISITOS COMPLETADOS! Elige sabiamente: [1] MATAR (Final 2) o [2] PERDONAR (Mago)");
+                    choosingFinal = true;
+
+                    
+                }
+            }
         }
     }
 
     eKeyWasPressed = eKeyCurrent;
 
-    // Cuando termina la animación de muerte
+    // Cuando termina la animación de muerte (Bloque original de spawn del Mago)
     if (stateR == DEADR && anims.HasFinished() && !magoSpawned) {
         stateR = DEATH_STATICR;
         magoSpawned = true;
 
-        // 1. Guardas lo que devuelve tu mánager (asumo que se llama así el tipo)
         std::shared_ptr<Entity> entityPtr = Engine::GetInstance().entityManager->CreateEntity(EntityType::MAGOBOSS);
 
         if (entityPtr) {
-            // 2. Usamos .get() para sacar el puntero crudo y le hacemos el static_cast
             MagoBoss* newMago = static_cast<MagoBoss*>(entityPtr.get());
 
             newMago->position.setX(this->position.getX() + 2000);
             newMago->position.setY(this->position.getY());
 
-            // 3. Le pasamos las texturas
             newMago->SetTextures(
                 this->textureIdle,
                 this->textureBall,
                 this->textureTransformation
             );
 
-            // 4. Inicializamos
             newMago->Start();
         }
         Engine::GetInstance().render->SetZoomSmooth(0.3f, 800.0f);
-        //this->pendingToDelete = true;
     }
 
-    // 2. Actualizar máquina de estados
     ChangeCurrentAnimation();
-
-    // 3. Dibujar
     Draw(dt);
 
     return true;

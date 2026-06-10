@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="107" height="104" tilewidth="128" tileheight="128" infinite="0" nextlayerid="29" nextobjectid="452">
+<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="107" height="104" tilewidth="128" tileheight="128" infinite="0" nextlayerid="29" nextobjectid="452">
  <tileset firstgid="1" name="tileset_lv1_torture_02" tilewidth="128" tileheight="128" tilecount="810" columns="30">
   <image source="tileset_lv1_torture_02.png" width="3840" height="3537"/>
  </tileset>
@@ -11,6 +11,7 @@
  <tileset firstgid="1632" source="LV1_test_tileset.tsx"/>
  <tileset firstgid="1632" source="METADATA PARTICLES.tsx"/>
  <tileset firstgid="1635" source="tileset_lvl1_foreground_01.tsx"/>
+ <tileset firstgid="2955" source="tileset_lvl4_General_01.tsx"/>
  <layer id="19" name="Background" width="107" height="104">
   <properties>
    <property name="Draw" type="bool" value="true"/>
@@ -13520,7 +13521,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="3725"/>
    <tile/>
    <tile/>
    <tile/>
@@ -13626,10 +13627,10 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="3724"/>
+   <tile gid="3790"/>
+   <tile gid="3724"/>
+   <tile gid="3797"/>
    <tile/>
    <tile gid="664"/>
    <tile/>
@@ -15264,7 +15265,7 @@
    <tile gid="579"/>
    <tile gid="580"/>
    <tile/>
-   <tile gid="84"/>
+   <tile gid="3725"/>
    <tile gid="24"/>
    <tile gid="25"/>
    <tile gid="26"/>
@@ -15371,7 +15372,7 @@
    <tile gid="579"/>
    <tile gid="580"/>
    <tile/>
-   <tile/>
+   <tile gid="3725"/>
    <tile gid="54"/>
    <tile gid="55"/>
    <tile gid="56"/>
@@ -15478,9 +15479,9 @@
    <tile gid="579"/>
    <tile gid="580"/>
    <tile/>
-   <tile/>
-   <tile gid="84"/>
-   <tile gid="85"/>
+   <tile gid="3730"/>
+   <tile gid="3724"/>
+   <tile gid="3726"/>
    <tile gid="24"/>
    <tile gid="25"/>
    <tile gid="26"/>
@@ -15587,7 +15588,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="3725"/>
    <tile gid="54"/>
    <tile gid="55"/>
    <tile gid="56"/>
@@ -15694,7 +15695,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="3828"/>
    <tile gid="84"/>
    <tile gid="85"/>
    <tile gid="86"/>
@@ -16588,7 +16589,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="3725"/>
    <tile/>
    <tile/>
    <tile/>
@@ -16695,8 +16696,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="3791"/>
+   <tile gid="3724"/>
    <tile/>
    <tile/>
    <tile/>
@@ -16801,8 +16802,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="3795"/>
+   <tile gid="3729"/>
    <tile/>
    <tile/>
    <tile/>
