@@ -183,37 +183,15 @@ bool Player::Update(float dt)
 
 		if (isMounted && mountedBall)
 		{
-			// 1. Llamamos a la lógica primero para que 'isWallWalking' se actualice en este frame
+			int bx, by;
+			mountedBall->pbody->GetPosition(bx, by);
+
+			position.setX(bx);
+			position.setY(by - mountedBall->radius - texH / 2);
+			pbody->SetPosition(bx, by - mountedBall->radius - texH / 2);
+			attackHitbox->SetPosition(bx, by - mountedBall->radius - texH / 2);
+
 			HandleMountedMovement();
-
-			// 2. Comprobamos que no nos hayamos bajado de la bola en la función anterior (Failsafe)
-			if (isMounted && mountedBall) {
-				int bx, by;
-				mountedBall->pbody->GetPosition(bx, by);
-
-				// Posición por defecto (suelo): Jugador encima de la bola
-				int targetX = bx;
-				int targetY = by - mountedBall->radius - texH / 2;
-
-				// 3. Alineación horizontal si estamos escalando
-				if (isWallWalking) {
-					targetY = by; // Misma altura que la bola en el eje Y
-
-					if (facingLeft) {
-						// Pared a la izquierda -> Player a la derecha de la bola
-						targetX = bx + mountedBall->radius + (texH / 4);
-					}
-					else {
-						// Pared a la derecha -> Player a la izquierda de la bola
-						targetX = bx - mountedBall->radius - (texH / 4);
-					}
-				}
-
-				position.setX(targetX);
-				position.setY(targetY);
-				pbody->SetPosition(targetX, targetY);
-				attackHitbox->SetPosition(targetX, targetY);
-			}
 		}
 		else
 		{
@@ -374,7 +352,7 @@ bool Player::Update(float dt)
 			doVerticalJump = false;
 
 			b2Body_SetAwake(pbody->body, true);
-			b2Body_SetLinearVelocity(pbody->body, { 0.0f, -50.0f });
+			b2Body_SetLinearVelocity(pbody->body, { 0.0f, -35.0f });
 
 			state = JUMPING;
 			isJumping = true;
@@ -702,10 +680,7 @@ void Player::Draw(float dt) {
 
 	float rotation = 0.0f;
 
-	if (isWallWalking)
-	{
-		rotation = 90.0f;
-	}
+	
 
 	Engine::GetInstance().render->DrawTexture(
 		texture,
@@ -1267,7 +1242,7 @@ void Player::HandleAttack()
 			std::vector<PhysBody*> hits = Engine::GetInstance().physics->QueryArea(hitboxRect);
 
 			for (auto* body : hits) {
-				if (body->ctype == ColliderType::ENEMY || body->ctype == ColliderType::BOSSATTACK) {
+				if (body->ctype == ColliderType::ENEMY) {
 					Enemy* e = static_cast<Enemy*>(body->listener);
 
 					// LÓGICA DE DAÑO ÚNICO:
@@ -1437,9 +1412,6 @@ void Player::HandleMountedMovement()
 	b2Vec2 vel = b2Body_GetLinearVelocity(mountedBall->pbody->body);
 	movingBall = false;
 
-	// GUARDAMOS SI ESTÁBAMOS ESCALANDO EL FRAME ANTERIOR
-	bool wasWallWalking = isWallWalking;
-
 	// ==========================================
 	// --- LÓGICA DE ESCALADA CON BOLA ---
 	// ==========================================
@@ -1462,15 +1434,7 @@ void Player::HandleMountedMovement()
 	else {
 		isWallWalking = false;
 
-		// ==========================================
-		// --- NUEVO: MINI-SALTO AL LLEGAR AL BORDE ---
-		// ==========================================
-		// Si estábamos escalando, ya no estamos en el moho, y seguimos pulsando W para subir...
-		if (wasWallWalking && Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-			vel.y = -15.0f; // <-- Puedes subir o bajar este número para que salte más o menos al coronar la pared
-		}
-
-		// Restauramos la gravedad normal de la bola
+		// Restauramos la gravedad normal de la bola al soltar la E
 		b2Body_SetGravityScale(mountedBall->pbody->body, 1.0f);
 
 		// ==========================================
@@ -1662,6 +1626,7 @@ void Player::CheckKickFrame()
 
 	int currentFrame = currentAnimSet->GetCurrentFrameIndex();
 
+	// --- 1. INICIO DEL CHUTE (Frame 0) ---
 	if (currentFrame == 0)
 	{
 		b2Body_SetAwake(pbody->body, true);
@@ -1671,6 +1636,8 @@ void Player::CheckKickFrame()
 		b2Body_SetLinearVelocity(pbody->body, vel);
 	}
 
+	// --- 2. LANZAMIENTO (En el frame de impacto) ---
+	// Si tiene 10 frames, el 5 o 6 suelen ser el punto donde la pierna golpea.
 	if (currentFrame >= 5 && mountedBall != nullptr)
 	{
 		mountedBall->canSmash = false;
@@ -1692,6 +1659,9 @@ void Player::CheckKickFrame()
 		LOG("Bola chutada con éxito");
 	}
 
+	// --- 3. FIN DE LA ANIMACIÓN (Failsafe anti-congelamiento) ---
+	// Como tiene 10 frames (del 0 al 9), si el frame actual es el 9, 
+	// forzamos la salida aunque el HasFinished() falle.
 	if (currentFrame >= 9 || currentAnimSet->HasFinished()) {
 		isKicking = false;
 
@@ -1719,6 +1689,7 @@ void Player::PlayShowCheese()
 	vel.x = 0.0f;
 	b2Body_SetLinearVelocity(pbody->body, vel);
 
+	// ASIGNAMOS LA ANIMACIÓN AQUÍ, SOLO UNA VEZ PARA QUE NO SE CONGELE
 	currentAnimSet = &animsShowCheese;
 	texture = textureShowCheese;
 	currentAnimSet->SetCurrent("show_cheese");
