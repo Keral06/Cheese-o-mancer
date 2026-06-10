@@ -170,9 +170,8 @@ void Pics:: ChooseWhoIs() {
 	}
 	else if (name == "Psalm1") {
 
-		PopUpImage = Engine::GetInstance().textures->Load("assets/UI/UI_Poem/requadre_ajustat/UI_Poem_4_02.png");
-		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Carta/Carta4.png"); //placeholder
-
+		Dialogue paperDialogue("assets/Dialogues/Pickable/Psalm1_Dialogues.txt", "assets/Dialogues/Pickable/Psalm1_Names.txt");
+		this->dialogue = paperDialogue;
 
 		BoolOfPlayer = 8;
 
@@ -181,8 +180,9 @@ void Pics:: ChooseWhoIs() {
 	}
 	else if (name == "Psalm2") {
 
-		PopUpImage = Engine::GetInstance().textures->Load("assets/UI/UI_Poem/requadre_ajustat/UI_Poem_4_02.png");
-		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Carta/Carta4.png"); //placeholder
+
+		Dialogue paperDialogue("assets/Dialogues/Pickable/Psalm2_Dialogues.txt", "assets/Dialogues/Pickable/Psalm2_Names.txt");
+		this->dialogue = paperDialogue;
 
 
 		BoolOfPlayer = 9;
@@ -192,8 +192,9 @@ void Pics:: ChooseWhoIs() {
 	}
 	else if (name == "Psalm3") {
 
-		PopUpImage = Engine::GetInstance().textures->Load("assets/UI/UI_Poem/requadre_ajustat/UI_Poem_4_02.png");
-		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Carta/Carta4.png"); //placeholder
+
+		Dialogue paperDialogue("assets/Dialogues/Pickable/Psalm3_Dialogues.txt", "assets/Dialogues/Pickable/Psalm3_Names.txt");
+		this->dialogue = paperDialogue;
 
 
 		BoolOfPlayer = 10;
