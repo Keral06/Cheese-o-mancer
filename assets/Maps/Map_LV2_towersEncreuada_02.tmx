@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="145" height="70" tilewidth="128" tileheight="128" infinite="0" nextlayerid="43" nextobjectid="465">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="145" height="70" tilewidth="128" tileheight="128" infinite="0" nextlayerid="43" nextobjectid="469">
  <tileset firstgid="1" name="tileset_lv2_general_01" tilewidth="128" tileheight="128" tilecount="1558" columns="38">
   <image source="tileset_lv2_general_02.png" width="4864" height="5367"/>
  </tileset>
@@ -18,7 +18,6 @@
  <tileset firstgid="1573" source="fondo castell 5.tsx"/>
  <tileset firstgid="1574" source="fondo castell 6.tsx"/>
  <tileset firstgid="1575" source="METADATA PARTICLES.tsx"/>
- <tileset firstgid="1578" source="tileset_lvl4_General_01.tsx"/>
  <group id="26" name="Sky" offsetx="-9968" offsety="-3480" parallaxx="0.1" parallaxy="0.1">
   <properties>
    <property name="Background" type="bool" value="true"/>
@@ -22093,7 +22092,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2424"/>
    <tile/>
    <tile/>
    <tile/>
@@ -22237,8 +22235,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2428"/>
-   <tile gid="2362"/>
    <tile/>
    <tile/>
    <tile/>
@@ -23830,7 +23826,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2430"/>
    <tile/>
    <tile/>
    <tile/>
@@ -24365,7 +24360,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2358"/>
    <tile/>
    <tile/>
    <tile/>
@@ -24509,8 +24503,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2422"/>
-   <tile gid="2362"/>
    <tile/>
    <tile/>
    <tile/>
@@ -24654,7 +24646,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2358"/>
    <tile/>
    <tile/>
    <tile/>
@@ -24799,8 +24790,16 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2363"/>
-   <tile gid="2430"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -25951,7 +25950,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2424"/>
    <tile/>
    <tile/>
    <tile/>
@@ -25976,7 +25974,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2358"/>
    <tile/>
    <tile/>
    <tile/>
@@ -26095,8 +26092,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2428"/>
-   <tile gid="2362"/>
    <tile/>
    <tile/>
    <tile/>
@@ -26120,9 +26115,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2428"/>
-   <tile gid="2423"/>
-   <tile gid="2357"/>
    <tile/>
    <tile/>
    <tile/>
@@ -26572,7 +26564,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2358"/>
    <tile/>
    <tile/>
    <tile/>
@@ -26715,10 +26706,18 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2357"/>
-   <tile gid="2357"/>
-   <tile gid="2423"/>
-   <tile gid="2430"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -28294,10 +28293,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2358"/>
-   <tile gid="2363"/>
-   <tile gid="2422"/>
-   <tile gid="2362"/>
    <tile/>
    <tile/>
    <tile/>
@@ -28439,9 +28434,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2363"/>
-   <tile gid="2361"/>
-   <tile gid="2358"/>
    <tile/>
    <tile/>
    <tile/>
@@ -28585,8 +28577,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2363"/>
-   <tile gid="2426"/>
    <tile/>
    <tile/>
    <tile/>
@@ -28731,7 +28721,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2461"/>
    <tile/>
    <tile/>
    <tile/>
@@ -28862,7 +28851,17 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2362"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -51084,6 +51083,18 @@
    <point/>
   </object>
   <object id="441" name="Bee" type="Bee" x="2336" y="5552">
+   <point/>
+  </object>
+  <object id="467" name="Pics" type="Pics" x="4568" y="6808">
+   <properties>
+    <property name="WhoIs" value="Day"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="468" name="Pics" type="Pics" x="17688" y="5496">
+   <properties>
+    <property name="WhoIs" value="Dawn"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

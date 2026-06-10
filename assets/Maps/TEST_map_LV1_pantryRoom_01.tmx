@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="26" nextobjectid="301">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="26" nextobjectid="301">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -9,6 +9,9 @@
  <tileset firstgid="814" source="tileset_lvl1_foreground_01.tsx"/>
  <tileset firstgid="2134" source="METADATA PARTICLES.tsx"/>
  <tileset firstgid="2137" source="tileset_lvl4_General_01.tsx"/>
+ <tileset firstgid="3321" name="tileset_LV1_dungeonBase_02" tilewidth="128" tileheight="128" tilecount="810" columns="30">
+  <image source="tileset_lv1_dungeon_base_04.png" width="3840" height="3537"/>
+ </tileset>
  <layer id="16" name="Background" width="86" height="52">
   <properties>
    <property name="Draw" type="bool" value="true"/>
@@ -17118,7 +17121,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="3492"/>
    <tile/>
    <tile/>
    <tile/>

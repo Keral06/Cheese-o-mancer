@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="180" height="47" tilewidth="128" tileheight="128" infinite="0" nextlayerid="72" nextobjectid="488">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="180" height="47" tilewidth="128" tileheight="128" infinite="0" nextlayerid="72" nextobjectid="490">
  <tileset firstgid="1" name="tileset_lv2_general_02" tilewidth="128" tileheight="128" tilecount="1558" columns="38">
   <image source="tileset_lv2_general_02.png" width="4864" height="5367"/>
  </tileset>
@@ -50969,7 +50969,11 @@
   </data>
  </layer>
  <objectgroup id="17" name="Items"/>
- <objectgroup id="18" name="Checkpoint"/>
+ <objectgroup id="18" name="Checkpoints">
+  <object id="489" name="Flag" type="Flag" x="8960" y="5632">
+   <point/>
+  </object>
+ </objectgroup>
  <objectgroup id="11" name="Doors">
   <object id="416" name="Door" type="Door" x="2432" y="1536" width="256" height="512">
    <properties>
@@ -59592,6 +59596,9 @@
    <point/>
   </object>
   <object id="397" name="Bee" type="Bee" x="14448" y="4080">
+   <point/>
+  </object>
+  <object id="488" name="Well" type="Well" x="20912" y="5688">
    <point/>
   </object>
  </objectgroup>
