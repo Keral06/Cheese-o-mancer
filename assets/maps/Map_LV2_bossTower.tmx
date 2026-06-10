@@ -7365,6 +7365,10 @@
   </object>
  </objectgroup>
  <objectgroup id="36" name="Foreground Columns" parallaxx="0.9">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+   <property name="Foreground" type="bool" value="true"/>
+  </properties>
   <object id="340" gid="2538" x="-68" y="2732" width="6364" height="2560"/>
  </objectgroup>
  <layer id="10" name="Map" width="60" height="24">
