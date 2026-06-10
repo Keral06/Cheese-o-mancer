@@ -483,9 +483,9 @@ private:
 		int height = 0;		
 	};
 	
-	bool isPlayingVideo = false;
-	VideoData  video;
-	
+	bool isPlayingIntroVideo = false;
+	VideoData  introVideo;
+	;
 
 	void LoadVideo(VideoData* video, const char* name);
 	void PlayVideo(const char* name);

@@ -455,7 +455,7 @@ void Dialogue::LoadTalkSound(std::string charName) {
 	}
 
 	if (charName == "HighPriestess") {
-		randNum = rand() % 3;
+		randNum = rand() % 4;
 		switch (randNum) {
 		case 0:
 			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/High_Priestess/HighPriestess_talk1.wav");
@@ -539,10 +539,13 @@ void Dialogue::LoadTalkSound(std::string charName) {
 
 void Dialogue::PlayTalkSound(std::string charName) {
 	
-	if (nameHelper[lenghtHelper] != "Fool: ") {
-		Engine::GetInstance().audio->PlayFx(currentFx);
-		hasPlayed = true;
+	if (hasConversation == true) {
+		if (nameHelper[lenghtHelper] != "Fool: ") {
+			Engine::GetInstance().audio->PlayFx(currentFx);
+			hasPlayed = true;
+		}
 	}
+
 	
 	/*if (charName == "Magician: ") {
 		
