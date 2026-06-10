@@ -66821,26 +66821,26 @@
    <tile gid="233"/>
    <tile gid="234"/>
    <tile gid="234"/>
-   <tile gid="264"/>
-   <tile gid="265"/>
-   <tile gid="266"/>
-   <tile gid="264"/>
-   <tile gid="265"/>
-   <tile gid="266"/>
-   <tile gid="264"/>
-   <tile gid="265"/>
-   <tile gid="266"/>
-   <tile gid="264"/>
-   <tile gid="265"/>
-   <tile gid="266"/>
-   <tile gid="264"/>
-   <tile gid="265"/>
-   <tile gid="266"/>
-   <tile gid="264"/>
-   <tile gid="265"/>
-   <tile gid="266"/>
-   <tile gid="264"/>
-   <tile gid="265"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
    <tile gid="234"/>
    <tile gid="234"/>
    <tile gid="235"/>
@@ -66913,28 +66913,28 @@
    <tile/>
    <tile gid="233"/>
    <tile gid="234"/>
-   <tile gid="237"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile gid="233"/>
+   <tile gid="236"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="235"/>
+   <tile gid="236"/>
    <tile gid="234"/>
    <tile gid="235"/>
    <tile gid="235"/>
@@ -67007,27 +67007,27 @@
    <tile gid="263"/>
    <tile gid="264"/>
    <tile gid="267"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile gid="233"/>
+   <tile gid="264"/>
+   <tile gid="265"/>
+   <tile gid="266"/>
+   <tile gid="264"/>
+   <tile gid="265"/>
+   <tile gid="266"/>
+   <tile gid="264"/>
+   <tile gid="265"/>
+   <tile gid="266"/>
+   <tile gid="264"/>
+   <tile gid="265"/>
+   <tile gid="266"/>
+   <tile gid="264"/>
+   <tile gid="265"/>
+   <tile gid="266"/>
+   <tile gid="264"/>
+   <tile gid="265"/>
+   <tile gid="266"/>
+   <tile gid="264"/>
+   <tile gid="265"/>
+   <tile gid="266"/>
    <tile gid="234"/>
    <tile gid="235"/>
    <tile gid="235"/>
@@ -85717,7 +85717,7 @@
   </object>
  </objectgroup>
  <objectgroup id="18" name="Checkpoints">
-  <object id="363" name="Flag" type="Flag" x="10752" y="4608">
+  <object id="363" name="Flag" type="Flag" x="10752" y="4672">
    <point/>
   </object>
  </objectgroup>
@@ -96519,8 +96519,8 @@
   <object id="316" x="8064" y="2560" width="384" height="128"/>
   <object id="317" x="6272" y="3072" width="1280" height="128"/>
   <object id="318" x="8576" y="3584" width="256" height="256"/>
-  <object id="319" x="8832" y="3456" width="2560" height="128"/>
-  <object id="320" x="11392" y="3584" width="128" height="1408"/>
+  <object id="319" x="8832" y="3712" width="2560" height="128"/>
+  <object id="320" x="11392" y="3840" width="128" height="1152"/>
   <object id="335" x="2304" y="4736" width="128" height="256"/>
   <object id="338" x="2688" y="256" width="128" height="1024"/>
   <object id="339" x="-0.969697" y="1152" width="2688.97" height="128"/>
@@ -96536,7 +96536,7 @@
   <object id="399" name="Player" type="Player" x="944.61" y="14355.9">
    <point/>
   </object>
-  <object id="362" name="CowWeb" type="CowWeb" x="1667.52" y="4401.45">
+  <object id="362" name="CowWeb" type="CowWeb" x="1616" y="4195.39">
    <point/>
   </object>
   <object id="373" name="Handman" type="Handman" x="10149.7" y="3860.73">
@@ -96555,7 +96555,7 @@
   <object id="376" name="Rat" type="Rat" x="10080" y="7136">
    <point/>
   </object>
-  <object id="403" name="RatKing" type="RatKing" x="2181.82" y="4515.15">
+  <object id="403" name="RatKing" type="RatKing" x="2176" y="4480">
    <properties>
     <property name="ratLevel" type="int" value="0"/>
    </properties>
@@ -100051,8 +100051,8 @@
    <tile gid="19598"/>
    <tile gid="19599"/>
    <tile gid="19600"/>
-   <tile gid="19601"/>
-   <tile gid="19602"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -100142,10 +100142,6 @@
    <tile/>
    <tile/>
    <tile gid="19642"/>
-   <tile gid="19643"/>
-   <tile gid="19644"/>
-   <tile gid="19645"/>
-   <tile gid="19646"/>
    <tile/>
    <tile/>
    <tile/>
@@ -100234,11 +100230,15 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="19686"/>
-   <tile gid="19687"/>
-   <tile gid="19688"/>
-   <tile gid="19689"/>
-   <tile gid="19690"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -105809,9 +105809,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="19634"/>
-   <tile gid="19635"/>
-   <tile gid="19636"/>
    <tile/>
    <tile/>
    <tile/>
@@ -105902,9 +105899,12 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="19678"/>
-   <tile gid="19679"/>
-   <tile gid="19680"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>

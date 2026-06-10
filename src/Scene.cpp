@@ -51,8 +51,8 @@ bool Scene::Start()
 {
 	srand(time(NULL));
 	LoadScene(currentScene);
-	LoadVideo(&introVideo, "assets/Screens/endAnimatic_TEST2.mpg");
-	//LoadVideo(&endVideo, "assets/Screens/endAnimatic_TEST2.mpg");
+	LoadVideo(&introVideo, "assets/Screens/Animatica2-sin-audio.mpg");
+	//LoadVideo(&endVideo, "assets/Screens/Animatica2-sin-audio.mpg");
 
 	bossFightController = new BossFightPrincessKnight();
 	bossFightController->Start();
@@ -85,6 +85,10 @@ bool Scene::Update(float dt)
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_9) == KEY_DOWN) {
 		ChangeScene(SceneID::END_VIDEO);
 	}
+
+	//if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_8) == KEY_DOWN) {
+	//	LoadMap("Assets/maps/Map_LV3_temple_01.tmx");
+	//}
 
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
 		showUIDebug = !showUIDebug; 
