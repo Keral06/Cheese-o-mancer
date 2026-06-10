@@ -6,6 +6,7 @@
 #include "Render.h"
 #include "Player.h"
 #include "Scene.h"
+#include "Dialogue.h"
 
 HighPriestesss* HighPriestesss::instance = nullptr;
 
@@ -47,7 +48,7 @@ bool HighPriestesss::Start() {
         {41, "death_static"}
     };
 
-    animDeath.LoadFromTSX("assets/Textures/Spritesheets/High Priestess/priestess_death.tsx", aliases);
+    animDeath.LoadFromTSX("assets/Textures/Spritesheets/High Priestess/high_priestess_boss.tsx", aliases);
 
     // 3. Configuración del estado inicial
     health = 3;
@@ -66,7 +67,7 @@ bool HighPriestesss::Start() {
 
     Dialogue help("assets/Dialogues/HighPriestess/HighPriestess_Choice_Dialogues.txt", "assets/Dialogues/HighPriestess/HighPriestess_Choice_Names.txt");
     Choosing = help;
-   
+
     b2Body_SetGravityScale(pbody->body, 0.0f);
     SpawnWave();
     return true;
@@ -80,7 +81,7 @@ bool HighPriestesss::Update(float dt) {
     }
 
     // --- TRANSICIONES DE FASE FINAL ---
-    if (currentAnimName == "inmobilization_start" && animDeath.HasFinished()) { // Nota: Asegúrate que animDeath sea el track activo
+    if (currentAnimName == "inmobilization_start" && animDeath.HasFinished()) {
         animDeath.SetCurrent("inmobilization_idle");
         currentAnimName = "inmobilization_idle";
         waitingForChoice = true;
@@ -97,64 +98,55 @@ bool HighPriestesss::Update(float dt) {
         }
     }
 
-    // --- LÓGICA DE INTERACTION Y ELECCIÓN (NUEVO) ---
-    if (waitingForChoice && !choiceMade) {
+    // --- LÓGICA DE INTERACTION Y ELECCIÓN (CORREGIDA) ---
+    if (waitingForChoice) {
 
-        // 1. Detectar proximidad del jugador (Opcional, pero recomendado)
+        // 1. Detectar proximidad del jugador
         Player* player = Engine::GetInstance().scene->GetPlayer();
         bool isClose = false;
         if (player != nullptr) {
-            // Si la distancia horizontal es menor a, por ejemplo, 150 píxeles
             if (abs(player->position.getX() - position.getX()) < 150.0f) {
                 isClose = true;
             }
         }
-        if (isClose &&Choosing.hasStarted==false) {
-        
-        
-            Choosing.AvanzarDialogo(dt, "HighPriestess");
-            return true;
-        
+
+        // 2. Iniciar el diálogo por primera vez al estar cerca
+        if (isClose && !Choosing.hasStarted) {
+            Choosing.AvanzarDialogo(dt, "HighPriestess"); // Arranca el sistema de diálogo
         }
-        // 2. Si está cerca y pulsa la 'E', abrimos el "menú" o escuchamos la elección
-        // Nota: Adapta "Engine::GetInstance().input->GetKey(...)" a tu sistema de input real
-        if (isClose && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Choosing.hasEnded==false) {
-           if( Choosing.AvanzarDialogo(dt, "HighPriestess")) {
-            
-            
-               choiceMade = Choosing.WhatChoice();
-               return true;
-            
+
+        // 3. Avanzar con la tecla 'E' si el diálogo ya empezó y no ha terminado
+        if (isClose && Choosing.hasStarted && !Choosing.hasEnded) {
+            if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+                Choosing.AvanzarDialogo(dt, "HighPriestess");
             }
         }
+
+        // 4. Dibujar el diálogo mientras esté activo
         if (Choosing.hasStarted && !Choosing.hasEnded) {
-        
             Choosing.Draw(dt);
-            return true;
+            return true; // Pausamos el resto de la IA de la jefa mientras habla
         }
 
-        // 3. Procesar la elección del jugador
-        if (choiceMade) {
-            // Opción: SPARE PJ MUERE
-            choiceMade = true;
-            waitingForChoice = false;
+        // 5. PROCESAR LA ELECCIÓN (Solo cuando el diálogo HA TERMINADO)
+        if (Choosing.hasEnded) {
+            waitingForChoice = false; // Salimos de este estado para que no se repita
 
-            // Forzamos el cambio a la animación de muerte
-            animDeath.SetCurrent("spare");
-            currentAnimName = "spare";
-            printf("Has elegido: PERDÓN\n");
-        }
-        else if (!choiceMade) {
-            // Opción: KILL ENEMIGO VIVE
-            choiceMade = true;
-            waitingForChoice = false;
+            // Obtenemos la decisión final del sistema de diálogos
+            bool finalChoice = Choosing.WhatChoice();
 
-            // Forzamos el cambio a la animación de perdón
-          
-
-            animDeath.SetCurrent("death");
-            currentAnimName = "death";
-            printf("Has elegido: MUERTE\n");
+            if (finalChoice) {
+                // Opción: SPARE (PERDÓN) -> El jugador muere
+                animDeath.SetCurrent("spare");
+                currentAnimName = "spare";
+                printf("Has elegido: PERDÓN\n");
+            }
+            else {
+                // Opción: KILL (MUERTE) -> La jefa muere definitivamente
+                animDeath.SetCurrent("death");
+                currentAnimName = "death";
+                printf("Has elegido: MUERTE\n");
+            }
         }
     }
 
@@ -177,7 +169,7 @@ void HighPriestesss::ChangeCurrentAnimation() {
     switch (state) {
     case EnemyState::IDLE:
         currentAnimTrack = &animIdle;
-        currentTexture = texDeath; // O la que corresponda
+        currentTexture = texIdle;
         animIdle.SetCurrent("idle");
         break;
 
@@ -191,7 +183,6 @@ void HighPriestesss::ChangeCurrentAnimation() {
         currentAnimTrack = &animDeath;
         currentTexture = texDeath;
 
-        // NUEVO: Si venimos del golpe final, empezamos en inmovilización, no en death directamente
         if (currentAnimName == "inmobilization_start") {
             animDeath.SetCurrent("inmobilization_start");
         }
@@ -234,22 +225,23 @@ void HighPriestesss::Draw(float dt) {
 }
 
 void HighPriestesss::OnCollision(PhysBody* physA, PhysBody* physB) {
-    // IMPORTANTE: Comprobamos que sea vulnerable para procesar el golpe
     if (isVulnerable && physB->ctype == ColliderType::PLAYERATTACK) {
 
-        isVulnerable = false; // Desactivar vulnerabilidad INSTANTÁNEAMENTE para evitar doble golpe
+        isVulnerable = false;
         hitsTaken++;
 
         if (hitsTaken >= 3) {
             SetState(EnemyState::DYING);
-            // Aquí puedes iniciar tu animación de "inmobilization_start" si es lo que deseas
             currentAnimName = "inmobilization_start";
+
+            // ASEGURAMOS EL DISPARO DEL DIÁLOGO AQUÍ
+            waitingForChoice = true;
+            Choosing.hasStarted = false; // Reseteamos por si acaso para el nuevo arranque
+            Choosing.hasEnded = false;
         }
         else {
-            currentWave++; // Cambiamos a la siguiente oleada (Wave 2 o 3)
+            currentWave++;
             SetState(EnemyState::IDLE);
-
-            // Dejar un pequeño margen o llamar directamente al spawner
             SpawnWave();
         }
     }
@@ -259,7 +251,7 @@ void HighPriestesss::SpawnWave() {
     // Definimos cuántos enemigos por oleada (según tu especificación, siempre son 3)
     int count = 3;
     enemiesAlive = count;
-    
+
     // Determinamos el tipo de enemigo según la oleada actual
     EntityType typeToSpawn;
     switch (currentWave) {
