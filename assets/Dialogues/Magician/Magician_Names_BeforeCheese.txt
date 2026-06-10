@@ -13,6 +13,7 @@ Jester:
 Magician:
 Jester:
 Magician:
+Jester:
 Magician:
 Magician:
 Jester:
