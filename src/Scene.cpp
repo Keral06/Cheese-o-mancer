@@ -133,7 +133,12 @@ bool Scene::Update(float dt)
 		break;
 	case SceneID::IN_GAME:
 		UpdateLevel(dt);
-		SetInventariIcon(true);
+		if (!isPaused) {
+			SetInventariIcon(true);
+		}
+		else {
+			SetInventariIcon(false);
+		}
 		
 		break;
 	case SceneID::GAME_OVER:
@@ -1227,7 +1232,12 @@ void  Scene::PostUpdateLevel() {
 	if (isPaused) {
 		SDL_Rect screenRect = { -10000, -10000, 50000, 50000 };
 		Engine::GetInstance().render->DrawRectangle(screenRect, 0, 0, 0, 150, true, false);
-
+		if (pauseImage1 != nullptr) {
+			Engine::GetInstance().render->DrawTextureNoCamera(pauseImage1, 100, 0, 516, 516);
+		}
+		if (pauseImage2 != nullptr) {
+			Engine::GetInstance().render->DrawTextureNoCamera(pauseImage2, 550, 200, 516, 516);
+		}
 		Engine::GetInstance().render->DrawText("PAUSE", 600, 150, 0, 0, { 255, 255, 255, 255 });
 	}
 	if (storeOn) {
@@ -1338,8 +1348,21 @@ void  Scene::PostUpdateLevel() {
 	}
 	if (mapToShow != nullptr)
 	{
-		SDL_FRect centrar = { 0, 0, 1280, 720 };
-		SDL_RenderTexture(Engine::GetInstance().render->renderer, mapToShow, NULL, &centrar);
+		if (mapToShow == map1Texture || mapToShow == map2Texture || mapToShow == map3Texture) {
+
+			SDL_FRect centrar = { 0, 0, 1280, 720 };
+			SDL_RenderTexture(Engine::GetInstance().render->renderer, mapToShow, NULL, &centrar);
+		}
+		else {
+
+			float anchoPapel = 512;
+			float altoPapel = 256;
+			float posX = (1280.0f - anchoPapel) / 2.0f; 
+			float posY = 180.0f; 
+
+			SDL_FRect posicionPapel = { posX, posY, anchoPapel, altoPapel };
+			SDL_RenderTexture(Engine::GetInstance().render->renderer, mapToShow, NULL, &posicionPapel);
+		}
 	}
 	Engine::GetInstance().uiManager->PostUpdate();
 
@@ -1439,7 +1462,7 @@ void Scene::CreatePauseUI() {
 	SDL_Texture* buttonResumedClicked;
 	buttonResumeNormal = Engine::GetInstance().textures->Load("assets/UI/Pause/UI_Pause_ButtonContinue1_01.png");
 	buttonResumedClicked = Engine::GetInstance().textures->Load("assets/UI/Pause/UI_Pause_ButtonContinuePressed_01.png");
-	auto btnResume = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 20, "RESUME", { x, y - 50, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonResumeNormal, buttonResumedClicked);
+	auto btnResume = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 20, "RESUME", { x, y - 50, 200, 50 }, this, SDL_Rect{ 0,0,0,0 }, buttonResumeNormal, buttonResumedClicked);
 	btnResume->visible = false;
 
 	// OPTIONS
@@ -1447,16 +1470,16 @@ void Scene::CreatePauseUI() {
 	SDL_Texture* buttonOptionsClicked;
 	buttonOptionsNormal = Engine::GetInstance().textures->Load("assets/UI/Pause/UI_Pause_ButtonOptions1_01.png");
 	buttonOptionsClicked = Engine::GetInstance().textures->Load("assets/UI/Pause/UI_Pause_ButtonOptionsPressed_01.png");
-	auto btnOptions = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 21, "OPTIONS", { x, y + 20, 200, 50 }, this, SDL_Rect{ 0,0,0,0 }, buttonOptionsNormal,buttonOptionsClicked);
+	auto btnOptions = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 21, "OPTIONS", { x, y + 20, 200, 50 }, this, SDL_Rect{ 0,0,0,0 }, buttonOptionsNormal, buttonOptionsClicked);
 	btnOptions->visible = false;
 
 	//BACK TO TITLE
 	SDL_Texture* buttonTitleNormal;
 	SDL_Texture* buttonTitleClicked;
-	
+
 	buttonTitleNormal = Engine::GetInstance().textures->Load("assets/UI/Pause/UI_Pause_ButtonQuit1_01.png");
 	buttonTitleClicked = Engine::GetInstance().textures->Load("assets/UI/Pause/UI_Pause_ButtonQuitPressed_01.png");
-	auto btnTitle = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 22, "TITLE SCREEN", { x, y + 100, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonTitleNormal, buttonTitleClicked);
+	auto btnTitle = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 22, "TITLE SCREEN", { x, y + 100, 200, 50 }, this, SDL_Rect{ 0,0,0,0 }, buttonTitleNormal, buttonTitleClicked);
 	btnTitle->visible = false;
 
 	// EXIT
@@ -1464,7 +1487,7 @@ void Scene::CreatePauseUI() {
 	SDL_Texture* buttonExitNormal;
 	buttonExitPressed = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextExitPressed_01.png");
 	buttonExitNormal = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextExit1_01.png");
-	auto btnExit = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 23, "EXIT GAME", { x, y + 200, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonExitNormal, buttonExitPressed);
+	auto btnExit = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 23, "EXIT GAME", { x, y + 200, 200, 50 }, this, SDL_Rect{ 0,0,0,0 }, buttonExitNormal, buttonExitPressed);
 	btnExit->visible = false;
 
 	//SLIDER MUSICA
@@ -1475,11 +1498,11 @@ void Scene::CreatePauseUI() {
 	thumbPressed = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_SliderButton_01.png");
 	thumbNormal = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_Checkbox_01.png");
 
-	auto sliderMusic = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::SLIDER, 26, "MUSIC", { x, y+15, 200, 30 }, this, SDL_Rect{0,0,0,0}, SliderBar, thumbNormal, thumbPressed);
+	auto sliderMusic = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::SLIDER, 26, "MUSIC", { x, y + 15, 200, 30 }, this, SDL_Rect{ 0,0,0,0 }, SliderBar, thumbNormal, thumbPressed);
 	sliderMusic->visible = false;
 
 	//SLIDER FX
-	auto sliderFX = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::SLIDER, 27, "FX", { x, y + 75, 200, 30 }, this, SDL_Rect{0,0,0,0}, SliderBar, thumbNormal, thumbPressed);
+	auto sliderFX = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::SLIDER, 27, "FX", { x, y + 75, 200, 30 }, this, SDL_Rect{ 0,0,0,0 }, SliderBar, thumbNormal, thumbPressed);
 	sliderFX->visible = false;
 
 	//BACK FROM OPTIONS
@@ -1487,7 +1510,7 @@ void Scene::CreatePauseUI() {
 	SDL_Texture* buttonBackNormal;
 	buttonBackPressed = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextBackPressed_01.png");
 	buttonBackNormal = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextBack1_01.png");
-	auto btnBackOpt = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 25, "BACK", { x, y + 140, 200, 50 }, this, SDL_Rect{0,0,0,0}, buttonBackNormal, buttonBackPressed);
+	auto btnBackOpt = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 25, "BACK", { x, y + 140, 200, 50 }, this, SDL_Rect{ 0,0,0,0 }, buttonBackNormal, buttonBackPressed);
 	btnBackOpt->visible = false;
 
 	//fullscreen
@@ -1496,12 +1519,14 @@ void Scene::CreatePauseUI() {
 	SDL_Texture* buttonNormal;
 	buttonPressed = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_CheckboxPressed_01.png");
 	buttonNormal = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_Checkbox_01.png");
-	SDL_Rect Fullscreen = { x+90,y-50, 35, 35 };
+	SDL_Rect Fullscreen = { x + 90,y - 50, 35, 35 };
 	auto fullscreen = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::CHECKBOX, 52, "FULL SCREEN", Fullscreen, this, SDL_Rect{ 0,0,0,0 }, buttonPressed, buttonNormal);
 	if (fullscreen) fullscreen->visible = false;
 	this->Volume = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextVolume1.png");
 	this->VolumeEffects = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextEffectsVolume_01.png");
 	this->fullscreen = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextFullScreen_01.png");
+	this->pauseImage1 = Engine::GetInstance().textures->Load("assets/UI/Pause/UI_Pause_SanefaL_01.png");
+	this->pauseImage2 = Engine::GetInstance().textures->Load("assets/UI/Pause/UI_Pause_SanefaR_01.png");
 }
 
 
@@ -1519,6 +1544,9 @@ void Scene::SetPause(bool pause) {
 		}
 		if (element->id == 52){
 			element->visible = false;
+		}
+		if (element->id == 67 || element->id == 68 || element->id == 69) {
+			element->visible = !isPaused;
 		}
 	}
 }
@@ -1578,6 +1606,7 @@ void Scene::HandlePauseUIEvents(UIElement* uiElement) {
 	}
 }
 void Scene::UpdatePauseMenu() {
+
 	if (slidersOn) {
 		SDL_Rect VolumeRect = { 520,220, 200, 50 };
 		Engine::GetInstance().render->DrawTextureNoCamera(Volume, VolumeRect.x, VolumeRect.y, VolumeRect.w, VolumeRect.h);
