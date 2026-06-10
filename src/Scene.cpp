@@ -110,6 +110,15 @@ bool Scene::Update(float dt)
 			SDL_Renderer* renderer = Engine::GetInstance().render->renderer;
 			SDL_RenderTexture(renderer, introTexture, NULL, NULL);
 		}
+		if (showCredits) {
+			SDL_Rect bg = { 0, 0, 1280, 720 };
+			Engine::GetInstance().render->DrawRectangle(bg, 0, 0, 0, 200, true, false);
+
+			if (creditsTexture != nullptr) {
+				Engine::GetInstance().render->DrawTextureNoCamera(creditsTexture, 0, 0, 1280, 720);
+			}
+
+		}
 		UpdateMainMenu(dt);
 		if (slidersOn) {
 			SDL_Rect VolumeRect = { 520,560, 200, 50 };
@@ -269,11 +278,7 @@ bool Scene::PostUpdate()
 		}
 
 		if (showCredits) {
-			SDL_Rect bg = { 0, 0, 1280, 720 };
-			Engine::GetInstance().render->DrawRectangle(bg, 0, 0, 0, 200, true, false);
-
-			Engine::GetInstance().render->DrawText("CREDITS", 550, 150, 0, 0, { 255, 215, 0, 255 });
-			Engine::GetInstance().render->DrawText("Irene & Queralt", 550, 250, 0, 0, { 255, 255, 255, 255 });
+			Engine::GetInstance().render->DrawTextureNoCamera(creditsTexture, 0, 0, 1280, 720);
 		}
 		if (slidersOn) {
 
@@ -771,17 +776,23 @@ void Scene::LoadMainMenu() {
 	SDL_Texture* buttonExitNormal;
 	buttonExitPressed = Engine::GetInstance().textures->Load("assets/UI/MainMenu/UI_Start_ButtonExitPressed_01.png");
 	buttonExitNormal = Engine::GetInstance().textures->Load("assets/UI/MainMenu/UI_Start_ButtonExit1_01.png");
-	SDL_Rect exitPosRect = { 520, 560, 200, 50 };
+	SDL_Rect exitPosRect = { 520, 570, 200, 50 };
 	auto exitPos = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "EXIT", exitPosRect, this, SDL_Rect{0,0,0,0}, buttonExitNormal, buttonExitPressed);
 
-	////Botón CREDITS
-	//SDL_Rect creditsPosRect = { 520, 490, 200, 50 };
-	//auto creditsPos = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "CREDITS", creditsPosRect, this);
+
+	//Botón Game Credits
+	SDL_Texture* buttonCreditsPressed;
+	SDL_Texture* buttonCreditsNormal;
+	buttonCreditsPressed = Engine::GetInstance().textures->Load("assets/UI/MainMenu/UI_Start_ButtonCredits2_01.png");
+	buttonCreditsNormal = Engine::GetInstance().textures->Load("assets/UI/MainMenu/UI_Start_ButtonCredits1_01.png");
+	this->creditsTexture = Engine::GetInstance().textures->Load("assets/Screens/GameCredits.png"); 
+	SDL_Rect creditsPosRect = { 520, 520, 200, 50 };
+	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "CREDITS", creditsPosRect, this, SDL_Rect{ 0,0,0,0 }, buttonCreditsNormal, buttonCreditsPressed);
 
 	////Botón BACK CREDITS
-	//SDL_Rect backCreditPosRect = { 520, 560, 200, 50 };
-	//auto backCreditsBtn = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, "BACK", backCreditPosRect, this);
-	//if (backCreditsBtn) backCreditsBtn->visible = false;
+	SDL_Rect backCreditPosRect = { 520, 620, 200, 50 };
+	auto backCreditsBtn = Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, "BACK", backCreditPosRect, this, SDL_Rect{ 0,0,0,0 }, buttonBackNormal, buttonBackPressed);
+	if (backCreditsBtn) backCreditsBtn->visible = false;
 	this->Volume = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextVolume2.png");
 	this->VolumeEffects = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextEffectsVolume2_01.png");
 	this->fullscreen = Engine::GetInstance().textures->Load("assets/UI/Options/UI_Settings_TextFullScreen2_01.png");
@@ -797,6 +808,10 @@ void Scene::UnloadMainMenu() {
 	VolumeEffects = nullptr;
 	Engine::GetInstance().textures->UnLoad(fullscreen);
 	fullscreen = nullptr;
+	if (creditsTexture != nullptr) {
+		Engine::GetInstance().textures->UnLoad(creditsTexture);
+		creditsTexture = nullptr;
+	}
 	Engine::GetInstance().uiManager->CleanUp();
 }
 

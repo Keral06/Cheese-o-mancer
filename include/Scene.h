@@ -271,6 +271,7 @@ private:
 	SDL_Texture* map2Texture = nullptr;
 	SDL_Texture* map3Texture = nullptr;
 	SDL_Texture* mapToShow = nullptr;
+	SDL_Texture* creditsTexture = nullptr;
 	
 	bool showMap = false;
 	SDL_Texture* introTexture = nullptr;
