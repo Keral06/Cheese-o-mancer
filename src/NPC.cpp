@@ -1762,7 +1762,7 @@ HiddenScrapOfPaper::HiddenScrapOfPaper() :NPC(EntityType::HIDDENSCRAPOFPAPER) {
 
 	}
 	CommemorativeMonument::CommemorativeMonument() :NPC(EntityType::MONUMENT) {
-		Dialogue paperDialogue("assets/Dialogues/Interactuables/Justice_Dialogues_CowWeb.txt"); //change the dialogue lol!!!!
+		Dialogue paperDialogue("assets/Dialogues/Interactuables/Gardens_Dialogues_Comm_Monument.txt"); //change the dialogue lol!!!!
 		this->dialogue = paperDialogue;
 		dialogue.hasConversation = false;
 	}
