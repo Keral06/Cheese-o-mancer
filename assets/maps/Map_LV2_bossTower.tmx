@@ -7354,10 +7354,10 @@
   <object id="449" x="256" y="640" width="6392" height="128"/>
  </objectgroup>
  <objectgroup id="8" name="Entities">
-  <object id="447" name="Princess" type="Princess" x="2000" y="2552">
+  <object id="447" name="Princess" type="Princess" x="1996" y="2480">
    <point/>
   </object>
-  <object id="448" name="KnightBoss" type="KnightBoss" x="1236.77" y="2566.04">
+  <object id="448" name="KnightBoss" type="KnightBoss" x="1236.77" y="2550.04">
    <point/>
   </object>
   <object id="450" name="Player" type="Player" x="6038.06" y="2458.06">
