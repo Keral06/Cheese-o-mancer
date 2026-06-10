@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="84" height="110" tilewidth="128" tileheight="128" infinite="0" nextlayerid="29" nextobjectid="430">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="84" height="110" tilewidth="128" tileheight="128" infinite="0" nextlayerid="29" nextobjectid="437">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -8,6 +8,7 @@
  </tileset>
  <tileset firstgid="1681" source="METADATA PARTICLES.tsx"/>
  <tileset firstgid="1684" source="tileset_lvl4_General_01.tsx"/>
+ <tileset firstgid="2868" source="tileset_lv1_Pantry_05.tsx"/>
  <layer id="16" name="Background" width="84" height="110">
   <properties>
    <property name="Draw" type="bool" value="true"/>
@@ -26799,8 +26800,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="2923"/>
+   <tile gid="2924"/>
    <tile/>
    <tile/>
    <tile/>
@@ -26883,8 +26884,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="2953"/>
+   <tile gid="2954"/>
    <tile/>
    <tile/>
    <tile/>
@@ -64746,6 +64747,24 @@
  </layer>
  <objectgroup id="17" name="Items">
   <object id="429" name="Live" type="Live" x="4480" y="9856" width="256" height="384"/>
+  <object id="430" name="Rat" type="Rat" x="3267.76" y="8481.82">
+   <point/>
+  </object>
+  <object id="431" name="Rat" type="Rat" x="1680" y="13736">
+   <point/>
+  </object>
+  <object id="432" name="Rat" type="Rat" x="3840" y="13536">
+   <point/>
+  </object>
+  <object id="433" name="Rat" type="Rat" x="5660" y="3904">
+   <point/>
+  </object>
+  <object id="436" name="RatKing" type="RatKing" x="6907.88" y="12706.2">
+   <properties>
+    <property name="ratLevel" type="int" value="0"/>
+   </properties>
+   <point/>
+  </object>
  </objectgroup>
  <objectgroup id="18" name="Checkpoints">
   <object id="428" name="Flag" type="Flag" x="5760" y="8064">

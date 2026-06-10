@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="75" height="64" tilewidth="128" tileheight="128" infinite="0" nextlayerid="47" nextobjectid="462">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="75" height="64" tilewidth="128" tileheight="128" infinite="0" nextlayerid="47" nextobjectid="468">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -33856,6 +33856,33 @@
    <point/>
   </object>
   <object id="459" name="RetiredKnight" type="RetiredKnight" x="384" y="5120">
+   <point/>
+  </object>
+  <object id="462" name="Pics" type="Pics" x="8809.09" y="7700">
+   <properties>
+    <property name="WhoIs" value="Psalm1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="463" name="Pics" type="Pics" x="4796.97" y="1548.48">
+   <properties>
+    <property name="WhoIs" value="Psalm1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="464" name="Hierophant" type="Hierophant" x="5381.82" y="1530.3">
+   <point/>
+  </object>
+  <object id="465" name="Pics" type="Pics" x="5970" y="1520">
+   <properties>
+    <property name="WhoIs" value="Core"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="466" name="Rat" type="Rat" x="7160" y="7872">
+   <point/>
+  </object>
+  <object id="467" name="Rat" type="Rat" x="7816" y="5064">
    <point/>
   </object>
  </objectgroup>

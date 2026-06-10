@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="26" nextobjectid="301">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="86" height="52" tilewidth="128" tileheight="128" infinite="0" nextlayerid="26" nextobjectid="302">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -27010,6 +27010,12 @@
    <properties>
     <property name="hasEntered" type="bool" value="false"/>
     <property name="isDefeated" type="bool" value="false"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="301" name="Pics" type="Pics" x="584" y="4268">
+   <properties>
+    <property name="WhoIs" value="Spring"/>
    </properties>
    <point/>
   </object>
