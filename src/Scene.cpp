@@ -1029,39 +1029,39 @@ void Scene::UpdateLevel(float dt) {
 			ChangeScene(SceneID::GAME_OVER);
 		}
 	}
-
-	//Lógica de cambio de mapa (F1-F4)
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
-		LoadMap("TEST_map_LV1_startRoom_01.tmx"); 
+		masterDebug = !masterDebug;
 	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
-		LoadMap("TEST_map_LV1_towerCenter_01.tmx");          
+	//Lógica de cambio de mapa (F1-F4)
+	if (masterDebug) {
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
+			LoadMap("TEST_map_LV1_towerCenter_01.tmx");
+		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
+			LoadMap("TEST_map_LV1_pantryRoom_01.tmx");
+		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN) {
+			LoadMap("TEST_map_LV1_tortureRoom_02.tmx");
+		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
+			LoadMap("TEST_map_LV1_bossRoom_01.tmx");
+		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_J) == KEY_DOWN) {
+			LoadMap("Map_LV2_bossTower.tmx");
+		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
+			LoadMap("Map_LV3_left_01.tmx");
+		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_O) == KEY_DOWN) {
+			LoadMap("Map_LV3_temple_01.tmx");
+		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_V) == KEY_DOWN) {
+			LoadMap("Map_LV2_encreuada_02.tmx");
+		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN) {
+			LoadMap("Map_LV2_towersBotanica_02.tmx");
+		}
 	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
-		LoadMap("TEST_map_LV1_pantryRoom_01.tmx");           
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN) {
-		LoadMap("TEST_map_LV1_tortureRoom_02.tmx");
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
-		LoadMap("TEST_map_LV1_bossRoom_01.tmx");
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_J) == KEY_DOWN) {
-		LoadMap("Map_LV2_bossTower.tmx");
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
-		LoadMap("Map_LV3_left_01.tmx");
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_O) == KEY_DOWN) {
-		LoadMap("Map_LV3_temple_01.tmx");
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_V) == KEY_DOWN) {
-		LoadMap("Map_LV2_encreuada_02.tmx");
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN) {
-		LoadMap("Map_LV2_towersBotanica_02.tmx");
-	}
-
 
 	// Lógica de Checkpoints (Teclas 1-9)
 	for (int i = 0; i < 9; ++i) {

@@ -425,6 +425,11 @@ public:
 	void CheckMiniBossStatus();
 	bool miniBossFinished = false;
 
+	bool executionerDead = false;
+	bool princessFinished = false;
+	bool highPriestessDead = false;
+	bool masterDebug = false;
+
 	//Well's echo bools
 
 	bool hasTalkedWell = false;

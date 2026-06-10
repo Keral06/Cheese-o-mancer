@@ -497,10 +497,10 @@ void Player::Move() {
 	// ==========================================
 	// --- 3. EXTRAS (Zoom y GodMode) ---
 	// ==========================================
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_U) == KEY_REPEAT)
+	/*if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_U) == KEY_REPEAT)
 	{
 		Engine::GetInstance().render->SetZoomSmooth(0.7f, 600.0f);
-	}
+	}*/
 
 	if (godMode)
 	{
@@ -1242,7 +1242,7 @@ void Player::HandleAttack()
 			std::vector<PhysBody*> hits = Engine::GetInstance().physics->QueryArea(hitboxRect);
 
 			for (auto* body : hits) {
-				if (body->ctype == ColliderType::ENEMY) {
+				if (body->ctype == ColliderType::ENEMY || body->ctype == ColliderType::BOSSATTACK) {
 					Enemy* e = static_cast<Enemy*>(body->listener);
 
 					// LÓGICA DE DAÑO ÚNICO:

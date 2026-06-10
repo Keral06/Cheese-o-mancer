@@ -131,7 +131,9 @@ bool Verdugo::Update(float dt)
         EnterEndState();
         deathStarted = true;
     }
-
+    if (Engine::GetInstance().scene->executionerDead == true) {
+        Die();
+    }
 
     switch (phase)
     {
@@ -990,23 +992,30 @@ void Verdugo::OnWallDestroyed()
 }
 
 void Verdugo::Die() {
-    anims.SetCurrent("death");
-    Engine::GetInstance().scene->cards.GirarCarta("Justice");
-    Engine::GetInstance().render->SetZoomSmooth(0.3f, 600.0f);
-    int numeroDeMonedas = 10;
-    const Vector2D& pos = this->GetPosition();
-    Engine::GetInstance().scene->isInBossfight = false;
-    for (int i = 0; i < numeroDeMonedas; ++i) {
-        auto newCoin = Engine::GetInstance().entityManager->CreateEntity(EntityType::COIN);
-        auto coinEntity = std::static_pointer_cast<Coins>(newCoin);
+    if (Engine::GetInstance().scene->executionerDead == false) {
+        anims.SetCurrent("death");
+        Engine::GetInstance().scene->cards.GirarCarta("Justice");
+        Engine::GetInstance().render->SetZoomSmooth(0.3f, 600.0f);
+        Engine::GetInstance().scene->executionerDead = true;
+        int numeroDeMonedas = 10;
+        const Vector2D& pos = this->GetPosition();
+        Engine::GetInstance().scene->isInBossfight = false;
+        for (int i = 0; i < numeroDeMonedas; ++i) {
+            auto newCoin = Engine::GetInstance().entityManager->CreateEntity(EntityType::COIN);
+            auto coinEntity = std::static_pointer_cast<Coins>(newCoin);
 
-        if (coinEntity) {
-            int offsetX = (i * 30);
+            if (coinEntity) {
+                int offsetX = (i * 30);
 
-            coinEntity->xInicial = (int)pos.getX() + offsetX;
-            coinEntity->yInicial = (int)pos.getY();
-            coinEntity->Start();
+                coinEntity->xInicial = (int)pos.getX() + offsetX;
+                coinEntity->yInicial = (int)pos.getY();
+                coinEntity->Start();
+            }
         }
+    }
+    else {
+        anims.SetCurrent("death");
+        phase = PHASE_ENDCHOICEV;
     }
     //this->toDelete = true;
 }
