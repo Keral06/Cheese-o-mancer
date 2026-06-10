@@ -1641,7 +1641,7 @@
    <property name="Draw" type="bool" value="true"/>
    <property name="Foreground" type="bool" value="true"/>
   </properties>
-  <object id="1" gid="1188" x="358.593" y="2380.57" width="3662.56" height="1857.87"/>
+  <object id="1" gid="1188" x="479.829" y="2384.24" width="3901.36" height="1857.87"/>
  </objectgroup>
  <layer id="8" name="map" width="40" height="20">
   <properties>
