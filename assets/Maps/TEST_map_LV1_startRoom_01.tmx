@@ -55397,25 +55397,7 @@
   <object id="435" name="Magician" type="Magician" x="18493.3" y="3832.49">
    <point/>
   </object>
-  <object id="436" name="interactball" type="interactball" x="15678" y="6230">
-   <properties>
-    <property name="Where" type="int" value="1"/>
-   </properties>
-   <point/>
-  </object>
   <object id="489" name="Player" type="Player" x="14664" y="5956">
-   <point/>
-  </object>
-  <object id="538" name="interactball" type="interactball" x="16336" y="6228">
-   <properties>
-    <property name="Where" type="int" value="2"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="539" name="interactball" type="interactball" x="17040" y="6232">
-   <properties>
-    <property name="Where" type="int" value="3"/>
-   </properties>
    <point/>
   </object>
  </objectgroup>
@@ -88733,7 +88715,5 @@
    <tile/>
   </data>
  </layer>
- <objectgroup id="38" name="MohoWalls">
-  <object id="537" x="15108" y="2808" width="208" height="3468"/>
- </objectgroup>
+ <objectgroup id="38" name="MohoWalls"/>
 </map>
