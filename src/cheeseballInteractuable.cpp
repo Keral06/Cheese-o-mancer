@@ -110,8 +110,7 @@ bool CheeseBallInteract::Update(float dt)
 		return true;
 	}
 
-	// Si ya lo cogiste y no hay nada esperando, no hace nada
-	if (Engine::GetInstance().scene->cheese) return true;
+	
 
 	// FASE 1: Diálogo e interacción
 	if (isGettingTouched) {
