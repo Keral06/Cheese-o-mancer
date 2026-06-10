@@ -102,7 +102,7 @@ bool Verdugo::Start()
     offsetY = 0.0f;
     texture = textureIdleWalk;
 
-    health = 200;
+    health = 300;
 
     attackInProgress = false;
     isAttacking = false;
@@ -245,7 +245,7 @@ void Verdugo::UpdatePhase1(float dt)
         DebugChangePhase();
     }
 
-    if (health <= 100)
+    if (health <= 200)
     {
         StartTransformation();
         return;
