@@ -3,6 +3,7 @@
 // =====================
 
 #include "Player.h"
+#include "UIManager.h"
 #include "GameManager.h"
 #include "Engine.h"
 #include "Textures.h"
@@ -1197,17 +1198,54 @@ void Player::ChangeCurrentAnimation() {
 // =====================
 
 void Player::Attack() {
-	static bool wasPressedLastFrame = false;
+	if (Engine::GetInstance().input->GetMouseButtonDown(1) == KEY_DOWN) {
 
-	bool isPressed = Engine::GetInstance().input->GetMouseButtonDown(1);
+		auto scene = Engine::GetInstance().scene;
 
-	// Detectar flanco (click real)
-	if (isPressed && !wasPressedLastFrame) {
-		attackRequested = true;
-		LOG("Attack requested (single click)");
+		bool isUIOpen = scene->inventoryOn ||
+			scene->cardsInventoryOn ||
+			scene->list ||
+			scene->storeOn ||
+			scene->someoneIsTalking ||
+			scene->isPaused ||
+			scene->showHelp;
+
+		bool isClickingUI = false;
+		Vector2D mousePos = Engine::GetInstance().input->GetMousePosition();
+		int mx = (int)mousePos.getX();
+		int my = (int)mousePos.getY();
+
+		for (const auto& ui : Engine::GetInstance().uiManager->UIElementsList) {
+			if (ui->visible) {
+				bool insideBounds = (mx >= ui->bounds.x && mx <= (ui->bounds.x + ui->bounds.w) &&
+					my >= ui->bounds.y && my <= (ui->bounds.y + ui->bounds.h));
+
+				bool activeState = (ui->state == UIElementState::FOCUSED || ui->state == UIElementState::PRESSED);
+
+				if (insideBounds || activeState) {
+					isClickingUI = true;
+					break;
+				}
+			}
+		}
+
+		if (!isClickingUI) {
+			if (mx >= 1110 && mx <= 1270 && my >= 560 && my <= 720) {
+				isClickingUI = true;
+			}
+			else if (mx >= 1020 && mx <= 1130 && my >= 590 && my <= 700) {
+				isClickingUI = true;
+			}
+			else if (mx >= 940 && mx <= 1040 && my >= 600 && my <= 700) {
+				isClickingUI = true;
+			}
+		}
+
+		if (!isUIOpen && !isClickingUI) {
+			attackRequested = true;
+			LOG("Attack requested (single click)");
+		}
 	}
-
-	wasPressedLastFrame = isPressed;
 }
 
 void Player::HandleAttack()
