@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="100" height="120" tilewidth="128" tileheight="128" infinite="0" nextlayerid="28" nextobjectid="46">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="100" height="120" tilewidth="128" tileheight="128" infinite="0" nextlayerid="28" nextobjectid="53">
  <tileset firstgid="1" source="test2_tileset.tsx"/>
  <tileset firstgid="4" source="cloud_2.tsx"/>
  <tileset firstgid="5" source="cloud_1.tsx"/>
@@ -36189,6 +36189,13 @@
   <object id="39" type="FloatingDust" x="1032" y="72" width="11744" height="14976"/>
   <object id="40" type="FloatingDust" x="1040" y="80" width="11744" height="14976"/>
   <object id="44" type="FloatingDust" x="1040" y="64" width="11744" height="7568"/>
+  <object id="46" type="Moho" x="1080" y="2462" width="216" height="1548"/>
+  <object id="47" type="Moho" x="1084" y="4018" width="216" height="1548"/>
+  <object id="48" type="Moho" x="1088" y="5570" width="216" height="1548"/>
+  <object id="49" type="Moho" x="1092" y="7126" width="216" height="1548"/>
+  <object id="50" type="Moho" x="1096" y="8682" width="216" height="1548"/>
+  <object id="51" type="Moho" x="1100" y="10250" width="216" height="1548"/>
+  <object id="52" type="Moho" x="1104" y="11826" width="216" height="1776"/>
  </objectgroup>
  <layer id="25" name="MetadataSuelos" width="100" height="120" visible="0">
   <data>
