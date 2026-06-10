@@ -2,6 +2,7 @@
 
 #include "Enemy.h"
 #include "Animation.h"
+#include "Dialogue.h"
 
 class HighPriestesss : public Enemy {
 public:
@@ -33,16 +34,19 @@ private:
     SDL_Texture* texTurn = nullptr;
     SDL_Texture* texDeath = nullptr;
 
-    // Punteros de control para saber qué pintar en el frame actual
+    // Punteros de control para saber quï¿½ pintar en el frame actual
     AnimationSet* currentAnimTrack = nullptr;
     SDL_Texture* currentTexture = nullptr;
-    EnemyState lastState; // Para optimizar el cambio de animación
+    EnemyState lastState; // Para optimizar el cambio de animaciï¿½n
 
 
     bool isImmobilized = false;
-    bool waitingForChoice = false;
     std::string currentAnimName = "none";
 
     
+
     bool choiceMade = false;       
+
+    Dialogue Choosing;
+
 };
