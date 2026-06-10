@@ -352,7 +352,7 @@ bool Player::Update(float dt)
 			doVerticalJump = false;
 
 			b2Body_SetAwake(pbody->body, true);
-			b2Body_SetLinearVelocity(pbody->body, { 0.0f, -35.0f });
+			b2Body_SetLinearVelocity(pbody->body, { 0.0f, -60.0f });
 
 			state = JUMPING;
 			isJumping = true;
@@ -1412,10 +1412,19 @@ void Player::HandleMountedMovement()
 	b2Vec2 vel = b2Body_GetLinearVelocity(mountedBall->pbody->body);
 	movingBall = false;
 
+	// GUARDAMOS SI ESTÁBAMOS ESCALANDO EL FRAME ANTERIOR
+	bool wasWallWalking = isWallWalking;
+
 	// ==========================================
 	// --- LÓGICA DE ESCALADA CON BOLA ---
 	// ==========================================
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT && mountedBall->isOnMoho) {
+	// Permitimos agarrarnos a la pared SOLO si no acabamos de saltar (vel.y >= -25.0f)
+	// y si no estamos a mitad de la animación del doble salto (!waitingAttackAnimEnd)
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT &&
+		mountedBall->isOnMoho &&
+		vel.y >= -25.0f &&
+		!waitingAttackAnimEnd)
+	{
 		isWallWalking = true;
 		vel.x = 0.0f;
 		vel.y = 0.0f;
@@ -1434,7 +1443,16 @@ void Player::HandleMountedMovement()
 	else {
 		isWallWalking = false;
 
-		// Restauramos la gravedad normal de la bola al soltar la E
+		// ==========================================
+		// --- NUEVO: MINI-SALTO AL LLEGAR AL BORDE ---
+		// ==========================================
+		// Si estábamos escalando, ya no estamos en el moho, seguimos pulsando W para subir, 
+		// Y NO ESTAMOS YA SALTANDO NORMALMENTE (vel.y >= -20.0f)...
+		if (wasWallWalking && Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && vel.y >= -20.0f) {
+			vel.y = -15.0f; // Mini salto al coronar la pared
+		}
+
+		// Restauramos la gravedad normal de la bola
 		b2Body_SetGravityScale(mountedBall->pbody->body, 1.0f);
 
 		// ==========================================
