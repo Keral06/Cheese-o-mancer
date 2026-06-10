@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="75" height="64" tilewidth="128" tileheight="128" infinite="0" nextlayerid="44" nextobjectid="450">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="75" height="64" tilewidth="128" tileheight="128" infinite="0" nextlayerid="45" nextobjectid="453">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -38655,4 +38655,9 @@
    <tile/>
   </data>
  </layer>
+ <objectgroup id="44" name="MohoWalls">
+  <object id="450" x="4486" y="3714" width="154" height="2308"/>
+  <object id="451" x="3072" y="4606" width="152" height="1538"/>
+  <object id="452" x="5758.67" y="6014.67" width="141.333" height="1028"/>
+ </objectgroup>
 </map>
