@@ -233,7 +233,7 @@ bool Rey::Update(float dt)
 
                 }
                 if (Temperance.hasStarted && !Temperance.hasEnded) { NoArtifact.Draw(dt); return true; }
-            
+            //kill king, acaba el juego
             }
             else {
             
@@ -250,8 +250,7 @@ bool Rey::Update(float dt)
                 }
                 if (theDevil.hasStarted && !theDevil.hasEnded) { theDevil.Draw(dt); return true; }
             }
-            // TODO: Activar aquí la cinemática del FINAL 2 si tienes un método para vídeos o escenas
-            // scene->PlayVideo("assets/Videos/final2.mpeg"); 
+            // muere rey, acaba el juego
 
             Die(); // Ejecuta la animación de muerte del rey
 

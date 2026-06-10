@@ -789,8 +789,9 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                 else if (entityType == "HighPriestesss") {
                     if (Engine::GetInstance().scene->hasBeenWhistledblowed == false) {
                     
-                        std::shared_ptr<HighPriestess> rey = std::dynamic_pointer_cast<HighPriestess>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HIGHPRIESTESSS));
-                        rey->position = Vector2D(x, y);
+                        std::shared_ptr<HighPriestess> rey = std::dynamic_pointer_cast<HighPriestess>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PRIEST));
+                        rey->xInicial = x;
+                        rey->yInicial = y;
                         rey->Start();
                         rey->mapID = id;
                         return;

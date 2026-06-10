@@ -1238,13 +1238,13 @@ void  Scene::PostUpdateLevel() {
 		Engine::GetInstance().render->DrawText(scoreText.c_str(), 1100, 30, 0, 0, { 255, 255, 255, 255 });
 	}
 
-	if (player != nullptr) {
+	/*if (player != nullptr) {
 		std::string scoreText = "Score: " + std::to_string(Engine::GetInstance().scene->score);
 		Engine::GetInstance().render->DrawText(scoreText.c_str(), 1100, 30, 0, 0, { 255, 255, 255, 255 });
 
 		std::string timerText = "Time: " + std::to_string((int)levelTimer);
 		Engine::GetInstance().render->DrawText(timerText.c_str(), 1100, 70, 0, 0, { 255, 255, 255, 255 });
-	}
+	}*/
 	if (isPaused) {
 		SDL_Rect screenRect = { -10000, -10000, 50000, 50000 };
 		Engine::GetInstance().render->DrawRectangle(screenRect, 0, 0, 0, 150, true, false);
