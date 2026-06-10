@@ -40,7 +40,6 @@ private:
 
 
     bool isImmobilized = false;
-    bool waitingForChoice = false;
     std::string currentAnimName = "none";
 
     

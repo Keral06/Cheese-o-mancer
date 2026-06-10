@@ -323,6 +323,16 @@ private:
 	SDL_Texture* inventoryPaperKey1 = nullptr;
 	SDL_Texture* inventoryPaperKey2 = nullptr;
 	SDL_Texture* inventoryPaperKey3 = nullptr;
+	SDL_Texture* descQueenKey = nullptr;
+	SDL_Texture* descRustyFragment = nullptr;
+	SDL_Texture* descSpringWater = nullptr;
+	SDL_Texture* descTreeRoot = nullptr;
+	SDL_Texture* descMoldyFragment = nullptr;
+	SDL_Texture* descHorsekin = nullptr;
+	SDL_Texture* descAssembledArtifact = nullptr;
+	SDL_Texture* descBloodyFragment = nullptr;
+	SDL_Texture* descCheeseSculptures = nullptr;
+	SDL_Texture* descCoreFragment = nullptr;
 
 	SDL_Texture* pauseImage1 = nullptr;
 	SDL_Texture* pauseImage2 = nullptr;
