@@ -3,21 +3,4 @@ Jester:
 Voice:
 Jester:
 Voice:
-Strange Man:
-Jester:
-Magician:
-Jester:
-Magician:
-Jester:
-Magician:
-Jester:
-Magician:
-Magician:
-Magician:
-Jester:
-Magician:
-Jester:
-Magician:
-Jester:
-Magician:
 +
