@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="84" height="110" tilewidth="128" tileheight="128" infinite="0" nextlayerid="25" nextobjectid="421">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="84" height="110" tilewidth="128" tileheight="128" infinite="0" nextlayerid="27" nextobjectid="427">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -37003,6 +37003,9 @@
   </data>
  </layer>
  <layer id="21" name="Moho" width="84" height="110">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -46358,14 +46361,17 @@
   <object id="413" x="2176" y="4224" width="256" height="128"/>
  </objectgroup>
  <objectgroup id="8" name="Entities">
-  <object id="414" name="Player" type="Player" x="1576" y="13600">
+  <object id="414" name="Player" type="Player" x="3368" y="8352">
    <point/>
   </object>
  </objectgroup>
+ <objectgroup id="26" name="MohoWalls">
+  <object id="426" x="2048" y="8832" width="136" height="3584"/>
+ </objectgroup>
  <layer id="22" name="Foreground" width="84" height="110" offsetx="640" offsety="0" parallaxx="1.1">
   <properties>
-   <property name="Background" type="bool" value="true"/>
    <property name="Draw" type="bool" value="true"/>
+   <property name="Foreground" type="bool" value="true"/>
    <property name="Parallax" type="float" value="1.1"/>
   </properties>
   <data>
@@ -55611,6 +55617,13 @@
    <tile/>
   </data>
  </layer>
+ <objectgroup id="25" name="Particles">
+  <object id="421" type="Moho" x="2092" y="8840" width="152" height="3560"/>
+  <object id="422" type="Moho" x="9896" y="2548" width="152" height="4240"/>
+  <object id="423" type="Moho" x="8748" y="4" width="152" height="2560"/>
+  <object id="424" type="FloatingDust" x="84" y="56" width="10536" height="7632"/>
+  <object id="425" type="FloatingDust" x="60" y="7672" width="7880" height="6272"/>
+ </objectgroup>
  <layer id="24" name="MetadataSuelos" width="84" height="110" visible="0">
   <data>
    <tile/>

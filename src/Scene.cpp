@@ -933,13 +933,13 @@ void Scene::UpdateLevel(float dt) {
 	//DEBUG INVENTARIO
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_G) == KEY_DOWN) {
 		if (player != nullptr) {
+			inventario.push("Spring", iconSpring, descSpringWater);
+			inventario.push("HorseMacure", iconHorseMacure, descHorsekin);
+			inventario.push("Gargantuan", iconGargantuan, descTreeRoot);
 
-			inventario.push("Spring", iconSpring, nullptr);
-			inventario.push("HorseMacure", iconHorseMacure, nullptr);
-			inventario.push("Gargantuan", iconGargantuan, nullptr);
-			inventario.push("Map", iconMap, nullptr);
+			inventario.push("Map", iconMap, map1Texture);
 			inventario.push("Lamp", iconLamp, nullptr);
-			inventario.push("Key", iconKey, nullptr);
+			inventario.push("Key", iconKey, inventoryPaperKey1);
 
 		}
 	}
@@ -1236,7 +1236,7 @@ void  Scene::PostUpdateLevel() {
 			Engine::GetInstance().render->DrawTextureNoCamera(pauseImage1, 100, 0, 516, 516);
 		}
 		if (pauseImage2 != nullptr) {
-			Engine::GetInstance().render->DrawTextureNoCamera(pauseImage2, 550, 200, 516, 516);
+			Engine::GetInstance().render->DrawTextureNoCamera(pauseImage2, 600, 150, 516, 516);
 		}
 		Engine::GetInstance().render->DrawText("PAUSE", 600, 150, 0, 0, { 255, 255, 255, 255 });
 	}
@@ -1355,10 +1355,10 @@ void  Scene::PostUpdateLevel() {
 		}
 		else {
 
-			float anchoPapel = 512;
-			float altoPapel = 256;
-			float posX = (1280.0f - anchoPapel) / 2.0f; 
-			float posY = 180.0f; 
+			float anchoPapel = 683;
+			float altoPapel = 342;
+			float posX = (1280.0f - anchoPapel) / 2.0f - 50; 
+			float posY = 420; 
 
 			SDL_FRect posicionPapel = { posX, posY, anchoPapel, altoPapel };
 			SDL_RenderTexture(Engine::GetInstance().render->renderer, mapToShow, NULL, &posicionPapel);
@@ -1761,10 +1761,11 @@ void Scene::LoadMap(std::string map)
 			else if (obj.nombre == "Map Nivel 2") { obj.imagen = iconMap; obj.imagenDescripcion = map2Texture; }
 			else if (obj.nombre == "Map Nivel 3") { obj.imagen = iconMap; obj.imagenDescripcion = map3Texture; }
 			else if (obj.nombre.find("Key") != std::string::npos) obj.imagen = iconKey;
-			else if (obj.nombre == "Lamp") obj.imagen = iconLamp;
-			else if (obj.nombre == "Spring") obj.imagen = iconSpring;
-			else if (obj.nombre == "HorseMacure") obj.imagen = iconHorseMacure;
-			else if (obj.nombre == "Gargantuan") obj.imagen = iconGargantuan;
+			else if (obj.nombre == "Lamp") obj.imagen = iconLamp; 
+			else if (obj.nombre == "Spring") { obj.imagen = iconSpring; obj.imagenDescripcion = descSpringWater; }
+			else if (obj.nombre == "HorseMacure") { obj.imagen = iconHorseMacure; obj.imagenDescripcion = descHorsekin; }
+			else if (obj.nombre == "Gargantuan") { obj.imagen = iconGargantuan; obj.imagenDescripcion = descTreeRoot; }
+			
 		}
 		for (auto& mis : misiones.objetos) {
 			if (mis.nombre == "Talk with magician") {
@@ -2235,6 +2236,7 @@ void Scene::HandleStoreUIEvents(UIElement* uiElement) {
 			}
 			Engine::GetInstance().scene->inventario.push(keyName, iconKey, keyDescription);
 
+
 			//FUNCION DE QUE PLAYER TIENE LA LLAVE
 			for (auto& entity : Engine::GetInstance().entityManager->entities) {
 				if (entity->type == EntityType::HANDMAN) {
@@ -2411,6 +2413,16 @@ void Scene::CreateInventoryUI() {
 	inventoryPaperKey1 = Engine::GetInstance().textures->Load("assets/Dialogues/Inventory_Descs/Inventory_Lvl1_Key.png");
 	inventoryPaperKey2 = Engine::GetInstance().textures->Load("assets/Dialogues/Inventory_Descs/Inventory_Lvl2_Key.png"); 
 	inventoryPaperKey3 = Engine::GetInstance().textures->Load("assets/Dialogues/Inventory_Descs/Inventory_Lvl3_Key.png");
+	descQueenKey = Engine::GetInstance().textures->Load("assets/Dialogues/Inventory_Descs/Inventory_Queen_Key.png");
+	descRustyFragment = Engine::GetInstance().textures->Load("assets/Dialogues/Inventory_Descs/Inventory_Rusty_Fragment.png");
+	descSpringWater = Engine::GetInstance().textures->Load("assets/Dialogues/Inventory_Descs/Inventory_SpringWater.png");
+	descTreeRoot = Engine::GetInstance().textures->Load("assets/Dialogues/Inventory_Descs/Inventory_TreeRoot.png");
+	descMoldyFragment = Engine::GetInstance().textures->Load("assets/Dialogues/Inventory_Descs/Inventory_Moldy_Fragment.png");
+	descHorsekin = Engine::GetInstance().textures->Load("assets/Dialogues/Inventory_Descs/Inventory_Korsekin.png");
+	descAssembledArtifact = Engine::GetInstance().textures->Load("assets/Dialogues/Inventory_Descs/Inventory_Assembled_Artifact.png");
+	descBloodyFragment = Engine::GetInstance().textures->Load("assets/Dialogues/Inventory_Descs/Inventory_Bloody_Fragment.png");
+	descCheeseSculptures = Engine::GetInstance().textures->Load("assets/Dialogues/Inventory_Descs/Inventory_Cheese_Sculptures.png");
+	descCoreFragment = Engine::GetInstance().textures->Load("assets/Dialogues/Inventory_Descs/Inventory_Core_Fragment.png");
 	invPaperCombined = Engine::GetInstance().textures->Load("assets/UI/Inventario/UI_Inventari_PaperAll_01.png"); 
 	iconMap = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemMap1_01.png"); 
 	iconKey = Engine::GetInstance().textures->Load("assets/UI/Store/UI_Store_ItemKey1_01.png");
@@ -2978,19 +2990,19 @@ void Scene::PickUpCorpse(Enemy* corpse) {
 	SDL_Texture* iconPlaceholder = iconCheeseStatue;
 
 	if (corpseName == "Rat") {
-		inventario.push("Estatua Rata", iconPlaceholder, nullptr);
+		inventario.push("Estatua Rata", iconPlaceholder, descCheeseSculptures);
 		LOG("Estatua de Rata añadida al inventario");
 	}
 	else if (corpseName == "Horse") {
-		inventario.push("Estatua Caballo", iconPlaceholder, nullptr);
+		inventario.push("Estatua Caballo", iconPlaceholder, descCheeseSculptures);
 		LOG("Estatua de Caballo añadida al inventario");
 	}
 	else if (corpseName == "Bee") {
-		inventario.push("Estatua Abeja", iconPlaceholder, nullptr);
+		inventario.push("Estatua Abeja", iconPlaceholder, descCheeseSculptures);
 		LOG("Estatua de Abeja añadida al inventario");
 	}
 	else if (corpseName == "Jailer") {
-		inventario.push("Estatua Verdugo", iconPlaceholder, nullptr);
+		inventario.push("Estatua Verdugo", iconPlaceholder, descCheeseSculptures);
 		LOG("Estatua de Verdugo añadida al inventario");
 	}
 
