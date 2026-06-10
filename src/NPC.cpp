@@ -2793,14 +2793,6 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 	}
 	bool Well::Start() {
 
-		std::unordered_map<int, std::string> aliases = {
-				  {0, "idle"},{15, "start"}, {30, "talk"},{45, "end"}
-		};
-		anims.LoadFromTSX("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.tsx", aliases);
-		anims.SetCurrent("idle");
-
-		texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/Hermit/spritesheet_Hermit.png");
-	
 		//32 sujeto a cambio, el tile del tsx es de 32x32 en el ejemplo, luego hare que sea algo que viene de constructor o algo asi
 		texW = 128*3;
 		texH = 128*3;

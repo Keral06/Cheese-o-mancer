@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="306" height="153" tilewidth="128" tileheight="128" infinite="0" nextlayerid="70" nextobjectid="528">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="306" height="153" tilewidth="128" tileheight="128" infinite="0" nextlayerid="70" nextobjectid="528">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -186,6 +186,9 @@
    <object id="506" gid="20589" x="28544" y="16256" width="3000" height="3456"/>
   </objectgroup>
   <layer id="69" name="Column" width="306" height="153">
+   <properties>
+    <property name="Draw" type="bool" value="true"/>
+   </properties>
    <data>
     <tile/>
     <tile/>
@@ -421636,7 +421639,7 @@
   <object id="522" name="Live" type="Live" x="30848" y="14336" width="256" height="384"/>
  </objectgroup>
  <objectgroup id="18" name="Checkpoints">
-  <object id="523" name="Flag" type="Flag" x="28160" y="15616">
+  <object id="523" name="Flag" type="Flag" x="28164" y="15536">
    <point/>
   </object>
  </objectgroup>
@@ -468605,7 +468608,7 @@
   <object id="518" x="31492" y="2944" width="260" height="3200.73"/>
  </objectgroup>
  <objectgroup id="8" name="Entities">
-  <object id="372" name="Player" type="Player" x="5268" y="15188">
+  <object id="372" name="Player" type="Player" x="2020" y="15572">
    <point/>
   </object>
   <object id="375" name="Bee" type="Bee" x="11320" y="14768">
@@ -468629,7 +468632,7 @@
   <object id="381" name="Bee" type="Bee" x="33648" y="6720">
    <point/>
   </object>
-  <object id="420" x="20416" y="16048">
+  <object id="420" name="Hermit" type="Hermit" x="20316" y="15866">
    <properties>
     <property name="WhoIs" value="Night"/>
    </properties>
