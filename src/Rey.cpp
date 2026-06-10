@@ -67,11 +67,11 @@ bool Rey::Start() {
     Dialogue help4("assets/Dialogues/Endings/Ending_Judgement_Dialogues.txt", "assets/Dialogues/Endings/Ending_Judgement_Names.txt");
     NoArtifact = help3;
 
-    Dialogue help4("assets/Dialogues/Endings/Ending_Temperance_Dialogues.txt", "assets/Dialogues/Endings/Ending_Temperance_Names.txt");
-    Temperance = help3;
+    Dialogue help5("assets/Dialogues/Endings/Ending_Temperance_Dialogues.txt", "assets/Dialogues/Endings/Ending_Temperance_Names.txt");
+    Temperance = help4;
 
-    Dialogue help4("assets/Dialogues/Endings/Ending_TheDevil_Dialogues.txt", "assets/Dialogues/Endings/Ending_TheDevil_Names.txt");
-    theDevil = help3;
+    Dialogue help6("assets/Dialogues/Endings/Ending_TheDevil_Dialogues.txt", "assets/Dialogues/Endings/Ending_TheDevil_Names.txt");
+    theDevil = help5;
 
     attackHitbox = nullptr;
     return true;
@@ -117,7 +117,7 @@ bool Rey::Update(float dt)
         if (Engine::GetInstance().scene->misiones.HowManyCompleted() > 3 && Engine::GetInstance().scene->hasSparedPrincessAndKnight) {
         
         
-            if (choice.hasStarted == false) { choice.AvanzarDialogo(dt, "Rey"); return; }
+            if (choice.hasStarted == false) { choice.AvanzarDialogo(dt, "Rey"); return true; }
 
             if (eKeyCurrent) {
             
@@ -128,12 +128,12 @@ bool Rey::Update(float dt)
                     choosingFinal = false;
 
                     decision = choice.WhatChoice();
-                    return;
+                    return true;
                  }
             
             }
 
-            if (choice.hasStarted && !choice.hasEnded) { choice.Draw(dt); return; }
+            if (choice.hasStarted && !choice.hasEnded) { choice.Draw(dt); return true; }
         
         
         
@@ -141,7 +141,7 @@ bool Rey::Update(float dt)
         else {
         
         
-            if (noChoice.hasStarted == false) { choice.AvanzarDialogo(dt, "Rey"); return; }
+            if (noChoice.hasStarted == false) { choice.AvanzarDialogo(dt, "Rey"); return true; }
 
             if (eKeyCurrent) {
 
@@ -157,7 +157,7 @@ bool Rey::Update(float dt)
 
             }
 
-            if (noChoice.hasStarted && !noChoice.hasEnded) { noChoice.Draw(dt); return; }
+            if (noChoice.hasStarted && !noChoice.hasEnded) { noChoice.Draw(dt); return true; }
         
         
         
@@ -172,16 +172,16 @@ bool Rey::Update(float dt)
 
                 Engine::GetInstance().render->SetZoomSmooth(0.5f, 800.0f);
 
-                if (Artifact.hasStarted == false) { Artifact.AvanzarDialogo(dt, "Rey"); return; }
+                if (Artifact.hasStarted == false) { Artifact.AvanzarDialogo(dt, "Rey"); return true; }
 
                 if (eKeyCurrent && Artifact.hasEnded == false) {
                 
                     Artifact.AvanzarDialogo(dt, "Rey");
-                    return;
+                    return true;
                 
                 
                 }
-                if (Artifact.hasStarted && !Artifact.hasEnded) { Artifact.Draw(dt); return; }
+                if (Artifact.hasStarted && !Artifact.hasEnded) { Artifact.Draw(dt); return true; }
                 //COMENÇA LLUITA
                 // 
                 // DESPRES LLUITA, ES EL VIDEO
@@ -193,16 +193,16 @@ bool Rey::Update(float dt)
             else {
                 LOG("No tienes el amuleto... El Mago te destruye sin piedad (Final 3)");
 
-                if (NoArtifact.hasStarted == false) { NoArtifact.AvanzarDialogo(dt, "Rey"); return; }
+                if (NoArtifact.hasStarted == false) { NoArtifact.AvanzarDialogo(dt, "Rey"); return true; }
 
                 if (eKeyCurrent && Artifact.hasEnded == false) {
 
                     NoArtifact.AvanzarDialogo(dt, "Rey");
-                    return;
+                    return true;
 
 
                 }
-                if (NoArtifact.hasStarted && !NoArtifact.hasEnded) { NoArtifact.Draw(dt); return; }
+                if (NoArtifact.hasStarted && !NoArtifact.hasEnded) { NoArtifact.Draw(dt); return true; }
                
                 //MUERTE JESTER
 
@@ -223,32 +223,32 @@ bool Rey::Update(float dt)
             if (Engine::GetInstance().scene->hasSparedPrincessAndKnight) {
             //Temperance ending
             
-                if (Temperance.hasStarted == false) { Temperance.AvanzarDialogo(dt, "Rey"); return; }
+                if (Temperance.hasStarted == false) { Temperance.AvanzarDialogo(dt, "Rey"); return true; }
 
                 if (eKeyCurrent && Temperance.hasEnded == false) {
 
                     Temperance.AvanzarDialogo(dt, "Rey");
-                    return;
+                    return true;
 
 
                 }
-                if (Temperance.hasStarted && !Temperance.hasEnded) { NoArtifact.Draw(dt); return; }
+                if (Temperance.hasStarted && !Temperance.hasEnded) { NoArtifact.Draw(dt); return true; }
             
             }
             else {
             
             //The devil ending
             
-                if (theDevil.hasStarted == false) { theDevil.AvanzarDialogo(dt, "Rey"); return; }
+                if (theDevil.hasStarted == false) { theDevil.AvanzarDialogo(dt, "Rey"); return true; }
 
                 if (eKeyCurrent && theDevil.hasEnded == false) {
 
                     theDevil.AvanzarDialogo(dt, "Rey");
-                    return;
+                    return true;
 
 
                 }
-                if (theDevil.hasStarted && !theDevil.hasEnded) { theDevil.Draw(dt); return; }
+                if (theDevil.hasStarted && !theDevil.hasEnded) { theDevil.Draw(dt); return true; }
             }
             // TODO: Activar aquí la cinemática del FINAL 2 si tienes un método para vídeos o escenas
             // scene->PlayVideo("assets/Videos/final2.mpeg"); 

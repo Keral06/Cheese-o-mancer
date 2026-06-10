@@ -26,7 +26,7 @@ public:
     ~ListaMisiones();
 
     void push(std::string nom, SDL_Texture* img, SDL_Texture* imgDesc);
-    
+
     void hasBeenSeen(std::string nom);
     void Completed(std::string nom);
     bool tieneObjeto(std::string nom);
