@@ -113,6 +113,7 @@ bool HighPriestesss::Update(float dt) {
         
         
             Choosing.AvanzarDialogo(dt, "HighPriestess");
+            return true;
         
         }
         // 2. Si está cerca y pulsa la 'E', abrimos el "menú" o escuchamos la elección
@@ -122,9 +123,14 @@ bool HighPriestesss::Update(float dt) {
             
             
                choiceMade = Choosing.WhatChoice();
-            
+               return true;
             
             }
+        }
+        if (Choosing.hasStarted && !Choosing.hasEnded) {
+        
+            Choosing.Draw(dt);
+            return true;
         }
 
         // 3. Procesar la elección del jugador
