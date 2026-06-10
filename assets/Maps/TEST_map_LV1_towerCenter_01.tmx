@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="30" nextobjectid="402">
+<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="93" height="115" tilewidth="128" tileheight="128" infinite="0" nextlayerid="30" nextobjectid="402">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -13,6 +13,7 @@
  <tileset firstgid="18966" source="METADATA PARTICLES.tsx"/>
  <tileset firstgid="18969" source="tileset_lvl1_foreground_01.tsx"/>
  <tileset firstgid="20289" source="tileset_lv1_Pantry_05.tsx"/>
+ <tileset firstgid="21099" source="tileset_lvl4_General_01.tsx"/>
  <group id="24" name="PARALLAX" parallaxx="0.9" parallaxy="0.9">
   <properties>
    <property name="Background" type="bool" value="true"/>
@@ -56156,7 +56157,7 @@
    <tile/>
    <tile gid="658"/>
    <tile gid="659"/>
-   <tile/>
+   <tile gid="21869"/>
    <tile/>
    <tile/>
    <tile/>
@@ -56249,7 +56250,7 @@
    <tile/>
    <tile gid="688"/>
    <tile/>
-   <tile/>
+   <tile gid="21869"/>
    <tile/>
    <tile/>
    <tile/>
@@ -56342,8 +56343,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="21935"/>
+   <tile gid="21941"/>
    <tile/>
    <tile/>
    <tile/>
@@ -56433,9 +56434,9 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="21868"/>
+   <tile gid="21868"/>
+   <tile gid="21873"/>
    <tile/>
    <tile/>
    <tile/>
@@ -61332,7 +61333,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="21871"/>
    <tile/>
    <tile/>
    <tile/>
@@ -61424,8 +61425,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="21939"/>
+   <tile gid="21873"/>
    <tile/>
    <tile/>
    <tile/>
@@ -63031,7 +63032,7 @@
    <tile gid="742"/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="21869"/>
    <tile/>
    <tile/>
    <tile/>
@@ -63124,7 +63125,7 @@
    <tile gid="772"/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="21869"/>
    <tile/>
    <tile/>
    <tile/>
@@ -63213,11 +63214,11 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="21871"/>
+   <tile gid="21868"/>
+   <tile gid="21868"/>
+   <tile gid="21868"/>
+   <tile gid="21873"/>
    <tile/>
    <tile/>
    <tile/>
@@ -63305,8 +63306,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="21868"/>
+   <tile gid="21873"/>
    <tile/>
    <tile/>
    <tile/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="306" height="153" tilewidth="128" tileheight="128" infinite="0" nextlayerid="69" nextobjectid="520">
+<map version="1.10" tiledversion="1.12.0" orientation="orthogonal" renderorder="right-down" width="306" height="153" tilewidth="128" tileheight="128" infinite="0" nextlayerid="69" nextobjectid="520">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -49,6 +49,7 @@
  <tileset firstgid="20601" name="tileset_lv3_General_01" tilewidth="128" tileheight="128" tilecount="1677" columns="43">
   <image source="tileset_lv3_General_01.png" width="5588" height="4992"/>
  </tileset>
+ <tileset firstgid="22278" source="tileset_lvl4_General_01.tsx"/>
  <group id="35" name="Sky" offsetx="202.061" offsety="1299.76" parallaxx="0.1" parallaxy="0.1">
   <properties>
    <property name="Background" type="bool" value="true"/>
@@ -223471,7 +223472,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="23058"/>
    <tile/>
    <tile/>
    <tile/>
@@ -223777,6 +223778,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="23058"/>
    <tile/>
    <tile/>
    <tile/>
@@ -223786,8 +223788,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="1073764882"/>
    <tile/>
    <tile/>
    <tile/>
@@ -224083,6 +224084,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="23058"/>
    <tile/>
    <tile/>
    <tile/>
@@ -224092,8 +224094,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="1073764921"/>
    <tile/>
    <tile/>
    <tile/>
@@ -224386,12 +224387,12 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="23057"/>
+   <tile gid="23122"/>
+   <tile gid="23057"/>
+   <tile gid="23123"/>
+   <tile gid="23057"/>
+   <tile gid="23130"/>
    <tile/>
    <tile/>
    <tile/>
@@ -224692,8 +224693,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="23057"/>
+   <tile gid="23062"/>
    <tile/>
    <tile/>
    <tile/>
@@ -225308,7 +225309,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="23097"/>
    <tile/>
    <tile/>
    <tile/>
@@ -225614,6 +225615,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="23058"/>
    <tile/>
    <tile/>
    <tile/>
@@ -225919,9 +225921,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="23124"/>
+   <tile gid="23061"/>
    <tile/>
    <tile/>
    <tile/>
