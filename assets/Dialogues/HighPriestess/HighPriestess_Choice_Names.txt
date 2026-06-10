@@ -1,0 +1,17 @@
+M - ... So …You’ll steal a dying kingdom of its hope? That’s far more cruel than I.
+F  - There’s little compassion in me for a leech ready to slither away right when the blood stops flowing.
+M - Hah... Not slither, fly.
+M - We could’ve flown away from the fire with our bellies full…
+M - But instead I am betrayed again... 
+CHOICE
+Fool: 
+Fool: 
+CHOICE 1:
+Minister: 
+Minister: 
+Minister: 
+Minister:
+CHOICE 2:
+Minister: 
+Minister: 
++
