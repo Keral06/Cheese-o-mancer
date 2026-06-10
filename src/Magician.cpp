@@ -167,6 +167,7 @@ bool Magician::Update(float dt) {
 				if (dialogueMagicianStart.AvanzarDialogo(dt, nameNPC)) {
 					Engine::GetInstance().scene->hasTalkedMagician = true;
 					Engine::GetInstance().scene->misiones.Completed("Talk with magician");
+					Engine::GetInstance().scene->cards.push("Magician", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Magician.png"), nullptr);
 				}
 			
 			return true;

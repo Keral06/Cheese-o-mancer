@@ -64,7 +64,8 @@ enum class EntityType
 	EMPRESS,
 	SCULPTOR,
 	RETIREDKNIGHT,
-	HIGHPRIESTESS
+	HIGHPRIESTESS,
+	PRIEST
 };
 
 class PhysBody;

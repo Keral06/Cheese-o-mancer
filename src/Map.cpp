@@ -787,10 +787,23 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, std::vector<std::shared_
                     rey->mapID = id;
                 }
                 else if (entityType == "HighPriestesss") {
+                    if (Engine::GetInstance().scene->hasBeenWhistledblowed == false) {
+                    
+                        std::shared_ptr<HighPriestess> rey = std::dynamic_pointer_cast<HighPriestess>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HIGHPRIESTESSS));
+                        rey->position = Vector2D(x, y);
+                        rey->Start();
+                        rey->mapID = id;
+                        return;
+                    
+                    }
+                    else {
                     std::shared_ptr<HighPriestesss> highPriestess = std::dynamic_pointer_cast<HighPriestesss>(Engine::GetInstance().entityManager->CreateEntity(EntityType::HIGHPRIESTESSS));
                     highPriestess->position = Vector2D(x, y);
                     highPriestess->Start();
                     highPriestess->mapID = id;
+                    
+                    
+                    }
                 }
                 else if (entityType == "Jailer") {
                     std::shared_ptr<Jailer> jailer = std::dynamic_pointer_cast<Jailer>(Engine::GetInstance().entityManager->CreateEntity(EntityType::JAILER));
