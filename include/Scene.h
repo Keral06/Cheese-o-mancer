@@ -324,6 +324,9 @@ private:
 	SDL_Texture* inventoryPaperKey2 = nullptr;
 	SDL_Texture* inventoryPaperKey3 = nullptr;
 
+	SDL_Texture* pauseImage1 = nullptr;
+	SDL_Texture* pauseImage2 = nullptr;
+
 
 public:
 	void SetStore(bool store, int storeID = 1);
