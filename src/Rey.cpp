@@ -186,6 +186,8 @@ bool Rey::Update(float dt)
                 
                 }
                 if (Artifact.hasStarted && !Artifact.hasEnded) { Artifact.Draw(dt); return true; }
+
+                stateR = DEADR;
                 //COMENÇA LLUITA
                 // 
                 // DESPRES LLUITA, ES EL VIDEO
@@ -212,7 +214,7 @@ bool Rey::Update(float dt)
                 }
                 if (NoArtifact.hasStarted && !NoArtifact.hasEnded) { NoArtifact.Draw(dt); return true; }
                
-                //MUERTE JESTER
+                Engine::GetInstance().scene->lives = 0;
 
                 // TODO: Activar aquí la cinemática del FINAL 3
                 // scene->ChangeScene(SceneID::GAME_OVER); // O tu pantalla/video correspondiente
@@ -244,8 +246,10 @@ bool Rey::Update(float dt)
 
 
                 }
-                if (Temperance.hasStarted && !Temperance.hasEnded) { NoArtifact.Draw(dt); return true; }
-            //kill king, acaba el juego
+                if (Temperance.hasStarted && !Temperance.hasEnded) { stateR = TALKINGR; ; NoArtifact.Draw(dt); return true; }
+                stateR = DEADR;
+               
+                Engine::GetInstance().scene->ChangeScene(SceneID::INTRO_SCREEN);
             }
             else {
             
@@ -264,11 +268,11 @@ bool Rey::Update(float dt)
 
 
                 }
-                if (theDevil.hasStarted && !theDevil.hasEnded) { theDevil.Draw(dt); return true; }
+                if (theDevil.hasStarted && !theDevil.hasEnded) { stateR = TALKINGR; theDevil.Draw(dt); return true; }
             }
-            // muere rey, acaba el juego
+            stateR = DEADR;
 
-            Die(); // Ejecuta la animación de muerte del rey
+            Engine::GetInstance().scene->ChangeScene(SceneID::INTRO_SCREEN);
 
 
         }
@@ -313,52 +317,52 @@ bool Rey::Update(float dt)
         //}
     }
     // --- BLOQUE 2: Interacción normal pulsando la E ---
-    else if (playerInRange && eKeyCurrent && !eKeyWasPressed) {
-        LOG("Has interactuado con el Rey (Tecla E)");
+    //else if (playerInRange && eKeyCurrent && !eKeyWasPressed) {
+    //    LOG("Has interactuado con el Rey (Tecla E)");
 
-        if (stateR == IDLER) {
-            stateR = TALKINGR; // Pasa a hablar
-        }
-        else if (stateR == TALKINGR) {
+    //    if (stateR == IDLER) {
+    //        stateR = TALKINGR; // Pasa a hablar
+    //    }
+    //    else if (stateR == TALKINGR) {
 
-            // --- EVALUACIÓN DE REQUISITOS DE LOS FINALES ---
+    //        // --- EVALUACIÓN DE REQUISITOS DE LOS FINALES ---
 
-            // 1. ¿Ha perdonado a la princesa y al caballero?
-            if (!Engine::GetInstance().scene->hasSparedPrincessAndKnight) {
-                LOG("No perdonaste a la princesa y al caballero. Ejecutando Final 1.");
-                finalEscogido = FINAL1;
-                
-            }
-            else {
-                
-                int completedMissionsCount = 0;
+    //        // 1. ¿Ha perdonado a la princesa y al caballero?
+    //        if (!Engine::GetInstance().scene->hasSparedPrincessAndKnight) {
+    //            LOG("No perdonaste a la princesa y al caballero. Ejecutando Final 1.");
+    //            finalEscogido = FINAL1;
+    //            
+    //        }
+    //        else {
+    //            
+    //            int completedMissionsCount = 0;
 
-                if (Engine::GetInstance().scene->finishedMissionSculptor) completedMissionsCount++;
-                if (Engine::GetInstance().scene->finishedmissionHermit)   completedMissionsCount++;
-                if (Engine::GetInstance().scene->ratmissionfinished)       completedMissionsCount++;
+    //            if (Engine::GetInstance().scene->finishedMissionSculptor) completedMissionsCount++;
+    //            if (Engine::GetInstance().scene->finishedmissionHermit)   completedMissionsCount++;
+    //            if (Engine::GetInstance().scene->ratmissionfinished)       completedMissionsCount++;
 
-            
+    //        
 
-                // 3. ¿Tiene un mínimo de 3 misiones completadas?
-                if (completedMissionsCount < 3) {
-                    LOG("Perdonaste a los personajes pero faltan misiones completadas (%d/3). Volviendo al Final 1.", completedMissionsCount);
-                    finalEscogido = FINAL1;
-                }
-                else {
-                    // Cumple absolutamente todo: Se abre la encrucijada de decisiones
-                    LOG("¡REQUISITOS COMPLETADOS! Elige sabiamente: [1] MATAR (Final 2) o [2] PERDONAR (Mago)");
-                    choosingFinal = true;
+    //            // 3. ¿Tiene un mínimo de 3 misiones completadas?
+    //            if (completedMissionsCount < 3) {
+    //                LOG("Perdonaste a los personajes pero faltan misiones completadas (%d/3). Volviendo al Final 1.", completedMissionsCount);
+    //                finalEscogido = FINAL1;
+    //            }
+    //            else {
+    //                // Cumple absolutamente todo: Se abre la encrucijada de decisiones
+    //                LOG("¡REQUISITOS COMPLETADOS! Elige sabiamente: [1] MATAR (Final 2) o [2] PERDONAR (Mago)");
+    //                choosingFinal = true;
 
-                    
-                }
-            }
-        }
-    }
+    //                
+    //            }
+    //        }
+    //    }
+    //}
 
-    eKeyWasPressed = eKeyCurrent;
+    //eKeyWasPressed = eKeyCurrent;
 
     // Cuando termina la animación de muerte (Bloque original de spawn del Mago)
-    if (stateR == DEADR && anims.HasFinished() && !magoSpawned) {
+    if (stateR == DEADR && anims.HasFinished() && !magoSpawned && decision) {
         stateR = DEATH_STATICR;
         magoSpawned = true;
 
