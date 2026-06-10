@@ -539,10 +539,13 @@ void Dialogue::LoadTalkSound(std::string charName) {
 
 void Dialogue::PlayTalkSound(std::string charName) {
 	
-	if (nameHelper[lenghtHelper] != "Fool: ") {
-		Engine::GetInstance().audio->PlayFx(currentFx);
-		hasPlayed = true;
+	if (hasConversation == true) {
+		if (nameHelper[lenghtHelper] != "Fool: ") {
+			Engine::GetInstance().audio->PlayFx(currentFx);
+			hasPlayed = true;
+		}
 	}
+
 	
 	/*if (charName == "Magician: ") {
 		

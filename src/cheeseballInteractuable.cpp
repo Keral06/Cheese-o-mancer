@@ -115,7 +115,7 @@ bool CheeseBallInteract::Update(float dt)
 	// FASE 1: Diálogo e interacción
 	if (isGettingTouched) {
 		Engine::GetInstance().render->DrawTexture(InteractTexture, (int)position.getX() - texW / 2, (int)position.getY() + texH / 2);
-
+		dialogue.hasConversation = false;
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
 			if (dialogue.AvanzarDialogo(dt, nameNPC)) {
 				if (cheesePower == 1) {
