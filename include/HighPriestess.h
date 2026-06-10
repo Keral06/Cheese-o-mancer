@@ -2,6 +2,7 @@
 
 #include "Enemy.h"
 #include "Animation.h"
+#include "Dialogue.h"
 
 class HighPriestesss : public Enemy {
 public:
@@ -44,6 +45,8 @@ private:
     std::string currentAnimName = "none";
 
     
-    bool waitingForChoice = false;
-    bool choiceMade = false;       
+
+    bool choiceMade = false;      
+
+    Dialogue Choosing;
 };

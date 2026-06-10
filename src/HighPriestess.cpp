@@ -64,6 +64,8 @@ bool HighPriestesss::Start() {
     pbody->ctype = ColliderType::ENEMY;
     attackHitbox = nullptr;
 
+    Dialogue help("assets/Dialogues/HighPriestess/HighPriestess_Choice_Dialogues.txt", "assets/Dialogues/HighPriestess/HighPriestess_Choice_Names.txt");
+    Choosing = help;
    
     b2Body_SetGravityScale(pbody->body, 0.0f);
     SpawnWave();
@@ -107,34 +109,46 @@ bool HighPriestesss::Update(float dt) {
                 isClose = true;
             }
         }
-
+        if (isClose &&Choosing.hasStarted==false) {
+        
+        
+            Choosing.AvanzarDialogo(dt, "HighPriestess");
+        
+        }
         // 2. Si está cerca y pulsa la 'E', abrimos el "menú" o escuchamos la elección
         // Nota: Adapta "Engine::GetInstance().input->GetKey(...)" a tu sistema de input real
-        if (isClose && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-            // Aquí puedes activar un flag en tu UI para mostrar los textos en pantalla: "1. Matar / 2. Perdonar"
-            printf("Interactuando con la Sacerdotisa. Elige: [1] Death o [2] Spare\n");
+        if (isClose && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && Choosing.hasEnded==false) {
+           if( Choosing.AvanzarDialogo(dt, "HighPriestess")) {
+            
+            
+               choiceMade = Choosing.WhatChoice();
+            
+            
+            }
         }
 
         // 3. Procesar la elección del jugador
-        if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-            // Opción: DEATH
+        if (choiceMade) {
+            // Opción: SPARE PJ MUERE
             choiceMade = true;
             waitingForChoice = false;
 
             // Forzamos el cambio a la animación de muerte
-            animDeath.SetCurrent("death");
-            currentAnimName = "death";
-            printf("Has elegido: MUERTE\n");
+            animDeath.SetCurrent("spare");
+            currentAnimName = "spare";
+            printf("Has elegido: PERDÓN\n");
         }
-        else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-            // Opción: SPARE
+        else if (!choiceMade) {
+            // Opción: KILL ENEMIGO VIVE
             choiceMade = true;
             waitingForChoice = false;
 
             // Forzamos el cambio a la animación de perdón
-            animDeath.SetCurrent("spare");
-            currentAnimName = "spare";
-            printf("Has elegido: PERDÓN\n");
+          
+
+            animDeath.SetCurrent("death");
+            currentAnimName = "death";
+            printf("Has elegido: MUERTE\n");
         }
     }
 
