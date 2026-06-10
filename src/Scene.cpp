@@ -51,7 +51,7 @@ bool Scene::Start()
 {
 	srand(time(NULL));
 	LoadScene(currentScene);
-	LoadVideo(&video, "assets/Screens/endAnimatic_TEST2.mpg");
+	LoadVideo(&introVideo, "assets/Screens/endAnimatic_TEST2.mpg");
 
 	bossFightController = new BossFightPrincessKnight();
 	bossFightController->Start();
@@ -71,15 +71,15 @@ bool Scene::PreUpdate()
 bool Scene::Update(float dt)
 {
 	dtHelp = dt;
-	if (isPlayingVideo) {
+	if (isPlayingIntroVideo) {
 		//LOG("Video dt: %f", dt);
-		plm_decode(video.plm, dt / 1000.0f);	//passar d milisegons a segons
+		plm_decode(introVideo.plm, dt / 1000.0f);	//passar d milisegons a segons
 
-		if (video.texture && video.buffer) {
-			SDL_UpdateTexture(video.texture, NULL, video.buffer, video.width * 4);
-			SDL_RenderTexture(Engine::GetInstance().render->renderer, video.texture, NULL, NULL);
+		if (introVideo.texture && introVideo.buffer) {
+			SDL_UpdateTexture(introVideo.texture, NULL, introVideo.buffer, introVideo.width * 4);
+			SDL_RenderTexture(Engine::GetInstance().render->renderer, introVideo.texture, NULL, NULL);
 		}
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || plm_has_ended(video.plm)) { //passar a la seguent escena quan acabi o (amb el espai per skip)
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || plm_has_ended(introVideo.plm)) { //passar a la seguent escena quan acabi o (amb el espai per skip)
 			StopVideo();
 			ChangeScene(SceneID::IN_GAME);
 		}
@@ -2894,20 +2894,20 @@ void Scene::LoadVideo(VideoData* video, const char* name) {
 }
 
 void Scene::PlayVideo(const char* name) {
-	isPlayingVideo = true;
+	isPlayingIntroVideo = true;
 	Engine::GetInstance().uiManager->CleanUp();
 }
 
 void Scene::StopVideo() {
-	isPlayingVideo = false;
+	isPlayingIntroVideo = false;
 
-	if (video.plm) plm_destroy(video.plm);
-	if (video.texture) SDL_DestroyTexture(video.texture);
-	if (video.buffer) delete[] video.buffer;
+	if (introVideo.plm) plm_destroy(introVideo.plm);
+	if (introVideo.texture) SDL_DestroyTexture(introVideo.texture);
+	if (introVideo.buffer) delete[] introVideo.buffer;
 
-	video.plm = nullptr;
-	video.texture = nullptr;
-	video.buffer = nullptr;
+	introVideo.plm = nullptr;
+	introVideo.texture = nullptr;
+	introVideo.buffer = nullptr;
 }
 
 void Scene::StartMiniBoss() {

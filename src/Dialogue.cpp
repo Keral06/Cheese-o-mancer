@@ -455,7 +455,7 @@ void Dialogue::LoadTalkSound(std::string charName) {
 	}
 
 	if (charName == "HighPriestess") {
-		randNum = rand() % 3;
+		randNum = rand() % 4;
 		switch (randNum) {
 		case 0:
 			currentFx = Engine::GetInstance().audio->LoadFx("Assets/Audio/fx/High_Priestess/HighPriestess_talk1.wav");
