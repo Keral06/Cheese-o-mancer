@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="59" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="32" nextobjectid="370">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="59" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="32" nextobjectid="378">
  <tileset firstgid="1" name="LV1_test_tileset" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="LV1_test_tileset.png" width="384" height="128"/>
  </tileset>
@@ -37381,5 +37381,10 @@
   </properties>
   <object id="368" type="Fire" x="3484" y="7093.21" width="590.303" height="463.515"/>
   <object id="369" type="Fire" x="3492.85" y="7108.24" width="590.303" height="463.515"/>
+  <object id="370" type="FloatingDust" x="328" y="2320" width="6960" height="608"/>
+  <object id="371" type="FloatingDust" x="2768" y="1824" width="2064" height="6000"/>
+  <object id="372" type="FloatingDust" x="300" y="4320" width="7024" height="608"/>
+  <object id="375" type="FloatingDust" x="2996" y="616" width="1604" height="1048"/>
+  <object id="376" type="FloatingDust" x="348" y="6136" width="6872" height="1600"/>
  </objectgroup>
 </map>
