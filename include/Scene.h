@@ -22,7 +22,8 @@ enum class SceneID
 	GAME_OVER,
 	WIN_SCREEN,
 	FINAL_WIN,	
-	CUTSCENE
+	INTRO_VIDEO,
+	END_VIDEO
 };
 
 enum Level {
@@ -485,11 +486,17 @@ private:
 	
 	bool isPlayingIntroVideo = false;
 	VideoData  introVideo;
-	;
+	bool isPlayingEndVideo = false;
+	VideoData endVideo;
 
 	void LoadVideo(VideoData* video, const char* name);
-	void PlayVideo(const char* name);
-	void StopVideo();
+	bool UpdateVideo(float dt, VideoData video);
+	void StopVideo(VideoData video);
+
+	void PlayIntroVideo();
+	void PlayEndVideo();
+	void LoadIntroMusic();
+	void LoadEndMusic();
 
 	static void OnVideoFrame(plm_t* mpeg, plm_frame_t* frame, void* user);
 };

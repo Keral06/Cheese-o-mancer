@@ -52,6 +52,7 @@ bool Scene::Start()
 	srand(time(NULL));
 	LoadScene(currentScene);
 	LoadVideo(&introVideo, "assets/Screens/endAnimatic_TEST2.mpg");
+	//LoadVideo(&endVideo, "assets/Screens/endAnimatic_TEST2.mpg");
 
 	bossFightController = new BossFightPrincessKnight();
 	bossFightController->Start();
@@ -72,22 +73,17 @@ bool Scene::Update(float dt)
 {
 	dtHelp = dt;
 	if (isPlayingIntroVideo) {
-		//LOG("Video dt: %f", dt);
-		plm_decode(introVideo.plm, dt / 1000.0f);	//passar d milisegons a segons
-
-		if (introVideo.texture && introVideo.buffer) {
-			SDL_UpdateTexture(introVideo.texture, NULL, introVideo.buffer, introVideo.width * 4);
-			SDL_RenderTexture(Engine::GetInstance().render->renderer, introVideo.texture, NULL, NULL);
-		}
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || plm_has_ended(introVideo.plm)) { //passar a la seguent escena quan acabi o (amb el espai per skip)
-			StopVideo();
-			ChangeScene(SceneID::IN_GAME);
-		}
-		return true;
+		UpdateVideo(dt, introVideo);
+	}
+	if (isPlayingEndVideo) {
+		UpdateVideo(dt, endVideo);
 	}
 
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_0) == KEY_DOWN) {
-		ChangeScene(SceneID::CUTSCENE);
+		ChangeScene(SceneID::INTRO_VIDEO);
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_9) == KEY_DOWN) {
+		ChangeScene(SceneID::END_VIDEO);
 	}
 
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
@@ -124,10 +120,6 @@ bool Scene::Update(float dt)
 			SDL_Rect EffectsRect = { 520,490, 200, 50 };
 			Engine::GetInstance().render->DrawTextureNoCamera(VolumeEffects, EffectsRect.x, EffectsRect.y, EffectsRect.w, EffectsRect.h);
 
-
-
-
-
 		}
 		
 		break;
@@ -150,8 +142,11 @@ bool Scene::Update(float dt)
 	case SceneID::FINAL_WIN:
 		UpdateFinalWin(dt);
 		break;
-	case SceneID::CUTSCENE:
-		PlayVideo("assets/Screens/endAnimatic_TEST2.mpg");
+	case SceneID::INTRO_VIDEO:
+		PlayIntroVideo();
+		break;
+	case SceneID::END_VIDEO:
+		PlayEndVideo();
 		break;
 	}
 	if (isPaused) {
@@ -645,6 +640,12 @@ void Scene::LoadScene(SceneID newScene)
 		break;
 	case SceneID::FINAL_WIN:
 		LoadFinalWin();
+		break;
+	case SceneID::INTRO_VIDEO:
+		LoadIntroMusic();
+		break;
+	case SceneID::END_VIDEO:
+		LoadEndMusic();
 		break;
 	}
 }
@@ -2905,22 +2906,53 @@ void Scene::LoadVideo(VideoData* video, const char* name) {
 
 }
 
-void Scene::PlayVideo(const char* name) {
+void Scene::PlayIntroVideo() {
 	isPlayingIntroVideo = true;
 	Engine::GetInstance().uiManager->CleanUp();
 }
 
-void Scene::StopVideo() {
-	isPlayingIntroVideo = false;
-
-	if (introVideo.plm) plm_destroy(introVideo.plm);
-	if (introVideo.texture) SDL_DestroyTexture(introVideo.texture);
-	if (introVideo.buffer) delete[] introVideo.buffer;
-
-	introVideo.plm = nullptr;
-	introVideo.texture = nullptr;
-	introVideo.buffer = nullptr;
+void Scene::PlayEndVideo() {
+	isPlayingEndVideo = true;
+	Engine::GetInstance().uiManager->CleanUp();
 }
+
+bool Scene::UpdateVideo(float dt, VideoData video) {
+	//LOG("Video dt: %f", dt);
+	plm_decode(video.plm, dt / 1000.0f);	//passar d milisegons a segons
+
+	if (video.texture && video.buffer) {
+		SDL_UpdateTexture(video.texture, NULL, video.buffer, video.width * 4);
+		SDL_RenderTexture(Engine::GetInstance().render->renderer, video.texture, NULL, NULL);
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || plm_has_ended(video.plm)) { //passar a la seguent escena quan acabi o (amb el espai per skip)
+		StopVideo(video);
+		ChangeScene(SceneID::IN_GAME);
+	}
+	return true;
+}
+
+void Scene::StopVideo(VideoData video) {
+	isPlayingIntroVideo = false;
+	isPlayingEndVideo = false;
+
+	if (video.plm) plm_destroy(video.plm);
+	if (video.texture) SDL_DestroyTexture(video.texture);
+	if (video.buffer) delete[] video.buffer;
+
+	video.plm = nullptr;
+	video.texture = nullptr;
+	video.buffer = nullptr;
+}
+
+void Scene::LoadIntroMusic() {
+	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/DOWNTIME_ratmosphere.wav");
+}
+
+void Scene::LoadEndMusic() {
+	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/DOWNTIME_ratmosphere.wav");
+}
+
+//MINI BOSS
 
 void Scene::StartMiniBoss() {
 	LOG("¡El jugador ha pisado el Trigger! Iniciando MiniBoss...");
