@@ -31,11 +31,9 @@ bool HighPriestesss::Start() {
     // Nota: Revisa en tus .tsx si la animación empieza en el tile 0 de cada archivo (suele ser lo habitual)
     std::unordered_map<int, std::string> aliasIdle = { {0, "idle"} };
     std::unordered_map<int, std::string> aliasTurn = { {0, "turn"} };
-    std::unordered_map<int, std::string> aliasDeath = { {0, "death"} };
 
     animIdle.LoadFromTSX("assets/Textures/Spritesheets/High Priestess/high_priestess_idle.tsx", aliasIdle);
     animTurn.LoadFromTSX("assets/Textures/Spritesheets/High Priestess/high_priestess_turn.tsx", aliasTurn);
-    animDeath.LoadFromTSX("assets/Textures/Spritesheets/High Priestess/priestess_death.tsx", aliasDeath);
 
     // 1. Cargar el spritesheet
     texture = Engine::GetInstance().textures->Load("assets/Textures/Spritesheets/High Priestess/sprite_high_priestess_boss_01.png");
@@ -49,7 +47,7 @@ bool HighPriestesss::Start() {
         {41, "death_static"}
     };
 
-    anims.LoadFromTSX("assets/Textures/Spritesheets/High Priestess/high_priestess_boss.tsx", aliases);
+    animDeath.LoadFromTSX("assets/Textures/Spritesheets/High Priestess/priestess_death.tsx", aliases);
 
     // 3. Configuración del estado inicial
     health = 3;
@@ -75,26 +73,68 @@ bool HighPriestesss::Start() {
 bool HighPriestesss::Update(float dt) {
     // Si no hay enemigos vivos, la jefa no es vulnerable todavía y no ha muerto...
     if (enemiesAlive <= 0 && !isVulnerable && state != EnemyState::DYING) {
-        // Solo se expone si realmente la oleada actual se ha limpiado de verdad
         isVulnerable = true;
         SetState(EnemyState::WALKING); // Pasa a estado Vulnerable (Animación Turn)
     }
 
-    // --- TRANSICIONES DE FASE FINAL (Tu lógica de cinemática/elección) ---
-    if (currentAnimName == "inmobilization_start" && anims.HasFinished()) {
-        anims.SetCurrent("inmobilization_idle");
+    // --- TRANSICIONES DE FASE FINAL ---
+    if (currentAnimName == "inmobilization_start" && animDeath.HasFinished()) { // Nota: Asegúrate que animDeath sea el track activo
+        animDeath.SetCurrent("inmobilization_idle");
         currentAnimName = "inmobilization_idle";
         waitingForChoice = true;
     }
-    else if (currentAnimName == "spare" && anims.HasFinished()) {
+    else if (currentAnimName == "spare" && animDeath.HasFinished()) {
         Player* player = Engine::GetInstance().scene->GetPlayer();
         if (player != nullptr) player->isDeadDefinitive = true;
     }
-    else if (currentAnimName == "death" && anims.HasFinished()) {
-        anims.SetCurrent("death_static");
+    else if (currentAnimName == "death" && animDeath.HasFinished()) {
+        animDeath.SetCurrent("death_static");
         currentAnimName = "death_static";
         if (instance == this) {
             instance = nullptr;
+        }
+    }
+
+    // --- LÓGICA DE INTERACTION Y ELECCIÓN (NUEVO) ---
+    if (waitingForChoice && !choiceMade) {
+
+        // 1. Detectar proximidad del jugador (Opcional, pero recomendado)
+        Player* player = Engine::GetInstance().scene->GetPlayer();
+        bool isClose = false;
+        if (player != nullptr) {
+            // Si la distancia horizontal es menor a, por ejemplo, 150 píxeles
+            if (abs(player->position.getX() - position.getX()) < 150.0f) {
+                isClose = true;
+            }
+        }
+
+        // 2. Si está cerca y pulsa la 'E', abrimos el "menú" o escuchamos la elección
+        // Nota: Adapta "Engine::GetInstance().input->GetKey(...)" a tu sistema de input real
+        if (isClose && Engine::GetInstance().input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+            // Aquí puedes activar un flag en tu UI para mostrar los textos en pantalla: "1. Matar / 2. Perdonar"
+            printf("Interactuando con la Sacerdotisa. Elige: [1] Death o [2] Spare\n");
+        }
+
+        // 3. Procesar la elección del jugador
+        if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
+            // Opción: DEATH
+            choiceMade = true;
+            waitingForChoice = false;
+
+            // Forzamos el cambio a la animación de muerte
+            animDeath.SetCurrent("death");
+            currentAnimName = "death";
+            printf("Has elegido: MUERTE\n");
+        }
+        else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
+            // Opción: SPARE
+            choiceMade = true;
+            waitingForChoice = false;
+
+            // Forzamos el cambio a la animación de perdón
+            animDeath.SetCurrent("spare");
+            currentAnimName = "spare";
+            printf("Has elegido: PERDÓN\n");
         }
     }
 
@@ -117,11 +157,11 @@ void HighPriestesss::ChangeCurrentAnimation() {
     switch (state) {
     case EnemyState::IDLE:
         currentAnimTrack = &animIdle;
-        currentTexture = texIdle;
+        currentTexture = texDeath; // O la que corresponda
         animIdle.SetCurrent("idle");
         break;
 
-    case EnemyState::WALKING: // Vulnerable / Aturdida
+    case EnemyState::WALKING:
         currentAnimTrack = &animTurn;
         currentTexture = texTurn;
         animTurn.SetCurrent("turn");
@@ -130,7 +170,14 @@ void HighPriestesss::ChangeCurrentAnimation() {
     case EnemyState::DYING:
         currentAnimTrack = &animDeath;
         currentTexture = texDeath;
-        animDeath.SetCurrent("death");
+
+        // NUEVO: Si venimos del golpe final, empezamos en inmovilización, no en death directamente
+        if (currentAnimName == "inmobilization_start") {
+            animDeath.SetCurrent("inmobilization_start");
+        }
+        else {
+            animDeath.SetCurrent("death");
+        }
         break;
     }
 }

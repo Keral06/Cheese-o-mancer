@@ -43,4 +43,7 @@ private:
     bool waitingForChoice = false;
     std::string currentAnimName = "none";
 
+    
+    bool waitingForChoice = false;
+    bool choiceMade = false;       
 };
