@@ -1,4 +1,22 @@
 Fool:
+Fool:
+The King:
+The King:
+Fool:
+Fool:
+The King:
+The King:
+The King:
+The King:
+Fool:
+Fool:
+The King:
+The King:
+CHOICE
+Fool:
+Fool:
+CHOICE 1:
+Fool:
 Magician:
 Magician:
 Magician:
@@ -10,4 +28,6 @@ Fool:
 Magician:
 Magician:
 Magician:
+CHOICE 2:
+Fool:
 +
