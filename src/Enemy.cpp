@@ -319,6 +319,10 @@ void Enemy::DecreaseHealth(int amount) {
 	if (state == EnemyState::DYING) return;
 
 	health -= amount;
+
+	//destello
+	flashTimer = flashDuration;
+
 	if (health > 0) {
 		SetState(EnemyState::HIT);
 		isKnockback = true;

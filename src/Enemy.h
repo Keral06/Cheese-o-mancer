@@ -110,6 +110,9 @@ public:
 	bool hasLanded = false;
 	bool hasBeenPicked = false;
 
+	float flashTimer = 0.0f;
+	float flashDuration = 150.0f;
+
 	Vector2D deathPosition;
 protected:
 	b2Vec2 velocity;

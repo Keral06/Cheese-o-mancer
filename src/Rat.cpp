@@ -46,6 +46,10 @@ bool Rat::Start()
 
 bool Rat::Update(float dt)
 {
+    if (flashTimer > 0.0f) {
+        flashTimer -= dt; // Reducimos el tiempo basado en el delta time
+    }
+
     if (hasBeenPicked) return true;
 
     if (Engine::GetInstance().scene->GetPlayer()->isDead()) return true;
@@ -231,6 +235,13 @@ void Rat::Draw(float dt)
         drawY -= 64;
     }
 
+    // aplicar destello
+    if (flashTimer > 0.0f) {
+
+        // Tinte rojo (Multiplica R=255, G=50, B=50).
+        SDL_SetTextureColorMod(texture, 255, 50, 50);
+    }
+
     Engine::GetInstance().render->DrawTexture(
         texture,
         drawX,
@@ -242,4 +253,10 @@ void Rat::Draw(float dt)
         INT_MAX,
         flip
     );
+
+    // volver al color de antes
+    if (flashTimer > 0.0f) {
+        SDL_SetTextureColorMod(texture, 255, 255, 255);
+    }
+
 }
