@@ -38,6 +38,7 @@ public:
     float offsetX;
     float offsetY;
 
+
     AnimationSet anims;
     SDL_Texture* texture = NULL;
     SDL_Texture* textureIdle = NULL;

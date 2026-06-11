@@ -3901,7 +3901,7 @@ const SDL_Rect& animFrame = anims.GetCurrentFrame();
 						Engine::GetInstance().scene->cards.push("Chariot", Engine::GetInstance().textures->Load("assets/UI/Tarot/UI_TarotCard_Chariot.png"), nullptr);
 					
 
-						Engine::GetInstance().scene->misiones.push("Chariot", Engine::GetInstance().textures->Load("assets/UI/Spritesheets/UI_Mission_Info/UI_MissionNotes_Teleport1.png"), Engine::GetInstance().textures->Load("assets/UI/Spritesheets/UI_Mission_Info/UI_MissionNotes_Teleport2.png"));
+						Engine::GetInstance().scene->misiones.push("Chariot", Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Teleport1.png"), Engine::GetInstance().textures->Load("assets/UI/UI_Mission_Info/UI_MissionNotes_Teleport2.png"));
 
 						
 					}
