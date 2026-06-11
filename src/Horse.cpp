@@ -65,6 +65,10 @@ bool Horse::Start()
 
 bool Horse::Update(float dt)
 {
+    if (flashTimer > 0.0f) {
+        flashTimer -= dt; // Reducimos el tiempo basado en el delta time
+    }
+
     if (hasBeenPicked) return true;
 
     if (Engine::GetInstance().scene->GetPlayer()->isDead()) return true;
@@ -175,6 +179,13 @@ void Horse::ChangeCurrentAnimation()
 
 void Horse::Draw(float dt)
 {
+    // aplicar destello
+    if (flashTimer > 0.0f) {
+
+        // Tinte rojo (Multiplica R=255, G=50, B=50).
+        SDL_SetTextureColorMod(texture, 255, 50, 50);
+    }
+
     anims.Update(dt);
     const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
@@ -197,6 +208,11 @@ void Horse::Draw(float dt)
     SDL_FlipMode flip = facingLeft ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 
     Engine::GetInstance().render->DrawTexture(texture, x - texW, y - texH + 128, &animFrame, 1.0f, 0.0, INT_MAX, INT_MAX, flip);
+
+    // volver al color de antes
+    if (flashTimer > 0.0f) {
+        SDL_SetTextureColorMod(texture, 255, 255, 255);
+    }
 }
 
 void Horse::Die() {

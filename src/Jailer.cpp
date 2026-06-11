@@ -88,6 +88,10 @@ void Jailer::Attack()
 
 bool Jailer::Update(float dt)
 {
+    if (flashTimer > 0.0f) {
+        flashTimer -= dt; // Reducimos el tiempo basado en el delta time
+    }
+
     if (spawnDelayTimer > 0.0f) {
         spawnDelayTimer -= dt;
     }
@@ -249,9 +253,10 @@ void Jailer::Draw(float dt)
     }
 
     SDL_Rect animFrame;
-    SDL_Texture* texToDraw = texture;
+    SDL_Texture* texToDraw = texture; // Por defecto es la textura normal
     SDL_FlipMode flip = facingLeft ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 
+    // 1. DECIDIMOS QUÉ TEXTURA VAMOS A USAR SEGÚN EL ESTADO
     if (jailerState == JAILER_ATTACK)
     {
         animFrame = anims2.GetCurrentFrame();
@@ -264,6 +269,13 @@ void Jailer::Draw(float dt)
         texToDraw = texture;
     }
 
+    // 2. APLICAMOS EL DESTELLO A LA TEXTURA ELEGIDA (texToDraw)
+    if (flashTimer > 0.0f) {
+        // Tinte rojo (Multiplica R=255, G=50, B=50).
+        SDL_SetTextureColorMod(texToDraw, 255, 50, 50);
+    }
+
+    // 3. DIBUJAMOS
     Engine::GetInstance().render->DrawTexture(
         texToDraw,
         x - texW / 2,
@@ -279,6 +291,11 @@ void Jailer::Draw(float dt)
     int offsetX = facingLeft ? -offsetAttackHitboxX : offsetAttackHitboxX;
     if (attackHitbox) {
         attackHitbox->SetPosition(x + offsetX, y + (int)offsetAttackHitboxY);
+    }
+
+    // 4. VOLVEMOS AL COLOR DE ANTES EN LA TEXTURA ELEGIDA
+    if (flashTimer > 0.0f) {
+        SDL_SetTextureColorMod(texToDraw, 255, 255, 255);
     }
 }
 
