@@ -428,7 +428,13 @@ public:
 	bool executionerDead = false;
 	bool princessFinished = false;
 	bool highPriestessDead = false;
-	bool masterDebug = false;
+
+	// Debug bools
+	bool debugLvl1 = false;
+	bool debugLvl2 = false;
+	bool debugLvl3 = false;
+	bool debugLvl4 = false;
+	bool debugCheats = false;
 
 	//Well's echo bools
 

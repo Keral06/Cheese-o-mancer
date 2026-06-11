@@ -17936,7 +17936,7 @@
   <object id="43" x="1792" y="2944" width="256" height="128"/>
   <object id="44" x="2048" y="2816" width="384" height="128"/>
   <object id="45" x="2432" y="2688" width="512" height="128"/>
-  <object id="49" x="9728" y="3840" width="128" height="1920"/>
+  <object id="49" x="9728" y="3840" width="128" height="896"/>
   <object id="50" x="9600" y="3456" width="128" height="384"/>
   <object id="51" x="9472" y="3200" width="128" height="256"/>
   <object id="52" x="9344" y="3072" width="128" height="128"/>

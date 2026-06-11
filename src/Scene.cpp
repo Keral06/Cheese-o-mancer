@@ -1033,37 +1033,76 @@ void Scene::UpdateLevel(float dt) {
 			ChangeScene(SceneID::GAME_OVER);
 		}
 	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
-		masterDebug = !masterDebug;
+
+	// SELECTORES DE MODO DEBUG (MANTENER PULSADO) 
+
+	debugLvl1 = (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN || Engine::GetInstance().input->GetKey(SDL_SCANCODE_F1) == KEY_REPEAT);
+	debugLvl2 = (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN || Engine::GetInstance().input->GetKey(SDL_SCANCODE_F2) == KEY_REPEAT);
+	debugLvl3 = (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN || Engine::GetInstance().input->GetKey(SDL_SCANCODE_F3) == KEY_REPEAT);
+	debugLvl4 = (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN || Engine::GetInstance().input->GetKey(SDL_SCANCODE_F4) == KEY_REPEAT);
+	debugCheats = (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN || Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_REPEAT);
+
+	// ACCIONES SEGÚN EL MODO ACTIVO ---
+
+	// MENU F1: Mapas Nivel 1 (Teclas 1-5)
+	if (debugLvl1) {
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) LoadMap("TEST_map_LV1_startRoom_01.tmx");
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) LoadMap("TEST_map_LV1_towerCenter_01.tmx");
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) LoadMap("TEST_map_LV1_pantryRoom_01.tmx");
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) LoadMap("TEST_map_LV1_tortureRoom_02.tmx");
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_5) == KEY_DOWN) LoadMap("TEST_map_LV1_bossRoom_01.tmx");
 	}
-	//Lógica de cambio de mapa (F1-F4)
-	if (masterDebug) {
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
-			LoadMap("TEST_map_LV1_towerCenter_01.tmx");
+
+	// MENU F2: Mapas Nivel 2 (Teclas 1-8)
+	else if (debugLvl2) {
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) LoadMap("Map_LV2_transition_02.tmx");
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) LoadMap("Map_LV2_botanica_02.tmx");
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) LoadMap("Map_LV2_encreuada_02.tmx");
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) LoadMap("Map_LV2_justes_02.tmx");
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_5) == KEY_DOWN) LoadMap("Map_LV2_towersBotanica_02.tmx");
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) LoadMap("Map_LV2_towersEncreuada_02.tmx");
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_7) == KEY_DOWN) LoadMap("Map_LV2_towersJustes_02.tmx");
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_8) == KEY_DOWN) LoadMap("Map_LV2_bossTower.tmx");
+	}
+
+	// MENU F3: Mapas Nivel 3 (Teclas 1-3)
+	else if (debugLvl3) {
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) LoadMap("Map_LV3_left_01.tmx");
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) LoadMap("Map_LV3_temple_01.tmx");
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) LoadMap("Map_LV3_right_02.tmx");
+	}
+
+	// MENU F4: Mapas Nivel 4 (Teclas 1-5)
+	else if (debugLvl4) {
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) LoadMap("Map_LV4_QueenTower_Int_01.tmx");
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) LoadMap("Map_LV4_QueenTower_Ext_01.tmx");
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) LoadMap("Map_LV4_QueenTower_TopFloor_01.tmx");
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) LoadMap("Map_LV4_QueenRoom_01.tmx");
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_5) == KEY_DOWN) LoadMap("Map_LV4_Bridge_and_PharusTower_01.tmx");
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) LoadMap("Map_LV4_ThroneRoom_01.tmx");
+	}
+
+	// MENU F5: Trucos y Cheats (Letras)
+	else if (debugCheats) {
+		// G -> GodMode
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_G) == KEY_DOWN) {
+			if (player != nullptr) player->godMode = !player->godMode;
+			LOG("TRUCO: GodMode %s", (player && player->godMode) ? "ON" : "OFF");
 		}
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
-			LoadMap("TEST_map_LV1_pantryRoom_01.tmx");
+		// M -> Dar Dinero (+100)
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) {
+			if (player != nullptr) player->AddPoints(100);
+			LOG("TRUCO: +100 Monedas");
 		}
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN) {
-			LoadMap("TEST_map_LV1_tortureRoom_02.tmx");
+		// B -> Derrotar Boss Normal
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
+			beatBoss = true;
+			LOG("TRUCO: Boss marcado como derrotado");
 		}
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
-			LoadMap("TEST_map_LV1_bossRoom_01.tmx");
-		}
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_J) == KEY_DOWN) {
-			LoadMap("Map_LV2_bossTower.tmx");
-		}
+		// P -> Derrotar Princesa
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
-			LoadMap("Map_LV3_left_01.tmx");
-		}
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_O) == KEY_DOWN) {
-			LoadMap("Map_LV3_temple_01.tmx");
-		}
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_V) == KEY_DOWN) {
-			LoadMap("Map_LV2_encreuada_02.tmx");
-		}
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN) {
-			LoadMap("Map_LV2_towersBotanica_02.tmx");
+			beatPrincess = true;
+			LOG("TRUCO: Princesa marcada como derrotada");
 		}
 	}
 
@@ -1163,11 +1202,11 @@ void  Scene::PostUpdateLevel() {
 		}
 
 	}
-	// Cargar/Guardar estado (F5/F6)
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+	// Cargar/Guardar estado (F11/F10)
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) {
 		Engine::GetInstance().map->LoadEntities(player, enemies);
 	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
 		Engine::GetInstance().map->SaveEntities(player);
 		savedLevel = 1;
 	}

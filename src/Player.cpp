@@ -148,18 +148,18 @@ bool Player::Start() {
 
 bool Player::Update(float dt)
 {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
-		godMode = !godMode;
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
-		Engine::GetInstance().scene->beatBoss = true;
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
-		Engine::GetInstance().scene->beatPrincess = true;
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) {
-		AddPoints(100);
-	}
+	//if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
+	//	godMode = !godMode;
+	//}
+	//if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
+	//	Engine::GetInstance().scene->beatBoss = true;
+	//}
+	//if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
+	//	Engine::GetInstance().scene->beatPrincess = true;
+	//}
+	//if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) {
+	//	AddPoints(100);
+	//}
 
 	bool isPaused = Engine::GetInstance().scene->isPaused || Engine::GetInstance().scene->showHelp;
 
@@ -740,13 +740,14 @@ void Player::CameraRender(float dt) {
 	float minY = -(mapSize.getY() - visibleH);
 	float maxY = 0.0f;
 
+	if (minX > maxX) minX = maxX;
+	if (minY > maxY) minY = maxY;
+
 	targetX = std::clamp(targetX, minX, maxX);
 	targetY = std::clamp(targetY, minY, maxY);
 
 	render->camera.x = targetX;
 	render->camera.y = targetY;
-
-
 }
 
 // =====================
